@@ -1,0 +1,102 @@
+.Header {
+    color: gray;
+    padding: 15px;
+    border-bottom: 1px solid gray;
+    margin-bottom: 10px;
+    .balance {
+        float: right;
+    }
+    .brand {
+        font-size: 1.3em;
+        padding: 0px 15px;
+        font-weight: bold;
+    }
+    .nav-pill {
+        padding: 0px 5px;
+    }
+}
+
+.Discover {
+    padding: 25px 0px;
+    // border: 1px solid lightgray;
+    .Discover-header {
+       background-color: lightgray; 
+       padding: 10px;
+    }
+    .Discover-search {
+        border: 1px solid lightgray;
+        padding: 15px;
+        input {
+            border-radius: 2px;
+            -webkit-appearance: none;
+            outline: none;
+            border: 1px solid lightgray;
+            padding: 4px 8px;
+            height: 40px;
+        }
+        .search-category {
+            display: inline-block;
+            // border: 1px solid lightgray;
+            border-radius: 4px;
+            padding: 8px 16px;
+            margin: 0px 10px;
+            cursor: pointer;
+        }
+        .search-category-selected-false {
+            &:hover {
+                background-color: #72bcd4;
+                color: white;
+            }
+        }
+        .search-category-selected-true {
+            background-color: #3a9fbf;
+            color: white;
+        }
+    }
+}
+
+.Assets {
+    .table {
+        img {
+            height: 40px;
+            width: 40px;
+            border-radius: 50%;
+        }
+
+        td form {
+            width: 50%;
+        }
+    }
+    .favorite {
+        cursor: pointer;
+    }
+}
+
+.Featured {
+    margin-top: 25px;
+    img {
+        border-radius: 4px 4px 0px 0px;
+    }
+
+    .Featured-body {
+        padding: 10px 5px;
+        p {
+            margin-top: 10px;
+        }
+
+        .Featured-stats {
+            p {
+                padding-top: 15px;
+                border-top: 1px solid gray;
+            }
+
+            .fa-arrows-alt-h {
+                color: gray;
+            }
+
+            .fa-long-arrow-alt-up {
+                color: green;
+            }
+        }
+    }
+}
