@@ -1,0 +1,63 @@
+.Asset {
+    .profile {
+        margin-top: 20px;
+        vertical-align: middle;
+        background-color: #ededed;
+        padding: 10px;
+        border-radius: 2px;
+        span {
+            vertical-align: middle;
+            display: inline-block;
+        }
+        img {
+            height: 60px;
+            width: 60px;
+            border-radius: 50%;
+        }
+        .profile-info {
+            padding: 10px;
+        }
+        .profile-name {
+            font-weight: bold;
+            font-size: 1.3em;
+        }
+        .profile-username {
+            font-style: italic;
+        }
+    }
+
+    .minting-stats {
+        .total-user-minting {
+            border: 1px dotted black;
+            padding: 5px;
+            vertical-align: middle;
+            .Allocator {
+                display: inline-block;
+                padding: 10px;
+                border: 1px solid red;
+                .form-group {
+                    margin: 0;
+                }
+            }
+        }     
+    }
+
+    .emissions {
+        margin-top: 20px;
+        border: 1px dotted black;
+        .chart {
+            margin: 10px;
+            height: 400px;
+            border: 1px solid purple;
+        }
+    }
+
+    .Related-assets {
+        .related-header {
+            padding: 10px;
+            font-weight: bold;
+            background-color: #ededed;
+            border-radius: 5px 5px 0px 0px;
+        }
+    }
+}
