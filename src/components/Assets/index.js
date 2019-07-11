@@ -2,6 +2,8 @@ import React, { Component }  from 'react'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowsAltH, faLongArrowAltUp, faStar } from '@fortawesome/free-solid-svg-icons'
 import { faStar as faStarReg } from '@fortawesome/free-regular-svg-icons'
+
+import Allocator from '../Allocator'
 import './style.scss'
 
 function filterAssets(state, assets, user) {
@@ -34,14 +36,6 @@ class Index extends Component {
         this.state = {
             search: null,
             category: null
-        }
-    }
-
-    moveSlider(e, asset) {
-        const newVal = Number(e.target.value)
-        const success = this.props.updateAllocation(newVal, asset.asset)
-        if (!success) {
-            e.target.value = this.props.user.stakes[asset.asset] || "0"
         }
     }
 
@@ -90,20 +84,7 @@ class Index extends Component {
                                             &nbsp;&nbsp;<i>@{asset.asset}</i>
                                         </td>
                                         <td>{asset.staked}</td>
-                                        <td>
-                                            <form>
-                                                <div className="form-group">
-                                                    <input type="range" 
-                                                        className="form-control-range" 
-                                                        min="0" 
-                                                        max={this.props.user.total}
-                                                        defaultValue={this.props.user.stakes[asset.asset] || "0"}
-                                                        onMouseUp={e => this.moveSlider(e, asset.asset)} 
-                                                        step="1" 
-                                                        id="formControlRange" />
-                                                </div>
-                                            </form>
-                                        </td>
+                                        <td><Allocator {...this.props} asset={asset} /></td>
                                         <td><Favorite {...this.props} asset={asset}  /></td>
                                     </tr>
                                 ))}
