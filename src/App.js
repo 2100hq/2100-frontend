@@ -1,8 +1,10 @@
 import React, { Component } from 'react'
-import Assets from './components/Assets'
-// import Asset from './components/Asset'
-
+import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import { merge } from 'lodash'
+
+import Assets from './components/Assets'
+import Asset from './components/Asset'
+
 import './App.scss'
 
 class App extends Component {
@@ -105,7 +107,10 @@ class App extends Component {
   }
 
   render() {
+    const actions = { updateAllocation: this.updateAllocation, toggleFav: this.toggleFav }
+
     return (
+      <Router>
       <div className="App">
         <header className="Header">
           <span className="brand">2100</span>
@@ -113,10 +118,28 @@ class App extends Component {
           <span className="nav-pill">Portfolio</span>
           <span className="balance">{this.state.user.used} / {this.state.user.total} DAI</span>
         </header>
-        <Assets {...this.state} 
-          updateAllocation={this.updateAllocation} 
-          toggleFav={this.toggleFav} />
+
+        <Route 
+          exact 
+          path="/" 
+          render={
+            () => 
+              <Assets {...this.state}
+                actions={actions}
+                updateAllocation={this.updateAllocation}
+                toggleFav={this.toggleFav} />
+          } 
+        />
+        
+        <Route 
+          path="/a/:username"
+          render={
+            props => 
+              <Asset {...this.state} {...props} actions={actions} />
+          } 
+        />  
       </div>
+      </Router>
     )
   }
 }
