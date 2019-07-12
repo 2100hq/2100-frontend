@@ -4,6 +4,7 @@ import { merge } from 'lodash'
 
 import Assets from './components/Assets'
 import Asset from './components/Asset'
+import Portfolio from './components/Portfolio'
 
 import './App.scss'
 
@@ -130,6 +131,14 @@ class App extends Component {
                 toggleFav={this.toggleFav} />
           } 
         />
+
+        <Route 
+          path="/portfolio"
+          render={
+            props => 
+              <Portfolio {...this.state} {...props} actions={actions} />
+          } 
+        /> 
         
         <Route 
           path="/a/:username"
