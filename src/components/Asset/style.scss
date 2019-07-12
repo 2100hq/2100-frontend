@@ -27,9 +27,15 @@
     }
 
     .minting-stats {
+        margin-top: 20px;
+        >div {
+            border: 1px dotted red;
+            padding: 5px 10px;
+        }
+
         .total-user-minting {
-            border: 1px dotted black;
-            padding: 5px;
+            // border: 1px dotted black;
+            // padding: 5px;
             vertical-align: middle;
             .Allocator {
                 display: inline-block;
@@ -44,11 +50,12 @@
 
     .emissions {
         margin-top: 20px;
-        border: 1px dotted black;
+        border: 1px solid gray;
+        border-radius: 5px;
         .chart {
-            margin: 10px;
+            // margin: 10px;
             height: 400px;
-            border: 1px solid purple;
+            // border: 1px solid purple;
         }
     }
 
@@ -58,6 +65,12 @@
             font-weight: bold;
             background-color: #ededed;
             border-radius: 5px 5px 0px 0px;
+        }
+    }
+
+    #emissions-chart {
+        path {
+            fill: none;
         }
     }
 }
