@@ -1,0 +1,23 @@
+.Settle {
+    margin: 50px;
+
+    img {
+        height: 40px;
+        width: 40px;
+        border-radius: 50%;
+    }
+
+    td a {
+        color: initial;
+        &:hover {
+            font-weight: bold;
+        }
+    }
+
+    .Settle-button {
+        background-color: blue;
+        color: white;
+        padding: 6px 12px;
+        border-radius: 3px;
+    }
+}
