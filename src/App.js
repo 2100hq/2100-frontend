@@ -4,6 +4,7 @@ import { merge } from 'lodash'
 
 import Assets from './components/Assets'
 import Asset from './components/Asset'
+import Settle from './components/Settle'
 import Portfolio from './components/Portfolio'
 
 import './App.scss'
@@ -21,7 +22,24 @@ class App extends Component {
           'naval': 1000,
           'SatoshiLite': 375
         },
-        favorites: ['balajis', 'ThinkingUSD']
+        favorites: ['balajis', 'ThinkingUSD'],
+        minted: {
+          ThinkingUSD: {
+            available: 10,
+            pending: 5,
+            total: 20
+          },
+          naval: {
+            available: 6,
+            pending: 0,
+            total: 10
+          },
+          VitalikButerin: {
+            available: 0,
+            pending: 0,
+            total: 100
+          }
+        }
       },
       assets: [
         {
@@ -115,8 +133,10 @@ class App extends Component {
       <div className="App">
         <header className="Header">
           <span className="brand">2100</span>
-          <span className="nav-pill">Discover</span>
-          <span className="nav-pill">Portfolio</span>
+            <span className="nav-pill"><Link to="/">Discover</Link></span>
+            <span className="nav-pill"><Link to="/portfolio">Portfolio</Link></span>
+            <span className="nav-pill"><Link to="/sync">Sync</Link></span>
+            <span className="nav-pill"><Link to="/settle">Settle</Link></span>
           <span className="balance">{this.state.user.used} / {this.state.user.total} DAI</span>
         </header>
 
@@ -137,6 +157,14 @@ class App extends Component {
           render={
             props => 
               <Portfolio {...this.state} {...props} actions={actions} />
+          } 
+        /> 
+
+        <Route 
+          path="/settle"
+          render={
+            props => 
+              <Settle {...this.state} {...props} actions={actions} />
           } 
         /> 
         

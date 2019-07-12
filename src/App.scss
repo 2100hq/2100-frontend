@@ -66,6 +66,13 @@
         td form {
             width: 50%;
         }
+
+        td a {
+            color: initial;
+            &:hover {
+                font-weight: bold;
+            }
+        }
     }
     .favorite {
         cursor: pointer;
