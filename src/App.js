@@ -101,7 +101,7 @@ class App extends Component {
           [asset]: newVal
         }
       }
-      this.setState(merge(this.state, { user: newAlloc }), () => console.log(this.state))
+      this.setState(merge({}, this.state, { user: newAlloc }))
       return true
     }
   }
