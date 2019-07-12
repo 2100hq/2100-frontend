@@ -1,4 +1,5 @@
 import React, { Component }  from 'react'
+import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowsAltH, faLongArrowAltUp, faStar } from '@fortawesome/free-solid-svg-icons'
 import { faStar as faStarReg } from '@fortawesome/free-regular-svg-icons'
@@ -81,7 +82,7 @@ class Index extends Component {
                                     <tr key={asset.asset}>
                                         <td>
                                             <img src={`https://res.cloudinary.com/dhvvhdndp/image/twitter_name/${asset.asset}`}></img>
-                                            &nbsp;&nbsp;<i>@{asset.asset}</i>
+                                            &nbsp;&nbsp;<i><Link to={`/a/${asset.asset}`}>@{asset.asset}</Link></i>
                                         </td>
                                         <td>{asset.staked}</td>
                                         <td><Allocator {...this.props} asset={asset} /></td>
