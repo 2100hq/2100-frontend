@@ -46,51 +46,71 @@ class App extends Component {
       assets: [
         {
           asset: 'VitalikButerin',
+          displayName: 'Vitalik Non-giver of Ether',
+          followers: 870300,
           staked: 43000,
           categories: ['Crypto Twitter']
         },
         {
           asset: 'elonmusk',
+          displayName: 'Elon Musk',
+          followers: 27400000,
           staked: 30000,
           categories: []
         },
         {
           asset: 'ThinkingUSD',
+          displayName: 'Flood [BitMEX]',
+          followers: 71800,
           staked: 25000,
           categories: ['Traders']
         },
         {
           asset: 'glenweyl',
+          displayName: '(((E. Glen Weyl)))',
+          followers: 14300,
           staked: 7000,
           categories: ['Crypto Twitter', 'Politics']
         },
         {
           asset: 'SatoshiLite',
+          displayName: 'Charlie Lee [LTC⚡]',
+          followers: 829100,
           staked: 15000,
           categories: ['Crypto Twitter']
         },
         {
           asset: 'naval',
+          displayName: 'Naval',
+          followers: 658400,
           staked: 15000,
           categories: ['Crypto Twitter']
         },
         {
           asset: 'aantonop',
+          displayName: 'Andreas M. Antonopoulos',
+          followers: 493900,
           staked: 11000,
           categories: ['Crypto Twitter']
         },
         {
           asset: 'NickSzabo4',
+          displayName: 'Nick Szabo 🔑',
+          followers: 238300,
           staked: 36000,
           categories: ['Crypto Twitter']
         },
         {
           asset: 'ErikVoorhees',
+          displayName: 'Erik Voorhees',
+          followers: 349600,
           staked: 17500,
           categories: ['Crypto Twitter']
         },
         {
           asset: 'balajis',
+          displayName: 'Balaji S. Srinivasan',
+          followers: 108000,
           staked: 27600,
           categories: ['Crypto Twitter']
         }
