@@ -5,8 +5,17 @@ import App from './App'
 import * as serviceWorker from './serviceWorker'
 import 'bootstrap/dist/css/bootstrap.css'
 
+// ethereum instantiation
+import Web3Provider, { Connectors, Web3Consumer } from 'web3-react'
+const MetaMask = new Connectors.InjectedConnector({ supportedNetworks: [1, 4] })
+
 ReactDOM.render(
-    <App />, 
+    <Web3Provider connectors={{ MetaMask }}
+      libraryName={'ethers.js'}>
+        <Web3Consumer>
+            {web3 => <App web3={web3} />}
+        </Web3Consumer> 
+    </Web3Provider>, 
     document.getElementById('root')
 );
 

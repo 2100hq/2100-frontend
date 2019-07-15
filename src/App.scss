@@ -5,6 +5,11 @@
     margin-bottom: 10px;
     .balance {
         float: right;
+        div {
+            display: inline-block;
+            vertical-align: middle;
+            padding: 2px 6px;
+        }
     }
     .brand {
         font-size: 1.3em;

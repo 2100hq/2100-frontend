@@ -1,11 +1,13 @@
 import React, { Component } from 'react'
 import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
 import { merge } from 'lodash'
+import { Web3Consumer } from 'web3-react'
 
 import Assets from './components/Assets'
 import Asset from './components/Asset'
 import Settle from './components/Settle'
 import Portfolio from './components/Portfolio'
+import Jazzicon from 'react-jazzicon'
 
 import './App.scss'
 
@@ -96,6 +98,10 @@ class App extends Component {
     }
   }
 
+  componentDidMount() {
+    this.props.web3.setFirstValidConnector(['MetaMask'])
+  }
+
   toggleFav = asset => {
     this.setState(s => {
       if (s.user.favorites.includes(asset)) {
@@ -137,7 +143,16 @@ class App extends Component {
             <span className="nav-pill"><Link to="/portfolio">Portfolio</Link></span>
             <span className="nav-pill"><Link to="/sync">Sync</Link></span>
             <span className="nav-pill"><Link to="/settle">Settle</Link></span>
-          <span className="balance">{this.state.user.used} / {this.state.user.total} DAI</span>
+          <span className="balance">
+            <Web3Consumer>
+              {web3 =>
+                <span>
+                  <div>{this.state.user.used} / {this.state.user.total} DAI </div>
+                  <Jazzicon diameter={30} seed={web3.account} />
+                </span>
+              }
+            </Web3Consumer>      
+          </span>
         </header>
 
         <Route 
