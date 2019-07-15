@@ -8,6 +8,7 @@ import Asset from './components/Asset'
 import Settle from './components/Settle'
 import Portfolio from './components/Portfolio'
 import Jazzicon from 'react-jazzicon'
+import Sync from './components/Sync'
 
 import './App.scss'
 
@@ -200,6 +201,14 @@ class App extends Component {
           render={
             props => 
               <Settle {...this.state} {...props} actions={actions} />
+          } 
+        />
+
+        <Route 
+          path="/sync"
+          render={
+            props => 
+              <Sync {...this.state} {...props} actions={actions} />
           } 
         /> 
         
