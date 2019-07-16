@@ -7,7 +7,7 @@ import Assets from './components/Assets'
 import Asset from './components/Asset'
 import Settle from './components/Settle'
 import Portfolio from './components/Portfolio'
-import Jazzicon from 'react-jazzicon'
+import Jazzicon, { jsNumberForAddress } from 'react-jazzicon'
 import Sync from './components/Sync'
 
 import './App.scss'
@@ -119,8 +119,15 @@ class App extends Component {
     }
   }
 
-  componentDidMount() {
+  async componentDidMount() {
     this.props.web3.setFirstValidConnector(['MetaMask'])
+    
+    // can only save signer once library instantiated
+    if (this.props.web3.library) {
+      const signer = this.props.web3.library.getSigner()
+      // const signature = await signer.signMessage("Hello World")
+      this.setState({ signer })
+    }
   }
 
   toggleFav = asset => {
@@ -169,7 +176,7 @@ class App extends Component {
               {web3 =>
                 <span>
                   <div>{this.state.user.used} / {this.state.user.total} DAI </div>
-                  <Jazzicon diameter={30} seed={web3.account} />
+                  <UserIcon {...this.props} />
                 </span>
               }
             </Web3Consumer>      
@@ -222,6 +229,16 @@ class App extends Component {
       </div>
       </Router>
     )
+  }
+}
+
+function UserIcon ({ web3 }) {
+  if (web3 && web3.account) {
+    return (
+      <Jazzicon diameter={30} seed={jsNumberForAddress(web3.account)} />
+    )
+  } else {
+    return <div className="empty-jazzicon"></div>
   }
 }
 
