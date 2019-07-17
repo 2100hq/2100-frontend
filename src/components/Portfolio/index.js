@@ -6,6 +6,8 @@ import { isEqual } from 'lodash'
 import Favorite from '../Favorite'
 import Allocator from '../Allocator'
 
+import './style.scss'
+
 class Portfolio extends Component {
     constructor() {
         super()
@@ -141,9 +143,11 @@ class Portfolio extends Component {
                                 {Object.entries(this.props.user.stakes).map(([username, stake]) => (
                                     <StakeRow username={username} stake={stake} {...this.props} key={username} />
                                 ))}
-                            </tbody> 
+                            </tbody>
                         </table>
-                        
+                        <div className="add-asset-to-portfolio-view">
+                            <input placeholder="search assets" className="tw100-input" />
+                        </div> 
                     </div>
                 </div>
             </div>
