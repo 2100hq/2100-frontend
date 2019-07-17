@@ -1,13 +1,12 @@
 import React, { Component } from 'react'
-import { BrowserRouter as Router, Route, Link } from 'react-router-dom'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { merge } from 'lodash'
-import { Web3Consumer } from 'web3-react'
 
 import Assets from './components/Assets'
 import Asset from './components/Asset'
 import Settle from './components/Settle'
 import Portfolio from './components/Portfolio'
-import Jazzicon, { jsNumberForAddress } from 'react-jazzicon'
+import Header from './components/Header'
 import Sync from './components/Sync'
 
 import './App.scss'
@@ -43,6 +42,12 @@ class App extends Component {
             total: 100
           }
         }
+      },
+      featured: {
+        username: "VitalikButerin",
+        description: "Creator of the Ethereum Smart Contract Platform",
+        followers: 130000,
+        minting: 25000
       },
       assets: [
         {
@@ -125,7 +130,6 @@ class App extends Component {
     // can only save signer once library instantiated
     if (this.props.web3.library) {
       const signer = this.props.web3.library.getSigner()
-      // const signature = await signer.signMessage("Hello World")
       this.setState({ signer })
     }
   }
@@ -164,24 +168,8 @@ class App extends Component {
 
     return (
       <Router>
-      <div className="App">
-        <header className="Header">
-          <span className="brand">2100</span>
-            <span className="nav-pill"><Link to="/">Discover</Link></span>
-            <span className="nav-pill"><Link to="/portfolio">Portfolio</Link></span>
-            <span className="nav-pill"><Link to="/sync">Sync</Link></span>
-            <span className="nav-pill"><Link to="/settle">Settle</Link></span>
-          <span className="balance">
-            <Web3Consumer>
-              {web3 =>
-                <span>
-                  <div>{this.state.user.used} / {this.state.user.total} DAI </div>
-                  <UserIcon {...this.props} />
-                </span>
-              }
-            </Web3Consumer>      
-          </span>
-        </header>
+      <div className="App">        
+        <Header {...this.state} />
 
         <Route 
           exact 
@@ -229,16 +217,6 @@ class App extends Component {
       </div>
       </Router>
     )
-  }
-}
-
-function UserIcon ({ web3 }) {
-  if (web3 && web3.account) {
-    return (
-      <Jazzicon diameter={30} seed={jsNumberForAddress(web3.account)} />
-    )
-  } else {
-    return <div className="empty-jazzicon"></div>
   }
 }
 
