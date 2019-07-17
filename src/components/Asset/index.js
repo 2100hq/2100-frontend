@@ -193,7 +193,7 @@ class Asset extends Component {
                 <div className="row">
                     <div className="col-sm-4">
                         <div className="profile">
-                            <span><img src={`https://res.cloudinary.com/dhvvhdndp/image/twitter_name/${this.state.asset.asset}`}></img></span>
+                            <span><img src={`https://res.cloudinary.com/dhvvhdndp/image/twitter_name/${this.state.asset.asset}`} alt="#"></img></span>
                             <span className="profile-info">
                                 <div className="profile-name">{this.state.asset.displayName}</div>
                                 <div className="profile-username"> @{this.state.asset.asset}</div>
@@ -202,8 +202,8 @@ class Asset extends Component {
                         <div className="minting-stats">
                             <div className="total-minted">
                                 <div>677 minted</div>
-                                <div class="progress">
-                                    <div class="progress-bar" style={{ width: `${677 / 21}%` }}>{`${Math.round(677 / 21)}%`}</div>
+                                <div className="progress">
+                                    <div className="progress-bar" style={{ width: `${677 / 21}%` }}>{`${Math.round(677 / 21)}%`}</div>
                                 </div>
                             </div>
                             <div className="total-user-minting">
@@ -224,7 +224,7 @@ class Asset extends Component {
                     <div className="col-sm-2 Related-assets">
                         <div className="related-header">Related Assets</div>
                         {this.state.similarAssets.map(asset => (
-                            <AssetThumbnail username={asset} />
+                            <AssetThumbnail username={asset} key={asset} />
                         ))}
                     </div>
                 </div>
