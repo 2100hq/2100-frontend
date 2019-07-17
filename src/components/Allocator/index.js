@@ -57,7 +57,6 @@ class Allocator extends Component {
         return (
             <form className="Allocator">
                 <div className="form-group">
-                    <div className="preview" style={{paddingLeft: this.state.previewPadding}}>{this.state.preview}</div>
                     <input type="range"
                         className="form-control-range Allocator-input"
                         id={`Allocator-${this.props.asset.asset}`}
@@ -67,6 +66,7 @@ class Allocator extends Component {
                         onMouseUp={e => this.moveSlider(e, this.props.asset)}
                         onChange={this.updatePreview}
                         step="5" />
+                    {/*<div className="preview" style={{ paddingLeft: this.state.previewPadding }}>{this.state.preview}</div>*/}
                 </div>
             </form>
         )
