@@ -2,8 +2,10 @@
     padding: 25px 0px;
     // border: 1px solid lightgray;
     .Discover-header {
-       background-color: lightgray; 
-       padding: 10px;
+       background-color: lightgray;
+       font-size: 1.3em;
+       font-style: italic;
+       padding: 10px 20px;
     }
     .Discover-search {
         border: 1px solid lightgray;
@@ -37,30 +39,6 @@
     }
 }
 
-.Assets {
-    .table {
-        img {
-            height: 40px;
-            width: 40px;
-            border-radius: 50%;
-        }
-
-        td form {
-            width: 50%;
-        }
-
-        td a {
-            color: initial;
-            &:hover {
-                font-weight: bold;
-            }
-        }
-    }
-    .favorite {
-        cursor: pointer;
-    }
-}
-
 .Featured {
     margin-top: 25px;
     img {
@@ -88,4 +66,23 @@
             }
         }
     }
+}
+
+// Helper classes
+
+.tw100-input {
+    border-radius: 2px;
+    -webkit-appearance: none;
+    outline: none;
+    border: 1px solid lightgray;
+    padding: 4px 8px;
+    height: 40px;
+}
+
+.align-right {
+    text-align: right;
+}
+
+.align-center {
+    text-align: center;
 }
