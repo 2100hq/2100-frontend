@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faArrowsAltH, faLongArrowAltUp, faStar } from '@fortawesome/free-solid-svg-icons'
 import { faStar as faStarReg } from '@fortawesome/free-regular-svg-icons'
+import * as d3 from 'd3'
 
 import Allocator from '../Allocator'
 import './style.scss'
@@ -30,6 +31,8 @@ function Favorite({ user, asset, toggleFav }) {
         return <div className="favorite"><FontAwesomeIcon icon={faStarReg} onClick={() => toggleFav(asset.asset)}/></div>
     }
 }
+
+const formatNum = d3.format("~s")
 
 class Index extends Component {
     constructor() {
@@ -72,7 +75,8 @@ class Index extends Component {
                                 <thead>
                                     <tr>
                                         <th scope="col">Asset</th>
-                                        <th scope="col">Staked</th>
+                                        <th scope="col" className="align-right">Total Staked</th>
+                                        <th scope="col" className="align-right">My Stake</th>
                                         <th scope="col">Allocate</th>
                                         <th scope="col"></th>
                                     </tr>
@@ -81,10 +85,11 @@ class Index extends Component {
                                 {assets.map(asset => (
                                     <tr key={asset.asset}>
                                         <td>
-                                            <img src={`https://res.cloudinary.com/dhvvhdndp/image/twitter_name/${asset.asset}`}></img>
+                                            <img src={`https://res.cloudinary.com/dhvvhdndp/image/twitter_name/${asset.asset}`} alt="#"></img>
                                             &nbsp;&nbsp;<i><Link to={`/a/${asset.asset}`}>@{asset.asset}</Link></i>
                                         </td>
-                                        <td>{asset.staked}</td>
+                                        <td className="align-right">{formatNum(asset.staked)}</td>
+                                        <td className="align-right">{this.props.user.stakes[asset.asset]}</td>
                                         <td><Allocator {...this.props} asset={asset} /></td>
                                         <td><Favorite {...this.props} asset={asset}  /></td>
                                     </tr>
@@ -95,13 +100,13 @@ class Index extends Component {
                     </div>
                     <div className="col-sm-4">
                         <div className="Featured">
-                            <img src="https://www.ccn.com/wp-content/uploads/2018/04/Vitalik-Buterin-e1522675308283.jpg" className="img-fluid" alt="Responsive image"></img>
+                            <img src="https://www.ccn.com/wp-content/uploads/2018/04/Vitalik-Buterin-e1522675308283.jpg" className="img-fluid" alt="#"></img>
                             <div className="Featured-body">
-                                <b>$twitter:VitalikButerin</b>
-                                <p>Creator of the Ethereum Smart Contract Platform</p>
+                                <b>$twitter:{this.props.featured.username}</b>
+                                <p>{this.props.featured.description}</p>
                                 <div className="Featured-stats">
-                                    <p>Followers: 130k <span className="float-right"><FontAwesomeIcon icon={faArrowsAltH} /> 2</span></p>
-                                    <p>Staked: ◈ 25,000 <span className="float-right"><FontAwesomeIcon icon={faLongArrowAltUp} /> 1</span></p>
+                                    <p>Followers: {formatNum(this.props.featured.followers)} <span className="float-right"><FontAwesomeIcon icon={faArrowsAltH} /> 2</span></p>
+                                    <p>Staked: ◈ {formatNum(this.props.featured.minting)} <span className="float-right"><FontAwesomeIcon icon={faLongArrowAltUp} /> 1</span></p>
                                 </div>
                             </div>
                         </div>
