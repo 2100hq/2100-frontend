@@ -142,17 +142,6 @@ class App extends Component {
       const signer = this.props.web3.library.getSigner()
       this.setState({ signer })
     }
-
-    // const conn = await API()
-    // conn.listen('update', (update) => {
-    //   console.log("Update...", update)
-    // })
-
-    // conn.listen('disconnect', () => {
-    //   console.log("Disconnected - LOG OUT")
-    // })
-
-    // this.setState({ conn })
   }
 
   toggleFav = asset => {
