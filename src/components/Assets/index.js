@@ -25,10 +25,10 @@ function SearchCategory({ category, select, state }) {
 }
 
 function Favorite({ user, asset, toggleFav }) {
-    if (user.favorites.includes(asset.asset)) {
-        return <div className="favorite"><FontAwesomeIcon icon={faStar} onClick={() => toggleFav(asset.asset)}/></div>
+    if (user.favorites.includes(asset.username)) {
+        return <div className="favorite"><FontAwesomeIcon icon={faStar} onClick={() => toggleFav(asset.username)}/></div>
     } else {
-        return <div className="favorite"><FontAwesomeIcon icon={faStarReg} onClick={() => toggleFav(asset.asset)}/></div>
+        return <div className="favorite"><FontAwesomeIcon icon={faStarReg} onClick={() => toggleFav(asset.username)}/></div>
     }
 }
 
@@ -83,13 +83,13 @@ class Index extends Component {
                                 </thead>
                                 <tbody>
                                 {assets.map(asset => (
-                                    <tr key={asset.asset}>
+                                    <tr key={asset.username}>
                                         <td>
-                                            <img src={`https://res.cloudinary.com/dhvvhdndp/image/twitter_name/${asset.asset}`} alt="#"></img>
-                                            &nbsp;&nbsp;<i><Link to={`/a/${asset.asset}`}>@{asset.asset}</Link></i>
+                                            <img src={`https://res.cloudinary.com/dhvvhdndp/image/twitter_name/${asset.username}`} alt="#"></img>
+                                            &nbsp;&nbsp;<i><Link to={`/a/${asset.username}`}>@{asset.username}</Link></i>
                                         </td>
                                         <td className="align-right">{formatNum(asset.staked)}</td>
-                                        <td className="align-right">{this.props.user.stakes[asset.asset]}</td>
+                                        <td className="align-right">{this.props.user.stakes[asset.username]}</td>
                                         <td><Allocator {...this.props} asset={asset} /></td>
                                         <td><Favorite {...this.props} asset={asset}  /></td>
                                     </tr>

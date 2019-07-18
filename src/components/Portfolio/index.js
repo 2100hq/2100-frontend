@@ -42,9 +42,9 @@ class Portfolio extends Component {
         // Compute the position of each group on the pie:
         const pie = d3.pie()
             .sort(null) // Do not sort group by size
-            .value(d => d.value)
+            .value(d => d.amount)
 
-        const data_ready = pie(d3.entries(data))
+        const data_ready = pie(data)
         // The arc generator
         const arc = d3.arc()
             .innerRadius(radius * 0.7)         // This is the size of the donut hole
@@ -60,7 +60,7 @@ class Portfolio extends Component {
             .enter()
             .append('path')
             .attr('d', arc)
-            .attr('fill', d => color(d.data.key))
+            .attr('fill', d => color(d.data.username))
             .attr("stroke", "white")
             .style("stroke-width", "2px")
             .style("opacity", 0.7)
@@ -87,7 +87,7 @@ class Portfolio extends Component {
             .data(data_ready)
             .enter()
             .append('text')
-            .text(d => d.data.key)
+            .text(d => d.data.username)
             .attr('transform', d => {
                 var pos = outerArc.centroid(d);
                 var midangle = d.startAngle + (d.endAngle - d.startAngle) / 2
@@ -140,8 +140,8 @@ class Portfolio extends Component {
                                 </tr>
                             </thead>
                             <tbody>
-                                {Object.entries(this.props.user.stakes).map(([username, stake]) => (
-                                    <StakeRow username={username} stake={stake} {...this.props} key={username} />
+                                {this.props.user.stakes.map(({ username, amount }) => (
+                                    <StakeRow username={username} stake={amount} {...this.props} key={username} />
                                 ))}
                             </tbody>
                         </table>
@@ -156,10 +156,10 @@ class Portfolio extends Component {
 }
 
 function StakeRow (props) {
-    const asset = props.assets.find(a => a.asset === props.username)
+    const asset = props.assets.find(a => a.username === props.username)
     return (
         <tr>
-            <td><Link to={`/a/${asset.asset}`}>@{asset.asset}</Link></td>
+            <td><Link to={`/a/${asset.username}`}>@{asset.username}</Link></td>
             <td><Allocator {...props} asset={asset} /></td>
             <td><Favorite {...props} asset={asset} /></td>
         </tr>

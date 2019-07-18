@@ -9,21 +9,31 @@ import Portfolio from './components/Portfolio'
 import Header from './components/Header'
 import Sync from './components/Sync'
 
+import API from './api'
+import { findStake } from './utils'
+
 import './App.scss'
+import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 
 class App extends Component {
   constructor() {
     super()
 
     this.state = {
+      conn: null,
       user: {
         total: 2100,
         used: 1625,
-        stakes: {
-          'ThinkingUSD': 250,
-          'naval': 1000,
-          'SatoshiLite': 375
-        },
+        // stakes: {
+        //   'ThinkingUSD': 250,
+        //   'naval': 1000,
+        //   'SatoshiLite': 375
+        // },
+        stakes: [
+          { username: 'ThinkingUSD', amount: 250 },
+          { username: 'naval', amount: 1000 },
+          { username: 'SatoshiLite', amount: 375 }
+        ],
         favorites: ['balajis', 'ThinkingUSD'],
         minted: {
           ThinkingUSD: {
@@ -51,70 +61,70 @@ class App extends Component {
       },
       assets: [
         {
-          asset: 'VitalikButerin',
+          username: 'VitalikButerin',
           displayName: 'Vitalik Non-giver of Ether',
           followers: 870300,
           staked: 43000,
           categories: ['Crypto Twitter']
         },
         {
-          asset: 'elonmusk',
+          username: 'elonmusk',
           displayName: 'Elon Musk',
           followers: 27400000,
           staked: 30000,
           categories: []
         },
         {
-          asset: 'ThinkingUSD',
+          username: 'ThinkingUSD',
           displayName: 'Flood [BitMEX]',
           followers: 71800,
           staked: 25000,
           categories: ['Traders']
         },
         {
-          asset: 'glenweyl',
+          username: 'glenweyl',
           displayName: '(((E. Glen Weyl)))',
           followers: 14300,
           staked: 7000,
           categories: ['Crypto Twitter', 'Politics']
         },
         {
-          asset: 'SatoshiLite',
+          username: 'SatoshiLite',
           displayName: 'Charlie Lee [LTC⚡]',
           followers: 829100,
           staked: 15000,
           categories: ['Crypto Twitter']
         },
         {
-          asset: 'naval',
+          username: 'naval',
           displayName: 'Naval',
           followers: 658400,
           staked: 15000,
           categories: ['Crypto Twitter']
         },
         {
-          asset: 'aantonop',
+          username: 'aantonop',
           displayName: 'Andreas M. Antonopoulos',
           followers: 493900,
           staked: 11000,
           categories: ['Crypto Twitter']
         },
         {
-          asset: 'NickSzabo4',
+          username: 'NickSzabo4',
           displayName: 'Nick Szabo 🔑',
           followers: 238300,
           staked: 36000,
           categories: ['Crypto Twitter']
         },
         {
-          asset: 'ErikVoorhees',
+          username: 'ErikVoorhees',
           displayName: 'Erik Voorhees',
           followers: 349600,
           staked: 17500,
           categories: ['Crypto Twitter']
         },
         {
-          asset: 'balajis',
+          username: 'balajis',
           displayName: 'Balaji S. Srinivasan',
           followers: 108000,
           staked: 27600,
@@ -132,6 +142,17 @@ class App extends Component {
       const signer = this.props.web3.library.getSigner()
       this.setState({ signer })
     }
+
+    // const conn = await API()
+    // conn.listen('update', (update) => {
+    //   console.log("Update...", update)
+    // })
+
+    // conn.listen('disconnect', () => {
+    //   console.log("Disconnected - LOG OUT")
+    // })
+
+    // this.setState({ conn })
   }
 
   toggleFav = asset => {
@@ -146,19 +167,23 @@ class App extends Component {
     })
   }
 
-  updateAllocation = (newVal, asset) => {
-    const prevVal = this.state.user.stakes[asset] || 0
-    if (newVal - prevVal + this.state.user.used > this.state.user.total) {
+  updateAllocation = (amount, asset) => {
+    const prevAmount = findStake({ ...this.state, asset })
+    if (amount - prevAmount + this.state.user.used > this.state.user.total) {
       console.log("OVER ALLOCATED! No state changes")
       return false
     } else {
-      const newAlloc = {
-        used: this.state.user.used + newVal - prevVal,
-        stakes: {
-          [asset]: newVal
-        }
-      }
-      this.setState(merge({}, this.state, { user: newAlloc }))
+      const { username } = asset
+      const user = { ...this.state.user }
+      user.used = this.state.user.used + amount - prevAmount
+
+      // has to be immutable update
+      const i = this.state.user.stakes.findIndex(s => s.username === username)
+      user.stakes = i === -1
+        ? [...this.state.user.stakes, { username, amount }]
+        : Object.assign([], this.state.user.stakes, {[i]: { username, amount }})
+      
+      this.setState({ user })
       return true
     }
   }

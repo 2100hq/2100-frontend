@@ -6,9 +6,9 @@ import './style.scss'
 
 function Favorite({ user, asset, actions: { toggleFav } }) {
     if (user.favorites.includes(asset.asset)) {
-        return <div className="favorite"><FontAwesomeIcon icon={faStar} onClick={() => toggleFav(asset.asset)} /></div>
+        return <div className="favorite"><FontAwesomeIcon icon={faStar} onClick={() => toggleFav(asset.username)} /></div>
     } else {
-        return <div className="favorite"><FontAwesomeIcon icon={faStarReg} onClick={() => toggleFav(asset.asset)} /></div>
+        return <div className="favorite"><FontAwesomeIcon icon={faStarReg} onClick={() => toggleFav(asset.username)} /></div>
     }
 }
 

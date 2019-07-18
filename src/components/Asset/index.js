@@ -193,10 +193,10 @@ class Asset extends Component {
                 <div className="row">
                     <div className="col-sm-4">
                         <div className="profile">
-                            <span><img src={`https://res.cloudinary.com/dhvvhdndp/image/twitter_name/${this.state.asset.asset}`} alt="#"></img></span>
+                            <span><img src={`https://res.cloudinary.com/dhvvhdndp/image/twitter_name/${this.state.asset.username}`} alt="#"></img></span>
                             <span className="profile-info">
                                 <div className="profile-name">{this.state.asset.displayName}</div>
-                                <div className="profile-username"> @{this.state.asset.asset}</div>
+                                <div className="profile-username"> @{this.state.asset.username}</div>
                             </span>
                         </div>
                         <div className="minting-stats">
@@ -207,7 +207,7 @@ class Asset extends Component {
                                 </div>
                             </div>
                             <div className="total-user-minting">
-                                <span>◈ {this.props.user.stakes[this.state.asset.asset] || 0} minting</span>
+                                <span>◈ {this.props.user.stakes[this.state.asset.username] || 0} minting</span>
                                 <Allocator {...this.props} asset={this.state.asset} />
                             </div>
                             <div className="total-minting">
