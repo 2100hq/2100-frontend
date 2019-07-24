@@ -9,14 +9,13 @@ import Portfolio from './components/Portfolio'
 import Header from './components/Header'
 import Sync from './components/Sync'
 
-import API from './api'
+// import API from './api'
 import { findStake } from './utils'
 
 import './App.scss'
-import { connectableObservableDescriptor } from 'rxjs/internal/observable/ConnectableObservable';
 
 class App extends Component {
-  constructor() {
+  constructor () {
     super()
 
     this.state = {
@@ -54,8 +53,8 @@ class App extends Component {
         }
       },
       featured: {
-        username: "VitalikButerin",
-        description: "Creator of the Ethereum Smart Contract Platform",
+        username: 'VitalikButerin',
+        description: 'Creator of the Ethereum Smart Contract Platform',
         followers: 130000,
         minting: 25000
       },
@@ -134,16 +133,6 @@ class App extends Component {
     }
   }
 
-  async componentDidMount() {
-    this.props.web3.setFirstValidConnector(['MetaMask'])
-    
-    // can only save signer once library instantiated
-    if (this.props.web3.library) {
-      const signer = this.props.web3.library.getSigner()
-      this.setState({ signer })
-    }
-  }
-
   toggleFav = asset => {
     this.setState(s => {
       if (s.user.favorites.includes(asset)) {
@@ -159,7 +148,7 @@ class App extends Component {
   updateAllocation = (amount, asset) => {
     const prevAmount = findStake({ ...this.state, asset })
     if (amount - prevAmount + this.state.user.used > this.state.user.total) {
-      console.log("OVER ALLOCATED! No state changes")
+      console.log('OVER ALLOCATED! No state changes')
       return false
     } else {
       const { username } = asset
@@ -168,70 +157,72 @@ class App extends Component {
 
       // has to be immutable update
       const i = this.state.user.stakes.findIndex(s => s.username === username)
-      user.stakes = i === -1
-        ? [...this.state.user.stakes, { username, amount }]
-        : Object.assign([], this.state.user.stakes, {[i]: { username, amount }})
-      
+      user.stakes =
+        i === -1
+          ? [...this.state.user.stakes, { username, amount }]
+          : Object.assign([], this.state.user.stakes, {
+              [i]: { username, amount }
+            })
+
       this.setState({ user })
       return true
     }
   }
 
-  render() {
-    const actions = { updateAllocation: this.updateAllocation, toggleFav: this.toggleFav }
+  render () {
+    const actions = {
+      updateAllocation: this.updateAllocation,
+      toggleFav: this.toggleFav
+    }
 
     return (
       <Router>
-      <div className="App">        
-        <Header {...this.state} />
-
-        <Route 
-          exact 
-          path="/" 
-          render={
-            () => 
-              <Assets {...this.state}
+        <div className='App'>
+          <Header />
+          <Route
+            exact
+            path='/'
+            render={() => (
+              <Assets
+                {...this.state}
                 actions={actions}
                 updateAllocation={this.updateAllocation}
-                toggleFav={this.toggleFav} />
-          } 
-        />
+                toggleFav={this.toggleFav}
+              />
+            )}
+          />
 
-        <Route 
-          path="/portfolio"
-          render={
-            props => 
+          <Route
+            path='/portfolio'
+            render={props => (
               <Portfolio {...this.state} {...props} actions={actions} />
-          } 
-        /> 
+            )}
+          />
 
-        <Route 
-          path="/settle"
-          render={
-            props => 
+          <Route
+            path='/settle'
+            render={props => (
               <Settle {...this.state} {...props} actions={actions} />
-          } 
-        />
+            )}
+          />
 
-        <Route 
-          path="/sync"
-          render={
-            props => 
+          <Route
+            path='/sync'
+            render={props => (
               <Sync {...this.state} {...props} actions={actions} />
-          } 
-        /> 
-        
-        <Route 
-          path="/a/:username"
-          render={
-            props => 
+            )}
+          />
+
+          <Route
+            path='/a/:username'
+            render={props => (
               <Asset {...this.state} {...props} actions={actions} />
-          } 
-        />  
-      </div>
+            )}
+          />
+        </div>
       </Router>
     )
   }
 }
 
-export default App;
+export default App

@@ -1,0 +1,35 @@
+version: '3'
+
+services:
+  dev:
+    build:
+      context: .
+      dockerfile: 'Dockerfile'
+    ports:
+      - 3000:3000
+    env_file:
+      - .env
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: "npm start"
+
+  bash:
+    image: 2100-frontend_dev:latest
+    command: '/bin/bash'
+    network_mode: "host"
+    ports:
+      - 3000:3000
+    env_file:
+      - .env
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+
+  yarn-lock:
+    image: 2100-frontend_dev:latest
+    command: 'yarn install'
+    network_mode: "host"
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules

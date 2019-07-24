@@ -1,5 +1,5 @@
 {
-  "name": "2100-ui",
+  "name": "2100-frontend",
   "version": "0.1.0",
   "private": true,
   "dependencies": {
@@ -21,9 +21,16 @@
   },
   "scripts": {
     "start": "react-scripts start",
+    "docker:start": "docker-compose stop dev && docker-compose up dev",
+    "docker:build:image": "docker-compose down && docker-compose build dev",
+    "docker:build": "npm run docker:build:image && docker-compose run --rm yarn-lock",
+    "build:docker": "node --expose-gc --max-old-space-size=32276 scripts/build.js",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "standard": "standard --verbose --fix",
+    "prettier": "prettier-standard '**/*.js' --ignore-path=./scripts",
+    "standardize": "npm run prettier && npm run standard --fix"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -41,6 +48,7 @@
     ]
   },
   "devDependencies": {
-    "socket.io": "^2.2.0"
+    "prettier-standard": "^8.0.0",
+    "standard": "^11.0.0"
   }
 }

@@ -1,38 +1,51 @@
 import React from 'react'
-import { useWeb3Context } from 'web3-react'
+import { useStoreContext } from '../../contexts/Store'
+import Wallet from '../Wallet'
 import { Link } from 'react-router-dom'
-import Jazzicon, { jsNumberForAddress } from 'react-jazzicon'
-
+import { get } from 'lodash'
 import './style.scss'
 
-function Header (props) {
-    const web3 = useWeb3Context()
-
-    return (
-        <header className="Header">
-            <span className="brand">2100</span>
-            <span className="nav-pill"><Link to="/">Discover</Link></span>
-            <span className="nav-pill"><Link to="/portfolio">Portfolio</Link></span>
-            <span className="nav-pill"><Link to="/sync">Sync</Link></span>
-            <span className="nav-pill"><Link to="/settle">Settle</Link></span>
-            <span className="balance">
-                <span>
-                    <div>{props.user.used} / {props.user.total} DAI </div>
-                    <UserIcon web3={web3} />
-                </span>
-            </span>
-        </header>
-    )
+function Balances () {
+  const { state } = useStoreContext()
+  if (!state.private || !state.private.me) return null // not logged in
+  return <div>0/2100</div>
 }
 
-function UserIcon({ web3 }) {
-    if (web3 && web3.account) {
-        return (
-            <Jazzicon diameter={30} seed={jsNumberForAddress(web3.account)} />
-        )
-    } else {
-        return <div className="empty-jazzicon"></div>
-    }
+function Header (props) {
+  const { state } = useStoreContext()
+  const connectionStatus = state.network.loading
+    ? 'loading'
+    : state.network.connected
+      ? 'connected'
+      : 'not connected'
+  const blockNumber = state.network.loading
+    ? null
+    : get(state, ['public', 'latestBlock', 'number'])
+  return (
+    <header className='Header'>
+      <span className='brand'>2100</span>
+      <span className='nav-pill'>
+        <Link to='/'>Discover</Link>
+      </span>
+      <span className='nav-pill'>
+        <Link to='/portfolio'>Portfolio</Link>
+      </span>
+      <span className='nav-pill'>
+        <Link to='/sync'>Sync</Link>
+      </span>
+      <span className='nav-pill'>
+        <Link to='/settle'>Settle</Link>
+      </span>
+      <span className='nav-pill'>{connectionStatus}</span>
+      <span className='nav-pill'>{blockNumber}</span>
+      <span className='balance'>
+        <span>
+          <Balances />
+          <Wallet />
+        </span>
+      </span>
+    </header>
+  )
 }
 
 export default Header

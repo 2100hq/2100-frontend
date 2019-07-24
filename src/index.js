@@ -5,21 +5,26 @@ import App from './App'
 import * as serviceWorker from './serviceWorker'
 import 'bootstrap/dist/css/bootstrap.css'
 
-// ethereum instantiation
 import Web3Provider, { Connectors, Web3Consumer } from 'web3-react'
-const MetaMask = new Connectors.InjectedConnector({ supportedNetworks: [1, 4] })
+import SocketProvider from './contexts/Socket'
+import StoreProvider from './contexts/Store'
+
+const MetaMask = new Connectors.InjectedConnector({
+  supportedNetworks: [1, 4, 2100]
+})
 
 ReactDOM.render(
-    <Web3Provider connectors={{ MetaMask }}
-      libraryName={'ethers.js'}>
-        <Web3Consumer>
-            {web3 => <App web3={web3} />}
-        </Web3Consumer> 
-    </Web3Provider>, 
-    document.getElementById('root')
-);
+  <Web3Provider connectors={{ MetaMask }} libraryName={'ethers.js'}>
+    <SocketProvider>
+      <StoreProvider>
+        <Web3Consumer>{web3 => <App web3={web3} />}</Web3Consumer>
+      </StoreProvider>
+    </SocketProvider>
+  </Web3Provider>,
+  document.getElementById('root')
+)
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
 // Learn more about service workers: https://bit.ly/CRA-PWA
-serviceWorker.unregister();
+serviceWorker.unregister()
