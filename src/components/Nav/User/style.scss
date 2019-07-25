@@ -1,0 +1,111 @@
+.wallet-logo{
+  width: 25px;
+}
+
+.dai-logo{
+  width: 16px;
+}
+
+.emoji {
+  position: absolute;
+  top:0;
+  right:50px;
+  font-size: 25px;
+}
+
+.slide-left{
+  // position: absolute;
+  transform: translateX(0);
+  animation-duration: 0.5s;
+  animation-name: slide-left;
+  animation-iteration-count: 1;
+}
+
+@keyframes slide-left{
+  0% {
+    transform: translateX(120%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
+
+.out {
+  animation-duration: 1.5s;
+  animation-name: out;
+  animation-iteration-count: 1;
+  opacity: 0;
+}
+
+@keyframes out {
+  0% {
+    opacity: 1;
+  }
+  80% {
+    opacity: 1;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+.in {
+  animation-duration: 1.5s;
+  animation-name: in;
+  animation-iteration-count: 1;
+  opacity: 1;
+}
+
+@keyframes in {
+  0% {
+    opacity: 0;
+  }
+  80% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.wave {
+  animation-duration: 1s;
+  animation-name: wave;
+  animation-iteration-count: 1;
+  transform: rotate(0deg);
+  z-index: 999;
+}
+
+@keyframes wave {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  22.2% {
+    transform: rotate(33deg);
+  }
+
+  33.3% {
+    transform: rotate(-33deg);
+  }
+
+  44.4% {
+    transform: rotate(33deg);
+  }
+
+  55.5% {
+    transform: rotate(-33deg);
+  }
+
+  66.6% {
+    transform: rotate(33deg);
+  }
+
+  77.7% {
+    transform: rotate(-33deg);
+  }
+
+  100% {
+    transform: rotate(0deg);
+  }
+}

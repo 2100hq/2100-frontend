@@ -6,7 +6,7 @@ import Assets from './components/Assets'
 import Asset from './components/Asset'
 import Settle from './components/Settle'
 import Portfolio from './components/Portfolio'
-import Header from './components/Header'
+import Nav from './components/Nav'
 import Sync from './components/Sync'
 
 // import API from './api'
@@ -178,7 +178,7 @@ class App extends Component {
     return (
       <Router>
         <div className='App'>
-          <Header />
+          <Nav />
           <Route
             exact
             path='/'
