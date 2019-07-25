@@ -23,6 +23,8 @@ export const StoreContextConsumer = StoreContext.Consumer
 function socketUpdate (channel, dispatch) {
   return (path, data) => {
     path.unshift(channel)
+    // Remove this when API stops sending duplicate arrays and objects
+    if (data[channel]) data = { ...data, ...data[channel] }
     dispatch(actions.update(path, data))
   }
 }
