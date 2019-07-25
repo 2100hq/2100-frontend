@@ -7,8 +7,18 @@ import './style.scss'
 
 function Balances () {
   const { state } = useStoreContext()
-  if (!state.private || !state.private.me) return null // not logged in
-  return <div>0/2100</div>
+  if (!state.private || !state.private.me) return null
+  const remaining = state.private.myWallets.DAI.balance
+  const used = Object.values(state.private.myStakes).reduce(
+    (sum, stake) => sum + stake.value,
+    0
+  )
+  const total = used + remaining
+  return (
+    <div>
+      {used}/{total}
+    </div>
+  )
 }
 
 function Header (props) {
