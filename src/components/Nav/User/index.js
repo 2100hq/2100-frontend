@@ -3,26 +3,28 @@ import { useStoreContext } from '../../../contexts/Store'
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon'
 import './style.scss'
 import Dropdown from 'react-bootstrap/Dropdown'
+import { BN, toDecimals, daiAddress } from '../../../utils'
+import { get } from 'lodash'
 function Balances ({ state }) {
-  // if (!state.private || !state.private.me) return null
-  // const remaining = state.private.myWallets.DAI.balance
-  // const used = Object.values(state.private.myStakes).reduce(
-  //   (sum, stake) => sum + stake.value,
-  //   0
-  // )
-  // const total = used + remaining
-  const used = 0
-  const total = 1000
+  if (!state.private || !state.private.me) return null
+  const remaining = BN(
+    get(state, `private.myWallets.available.${daiAddress}.balance`, 0)
+  )
+  const used = Object.values(get(state, 'private.myStakes', [])).reduce(
+    (sum, stake) => sum.add(stake.value),
+    BN(0)
+  )
+  const total = used.add(remaining)
   return (
     <a className='nav-link slide-left' href='wallet.html'>
       <img className='dai-logo' src='./img/dai.png' />
-      {used}/{total}
+      {toDecimals(used)}/{toDecimals(total)}
     </a>
   )
 }
 
 function Wallet ({ state }) {
-  const account = '0x09c4dA1bA229bd813B33497589BFb9afd33B8184' // state.web3.account
+  const account = state.web3.account
   const address = account.slice(0, 7) // state.web3.account.slice(0,7)
   const icon = (
     <span className='in'>
