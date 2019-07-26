@@ -24,6 +24,7 @@ export const initialState = {
 export const actions = {
   unlockWallet: () => actionGenerator('UNLOCK_WALLET'),
   login: () => actionGenerator('LOGIN'),
+  logout: () => actionGenerator('LOGOUT'),
   update: (path, data) => actionGenerator('UPDATE', { path, data }),
   error: (intent, message) => actionGenerator('ERROR', { [intent]: message })
 }
@@ -39,8 +40,6 @@ function actionGenerator (type, params, resp) {
 
 export function reducer (state, action) {
   switch (action.type) {
-    case 'LOGIN':
-      return state
     case 'UPDATE':
       return { ...set(state, action.params.path, action.params.data) }
     case 'ERROR': {
@@ -80,6 +79,11 @@ function AsyncHandlers (libs = {}) {
       // libs.web3.account
 
       console.log('LOGIN RESP', resp)
+    },
+    LOGOUT: async action => {
+      console.log(action.type)
+      const resp = await libs.socket.call('auth')('unauthenticate')
+      console.log('LOGOUT RESP', resp)
     }
   }
 }

@@ -88,30 +88,48 @@ function SigningIn () {
 
 export default function User () {
   const { state, dispatch, actions } = useStoreContext()
-
-  const signingIn = state.intents && state.intents.signingIn
+  const intent = ['intents', 'signingIn']
+  const signingIn = get(state, intent)
 
   const isUnlocked = Boolean(state.web3.active && state.web3.account)
-  const isSignedIn = Boolean(isUnlocked && state.private.me)
+  const isAuthenticated = get(state, 'private.me')
+  const isSignedIn = Boolean(isUnlocked && isAuthenticated)
+  const isError = get(state, ['error', 'login'])
 
-  const setSigningIn = val =>
-    dispatch(actions.update(['intents', 'signingIn'], val))
+  const setSigningIn = val => dispatch(actions.update(intent, val))
 
+  // unlock/login action effect
   useEffect(() => {
-    if (!signingIn || isSignedIn) return
-    if (state.error.login) {
-      setSigningIn(false)
-      return
-    }
-    if (isSignedIn && signingIn) {
-      setSigningIn(false)
-      return
-    }
+    if (!signingIn || isSignedIn || isError) return
 
     const action = isUnlocked ? actions.login() : actions.unlockWallet()
 
     dispatch(action)
-  }, [isUnlocked, signingIn, isSignedIn, state.error.login])
+  }, [isUnlocked, signingIn, isSignedIn, isError])
+
+  // error effect
+  useEffect(() => {
+    if (isError && signingIn) {
+      setSigningIn(false)
+    }
+  }, [signingIn, isError])
+
+  // stop signing in effect
+  useEffect(() => {
+    if (isSignedIn && signingIn) {
+      setSigningIn(false)
+    }
+  }, [isSignedIn, signingIn])
+
+  // logout action effect
+  useEffect(() => {
+    if (!isSignedIn) return
+    if (
+      state.private.me.publicAddress.toLowerCase() ===
+      state.web3.account.toLowerCase()
+    ) { return }
+    dispatch(actions.logout())
+  }, [isSignedIn, state.web3.account])
 
   if (!state.web3.hasWallet) return null
 
