@@ -61,18 +61,24 @@ function AsyncHandlers (libs = {}) {
       if (!libs.web3.active || !libs.web3.account) {
         libs.dispatch(actions.error('login', errors.login.NOT_UNLOCKED))
       }
-      let sig
+      let signed
+      let token
+      let resp
       try {
-        sig = await libs.web3.library
+        token = await libs.socket.call('auth')('token')
+        signed = await libs.web3.library
           .getSigner()
-          .signMessage('2100 Login: 2263d6f41da44c36d14cb0b66')
+          .signMessage('2100 Login: ' + token)
+        resp = await libs.socket.call('auth')(
+          'authenticate',
+          signed,
+          libs.web3.account
+        )
       } catch (e) {
         return libs.dispatch(actions.error('login', e.message))
       }
       // libs.web3.account
-      const resp = await libs.socket.call('auth')('login', {
-        username: 'david'
-      })
+
       console.log('LOGIN RESP', resp)
     }
   }
