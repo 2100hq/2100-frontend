@@ -1,29 +1,23 @@
 import React, { useEffect } from 'react'
+import { Link } from 'react-router-dom'
 import { useStoreContext } from '../../../contexts/Store'
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon'
 import './style.scss'
 import Dropdown from 'react-bootstrap/Dropdown'
-import { BN, toDecimals, daiAddress } from '../../../utils'
+import { BN, toDecimals, daiAddress, balances } from '../../../utils'
 import { get } from 'lodash'
 function Balances ({ state }) {
   if (!state.private || !state.private.me) return null
-  const remaining = BN(
-    get(state, `private.myWallets.available.${daiAddress}.balance`, 0)
-  )
-  const used = Object.values(get(state, 'private.myStakes', [])).reduce(
-    (sum, stake) => sum.add(stake.value),
-    BN(0)
-  )
-  const total = used.add(remaining)
+  const { available, total } = balances(state)
   return (
-    <a className='nav-link slide-left' href='wallet.html'>
+    <Link className='nav-link slide-left' to='/wallet'>
       <img className='dai-logo' src='./img/dai.png' />
-      {toDecimals(used)}/{toDecimals(total)}
-    </a>
+      {toDecimals(available)}/{toDecimals(total)}
+    </Link>
   )
 }
 
-function Wallet ({ state }) {
+function AddressIcon ({ state }) {
   const account = state.web3.account
   const address = account.slice(0, 7) // state.web3.account.slice(0,7)
   const icon = (
@@ -55,7 +49,7 @@ function SignedIn ({ state }) {
       <Dropdown as='li' className='nav-item'>
         {wave}
         <Dropdown.Toggle as='a' className='nav-link in' href='#'>
-          <Wallet state={state} />
+          <AddressIcon state={state} />
         </Dropdown.Toggle>
         <Dropdown.Menu>
           <Dropdown.Item href='sync-add.html'>Manage</Dropdown.Item>
@@ -94,9 +88,19 @@ export default function User () {
   const isUnlocked = Boolean(state.web3.active && state.web3.account)
   const isAuthenticated = get(state, 'private.me')
   const isSignedIn = Boolean(isUnlocked && isAuthenticated)
-  const isError = get(state, ['error', 'login'])
+  const isError =
+    get(state, ['error', 'LOGIN']) || get(state, ['error', 'UNLOCK_WALLET'])
 
   const setSigningIn = val => dispatch(actions.update(intent, val))
+
+  // AUTO SIGN IN
+  useEffect(() => {
+    setSigningIn(true)
+  }, [])
+  useEffect(() => {
+    console.log('isSignedIn')
+    dispatch(actions.update(['private', 'isSignedIn'], isSignedIn))
+  }, [isSignedIn])
 
   // unlock/login action effect
   useEffect(() => {
@@ -127,7 +131,9 @@ export default function User () {
     if (
       state.private.me.publicAddress.toLowerCase() ===
       state.web3.account.toLowerCase()
-    ) { return }
+    ) {
+      return
+    }
     dispatch(actions.logout())
   }, [isSignedIn, state.web3.account])
 

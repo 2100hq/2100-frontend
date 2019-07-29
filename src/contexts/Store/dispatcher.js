@@ -1,4 +1,6 @@
 import { set, uniqueId } from 'lodash'
+import { BN, unlimitedAllowance } from '../../utils'
+import Selectors from '../../utils/selectors'
 
 export const errors = {
   login: {
@@ -26,6 +28,9 @@ export const actions = {
   login: () => actionGenerator('LOGIN'),
   logout: () => actionGenerator('LOGOUT'),
   update: (path, data) => actionGenerator('UPDATE', { path, data }),
+  approve: () => actionGenerator('APPROVE'),
+  deposit: amount => actionGenerator('DEPOSIT', { amount }),
+  withdraw: amount => actionGenerator('WITHDRAW', { amount }),
   error: (intent, message) => actionGenerator('ERROR', { [intent]: message })
 }
 
@@ -41,6 +46,7 @@ function actionGenerator (type, params, resp) {
 export function reducer (state, action) {
   switch (action.type) {
     case 'UPDATE':
+      console.log(action.params.path, action.params.data)
       return { ...set(state, action.params.path, action.params.data) }
     case 'ERROR': {
       return { ...state, error: action.params }
@@ -74,7 +80,8 @@ function AsyncHandlers (libs = {}) {
           libs.web3.account
         )
       } catch (e) {
-        return libs.dispatch(actions.error('login', e.message))
+        console.log(action.type, e.message)
+        return libs.dispatch(actions.error(action.type, e.message))
       }
       // libs.web3.account
 
@@ -84,6 +91,42 @@ function AsyncHandlers (libs = {}) {
       console.log(action.type)
       const resp = await libs.socket.call('auth')('unauthenticate')
       console.log('LOGOUT RESP', resp)
+    },
+    APPROVE: async action => {
+      const { dai, controller } = Selectors(libs.state)
+      let resp = {}
+      try {
+        resp = await dai.contract.approve(
+          controller.contract.address,
+          unlimitedAllowance
+        )
+      } catch (e) {
+        console.log(action.type, e.message)
+        libs.dispatch(actions.error(action.type, e.message))
+      }
+      return resp
+    },
+    DEPOSIT: async action => {
+      const { controller } = Selectors(libs.state)
+      let resp = {}
+      try {
+        resp = await controller.contract.deposit(action.params.amount)
+      } catch (e) {
+        console.log(action.type, e.message)
+        libs.dispatch(actions.error(action.type, e.message))
+      }
+      return resp
+    },
+    WITHDRAW: async action => {
+      const { controller } = Selectors(libs.state)
+      let resp = {}
+      try {
+        resp = await controller.contract.withdraw(action.params.amount)
+      } catch (e) {
+        console.log(action.type, e.message)
+        libs.dispatch(actions.error(action.type, e.message))
+      }
+      return resp
     }
   }
 }

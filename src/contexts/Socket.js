@@ -7,6 +7,9 @@ import React, {
   useState,
   useEffect
 } from 'react'
+
+import { host } from '../utils/config'
+
 export const SocketContext = createContext()
 
 export function useSocketContext () {
@@ -14,8 +17,6 @@ export function useSocketContext () {
 }
 
 export const SocketContextConsumer = SocketContext.Consumer
-
-const host = process.env.REACT_APP_SOCKET_URL
 
 let io = Socket(host)
 

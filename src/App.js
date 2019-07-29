@@ -7,7 +7,7 @@ import Asset from './components/Asset'
 import Settle from './components/Settle'
 import Portfolio from './components/Portfolio'
 import Nav from './components/Nav'
-import Sync from './components/Sync'
+import Wallet from './components/Wallet'
 
 // import API from './api'
 import { findStake } from './utils'
@@ -192,6 +192,8 @@ class App extends Component {
             )}
           />
 
+          <Route path='/wallet' component={Wallet} />
+
           <Route
             path='/portfolio'
             render={props => (
@@ -203,13 +205,6 @@ class App extends Component {
             path='/settle'
             render={props => (
               <Settle {...this.state} {...props} actions={actions} />
-            )}
-          />
-
-          <Route
-            path='/sync'
-            render={props => (
-              <Sync {...this.state} {...props} actions={actions} />
             )}
           />
 
