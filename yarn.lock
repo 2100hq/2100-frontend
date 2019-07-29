@@ -2,6 +2,10 @@
 # yarn lockfile v1
 
 
+"2100-contracts@github:2100hq/2100-contracts#v0.1.0":
+  version "0.1.0"
+  resolved "https://codeload.github.com/2100hq/2100-contracts/tar.gz/7dae976ea8c5d6659b185572d701dcc68b090deb"
+
 "@0x/assert@^2.1.0":
   version "2.1.0"
   resolved "https://registry.yarnpkg.com/@0x/assert/-/assert-2.1.0.tgz#9a129fd6cd697b4332cdf517048aad14d4af7c16"
