@@ -79,12 +79,12 @@ export default function StoreProvider ({ children }) {
     )
   }, [web3.active, web3.account])
 
-  useEffect(() => {
-    if (!web3.library) return
-    web3.library.on('block', blockNumber =>
-      console.log('New Block: ' + blockNumber)
-    )
-  }, [web3.library])
+  // useEffect(() => {
+  //   if (!web3.library) return
+  //   web3.library.on('block', blockNumber =>
+  //     console.log('New Block: ' + blockNumber)
+  //   )
+  // }, [web3.library])
 
   useEffect(() => {
     if (state.contracts || !web3.library) return
