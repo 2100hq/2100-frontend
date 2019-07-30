@@ -9,7 +9,7 @@ function Entry ({ command, latestBlock }) {
   let value = toDecimals(command.value)
   let meta
   if (/pendingDeposit/.test(command.type)) {
-    token = 'dai'
+    token = 'DAI'
     if (command.done) {
       action = 'Deposited'
     } else if (command.state === 'Submitted') {
@@ -23,18 +23,23 @@ function Entry ({ command, latestBlock }) {
   }
 
   if (/withdrawPrimary/.test(command.type)) {
-    token = 'dai'
+    token = 'DAI'
     if (command.done) {
       action = 'Withdrew'
     } else {
       action = 'Withdrawing'
+      if (command.state === 'Submitted') meta = '(not mined)'
     }
   }
+  const date = new Date(command.created).toLocaleDateString()
+  const time = new Date(command.created).toLocaleTimeString()
   return (
     <tr>
-      <td>{new Date(command.created).toISOString()}</td>
       <td>
-        {action} {value} ${token} {meta}
+        {date} {time}
+      </td>
+      <td>
+        {action} {value} {token} {meta}
       </td>
     </tr>
   )
