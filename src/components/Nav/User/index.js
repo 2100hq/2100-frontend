@@ -94,9 +94,9 @@ export default function User () {
   const setSigningIn = val => dispatch(actions.update(intent, val))
 
   // AUTO SIGN IN
-  useEffect(() => {
-    setSigningIn(true)
-  }, [])
+  // useEffect(() => {
+  //   setSigningIn(true)
+  // }, [])
   useEffect(() => {
     console.log('isSignedIn')
     dispatch(actions.update(['private', 'isSignedIn'], isSignedIn))

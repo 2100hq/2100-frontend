@@ -44,8 +44,8 @@ function actionGenerator (type, params, resp) {
 }
 
 /*
-* Remaps `private.myCommand` commands to be keyed by transactionHash if available
-*/
+ * Remaps `private.myCommand` commands to be keyed by transactionHash if available
+ */
 function remapPrivateData (action) {
   let { path, data } = action.params
   if (typeof path === 'string') path = path.split('.')
@@ -120,6 +120,7 @@ function AsyncHandlers (libs = {}) {
       let resp
       try {
         token = await libs.socket.call('auth')('token')
+        signed = token
         signed = await libs.web3.library
           .getSigner()
           .signMessage('2100 Login: ' + token)
@@ -129,7 +130,7 @@ function AsyncHandlers (libs = {}) {
           libs.web3.account
         )
       } catch (e) {
-        console.log(action.type, e.message)
+        console.log(action.type, e)
         return libs.dispatch(actions.error(action.type, e.message))
       }
       // libs.web3.account
@@ -150,7 +151,7 @@ function AsyncHandlers (libs = {}) {
           unlimitedAllowance
         )
       } catch (e) {
-        console.log(action.type, e.message)
+        console.log(action.type, e)
         libs.dispatch(actions.error(action.type, e.message))
       }
       return resp
@@ -175,7 +176,7 @@ function AsyncHandlers (libs = {}) {
           })
         )
       } catch (e) {
-        console.log(action.type, e.message)
+        console.log(action.type, e)
         libs.dispatch(actions.error(action.type, e.message))
       }
       return resp
@@ -200,7 +201,7 @@ function AsyncHandlers (libs = {}) {
           })
         )
       } catch (e) {
-        console.log(action.type, e.message)
+        console.log(action.type, e)
         libs.dispatch(actions.error(action.type, e.message))
       }
       return resp
@@ -212,6 +213,7 @@ export default function Dispatcher (libs) {
   const asyncHandlers = AsyncHandlers(libs)
   return async action => {
     if (!action) return
+    console.log('ACTION >', action.type, action.params)
     if (asyncHandlers[action.type]) return asyncHandlers[action.type](action)
     libs.dispatch(action)
   }

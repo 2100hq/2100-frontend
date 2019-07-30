@@ -19,9 +19,6 @@ export const toDecimals = bn => {
 export const fromDecimals = utils.parseEther
 
 export const balances = (state, controller = Selectors(state).controller) => {
-  console.log()
-  console.log('balances', state, controller)
-
   const available = BN(controller.wallet.balance || 0)
   const used = Object.values(get(state, 'private.myStakes', [])).reduce(
     (sum, stake) => sum.add(stake.value),
