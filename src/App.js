@@ -8,6 +8,7 @@ import Settle from './components/Settle'
 import Portfolio from './components/Portfolio'
 import Nav from './components/Nav'
 import Wallet from './components/Wallet'
+import Alerts from './components/Alerts'
 
 // import API from './api'
 import { findStake } from './utils'
@@ -22,6 +23,7 @@ class App extends Component {
         <div className='container-fluid'>
           <Route exact path='/' component={Discover} />
           <Route path='/wallet' component={Wallet} />
+          <Alerts />
         </div>
       </Router>
     )
