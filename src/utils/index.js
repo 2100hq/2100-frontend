@@ -30,9 +30,20 @@ export const balances = (state, controller = Selectors(state).controller) => {
 
   const total = used.add(available)
 
+  const pending = Object.values(get(state, 'private.myCommands', {})).reduce(
+    (sum, command) => {
+      if (command.done) return sum
+      if (/pendingDeposit/.test(command.type)) return sum.add(command.value)
+      if (/withdrawPrimary/.test(command.type)) return sum.sub(command.value)
+      return sum
+    },
+    BN(0)
+  )
+  // console.log('PENDING',pending.toString())
   return {
     available,
     used,
+    pending,
     total
   }
 }
