@@ -3,6 +3,8 @@ import { Redirect } from 'react-router-dom'
 import { useStoreContext } from '../../contexts/Store'
 import { toDecimals, balances, daiBalances, BN, isApproved } from '../../utils'
 import Selectors from '../../utils/selectors'
+import History from './History'
+
 const diffSteps = BN(10).pow(16)
 export default function Wallet () {
   const [diff, setDiff] = useState(BN(0))
@@ -59,7 +61,7 @@ export default function Wallet () {
                       <div className='contract-balance'>
                         <p>
                           <img
-                            src='./img/metamask-identicon.png'
+                            src='./img/metamask.png'
                             style={{ width: '25px' }}
                           />
                           {daiDisplay} DAI available
@@ -155,28 +157,7 @@ export default function Wallet () {
         <div className='col-md-4'>
           <div className='card'>
             <div className='card-body'>
-              <table className='table table-sm'>
-                <thead>
-                  <tr>
-                    <th scope='col'>Date</th>
-                    <th scope='col'>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>July 23, 4:30pm</td>
-                    <td>
-                      <a href='' data-toggle='modal' data-target='#mintedModal'>
-                        minted 0.34 $vitalikbuterin
-                      </a>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td>July 23, 2:04pm</td>
-                    <td>locked 850 DAI</td>
-                  </tr>
-                </tbody>
-              </table>
+              <History />
             </div>
           </div>
         </div>
