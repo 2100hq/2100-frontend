@@ -2,7 +2,7 @@ import { utils } from 'ethers'
 import { get } from 'lodash'
 import Selectors from './selectors'
 
-const oneDecimalRegExp = /\.0$/
+const oneDecimalRegExp = /\.\d{1,1}$/
 const onlyOneDecimal = n => oneDecimalRegExp.test(n)
 export function findStake ({ user, asset }) {
   return (user.stakes.find(a => a.username === asset.username) || { amount: 0 })
