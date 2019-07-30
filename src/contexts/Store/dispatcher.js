@@ -160,6 +160,20 @@ function AsyncHandlers (libs = {}) {
       let resp = {}
       try {
         resp = await controller.contract.deposit(action.params.amount)
+        libs.dispatch(
+          actions.update(['private', 'myCommands', resp.hash], {
+            created: Date.now(),
+            done: false,
+            id: resp.hash + Date.now(),
+            state: 'Submitted',
+            toWalletType: 'locked',
+            tokenid: controller.contract.address,
+            transactionHash: resp.hash,
+            type: 'pendingDeposit',
+            updated: Date.now(),
+            value: action.params.amount.toString()
+          })
+        )
       } catch (e) {
         console.log(action.type, e.message)
         libs.dispatch(actions.error(action.type, e.message))
@@ -171,6 +185,20 @@ function AsyncHandlers (libs = {}) {
       let resp = {}
       try {
         resp = await controller.contract.withdraw(action.params.amount)
+        libs.dispatch(
+          actions.update(['private', 'myCommands', resp.hash], {
+            created: Date.now(),
+            done: false,
+            id: resp.hash + Date.now(),
+            state: 'Submitted',
+            toWalletType: 'locked',
+            tokenid: controller.contract.address,
+            transactionHash: resp.hash,
+            type: 'primaryWithdraw',
+            updated: Date.now(),
+            value: action.params.amount.toString()
+          })
+        )
       } catch (e) {
         console.log(action.type, e.message)
         libs.dispatch(actions.error(action.type, e.message))
