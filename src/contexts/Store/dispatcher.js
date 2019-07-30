@@ -194,7 +194,7 @@ function AsyncHandlers (libs = {}) {
             toWalletType: 'locked',
             tokenid: controller.contract.address,
             transactionHash: resp.hash,
-            type: 'primaryWithdraw',
+            type: 'withdrawPrimary',
             updated: Date.now(),
             value: action.params.amount.toString()
           })
