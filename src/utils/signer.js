@@ -28,7 +28,10 @@ export default class UncheckedJsonRpcSigner extends ethers.Signer {
         confirmations: 0,
         from: null,
         mined: () =>
-          new Promise(resolve => this.signer.provider.once(hash, resolve))
+          new Promise(resolve => this.signer.provider.once(hash, resolve)),
+        wait: confirmations => {
+          return this.signer.provider.waitForTransaction(hash, confirmations)
+        }
       }
     })
   }
