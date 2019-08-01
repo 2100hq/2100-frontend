@@ -8,7 +8,9 @@ import React, {
 
 import { useSocketContext } from '../Socket'
 
-import Dispatcher, { reducer, initialState, actions } from './dispatcher.js'
+import Dispatcher from './dispatcher.js'
+import actions from './actions'
+import reducer, {initialState} from './reducer'
 
 import config from '../../utils/config'
 import Signer from '../../utils/signer'
@@ -31,8 +33,6 @@ export const StoreContextConsumer = StoreContext.Consumer
 function socketUpdate (channel, dispatch) {
   return (path, data) => {
     path.unshift(channel)
-    // Remove this when API stops sending duplicate arrays and objects
-    if (data[channel]) data = { ...data, ...data[channel] }
     dispatch(actions.update(path, data))
   }
 }
