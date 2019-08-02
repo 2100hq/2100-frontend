@@ -1,5 +1,183 @@
-import React, { Component } from 'react'
+import React, { useState } from 'react'
+import { useStoreContext } from '../../contexts/Store'
+import { sortBy } from 'lodash'
+import { OverlayTrigger, Tooltip } from 'react-bootstrap'
+
+const DiscoverOptions = {
+  All: {
+    filter: tokens => {
+      tokens = tokens.filter(token => !token.pending)
+      tokens = sortBy(tokens, token => {
+        return token.stakes.balance
+      })
+      return tokens
+    },
+    statusIconClass: 'fa-check text-success',
+    statusTooltip: (
+      <small>
+        Undisputed <br />
+        Owners Reward Claimed
+      </small>
+    ),
+    columns: props => [
+      null,
+      null,
+      null,
+      <span>
+        <img src='../img/dai.png' style={{ width: '16px' }} />{' '}
+        {props.token.stakes.balance}
+      </span>,
+      <form style={{ width: '50%' }}>
+        <div className='form-group'>
+          <input
+            type='range'
+            className='form-control-range'
+            id='formControlRange'
+          />
+        </div>
+      </form>
+    ]
+  },
+  Pending: {
+    filter: tokens => {
+      tokens = tokens.filter(token => token.pending)
+      tokens = sortBy(tokens, token => {
+        return token.name
+      })
+      return tokens
+    },
+    statusIconClass: 'fa-sync-alt text-warning',
+    statusTooltip: (
+      <em>
+        Asset is a valid Twitter handle but is awaiting contract creation.
+      </em>
+    ),
+    columnNames: ['   ', null, null, ' ', 'Action'],
+    columns: props => [
+      null,
+      null,
+      null,
+      null,
+      <OverlayTrigger
+        placement='top'
+        overlay={
+          <Tooltip id='tooltip-top'>
+            <em>
+              Pay for contract creation and earn the first 10 block rewards!
+            </em>
+          </Tooltip>
+        }
+      >
+        <a href='#' onClick={() => props.onClick(props)}>
+          <small>Initialize and Earn</small>
+        </a>
+      </OverlayTrigger>
+    ],
+    onClick: ({ dispatch, actions, token }) =>
+      dispatch(actions.useCreateCoupon(token.coupon)),
+    Badge: ({ tokens, isActive }) => (
+      <span
+        className={`badge badge-${isActive ? 'light' : 'info'}`}
+        style={{ marginLeft: '0.25em' }}
+      >
+        {DiscoverOptions.Pending.filter(tokens).length}
+      </span>
+    )
+  },
+  Favorites: {
+    filter: tokens => {
+      tokens = tokens.filter(
+        token => !token.pending && token.myStake.balance > 0
+      )
+      tokens = sortBy(tokens, token => {
+        return token.name
+      })
+      return tokens
+    },
+    show: state => state.private.isSignedIn
+  }
+}
+
+function Row (props) {
+  let { rank, token, statusIconClass, statusTooltip, columns, type } = props
+  const icon = (
+    <OverlayTrigger
+      placement='top'
+      overlay={<Tooltip id='tooltip-top'>{statusTooltip}</Tooltip>}
+    >
+      <i className={`fas ${statusIconClass}`} />
+    </OverlayTrigger>
+  )
+  columns = columns ? columns(props) : []
+  return (
+    <tr>
+      <th scope='row'>{rank}</th>
+      <td>
+        <a href='account.html'>${token.name}</a>
+      </td>
+      <td>{icon}</td>
+      <td>{columns[3]}</td>
+      <td>{columns[4]}</td>
+      <td>
+        <i className='far fa-star' />
+      </td>
+    </tr>
+  )
+}
+
+function Tab (props) {
+  const { name, isActive, onClick, tokens } = props
+  const { Badge } = DiscoverOptions[name]
+  const linkClasses = ['nav-link']
+  if (isActive) linkClasses.push('active')
+
+  return (
+    <li className='nav-item'>
+      <a className={linkClasses.join(' ')} onClick={onClick} href='#'>
+        {name}
+        {Badge ? <Badge {...props} /> : null}
+      </a>
+    </li>
+  )
+}
+
 export default function Discover () {
+  const { state, dispatch, actions } = useStoreContext()
+  const tabNames = Object.keys(DiscoverOptions)
+  const [active, setActive] = useState(tabNames[0])
+
+  if (!state.tokens) return null
+
+  let tokens = DiscoverOptions[active].filter(Object.values(state.tokens))
+
+  const tabs = tabNames.map(name => {
+    if (DiscoverOptions[name].show && !DiscoverOptions[name].show(state)) {
+      return null
+    }
+    return (
+      <Tab
+        name={name}
+        isActive={name === active}
+        onClick={() => setActive(name)}
+        key={name}
+        tokens={Object.values(state.tokens)}
+      />
+    )
+  })
+
+  const rows = tokens.map((token, i) => (
+    <Row
+      rank={i + 1}
+      token={token}
+      type={active}
+      key={token.name}
+      dispatch={dispatch}
+      actions={actions}
+      {...DiscoverOptions[active]}
+    />
+  ))
+
+  const headings = DiscoverOptions[active].columnNames || []
   return (
     <div className='row'>
       <div className='col-md-8' style={{ paddingTop: '1rem' }}>
@@ -9,12 +187,7 @@ export default function Discover () {
             <div className='row'>
               <div className='col-md-4'>
                 <form className='form-inline'>
-                  <label
-                    className='sr-only'
-                    for='inlineFormInputGroupUsername2'
-                  >
-                    Username
-                  </label>
+                  <label className='sr-only'>Username</label>
                   <div className='input-group mb-2 mr-sm-2'>
                     <div className='input-group-prepend'>
                       <div className='input-group-text'>$</div>
@@ -29,33 +202,7 @@ export default function Discover () {
                 </form>
               </div>
               <div className='col-md-8'>
-                <ul className='nav nav-pills inline'>
-                  <li className='nav-item'>
-                    <a className='nav-link' href='#'>
-                      All
-                    </a>
-                  </li>
-                  <li className='nav-item'>
-                    <a className='nav-link active' href='#'>
-                      Crypto Twitter
-                    </a>
-                  </li>
-                  <li className='nav-item'>
-                    <a className='nav-link' href='#'>
-                      Favorites
-                    </a>
-                  </li>
-                  <li className='nav-item'>
-                    <a className='nav-link' href='#'>
-                      Pending
-                    </a>
-                  </li>
-                  <li className='nav-item'>
-                    <a className='nav-link' href='#'>
-                      Disputed
-                    </a>
-                  </li>
-                </ul>
+                <ul className='nav nav-pills inline'>{tabs}</ul>
               </div>
             </div>
           </div>
@@ -64,230 +211,15 @@ export default function Discover () {
         <table className='table table-hover'>
           <thead>
             <tr>
-              <th scope='col'>Rank</th>
-              <th scope='col'>Asset</th>
+              <th scope='col'>{headings[0] || 'Rank'}</th>
+              <th scope='col'>{headings[1] || 'Asset'}</th>
               <th scope='col' />
-              <th scope='col'>Minting</th>
-              <th scope='col'>Allocate</th>
+              <th scope='col'>{headings[3] || 'Minting'}</th>
+              <th scope='col'>{headings[4] || 'Allocate'}</th>
               <th scope='col' />
             </tr>
           </thead>
-          <tbody>
-            <tr>
-              <th scope='row'>1</th>
-              <td>
-                <a href='account.html'>$vitalikbuterin</a>
-              </td>
-              <td>
-                <i className='fas fa-check text-success' />
-              </td>
-              <td>
-                <img src='../img/dai.png' style={{ width: '16px' }} /> 30,000
-              </td>
-              <td>
-                <form style={{ width: '50%' }}>
-                  <div className='form-group'>
-                    <input
-                      type='range'
-                      className='form-control-range'
-                      value='0'
-                      id='formControlRange'
-                    />
-                  </div>
-                </form>
-              </td>
-              <td>
-                <i className='far fa-star' />
-              </td>
-            </tr>
-            <tr>
-              <th scope='row'>2</th>
-              <td>
-                <a href=''>$el33th4xor</a>
-              </td>
-              <td>
-                <i className='fas fa-random text-danger' />
-              </td>
-              <td>
-                <img src='../img/dai.png' style={{ width: '16px' }} /> 30,000
-              </td>
-              <td>
-                <small>
-                  <a href=''>Name change pending</a>
-                </small>
-              </td>
-              <td>
-                <i className='far fa-star' />
-              </td>
-            </tr>
-            <tr>
-              <th scope='row'>2</th>
-              <td>
-                <a href=''>$gakonst</a>
-              </td>
-              <td>
-                <i className='fas fa-check text-success' />
-              </td>
-              <td>
-                <img src='../img/dai.png' style={{ width: '16px' }} /> 28,000
-              </td>
-              <td>
-                <form style={{ width: '50%' }}>
-                  <div className='form-group'>
-                    <input
-                      type='range'
-                      className='form-control-range'
-                      value='0'
-                      id='formControlRange'
-                    />
-                  </div>
-                </form>
-              </td>
-              <td>
-                <i className='far fa-star' />
-              </td>
-            </tr>
-            <tr>
-              <th scope='row'>3</th>
-              <td>
-                <a href=''>$maurelian_</a>
-              </td>
-              <td>
-                <i className='fas fa-check text-success' />
-              </td>
-              <td>
-                <img src='../img/dai.png' style={{ width: '16px' }} /> 26,000
-              </td>
-              <td>
-                {' '}
-                <form style={{ width: '50%' }}>
-                  <div className='form-group'>
-                    <input
-                      type='range'
-                      className='form-control-range'
-                      value='0'
-                      id='formControlRange'
-                    />
-                  </div>
-                </form>
-              </td>
-              <td>
-                <i className='far fa-star' />
-              </td>
-            </tr>
-            <tr>
-              <th scope='row'>4</th>
-              <td>
-                <a href=''>$econoar</a>
-              </td>
-              <td>
-                <i className='fas fa-check text-success' />
-              </td>
-              <td>
-                <img src='../img/dai.png' style={{ width: '16px' }} /> 25,000
-              </td>
-              <td>
-                <form style={{ width: '50%' }}>
-                  <div className='form-group'>
-                    <input
-                      type='range'
-                      className='form-control-range'
-                      value='0'
-                      id='formControlRange'
-                    />
-                  </div>
-                </form>
-              </td>
-              <td>
-                <i className='far fa-star' />
-              </td>
-            </tr>
-            <tr>
-              <th scope='row'>5</th>
-              <td>
-                <a href=''>$tonysheng</a>
-              </td>
-              <td>
-                <i
-                  className='fas fa-check text-success'
-                  data-toggle='tooltip'
-                  data-html='true'
-                  title='<small>Undisputed <br/>Owners Reward Claimed</small>'
-                />
-              </td>
-              <td>
-                <img src='../img/dai.png' style={{ width: '16px' }} /> 21,000
-              </td>
-              <td>
-                <form style={{ width: '50%' }}>
-                  <div className='form-group'>
-                    <input
-                      type='range'
-                      className='form-control-range'
-                      value='0'
-                      id='formControlRange'
-                    />
-                  </div>
-                </form>
-              </td>
-              <td>
-                <i className='far fa-star' />
-              </td>
-            </tr>
-            <tr>
-              <th scope='row'>6</th>
-              <td>
-                <a href=''>$mattgcondon</a>
-              </td>
-              <td>
-                <i
-                  className='fas fa-sync-alt text-warning'
-                  data-toggle='tooltip'
-                  data-html='true'
-                  title='<em>Asset is a valid Twitter handle but is awaiting contract creation.</em>'
-                />
-              </td>
-              <td>
-                <img src='../img/dai.png' style={{ width: '16px' }} /> 19,000
-              </td>
-              <td>
-                <form style={{ width: '50%' }}>
-                  <a href=''>
-                    <small
-                      data-toggle='tooltip'
-                      data-html='true'
-                      title='<em>Pay for contract creation and earn the first 1% of total supply!</em>'
-                    >
-                      Initialize and Earn
-                    </small>
-                  </a>
-                </form>
-              </td>
-              <td>
-                <i className='far fa-star' />
-              </td>
-            </tr>
-            <tr className='table-light'>
-              <th scope='row'>7</th>
-              <td>
-                <a href=''>$a8l4f0j2</a>
-              </td>
-              <td>
-                <i className='fas fa-skull' />
-              </td>
-              <td>
-                <img src='../img/dai.png' style={{ width: '16px' }} /> 0
-              </td>
-              <td>
-                <small>
-                  <a href=''>User has opted out</a>
-                </small>
-              </td>
-              <td>
-                <i className='far fa-star' />
-              </td>
-            </tr>
-          </tbody>
+          <tbody>{rows}</tbody>
         </table>
       </div>
       <div className='col-md-4' style={{ paddingTop: '1rem' }}>

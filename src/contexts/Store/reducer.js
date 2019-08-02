@@ -6,6 +6,7 @@ export const initialState = {
   private: {},
   admin: {},
   error: {},
+  config: {},
   intents: {},
   network: {
     loading: true,
