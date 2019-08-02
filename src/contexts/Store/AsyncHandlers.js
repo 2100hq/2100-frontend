@@ -8,11 +8,17 @@ export default function AsyncHandlers (libs = {}) {
   return {
     UNLOCK_WALLET: async action => {
       if (libs.web3.active) return true
-      await libs.web3.setConnector('MetaMask', { suppressAndThrowErrors: true })
+      try {
+        await libs.web3.setConnector('MetaMask', {
+          suppressAndThrowErrors: true
+        })
+      } catch (e) {
+        libs.dispatch(actions.error(action.type, e))
+      }
     },
     LOGIN: async action => {
       if (!libs.web3.active || !libs.web3.account) {
-        libs.dispatch(actions.error('login', errors.login.NOT_UNLOCKED))
+        libs.dispatch(actions.error(action.type, errors.login.NOT_UNLOCKED))
       }
       let signed
       let token
@@ -29,7 +35,7 @@ export default function AsyncHandlers (libs = {}) {
         )
       } catch (e) {
         console.log(action.type, e)
-        return libs.dispatch(actions.error(action.type, e.message))
+        return libs.dispatch(actions.error(action.type, e))
       }
       // libs.web3.account
 
@@ -50,7 +56,7 @@ export default function AsyncHandlers (libs = {}) {
         )
       } catch (e) {
         console.log(action.type, e)
-        libs.dispatch(actions.error(action.type, e.message))
+        libs.dispatch(actions.error(action.type, e))
       }
       return resp
     },
@@ -75,7 +81,7 @@ export default function AsyncHandlers (libs = {}) {
         )
       } catch (e) {
         console.log(action.type, e)
-        libs.dispatch(actions.error(action.type, e.message))
+        libs.dispatch(actions.error(action.type, e))
       }
       return resp
     },
@@ -100,7 +106,7 @@ export default function AsyncHandlers (libs = {}) {
         )
       } catch (e) {
         console.log(action.type, e)
-        libs.dispatch(actions.error(action.type, e.message))
+        libs.dispatch(actions.error(action.type, e))
       }
       return resp
     },
