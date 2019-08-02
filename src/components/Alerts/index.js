@@ -6,6 +6,7 @@ import './style.scss'
 export default function Alerts () {
   const { state } = useStoreContext()
   let commands = Object.values(get(state, ['private', 'myCommands'], {}))
+  commands = commands.filter(command => /deposit|withdraw/i.test(command.type))
   commands = sortBy(commands, command => command.updated * -1)
   const alerts = commands.map((command, index) => (
     <Alert

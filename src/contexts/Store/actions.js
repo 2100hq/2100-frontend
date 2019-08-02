@@ -12,6 +12,7 @@ const actions = {
   // signCreate: (username) => actionGenerator('SIGN_CREATE', { username }),
   allowUsername: data => actionGenerator('ALLOW_USERNAME', data),
   setAdmin: data => actionGenerator('SET_ADMIN', data),
+  useCreateCoupon: coupon => actionGenerator('USE_CREATE_COUPON', coupon),
   error: (intent, error) => actionGenerator('ERROR', { [intent]: error })
 }
 

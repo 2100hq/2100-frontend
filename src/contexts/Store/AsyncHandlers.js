@@ -163,5 +163,24 @@ export default function AsyncHandlers (libs = {}) {
         return false
       }
     },
+    USE_CREATE_COUPON: async action => {
+      if (
+        !libs.web3.active ||
+        !libs.web3.account ||
+        !libs.web3.library ||
+        !libs.state.private.isSignedIn
+      ) {
+        libs.dispatch(actions.error(action.type, errors.auth.NOT_LOGGED_IN))
+        return false
+      }
+      const { controller } = libs.state
+      const { symbol, messageId, v, r, s } = action.params
+      try {
+        await controller.contract.create(symbol, messageId, v, r, s)
+      } catch (e) {
+        console.log(action.type, e)
+        libs.dispatch(actions.error(action.type, e))
+      }
+    }
   }
 }
