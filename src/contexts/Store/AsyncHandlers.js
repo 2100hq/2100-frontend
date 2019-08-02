@@ -110,5 +110,21 @@ export default function AsyncHandlers (libs = {}) {
       }
       return resp
     },
+    // SIGN_CREATE: async action => {
+    //   if (!libs.web3.active || !libs.web3.account || !libs.web3.library) {
+    //     libs.dispatch(actions.error(action.type, errors.auth.NOT_LOGGED_IN))
+    //     return null
+    //   }
+
+    //   try {
+    //     return await libs.web3.library
+    //       .getSigner()
+    //       .signMessage('I am @'+action.params.username.toLowerCase())
+
+    //   } catch (e) {
+    //     libs.dispatch(actions.error(action.type, e))
+    //     return null
+    //   }
+    // },
   }
 }

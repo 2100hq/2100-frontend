@@ -10,6 +10,7 @@ import Nav from './components/Nav'
 import Wallet from './components/Wallet'
 import Alerts from './components/Alerts'
 import ErrorModal from './components/ErrorModal'
+import Manage from './components/Manage'
 
 // import API from './api'
 import { findStake } from './utils'
@@ -24,6 +25,7 @@ class App extends Component {
         <div className='container-fluid'>
           <Route exact path='/' component={Discover} />
           <Route path='/wallet' component={Wallet} />
+          <Route path='/manage' component={Manage} />
           <Alerts />
           <ErrorModal />
         </div>

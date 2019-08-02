@@ -10,6 +10,7 @@ const actions = {
   deposit: amount => actionGenerator('DEPOSIT', { amount }),
   withdraw: amount => actionGenerator('WITHDRAW', { amount }),
   error: (intent, message) => actionGenerator('ERROR', { [intent]: {message} })
+  // signCreate: (username) => actionGenerator('SIGN_CREATE', { username }),
 }
 
 function actionGenerator (type, params, resp) {
