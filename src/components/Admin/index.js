@@ -27,7 +27,7 @@ export default function Admin () {
   if (isAdmin) {
     nav.push(
       <li className='nav-item' key='AllowUsername'>
-        <a className={`nav-link ${tab === 'AllowUsername' && 'active'}`}>
+        <a className={`nav-link ${tab === 'AllowUsername' && 'active'}`} onClick={()=>setTab('AllowUsername')} >
           Allow Username
         </a>
       </li>
@@ -36,7 +36,7 @@ export default function Admin () {
 
   nav.push(
     <li className='nav-item' key='SetAdmin'>
-      <a className={`nav-link ${tab === 'SetAdmin' && 'active'}`}>
+      <a className={`nav-link ${tab === 'SetAdmin' && 'active'}`} onClick={()=>setTab('SetAdmin')} >
         Add/Remove Admin
       </a>
     </li>
