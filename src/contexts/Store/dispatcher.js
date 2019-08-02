@@ -1,6 +1,5 @@
 import AsyncHandlers from './AsyncHandlers'
 
-
 export default function Dispatcher (libs) {
   const asyncHandlers = AsyncHandlers(libs)
   return async action => {

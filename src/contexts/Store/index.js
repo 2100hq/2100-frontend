@@ -5,12 +5,12 @@ import React, {
   useEffect,
   useReducer
 } from 'react'
-
+import { get } from 'lodash'
 import { useSocketContext } from '../Socket'
 
 import Dispatcher from './dispatcher.js'
 import actions from './actions'
-import reducer, {initialState} from './reducer'
+import reducer, { initialState } from './reducer'
 
 import config from '../../utils/config'
 import Signer from '../../utils/signer'
@@ -87,7 +87,8 @@ export default function StoreProvider ({ children }) {
   // }, [web3.library])
 
   useEffect(() => {
-    if (state.contracts || !web3.library) return
+    if (get(state, 'config.contracts.dai')) return // already inited dai
+    if (!web3.library) return // no library to fetch data from the blockchain
     const signer = web3.account
       ? new Signer(web3.library.getSigner(web3.account))
       : web3.library
@@ -99,13 +100,13 @@ export default function StoreProvider ({ children }) {
     )
     controller.DAI().then(address => {
       const dai = new ethers.Contract(address, ERC20.abi, signer)
-      dispatch(actions.update(['contracts'], { controller, dai }))
+      dispatch(actions.update(['config', 'contracts'], { controller, dai }))
     })
   }, [web3.library, web3.account])
 
   useEffect(() => {
-    const { dai, controller } = Selectors(state)
-    if (!dai.contract || !state.private.isSignedIn) return
+    const { dai, controller } = state
+    if (!dai || !dai.contract || !state.private.isSignedIn) return
     if (dai.wallet.latestBlock === state.public.latestBlock.number) return
     const requests = []
     requests.push(dai.contract.balanceOf(web3.account))
@@ -126,11 +127,19 @@ export default function StoreProvider ({ children }) {
         })
       )
     })
-  }, [state.public.latestBlock, state.private.isSignedIn, state.contracts])
+  }, [
+    state.public.latestBlock,
+    state.private.isSignedIn,
+    state.config.contracts
+  ])
 
   const contextValue = useMemo(() => {
-    const dispatcher = Dispatcher({ dispatch, socket, web3, state })
-    return { dispatch: dispatcher, state, actions }
+    const _state = { ...state, ...Selectors(state) }
+    console.log()
+    console.log(_state)
+
+    const dispatcher = Dispatcher({ dispatch, socket, web3, state: _state })
+    return { dispatch: dispatcher, state: _state, actions }
   }, [state, socket])
 
   return (

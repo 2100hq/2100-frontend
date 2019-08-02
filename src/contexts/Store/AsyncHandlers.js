@@ -47,7 +47,7 @@ export default function AsyncHandlers (libs = {}) {
       console.log('LOGOUT RESP', resp)
     },
     APPROVE: async action => {
-      const { dai, controller } = Selectors(libs.state)
+      const { dai, controller } = libs.state
       let resp = {}
       try {
         resp = await dai.contract.approve(
@@ -61,7 +61,7 @@ export default function AsyncHandlers (libs = {}) {
       return resp
     },
     DEPOSIT: async action => {
-      const { controller } = Selectors(libs.state)
+      const { controller } = libs.state
       let resp = {}
       try {
         resp = await controller.contract.deposit(action.params.amount)
@@ -86,7 +86,7 @@ export default function AsyncHandlers (libs = {}) {
       return resp
     },
     WITHDRAW: async action => {
-      const { controller } = Selectors(libs.state)
+      const { controller } = libs.state
       let resp = {}
       try {
         resp = await controller.contract.withdraw(action.params.amount)
