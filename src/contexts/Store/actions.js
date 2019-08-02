@@ -11,6 +11,8 @@ const actions = {
   withdraw: amount => actionGenerator('WITHDRAW', { amount }),
   error: (intent, message) => actionGenerator('ERROR', { [intent]: {message} })
   // signCreate: (username) => actionGenerator('SIGN_CREATE', { username }),
+  allowUsername: data => actionGenerator('ALLOW_USERNAME', data),
+  setAdmin: data => actionGenerator('SET_ADMIN', data),
 }
 
 function actionGenerator (type, params, resp) {

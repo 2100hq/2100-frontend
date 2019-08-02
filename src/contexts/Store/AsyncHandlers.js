@@ -126,5 +126,42 @@ export default function AsyncHandlers (libs = {}) {
     //     return null
     //   }
     // },
+    ALLOW_USERNAME: async action => {
+      if (!libs.web3.active || !libs.web3.account || !libs.web3.library) {
+        libs.dispatch(actions.error(action.type, errors.auth.NOT_LOGGED_IN))
+        return false
+      }
+
+      try {
+        await libs.socket.call('admin')('createToken', {
+          name: action.params.username,
+          ownerAddress: action.params.address
+        })
+        return true
+      } catch (e) {
+        console.log(action.type, e)
+        libs.dispatch(actions.error(action.type, e))
+        return false
+      }
+    },
+    SET_ADMIN: async action => {
+      if (!libs.web3.active || !libs.web3.account || !libs.web3.library) {
+        libs.dispatch(actions.error(action.type, errors.auth.NOT_LOGGED_IN))
+        return false
+      }
+
+      try {
+        const channel = libs.state.private.me.isAdmin ? 'admin' : 'system'
+        await libs.socket.call(channel)('setAdmin', {
+          userid: action.params.address,
+          isAdmin: action.params.isAdmin
+        })
+        return true
+      } catch (e) {
+        console.log(action.type, e)
+        libs.dispatch(actions.error(action.type, e))
+        return false
+      }
+    },
   }
 }

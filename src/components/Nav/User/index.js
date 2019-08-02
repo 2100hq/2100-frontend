@@ -26,20 +26,29 @@ function AddressIcon ({ state }) {
     </span>
   )
   return (
-    <>
+    <span>
       {address} {icon}
-    </>
+    </span>
   )
 }
-/*
 
-      */
+function AdminLink ({ state }) {
+  const isAdmin = state.private.me.isAdmin || state.private.me.isSystemAddress
+  if (!isAdmin) return null
+  return (
+    <Link className='dropdown-item' to='/admin'>
+      Admin
+    </Link>
+  )
+}
+
 function SignedIn ({ state }) {
   const wave = (
     <span className='out'>
       <div className='emoji wave'>👋</div>
     </span>
   )
+
   return (
     <>
       <li className='nav-item'>
@@ -52,7 +61,10 @@ function SignedIn ({ state }) {
           <AddressIcon state={state} />
         </Dropdown.Toggle>
         <Dropdown.Menu>
-          <Dropdown.Item href='sync-add.html'>Manage</Dropdown.Item>
+          <Link className='dropdown-item' to='/manage'>
+            Manage
+          </Link>
+          <AdminLink state={state} />
           <Dropdown.Divider />
           <Dropdown.Item href='accounts-sign-in.html'>Sign Out</Dropdown.Item>
         </Dropdown.Menu>
@@ -89,7 +101,9 @@ export default function User () {
   const isAuthenticated = get(state, 'private.me')
   const isSignedIn = Boolean(isUnlocked && isAuthenticated)
   const isError =
-    get(state, ['error', 'LOGIN']) || get(state, ['error', 'UNLOCK_WALLET'])
+    get(state, ['error', 'LOGIN']) ||
+    get(state, ['error', 'UNLOCK_WALLET']) ||
+    get(state, ['error', 'METAMASK'])
 
   const setSigningIn = val => dispatch(actions.update(intent, val))
 
