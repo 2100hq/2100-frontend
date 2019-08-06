@@ -4,6 +4,7 @@ import { toDecimals } from '../../../utils'
 import { get, sortBy } from 'lodash'
 
 function Entry ({ command, latestBlock }) {
+  if (!/pendingDeposit|withdrawPrimary/i.test(command.type)) return null
   let action
   let token
   let value = toDecimals(command.value)
