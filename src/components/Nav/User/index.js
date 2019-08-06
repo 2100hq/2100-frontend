@@ -143,8 +143,8 @@ export default function User () {
   useEffect(() => {
     if (!isSignedIn) return
     if (
-      state.private.me.publicAddress.toLowerCase() ===
-      state.web3.account.toLowerCase()
+      get(state,'private.me.publicAddress','').toLowerCase() ===
+      get(state,'web3.account','').toLowerCase()
     ) {
       return
     }
