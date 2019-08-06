@@ -10,10 +10,9 @@ export default function Wallet () {
   const [diff, setDiff] = useState(BN(0))
   const { dispatch, state, actions } = useStoreContext()
   if (!state.private.isSignedIn) return <Redirect to='/' />
-  const { dai, controller } = Selectors(state)
-  let { total: lockedDaiTotal, pending } = balances(state, controller)
+  let { total: lockedDaiTotal, pending } = balances(state)
   let displayLockedDai = toDecimals(lockedDaiTotal.add(pending).add(diff))
-  let { available: daiAvailable } = daiBalances(state, dai)
+  let { available: daiAvailable } = daiBalances(state)
   let daiDisplay = toDecimals(daiAvailable.sub(diff))
 
   const noDai = daiDisplay === '0.00'
@@ -43,7 +42,7 @@ export default function Wallet () {
   }
 
   async function approve () {
-    if (isApproved(state, dai)) return true
+    if (isApproved(state)) return true
     const resp = await dispatch(actions.approve())
     return !!resp.hash
   }

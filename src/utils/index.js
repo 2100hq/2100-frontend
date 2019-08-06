@@ -4,28 +4,32 @@ import Selectors from './selectors'
 
 const oneDecimalRegExp = /\.\d{1,1}$/
 const onlyOneDecimal = n => oneDecimalRegExp.test(n)
-export function findStake ({ user, asset }) {
-  return (user.stakes.find(a => a.username === asset.username) || { amount: 0 })
-    .amount
-}
 
 export const BN = utils.bigNumberify
 
-export const toDecimals = bn => {
+export const toDecimals = (bn, Cast = String) => {
   let n = utils.formatEther(bn)
   if (onlyOneDecimal(n)) n = `${n}0`
-  return n
+  return Cast(n)
 }
 export const fromDecimals = utils.parseEther
 
-export const balances = (state, controller = Selectors(state).controller) => {
-  const available = BN(controller.wallet.balance || 0)
-  const used = Object.values(get(state, 'private.myStakes', [])).reduce(
-    (sum, stake) => sum.add(stake.value),
-    BN(0)
+export const balances = state => {
+  const { controller } = state
+  const total = BN(controller.wallet.balance || '0')
+
+  const available = total.sub(
+    Object.entries(get(state, 'private.myStakes', {})).reduce(
+      (sum, [address, stake]) => {
+        if (address === controller.address) return sum
+        // console.log(address, '=>', stake)
+        return sum.add(stake)
+      },
+      BN(0)
+    )
   )
 
-  const total = used.add(available)
+  get(state, ['private', 'myStakes', controller.address], '0')
 
   const pending = Object.values(get(state, 'private.myCommands', {})).reduce(
     (sum, command) => {
@@ -39,13 +43,13 @@ export const balances = (state, controller = Selectors(state).controller) => {
   // console.log('PENDING',pending.toString())
   return {
     available,
-    used,
     pending,
     total
   }
 }
 
-export const daiBalances = (state, dai = Selectors(state).dai) => {
+export const daiBalances = state => {
+  const { dai } = state
   const available = BN(dai.wallet.balance || 0)
   return {
     available,
@@ -57,6 +61,9 @@ export const unlimitedAllowance = BN(2)
   .pow(256)
   .sub(1)
 
-export const isApproved = (state, dai = Selectors(state).dai) => {
+export const isApproved = state => {
+  const { dai } = state
   return BN(dai.wallet.allowance || 0).eq(unlimitedAllowance)
 }
+
+export const penny = BN(10).pow(16)

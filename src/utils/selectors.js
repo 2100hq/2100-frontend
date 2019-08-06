@@ -14,11 +14,13 @@ function selectActive (state) {
   const active = keyBy(get(state, ['public', 'tokens', 'active'], {}), 'name') // key both by name
 
   const stakes = get(state, ['public', 'stakes'], {})
-  const myStakes = get(state, ['public', 'myStakes'], {})
+  const myStakes = get(state, ['private', 'myStakes'], {})
+  const myWallets = get(state, ['private', 'myWallets', 'available'], {})
 
   Object.values(active).forEach(token => {
-    token.stakes = stakes[token.id] || { balance: '0' }
-    token.myStake = myStakes[token.id] || { balance: '0' }
+    token.stakes = get(stakes, token.id, '0')
+    token.myStake = get(myStakes, token.id, '0')
+    token.myWallet = get(myWallets, [token.id, 'balance'], '0')
   })
 
   return active
@@ -34,6 +36,7 @@ function selectTokens (state) {
 function selectContracts (state) {
   const controller = {}
   controller.contract = get(state, 'config.contracts.controller')
+  controller.address = (controller.contract || {}).address
   controller.walletPath = [
     'private',
     'myWallets',
@@ -44,6 +47,7 @@ function selectContracts (state) {
 
   const dai = {}
   dai.contract = get(state, 'config.contracts.dai')
+  dai.address = (dai.contract || {}).address
   dai.walletPath = [
     'private',
     'myWallets',
