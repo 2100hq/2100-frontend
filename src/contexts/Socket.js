@@ -19,7 +19,6 @@ export function useSocketContext () {
 export const SocketContextConsumer = SocketContext.Consumer
 
 export default function SocketProvider ({ children }) {
-
   const [io, setIo] = useState()
 
   const [network, setNetwork] = useState({
@@ -39,26 +38,26 @@ export default function SocketProvider ({ children }) {
     }
 
     _io.on('connect', () => {
-      console.log();
-      console.log('io.connect');
+      console.log()
+      console.log('io.connect')
 
       setNetwork({ loading: false, connected: true, error: false })
     })
     _io.on('connect_error', error => {
-      console.log();
-      console.log('io.connect_error');
+      console.log()
+      console.log('io.connect_error')
 
       setNetwork({ loading: false, connected: false, error: error.message })
     })
     _io.on('error', error => {
-      console.log();
-      console.log('io.error');
+      console.log()
+      console.log('io.error')
 
       setNetwork({ loading: false, connected: false, error: error.message })
     })
     _io.on('disconnect', reason => {
-      console.log();
-      console.log('io.');
+      console.log()
+      console.log('io.')
 
       setNetwork({ loading: false, connected: false, error: reason })
       if (reason === 'io server disconnect') {

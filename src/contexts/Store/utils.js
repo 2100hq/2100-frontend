@@ -46,7 +46,7 @@ export function remapPrivateData (action) {
 }
 export const errors = {
   login: {
-    NOT_UNLOCKED: 'Please unlock your Ethereum wallet before signing in',
+    NOT_UNLOCKED: 'Please unlock your Ethereum wallet before signing in'
   },
   auth: {
     NOT_LOGGED_IN: 'Please sign in'
