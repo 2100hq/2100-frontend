@@ -28,11 +28,7 @@ export default function AsyncHandlers (libs = {}) {
         signed = await libs.web3.library
           .getSigner()
           .signMessage('2100 Login: ' + token)
-        resp = await libs.socket.auth(
-          'authenticate',
-          signed,
-          libs.web3.account
-        )
+        resp = await libs.socket.auth('authenticate', signed, libs.web3.account)
       } catch (e) {
         console.log(action.type, e)
         return libs.dispatch(actions.error(action.type, e))
@@ -180,6 +176,25 @@ export default function AsyncHandlers (libs = {}) {
       } catch (e) {
         console.log(action.type, e)
         libs.dispatch(actions.error(action.type, e))
+      }
+    },
+    SET_STAKE: async action => {
+      if (!libs.state.private.isSignedIn) {
+        libs.dispatch(actions.error(action.type, errors.auth.NOT_LOGGED_IN))
+        return false
+      }
+      console.log()
+      console.log(action)
+
+      try {
+        const resp = await libs.socket.private('stake', {
+          [action.params.address]: [action.params.stake]
+        })
+        return resp
+      } catch (e) {
+        console.log(action.type, e)
+        libs.dispatch(actions.error(action.type, e))
+        return false
       }
     }
   }

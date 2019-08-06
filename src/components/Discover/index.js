@@ -1,14 +1,16 @@
 import React, { useState } from 'react'
 import { useStoreContext } from '../../contexts/Store'
+import { toDecimals } from '../../utils'
 import { sortBy } from 'lodash'
 import { OverlayTrigger, Tooltip } from 'react-bootstrap'
+import Allocator from '../Allocator'
 
 const DiscoverOptions = {
   All: {
     filter: tokens => {
       tokens = tokens.filter(token => !token.pending)
       tokens = sortBy(tokens, token => {
-        return token.stakes.balance
+        return token.id // 1-toDecimals(token.stakes,Number)
       })
       return tokens
     },
@@ -25,17 +27,9 @@ const DiscoverOptions = {
       null,
       <span>
         <img src='../img/dai.png' style={{ width: '16px' }} />{' '}
-        {props.token.stakes.balance}
+        {toDecimals(props.token.stakes)}
       </span>,
-      <form style={{ width: '50%' }}>
-        <div className='form-group'>
-          <input
-            type='range'
-            className='form-control-range'
-            id='formControlRange'
-          />
-        </div>
-      </form>
+      <Allocator {...props} />
     ]
   },
   Pending: {
