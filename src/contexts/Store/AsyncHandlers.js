@@ -24,11 +24,11 @@ export default function AsyncHandlers (libs = {}) {
       let token
       let resp
       try {
-        token = await libs.socket.call('auth')('token')
+        token = await libs.socket.auth('token')
         signed = await libs.web3.library
           .getSigner()
           .signMessage('2100 Login: ' + token)
-        resp = await libs.socket.call('auth')(
+        resp = await libs.socket.auth(
           'authenticate',
           signed,
           libs.web3.account
@@ -43,7 +43,7 @@ export default function AsyncHandlers (libs = {}) {
     },
     LOGOUT: async action => {
       console.log(action.type)
-      const resp = await libs.socket.call('auth')('unauthenticate')
+      const resp = await libs.socket.auth('unauthenticate')
       console.log('LOGOUT RESP', resp)
     },
     APPROVE: async action => {
@@ -133,7 +133,7 @@ export default function AsyncHandlers (libs = {}) {
       }
 
       try {
-        await libs.socket.call('admin')('createToken', {
+        await libs.socket.admin('createToken', {
           name: action.params.username,
           ownerAddress: action.params.address
         })
@@ -152,7 +152,7 @@ export default function AsyncHandlers (libs = {}) {
 
       try {
         const channel = libs.state.private.me.isAdmin ? 'admin' : 'system'
-        await libs.socket.call(channel)('setAdmin', {
+        await libs.socket[channel]('setAdmin', {
           userid: action.params.address,
           isAdmin: action.params.isAdmin
         })

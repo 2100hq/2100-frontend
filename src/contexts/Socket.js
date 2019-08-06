@@ -18,26 +18,10 @@ export function useSocketContext () {
 
 export const SocketContextConsumer = SocketContext.Consumer
 
-let io = Socket(host)
-
-function call (path) {
-  return (action, ...args) => {
-    return new Promise((resolve, reject) => {
-      io.emit(path, action, args, (err, result) => {
-        if (err) return reject(err)
-        resolve(result)
-      })
-    })
-  }
-}
-
-function listen (path, cb) {
-  return io.on(path, cb)
-}
-function stop (path) {
-  return io.off(path)
-}
 export default function SocketProvider ({ children }) {
+
+  const [io, setIo] = useState()
+
   const [network, setNetwork] = useState({
     loading: true,
     connected: false,
@@ -45,16 +29,37 @@ export default function SocketProvider ({ children }) {
   })
 
   useEffect(() => {
-    io.on('connect', () => {
+    // when io is assigned, we need to add connection handlers immediately; can't wait for react cycle to update
+    let _io = io
+
+    if (!_io) {
+      _io = Socket(host)
+      setIo(_io)
+      setNetwork({ loading: false, connected: false, error: false })
+    }
+
+    _io.on('connect', () => {
+      console.log();
+      console.log('io.connect');
+
       setNetwork({ loading: false, connected: true, error: false })
     })
-    io.on('connect_error', error => {
+    _io.on('connect_error', error => {
+      console.log();
+      console.log('io.connect_error');
+
       setNetwork({ loading: false, connected: false, error: error.message })
     })
-    io.on('error', error => {
+    _io.on('error', error => {
+      console.log();
+      console.log('io.error');
+
       setNetwork({ loading: false, connected: false, error: error.message })
     })
-    io.on('disconnect', reason => {
+    _io.on('disconnect', reason => {
+      console.log();
+      console.log('io.');
+
       setNetwork({ loading: false, connected: false, error: reason })
       if (reason === 'io server disconnect') {
         io.connect()
@@ -77,7 +82,31 @@ export default function SocketProvider ({ children }) {
   }, [network.loading])
 
   const contextValue = useMemo(() => {
-    return { network, call, listen, stop }
+    function call (path) {
+      return (action, ...args) => {
+        return new Promise((resolve, reject) => {
+          io.emit(path, action, args, (err, result) => {
+            if (err) return reject(err)
+            resolve(result)
+          })
+        })
+      }
+    }
+
+    function listen (path, cb) {
+      return io.on(path, cb)
+    }
+    function stop (path) {
+      return io.off(path)
+    }
+
+    const reqresp = {
+      auth: call('auth'),
+      public: call('public'),
+      admin: call('admin'),
+      private: call('private')
+    }
+    return { network, call, listen, stop, ...reqresp }
   }, [network])
 
   return (

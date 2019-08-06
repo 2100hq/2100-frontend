@@ -47,19 +47,14 @@ export default function StoreProvider ({ children }) {
   useEffect(() => {
     dispatch(actions.update(['config'], config))
   }, [])
+
   useEffect(() => {
+    if (socket.network.loading) return
     socket.listen('private', socketUpdate('private', dispatch))
     socket.listen('public', socketUpdate('public', dispatch))
     socket.listen('auth', socketUpdate('auth', dispatch))
     socket.listen('admin', socketUpdate('admin', dispatch))
-
-    return () => {
-      socket.stop('public')
-      socket.stop('auth')
-      socket.stop('private')
-      socket.stop('admin')
-    }
-  }, [])
+  }, [socket.network.loading])
 
   useEffect(() => {
     dispatch(actions.update(['network'], socket.network))
