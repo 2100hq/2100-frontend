@@ -12,6 +12,7 @@ import Alerts from './components/Alerts'
 import ErrorModal from './components/ErrorModal'
 import Manage from './components/Manage'
 import Admin from './components/Admin'
+import Proto from './components/Proto'
 
 // import API from './api'
 import { findStake } from './utils'
@@ -26,6 +27,7 @@ class App extends Component {
         <div className='container-fluid'>
           <Route exact path='/' component={Discover} />
           <Route path='/wallet' component={Wallet} />
+          <Route path='/proto' component={Proto} />
           <Route path='/manage' component={Manage} />
           <Route path='/admin' component={Admin} />
           <Alerts />
