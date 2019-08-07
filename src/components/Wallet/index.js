@@ -7,10 +7,12 @@ import AssetsTable from './AssetsTable'
 
 export default function Wallet (props) {
   const { state } = useStoreContext()
-  if (!state.private.isSignedIn) return <Redirect to={{
-              pathname: "/",
-              state: { from: props.location }
-            }}  />
+  if (!state.private.isSignedIn) {
+    return <Redirect to={{
+      pathname: '/',
+      state: { from: props.location }
+    }} />
+  }
 
   return (
     <div className='container-fluid'>

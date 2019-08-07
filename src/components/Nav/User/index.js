@@ -53,8 +53,7 @@ function SignedIn ({ state }) {
     [
       <li className='nav-item' key='balances'>
         <Balances state={state} />
-      </li>
-    ,
+      </li>,
       <Dropdown as='li' className='nav-item' key='dropdown'>
         {wave}
         <Dropdown.Toggle as='a' className='nav-link in' href='#'>
@@ -74,7 +73,7 @@ function SignedIn ({ state }) {
 }
 
 function NotSigningIn ({ onClick }) {
-  function handleClick(e){
+  function handleClick (e) {
     e.preventDefault()
     onClick()
   }
@@ -97,7 +96,7 @@ function SigningIn () {
 }
 
 export default function User (props) {
-  const prevRoute = get(props,'location.state.from')
+  const prevRoute = get(props, 'location.state.from')
   const { state, dispatch, actions } = useStoreContext()
   const intent = ['intents', 'signingIn']
   const signingIn = get(state, intent)
@@ -160,11 +159,11 @@ export default function User (props) {
   if (!state.web3.hasWallet) return null
 
   if (isSignedIn) {
-    if (prevRoute) return <Redirect to={prevRoute} key='redirect'/>
-    return <SignedIn state={state} key='signedin'/>
-  } else if (signingIn){
-    return <SigningIn  key='signingin' />
+    if (prevRoute) return <Redirect to={prevRoute} key='redirect' />
+    return <SignedIn state={state} key='signedin' />
+  } else if (signingIn) {
+    return <SigningIn key='signingin' />
   } else {
-    return <NotSigningIn onClick={() => setSigningIn(true)} key='signedout'/>
+    return <NotSigningIn onClick={() => setSigningIn(true)} key='signedout' />
   }
 }

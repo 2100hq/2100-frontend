@@ -5,8 +5,7 @@ import { toDecimals, BN, isApproved } from '../../../utils'
 
 const diffSteps = BN(10).pow(16)
 
-export default function Bank(){
-
+export default function Bank () {
   const [diff, setDiff] = useState(BN(0))
   const { dispatch, state, actions } = useStoreContext()
 

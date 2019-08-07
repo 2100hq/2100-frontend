@@ -20,8 +20,8 @@ function selectActive (state) {
     token.stakes = get(stakes, token.id, '0')
     token.myStake = get(myStakes, token.id, '0')
     token.balances = {
-      available: get(state, ['private', 'myWallets', 'available', token.id,  'balance'], '0'),
-      locked: get(state, ['private', 'myWallets',  'locked',  token.id, 'balance'], '0')
+      available: get(state, ['private', 'myWallets', 'available', token.id, 'balance'], '0'),
+      locked: get(state, ['private', 'myWallets', 'locked', token.id, 'balance'], '0')
     }
   })
 
