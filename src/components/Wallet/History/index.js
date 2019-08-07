@@ -48,7 +48,8 @@ function Entry ({ command, latestBlock }) {
 
 export default function History () {
   const { state } = useStoreContext()
-  const commands = Object.values(get(state, 'private.myCommands', {}))
+  let commands = {...get(state, 'private.myCommands', {}), ...get(state, 'private.myCommandHistory', {})}
+  commands = Object.values(commands)
   const latestBlock = get(state, 'public.latestBlock.number')
   const Entries = sortBy(commands, command => command.created * -1).map(
     command => (
