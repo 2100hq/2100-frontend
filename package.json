@@ -34,7 +34,8 @@
     "eject": "react-scripts eject",
     "standard": "standard --verbose --fix",
     "prettier": "prettier-standard '**/*.js' --ignore-path=./scripts",
-    "standardize": "npm run prettier && npm run standard --fix"
+    "standardize": "npm run prettier && npm run standard --fix",
+    "deploy": "npm run build && firebase deploy"
   },
   "eslintConfig": {
     "extends": "react-app"
