@@ -1,11 +1,40 @@
-.wrapper-for-testing-remove-me{
-	margin-bottom: 2rem;
+@mixin asset-badge($color){
+	font-family: 'Noto Serif', serif;
+	font-size: 1.2rem;
+	color: #333;
+	padding: 0.5rem 2rem;
+	background-color: $color;
+	border-radius: 10rem;
+	position: relative;
+	top: 0rem;
+
+	&:hover{
+		color: #333;
+		text-decoration: none;
+		background-color: lighten($color,2%);
+		position: relative;
+		top: -0.1rem;
+		transition: all 50ms linear; 
+		box-shadow: 3px 3px 0px 1px rgba(0,0,0,0.08);
+
+	}	
 }
 
-.asset-badge {
-	a{
-		background-color: red;
-		padding: 0.5rem 2rem;
-		border-radius: 1rem;		
+.asset-badge{
+
+	&.green{
+		@include asset-badge(rgba(81, 181, 107,0.5));
+	}
+
+	&.blue{
+		@include asset-badge(rgba(5, 174, 170,0.25));		
+	}
+
+	&.lightpurple{
+		@include asset-badge(rgba(149, 67, 175,0.30));
+	}
+
+	&.darkpurple{
+		@include asset-badge(rgba(68, 122, 172,0.50));
 	}
 }
