@@ -50,12 +50,12 @@ function SignedIn ({ state }) {
   )
 
   return (
-    <>
-      <li className='nav-item'>
+    [
+      <li className='nav-item' key='balances'>
         <Balances state={state} />
       </li>
-
-      <Dropdown as='li' className='nav-item'>
+    ,
+      <Dropdown as='li' className='nav-item' key='dropdown'>
         {wave}
         <Dropdown.Toggle as='a' className='nav-link in' href='#'>
           <AddressIcon state={state} />
@@ -69,7 +69,7 @@ function SignedIn ({ state }) {
           <Dropdown.Item href='accounts-sign-in.html'>Sign Out</Dropdown.Item>
         </Dropdown.Menu>
       </Dropdown>
-    </>
+    ]
   )
 }
 
