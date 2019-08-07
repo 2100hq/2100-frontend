@@ -15,12 +15,14 @@ function selectActive (state) {
 
   const stakes = get(state, ['public', 'stakes'], {})
   const myStakes = get(state, ['private', 'myStakes'], {})
-  const myWallets = get(state, ['private', 'myWallets', 'available'], {})
 
   Object.values(active).forEach(token => {
     token.stakes = get(stakes, token.id, '0')
     token.myStake = get(myStakes, token.id, '0')
-    token.myWallet = get(myWallets, [token.id, 'balance'], '0')
+    token.balances = {
+      available: get(state, ['private', 'myWallets', 'available', token.id,  'balance'], '0'),
+      locked: get(state, ['private', 'myWallets',  'locked',  token.id, 'balance'], '0')
+    }
   })
 
   return active
