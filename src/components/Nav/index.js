@@ -4,15 +4,9 @@ import { useStoreContext } from '../../contexts/Store'
 import User from './User'
 import './style.scss'
 
-function WalletNavItem ({ state }) {
+function ProtectedNavItem ({state, children}) {
   if (!state.private.isSignedIn) return null
-  return (
-    <li className='nav-item'>
-      <Link to='/wallet' className='nav-link'>
-        Wallet
-      </Link>
-    </li>
-  )
+  return children
 }
 
 export default function Nav (props) {
@@ -41,9 +35,17 @@ export default function Nav (props) {
             </Link>
           </li>
           <WalletNavItem state={state} />
+          <ProtectedNavItem state={state}>
+            <li className='nav-item'>
+              <Link to='/wallet' className='nav-link'>
+                Wallet
+              </Link>
+            </li>
+          </ProtectedNavItem>
+
         </ul>
         <ul className='navbar-nav'>
-          <User {...props} key='user'/>
+          <User {...props} key='user' />
         </ul>
       </div>
     </nav>
