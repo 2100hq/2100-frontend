@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
 import { useStoreContext } from '../../contexts/Store'
-import { toDecimals, balances, daiBalances, BN, isApproved } from '../../utils'
+import { toDecimals, BN, isApproved } from '../../utils'
 import Selectors from '../../utils/selectors'
 import History from './History'
 
@@ -10,9 +10,9 @@ export default function Wallet () {
   const [diff, setDiff] = useState(BN(0))
   const { dispatch, state, actions } = useStoreContext()
   if (!state.private.isSignedIn) return <Redirect to='/' />
-  let { total: lockedDaiTotal, pending } = balances(state)
+  let { total: lockedDaiTotal, pending } = state.controller.balances
   let displayLockedDai = toDecimals(lockedDaiTotal.add(pending).add(diff))
-  let { available: daiAvailable } = daiBalances(state)
+  let { available: daiAvailable } = state.dai.balances
   let daiDisplay = toDecimals(daiAvailable.sub(diff))
 
   const noDai = daiDisplay === '0.00'

@@ -1,5 +1,5 @@
 import { get, keyBy } from 'lodash'
-
+import { BN } from './'
 function selectPending (state) {
   const pending = keyBy(get(state, ['public', 'tokens', 'pending'], {}), 'name') // key both by name
   const createCoupons = get(state, ['public', 'coupons', 'create'], {})
@@ -33,6 +33,46 @@ function selectTokens (state) {
   return { tokens }
 }
 
+function controllerBalances (state, controller) {
+  const total = BN(controller.wallet.balance || '0')
+
+  const available = total.sub(
+    Object.entries(get(state, 'private.myStakes', {})).reduce(
+      (sum, [address, stake]) => {
+        if (address === controller.address) return sum
+        return sum.add(stake)
+      },
+      BN(0)
+    )
+  )
+
+  get(state, ['private', 'myStakes', controller.address], '0')
+
+  const pending = Object.values(get(state, 'private.myCommands', {})).reduce(
+    (sum, command) => {
+      if (command.done) return sum
+      if (/pendingDeposit/.test(command.type)) return sum.add(command.value)
+      if (/withdrawPrimary/.test(command.type)) return sum.sub(command.value)
+      return sum
+    },
+    BN(0)
+  )
+  // console.log('PENDING',pending.toString())
+  return {
+    available,
+    pending,
+    total
+  }
+}
+
+function daiBalances (state, dai) {
+  const available = BN(dai.wallet.balance || 0)
+  return {
+    available,
+    total: available
+  }
+}
+
 function selectContracts (state) {
   const controller = {}
   controller.contract = get(state, 'config.contracts.controller')
@@ -44,6 +84,7 @@ function selectContracts (state) {
     (controller.contract || {}).address
   ]
   controller.wallet = get(state, controller.walletPath, {})
+  controller.balances = controllerBalances(state, controller)
 
   const dai = {}
   dai.contract = get(state, 'config.contracts.dai')
@@ -55,6 +96,7 @@ function selectContracts (state) {
     (dai.contract || {}).address
   ]
   dai.wallet = get(state, dai.walletPath, {})
+  dai.balances = daiBalances(state, dai)
   return { dai, controller }
 }
 
