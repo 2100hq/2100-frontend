@@ -116,7 +116,6 @@ export default function StoreProvider ({ children }) {
     }
 
     Promise.all(requests).then(([balance, allowance]) => {
-      console.log('balanceOf', balance.toString(),'allowance', allowance.toString())
       dispatch(
         actions.update(dai.walletPath, {
           balance: balance.toString(),
