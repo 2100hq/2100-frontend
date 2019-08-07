@@ -103,6 +103,7 @@ export default function SocketProvider ({ children }) {
       auth: call('auth'),
       public: call('public'),
       admin: call('admin'),
+      system: call('system'),
       private: call('private')
     }
     return { network, call, listen, stop, ...reqresp }
