@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, Redirect } from 'react-router-dom'
 import { useStoreContext } from '../../../contexts/Store'
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon'
 import './style.scss'
@@ -74,9 +74,13 @@ function SignedIn ({ state }) {
 }
 
 function NotSigningIn ({ onClick }) {
+  function handleClick(e){
+    e.preventDefault()
+    onClick()
+  }
   return (
     <li className='nav-item'>
-      <a href='#' className='nav-link btn' onClick={onClick}>
+      <a href='#' className='nav-link btn' onClick={handleClick}>
         <img className='wallet-logo' src='./img/metamask.png' />
         Sign In
       </a>
@@ -92,7 +96,8 @@ function SigningIn () {
   )
 }
 
-export default function User () {
+export default function User (props) {
+  const prevRoute = get(props,'location.state.from')
   const { state, dispatch, actions } = useStoreContext()
   const intent = ['intents', 'signingIn']
   const signingIn = get(state, intent)
@@ -107,10 +112,11 @@ export default function User () {
 
   const setSigningIn = val => dispatch(actions.update(intent, val))
 
-  // AUTO SIGN IN
-  // useEffect(() => {
-  //   setSigningIn(true)
-  // }, [])
+  // Auto Sign in
+  useEffect(() => {
+    if (prevRoute) setSigningIn(true)
+  }, [prevRoute])
+
   useEffect(() => {
     console.log('isSignedIn')
     dispatch(actions.update(['private', 'isSignedIn'], isSignedIn))
@@ -153,11 +159,12 @@ export default function User () {
 
   if (!state.web3.hasWallet) return null
 
-  return isSignedIn ? (
-    <SignedIn state={state} />
-  ) : signingIn ? (
-    <SigningIn />
-  ) : (
-    <NotSigningIn onClick={() => setSigningIn(true)} />
-  )
+  if (isSignedIn) {
+    if (prevRoute) return <Redirect to={prevRoute} key='redirect'/>
+    return <SignedIn state={state} key='signedin'/>
+  } else if (signingIn){
+    return <SigningIn  key='signingin' />
+  } else {
+    return <NotSigningIn onClick={() => setSigningIn(true)} key='signedout'/>
+  }
 }

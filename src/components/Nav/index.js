@@ -15,7 +15,7 @@ function WalletNavItem ({ state }) {
   )
 }
 
-export default function Nav () {
+export default function Nav (props) {
   const { state } = useStoreContext()
   return (
     <nav className='navbar navbar-expand-lg navbar-light'>
@@ -43,7 +43,7 @@ export default function Nav () {
           <WalletNavItem state={state} />
         </ul>
         <ul className='navbar-nav'>
-          <User />
+          <User {...props} key='user'/>
         </ul>
       </div>
     </nav>

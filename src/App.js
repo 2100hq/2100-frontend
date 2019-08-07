@@ -22,7 +22,7 @@ class App extends Component {
   render () {
     return (
       <Router>
-        <Nav />
+        <Route path='' component={Nav} />
         <div className='container-fluid'>
           <Route exact path='/' component={Discover} />
           <Route path='/wallet' component={Wallet} />
