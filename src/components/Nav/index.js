@@ -34,7 +34,13 @@ export default function Nav (props) {
               Discover
             </Link>
           </li>
-          <WalletNavItem state={state} />
+          <ProtectedNavItem state={state}>
+            <li className='nav-item'>
+              <Link to='/portfolio' className='nav-link'>
+                Portfolio
+              </Link>
+            </li>
+          </ProtectedNavItem>
           <ProtectedNavItem state={state}>
             <li className='nav-item'>
               <Link to='/wallet' className='nav-link'>
