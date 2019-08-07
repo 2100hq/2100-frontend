@@ -9,9 +9,12 @@ export const BN = utils.bigNumberify
 
 export const toDecimals = (bn, Cast = String) => {
   let n = utils.formatEther(bn)
-  if (onlyOneDecimal(n)) n = `${n}0`
+  n = convertToTwoDecimals(n)
   return Cast(n)
 }
+
+export const convertToTwoDecimals = n => (onlyOneDecimal(n) ? `${n}0` : n)
+
 export const fromDecimals = utils.parseEther
 
 export const balances = state => {
@@ -22,7 +25,6 @@ export const balances = state => {
     Object.entries(get(state, 'private.myStakes', {})).reduce(
       (sum, [address, stake]) => {
         if (address === controller.address) return sum
-        // console.log(address, '=>', stake)
         return sum.add(stake)
       },
       BN(0)
