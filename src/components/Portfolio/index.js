@@ -43,6 +43,25 @@ export default function Portfolio (props) {
       </tr>
     )
   })
+  let chart = <div style={{marginTop: '1em'}}><h4>You're not {chartName} any tokens</h4></div>
+  if (chartData.length > 0) {
+    chart = (
+      <RadialChart
+        data={chartData}
+        width={300}
+        height={300}
+        labelsRadiusMultiplier={1.1}
+        labelsStyle={{fontSize: 16, fill: '#222'}}
+        showLabels
+        labelsRadiusMultiplier={0.5}
+        labelsStyle={{color: '#fff'}}
+        style={{stroke: '#fff', strokeWidth: 2}}
+        animation
+        margin={{top: 100}}
+        innerRadius={99}
+      />
+    )
+  }
   return (
     <div className='container-fluid'>
       <div className='row'>
@@ -50,7 +69,7 @@ export default function Portfolio (props) {
           <div className='card'>
             <div className='card-body'>
               <h3>{state.web3.account.slice(0, 7)}</h3>
-              <Nav variant='pills' defaultActiveKey={chartName} onSelect={setChartName}>
+              <Nav variant='pills' defaultActiveKey={chartName} onSelect={key => setChartName(key)}>
                 <Nav.Item>
                   <Nav.Link eventKey='minting'>Minting</Nav.Link>
                 </Nav.Item>
@@ -58,25 +77,12 @@ export default function Portfolio (props) {
                   <Nav.Link eventKey='hodling'>Hodling</Nav.Link>
                 </Nav.Item>
               </Nav>
-              <RadialChart
-                data={chartData}
-                width={300}
-                height={300}
-                labelsRadiusMultiplier={1.1}
-                labelsStyle={{fontSize: 16, fill: '#222'}}
-                showLabels
-                labelsRadiusMultiplier={0.5}
-                labelsStyle={{color: '#fff'}}
-                style={{stroke: '#fff', strokeWidth: 2}}
-                animation
-                margin={{top: 100}}
-                innerRadius={99}
-              />
+              { chart }
             </div>
           </div>
         </div>
         <div className='col-md-4'>
-          <table class='table'>
+          <table className='table'>
             <thead>
               <tr>
                 <th scope='col'>Asset</th>
