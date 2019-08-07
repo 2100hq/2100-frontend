@@ -21,7 +21,13 @@ export const contracts = artifacts.reduce((contracts, artifact) => {
   return contracts
 }, {})
 
+const networkNames = {
+  '2100': 'Artax Testnet',
+  '1': 'Ethereum Mainnet'
+}
+
 export default {
+  networkName: networkNames[networkId.toString()],
   networkId,
   host,
   contracts

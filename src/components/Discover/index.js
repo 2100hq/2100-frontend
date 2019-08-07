@@ -4,7 +4,7 @@ import { toDecimals } from '../../utils'
 import { sortBy } from 'lodash'
 import { OverlayTrigger, Tooltip } from 'react-bootstrap'
 import Allocator from '../Allocator'
-
+import {get} from 'lodash'
 const DiscoverOptions = {
   All: {
     filter: tokens => {
@@ -139,6 +139,9 @@ export default function Discover () {
   const { state, dispatch, actions } = useStoreContext()
   const tabNames = Object.keys(DiscoverOptions)
   const [active, setActive] = useState(tabNames[0])
+  const { network } = state
+  const latestBlock = get(state, 'public.latestBlock.number')
+  const blockNumberDisplay = latestBlock ? `Block #${latestBlock}` : null
 
   if (!state.tokens) return null
 
@@ -250,12 +253,12 @@ export default function Discover () {
               <div className='card-body'>
                 <div className='small'>
                   <div>
-                    <i className='fas fa-circle' style={{ color: 'green' }} />{' '}
-                    Connected
+                    <i className='fas fa-circle' style={{ color: network.loading ? 'yellow' : network.connected ? 'green' : 'red' }} />{' '}
+                    {network.loading ? 'Loading' : network.connected ? 'Connected' : 'Not Connected'}
                   </div>
                   <hr />
-                  <div>Ethereum Mainnet</div>
-                  <div>Block #8220171</div>
+                  <div>{state.config.networkName}</div>
+                  <div>{blockNumberDisplay}</div>
                 </div>
               </div>
             </div>
