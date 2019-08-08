@@ -10,7 +10,7 @@ import SocketProvider from './contexts/Socket'
 import StoreProvider from './contexts/Store'
 
 const MetaMask = new Connectors.InjectedConnector({
-  supportedNetworks: [1, 4, 2100]
+  supportedNetworks: [Number(process.env.REACT_APP_NETWORK_ID)]
 })
 
 ReactDOM.render(
