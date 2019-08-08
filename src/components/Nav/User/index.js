@@ -19,7 +19,8 @@ function Balances ({ state }) {
 
 function AddressIcon ({ state }) {
   const account = state.web3.account
-  const address = account.slice(0, 7) // state.web3.account.slice(0,7)
+  const username = get(state, 'private.username')
+  const displayName = username ? username : account.slice(0, 7)
   const icon = (
     <span className='in'>
       <Jazzicon diameter={15} seed={jsNumberForAddress(account)} />
@@ -27,7 +28,7 @@ function AddressIcon ({ state }) {
   )
   return (
     <span>
-      {address} {icon}
+      {displayName} {icon}
     </span>
   )
 }
