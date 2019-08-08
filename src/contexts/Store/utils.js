@@ -21,9 +21,15 @@ export function remapPrivateData (action) {
         command => command.transactionHash || command.id
       )
     }
+    if (data.myCommandHistory) {
+      data.myCommandHistory = keyBy(
+        Object.values(data.myCommandHistory),
+        command => command.transactionHash || command.id
+      )
+    }
   }
-  // ['private', 'myCommands']
-  if (path.length === 2 && path[1] === 'myCommands') {
+  // ['private', 'myCommands' || 'myCommandHistory']
+  if (path.length === 2 && (path[1] === 'myCommands' || path[1] === 'myCommandHistory')) {
     data = keyBy(
       Object.values(data),
       command => command.transactionHash || command.id
@@ -31,7 +37,7 @@ export function remapPrivateData (action) {
   }
 
   // ['private', 'myCommands', 'id123']
-  if (path.length === 3 && path[1] === 'myCommands') {
+  if (path.length === 3 && (path[1] === 'myCommands' || path[1] === 'myCommandHistory')) {
     path[2] = data.transactionHash || data.id
   }
 

@@ -4,6 +4,7 @@ import { toDecimals } from '../../utils'
 import { sortBy } from 'lodash'
 import { OverlayTrigger, Tooltip } from 'react-bootstrap'
 import Allocator from '../Allocator'
+import Feed from '../Feed'
 import {get} from 'lodash'
 const DiscoverOptions = {
   All: {
@@ -222,28 +223,7 @@ export default function Discover () {
       <div className='col-md-4' style={{ paddingTop: '1rem' }}>
         <div className='row'>
           <div className='col-md-12'>
-            <div className='card'>
-              <img
-                className='card-img-top'
-                src='../img/vitalik.jpg'
-                alt='Card image cap'
-              />
-              <div className='card-body'>
-                <h5 className='card-title'>$vitalikbuterin</h5>
-                <p className='card-text'>
-                  Creator of the Ethereum smart contract platform.
-                </p>
-              </div>
-              <ul className='list-group list-group-flush'>
-                <li className='list-group-item'>1000 Followers</li>
-                <li className='list-group-item'>6,000 Minting</li>
-              </ul>
-              <div className='card-body'>
-                <a href='#' className='card-link'>
-                  Stake $twitter:vitalikbuterin
-                </a>
-              </div>
-            </div>
+            <Feed />
           </div>
         </div>
         <hr />
