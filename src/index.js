@@ -17,7 +17,7 @@ ReactDOM.render(
   <Web3Provider connectors={{ MetaMask }} libraryName={'ethers.js'}>
     <SocketProvider>
       <StoreProvider>
-        <Web3Consumer>{web3 => <App web3={web3} />}</Web3Consumer>
+        <App />
       </StoreProvider>
     </SocketProvider>
   </Web3Provider>,
