@@ -111,6 +111,8 @@ export default function User (props) {
 
   const setSigningIn = val => dispatch(actions.update(intent, val))
 
+  const publicAddress = get(state, 'private.me.publicAddress')
+
   // Auto Sign in
   useEffect(() => {
     if (prevRoute) setSigningIn(true)
@@ -147,14 +149,15 @@ export default function User (props) {
   // logout action effect
   useEffect(() => {
     if (!isSignedIn) return
+    if (!publicAddress) return // waiting for public address
     if (
-      get(state, 'private.me.publicAddress', '').toLowerCase() ===
+      publicAddress.toLowerCase() ===
       get(state, 'web3.account', '').toLowerCase()
     ) {
       return
     }
     dispatch(actions.logout())
-  }, [isSignedIn, state.web3.account])
+  }, [isSignedIn, state.web3.account, publicAddress])
 
   if (!state.web3.hasWallet) return null
 
