@@ -2,9 +2,9 @@
 # yarn lockfile v1
 
 
-"2100-contracts@github:2100hq/2100-contracts#v0.2.1":
-  version "0.2.1"
-  resolved "https://codeload.github.com/2100hq/2100-contracts/tar.gz/75c836832ab3fcff0b10021359c6cc5b02ca3e87"
+"2100-contracts@github:2100hq/2100-contracts#v0.2.2":
+  version "0.2.2"
+  resolved "https://codeload.github.com/2100hq/2100-contracts/tar.gz/e89ad3b5e5eefc2c005c40ff90c2fd41c8ff24c1"
 
 "@0x/assert@^2.1.0":
   version "2.1.0"
