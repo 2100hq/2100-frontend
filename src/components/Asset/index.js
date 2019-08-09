@@ -256,7 +256,7 @@ class Asset extends Component {
               </div>
               <div className='total-user-minting'>
                 <span>
-                  ◈ {this.props.user.stakes[this.state.asset.username] || 0}{' '}
+                  ◈ {this.props.user.totalStakes[this.state.asset.username] || 0}{' '}
                   minting
                 </span>
                 <Allocator {...this.props} asset={this.state.asset} />

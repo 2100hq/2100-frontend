@@ -13,11 +13,14 @@ function selectPending (state) {
 function selectActive (state) {
   const active = keyBy(get(state, ['public', 'tokens', 'active'], {}), 'name') // key both by name
 
-  const stakes = get(state, ['public', 'stakes'], {})
+  const allStakes = get(state, ['public', 'stakes'], {})
   const myStakes = get(state, ['private', 'myStakes'], {})
 
   Object.values(active).forEach(token => {
-    token.stakes = get(stakes, token.id, '0')
+    const tokenStakes = get(allStakes, token.id, {})
+    token.totalStakes = Object.values(tokenStakes).reduce( (sum,stake)=> {
+      return sum.add(BN(stake))
+    }, BN(0)).toString()
     token.myStake = get(myStakes, token.id, '0')
     token.balances = {
       available: get(state, ['private', 'myWallets', 'available', token.id, 'balance'], '0'),

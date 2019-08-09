@@ -11,7 +11,7 @@ const DiscoverOptions = {
     filter: tokens => {
       tokens = tokens.filter(token => !token.pending)
       tokens = sortBy(tokens, token => {
-        return token.id // 1-toDecimals(token.stakes,Number)
+        return token.id
       })
       return tokens
     },
@@ -28,7 +28,7 @@ const DiscoverOptions = {
       null,
       <span>
         <img src='../img/dai.png' style={{ width: '16px' }} />{' '}
-        {toDecimals(props.token.stakes)}
+        {toDecimals(props.token.totalStakes)}
       </span>,
       <Allocator {...props} />
     ]

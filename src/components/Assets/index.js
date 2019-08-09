@@ -142,7 +142,7 @@ class Index extends Component {
                       </td>
                       <td className='align-right'>{formatNum(asset.staked)}</td>
                       <td className='align-right'>
-                        {this.props.user.stakes[asset.username]}
+                        {this.props.user.totalStakes[asset.username]}
                       </td>
                       <td>
                         <Allocator {...this.props} asset={asset} />
