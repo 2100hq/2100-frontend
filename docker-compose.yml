@@ -33,3 +33,13 @@ services:
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
+
+  ganache:
+      image: trufflesuite/ganache-cli:latest
+      command: "node /app/ganache-core.docker.cli.js --db /db --accounts 10  -e 999 --verbose --blockTime 5 --networkId 21 --mnemonic '${GANACHE_MNEMONIC}'"
+      volumes:
+        - ./ganache:/db
+      ports:
+        - "8545:8545"
+      env_file:
+         - .env
