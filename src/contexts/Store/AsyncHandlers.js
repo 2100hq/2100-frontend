@@ -189,7 +189,7 @@ export default function AsyncHandlers (libs = {}) {
 
       try {
         const resp = await libs.socket.private('stake', {
-          [action.params.address]: [action.params.stake]
+          [action.params.address]: action.params.stake
         })
         return resp
       } catch (e) {
