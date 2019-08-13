@@ -9,7 +9,7 @@ function Row ({token}) {
     start: 0,
     end: token.balance,
     delay: 0,
-    decimals: 8,
+    decimals: 6,
     duration: 0.25
   })
   useEffect(() => {
