@@ -105,13 +105,19 @@ function selectContracts (state) {
   return { dai, controller }
 }
 
+function selectCommands(state){
+  return Object.values({...get(state, 'private.myCommands', {}), ...get(state, 'private.myCommandHistory', {})})
+}
+
 export default function Selectors (state) {
   const contracts = selectContracts(state)
 
   const tokens = selectTokens(state)
 
+  const commands = selectCommands(state)
   return {
     ...contracts,
-    ...tokens
+    ...tokens,
+    commands
   }
 }
