@@ -47,11 +47,17 @@ export default function Allocator ({ token }) {
     if (isDisabled) return
     const newLevel = Number(i) > 0 && Number(i) === uiLevel ? uiLevel - 1 : Number(i)
     if (newLevel === uiLevel) return
+    const oldLevel = uiLevel
     dispatch(actions.update('intents.allocating', true))
     console.log('clicked', token.name, newLevel, 'prev:', token.level)
     setUiLevel(newLevel)
     const resp = await dispatch(actions.setStakeLevel(token.id, newLevel))
-    setCommandId(resp && resp.id)
+    if (!resp) {
+      setUiLevel(oldLevel)
+      dispatch(actions.update('intents.allocating', false))
+      return
+    }
+    setCommandId(resp.id)
   }
 
   const stakeDots = [0, 1, 2].map((i) => {
