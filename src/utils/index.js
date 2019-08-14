@@ -45,7 +45,7 @@ export const balances = state => {
     },
     BN(0)
   )
-  console.log('PENDING',pending.toString())
+  // console.log('PENDING',pending.toString())
   return {
     available,
     pending,
