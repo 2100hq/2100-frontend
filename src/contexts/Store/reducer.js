@@ -22,7 +22,7 @@ export default function reducer (state, action) {
       if (isPrivateUpdate) {
         action = remapPrivateData(action)
       }
-      console.log(action.params.path, action.params.data)
+      // console.log(action.params.path, action.params.data)
       return { ...set(state, action.params.path, action.params.data) }
     case 'ERROR': {
       console.log('ERROR', action.params)

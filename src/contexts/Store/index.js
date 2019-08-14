@@ -131,18 +131,18 @@ export default function StoreProvider ({ children }) {
   ])
 
   // set username
-  useEffect( ()=> {
+  useEffect(() => {
     if (!privState.private.isSignedIn) return
     if (privState.private.username) return
-    const activeTokens =  Object.values(get(privState, 'public.tokens.active', {}))
+    const activeTokens = Object.values(get(privState, 'public.tokens.active', {}))
     const publicAddress = get(privState, 'private.me.publicAddress', '').toLowerCase()
-    console.log();
-    console.log(publicAddress, 'activeTokens', activeTokens);
+    // console.log();
+    // console.log(publicAddress, 'activeTokens', activeTokens);
 
-    const userToken = activeTokens.find( token => get(token,'ownerAddress','').toLowerCase() ===  publicAddress)
+    const userToken = activeTokens.find(token => get(token, 'ownerAddress', '').toLowerCase() === publicAddress)
 
     if (!userToken) return
-    dispatch(actions.update('private.username',userToken.name))
+    dispatch(actions.update('private.username', userToken.name))
   }, [Object.values(get(privState, 'public.tokens.active', {})), privState.private.me, privState.private.isSignedIn])
 
   // combine private state with selectors
@@ -150,10 +150,10 @@ export default function StoreProvider ({ children }) {
   // provide context of all these to children
   const contextValue = useMemo(() => {
     const state = { ...privState, ...Selectors(privState) }
-    console.log()
-    console.log(state)
+    // console.log()
+    window.appstate = state
 
-    const dispatcher = Dispatcher({ dispatch, socket, web3, state })
+    const dispatcher = Dispatcher({ dispatch, socket, web3, state, actions })
     return { dispatch: dispatcher, state, actions }
   }, [privState, socket, web3])
 
