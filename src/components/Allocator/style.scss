@@ -40,6 +40,7 @@
 // }
 
 %action-dot{
+    background-color: #ccc;
     border:1px solid transparent;
 }
 
@@ -55,7 +56,6 @@
     border-radius: 50%;
     display: inline-block;
     margin-right: 0.25em;
-    border:1px solid #ccc;
     &.disabled{
         @extend %disabled;
     }
@@ -64,17 +64,16 @@
 
 
 .no-stake{
-    @extend %action-dot;
+    border:1px solid #ccc;
     &.active{
+        border-color: transparent;
         background-color: hsl(90, 20%, 85%);
-        @extend %disabled;
     }
 }
 .min-stake{
     @extend %action-dot;
     &.active{
         background-color: hsl(90, 70%, 75%);
-        @extend %disabled;
     }
 }
 
@@ -82,6 +81,5 @@
     @extend %action-dot;
     &.active{
         background-color: hsl(90, 100%, 47%);
-        @extend %disabled;
     }
 }
