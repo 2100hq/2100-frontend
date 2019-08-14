@@ -14,7 +14,11 @@ const actions = {
   setAdmin: data => actionGenerator('SET_ADMIN', data),
   useCreateCoupon: coupon => actionGenerator('USE_CREATE_COUPON', coupon),
   setStake: (address, stake) =>
-    actionGenerator('SET_STAKE', { address, stake }),
+    actionGenerator('SET_STAKE', { [address]: stake }),
+  setStakes: (stakes) =>
+    actionGenerator('SET_STAKE', stakes),
+  setStakeLevel: (address, level) =>
+    actionGenerator('SET_STAKE_LEVEL', { [address]: level }),
   error: (intent, error) => actionGenerator('ERROR', { [intent]: error })
 }
 

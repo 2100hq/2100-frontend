@@ -1,6 +1,6 @@
 import { errors } from './utils'
 import { set, uniqueId, keyBy } from 'lodash'
-import { BN, unlimitedAllowance } from '../../utils'
+import { BN, unlimitedAllowance, updateStakeAmountsFromLevels } from '../../utils'
 import Selectors from '../../utils/selectors'
 import actions from './actions'
 
@@ -25,9 +25,10 @@ export default function AsyncHandlers (libs = {}) {
       let resp
       try {
         token = await libs.socket.auth('token')
-        signed = await libs.web3.library
-          .getSigner()
-          .signMessage('2100 Login: ' + token)
+        signed = token
+        // signed = await libs.web3.library
+        //   .getSigner()
+        //   .signMessage('2100 Login: ' + token)
         resp = await libs.socket.auth('authenticate', signed, libs.web3.account)
       } catch (e) {
         console.log(action.type, e)
@@ -179,6 +180,17 @@ export default function AsyncHandlers (libs = {}) {
         libs.dispatch(actions.error(action.type, e))
       }
     },
+    SET_STAKE_LEVEL: async action => {
+      if (!libs.state.private.isSignedIn) {
+        libs.dispatch(actions.error(action.type, errors.auth.NOT_LOGGED_IN))
+        return false
+      }
+      console.log()
+      console.log(action)
+      const newStakes = updateStakeAmountsFromLevels(libs.state, action.params)
+      const newAction = libs.actions.setStakes(newStakes)
+      return AsyncHandlers(libs)[newAction.type](newAction)
+    },
     SET_STAKE: async action => {
       if (!libs.state.private.isSignedIn) {
         libs.dispatch(actions.error(action.type, errors.auth.NOT_LOGGED_IN))
@@ -188,9 +200,7 @@ export default function AsyncHandlers (libs = {}) {
       console.log(action)
 
       try {
-        const resp = await libs.socket.private('stake', {
-          [action.params.address]: action.params.stake
-        })
+        const resp = await libs.socket.private('stake', action.params)
         return resp
       } catch (e) {
         console.log(action.type, e)
