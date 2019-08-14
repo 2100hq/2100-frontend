@@ -60,8 +60,8 @@ export default function Allocator ({ token }) {
     setCommandId(resp.id)
   }
 
-  const stakeDots = [0, 1, 2].map((i) => {
-    const classNames = [dotsConfig[i].class]
+  const stakeDots = [0, 1, 2,3].map((i) => {
+    const classNames = [`stake${i}`]
     if (i == 0 && uiLevel > 0) classNames.push('active')
     if (i > 0 && uiLevel >= i) classNames.push('active')
     if (isDisabled) classNames.push('disabled')

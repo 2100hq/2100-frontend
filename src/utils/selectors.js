@@ -26,7 +26,7 @@ function getStakeLevels (state) {
   // console.log('minPercent',minPercent.toString());
   const maxPercent = BigNumber(maxStake).div(totalStaked.toString()) // 3
   // console.log('maxPercent',maxPercent.toString());
-  const multiplier = BigNumber(2).div(maxPercent) // 3
+  const multiplier = BigNumber(3).div(maxPercent) // 3
   // console.log('multiplier',multiplier.toString());
 
   return myStakes.reduce((buttons, [address, stake]) => {
