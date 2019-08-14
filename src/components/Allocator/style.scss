@@ -38,3 +38,48 @@
 //         cursor: pointer;
 //     }
 // }
+
+%action-dot{
+    background-color: #ccc;
+    border:1px solid transparent;
+}
+
+%disabled{
+    cursor: default;
+}
+
+.stake-dots span{
+    cursor: pointer;
+    display: inline-block;
+    height: 1em;
+    width: 1em;
+    border-radius: 50%;
+    display: inline-block;
+    margin-right: 0.25em;
+    &.disabled{
+        @extend %disabled;
+    }
+}
+
+
+
+.no-stake{
+    border:1px solid #ccc;
+    &.active{
+        border-color: transparent;
+        background-color: hsl(90, 20%, 85%);
+    }
+}
+.min-stake{
+    @extend %action-dot;
+    &.active{
+        background-color: hsl(90, 70%, 75%);
+    }
+}
+
+.max-stake {
+    @extend %action-dot;
+    &.active{
+        background-color: hsl(90, 100%, 47%);
+    }
+}

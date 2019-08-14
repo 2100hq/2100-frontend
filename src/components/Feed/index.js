@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react'
 import { useStoreContext } from '../../contexts/Store'
 import { toDecimals, BN } from '../../utils'
-import { get, sortBy,cloneDeep, groupBy } from 'lodash'
+import { get, sortBy, cloneDeep, groupBy } from 'lodash'
 import { useCountUp } from 'react-countup'
 
 function BalanceCountUp ({token}) {
@@ -20,16 +20,15 @@ function BalanceCountUp ({token}) {
   )
 }
 
-function getLatestBlock(state){
+function getLatestBlock (state) {
   return get(state, 'public.latestBlock.number')
 }
 
-
-function getTokens(state){
+function getTokens (state) {
   return cloneDeep(state.tokens || {})
 }
 
-function getIsSignedIn(state) {
+function getIsSignedIn (state) {
   return get(state, 'private.isSignedIn', false)
 }
 
@@ -42,36 +41,24 @@ const defaultDelay = 3000
       </ul>
       */
 
-function getStakeStats(token, previous){
-  if (!previous) return {changed: false, amount: "0"}
+function getStakeStats (token, previous) {
+  if (!previous) return {changed: false, amount: '0'}
   const currentStakes = BN(token.totalStakes)
-  const prevStakes = BN(previous.totalStakes || "0")
+  const prevStakes = BN(previous.totalStakes || '0')
   let amount = BN(currentStakes).sub(prevStakes)
   let percent = BN(0)
   const changed = !amount.eq(0)
   const increased = amount.gt(0)
   amount = amount.abs()
-  // console.log(' ');
-  // console.log(' ');
-
-  // console.log(token.name, token.id);
-  // console.log('prevStakes.eq(0)', prevStakes.eq(0), prevStakes.toString());
-  // console.log('currentStakes.eq(0)', currentStakes.eq(0), currentStakes.toString());
-  // console.log('AMOUNT', amount.toString())
-  // console.log('CHANGED', changed, 'INCREASED', increased);
-  // if (changed) console.log('amount.div(prevStakes.eq(0) ? amount : prevStakes)', amount.div(prevStakes.eq(0) ? amount : prevStakes).toString());
-  // if (changed) console.log('amount.div(currentStakes.eq(0) ? amount : currentStakes)', amount.div(currentStakes.eq(0) ? amount : currentStakes).toString());
-  // console.log('------------------');
-  // console.log();
 
   // if (changed)
   //   {percent = increased ? amount.div(prevStakes.eq(0) ? amount : prevStakes) : amount.div(currentStakes.eq(0) ? amount : currentStakes)}
   // percent = percent.mul(100).toString()
   return {
-   amount,
-   changed,
-   increased,
-  percent
+    amount,
+    changed,
+    increased,
+    percent
   }
 }
 
@@ -88,19 +75,18 @@ function getStakeStats(token, previous){
 //   )
 // }
 
-function getCommands(state, latestBlock){
-  return state.commands.filter( command => {
+function getCommands (state, latestBlock) {
+  return state.commands.filter(command => {
     if (!command.done) return false
     if (!/transferStakeReward|transferOwnerReward|transferCreatorReward/.test(command.type)) return false
     return command.blockNumber === latestBlock
   })
 }
 
-
-function CommandStat({command}){
+function CommandStat ({command}) {
   let action
 
-  switch(command.type){
+  switch (command.type) {
     case 'transferOwnerReward':
       action = 'owners reward'
       break
@@ -109,24 +95,21 @@ function CommandStat({command}){
       break
     case 'transferCreatorReward':
       action = 'creators reward'
-      break;
+      break
     default:
       throw new Error(`Unknown type ${command.type}`)
   }
   const amount = toDecimals(command.amount).split('.')
-  return <li>{action}: {amount[0]}.{amount[1].slice(0,6)}</li>
+  return <li>{action}: {amount[0]}.{amount[1].slice(0, 6)}</li>
 }
 
-function TokenStat({token, commands}){
-  console.log();
-  console.log("COMMANDS", commands);
-
+function TokenStat ({token, commands}) {
   return (
     <div>
       <b>${token.name}</b>
       <ul>
         {
-          commands.map( command => <CommandStat command={command} key={command.id}/>)
+          commands.map(command => <CommandStat command={command} key={command.id} />)
         }
         <li>Total balance: <BalanceCountUp token={token} key='balance' /></li>
       </ul>
@@ -134,7 +117,7 @@ function TokenStat({token, commands}){
   )
 }
 
-export default function Feed(){
+export default function Feed () {
   const { state } = useStoreContext()
   const [latestBlock, setLatestBlock] = useState(getLatestBlock(state))
 
@@ -145,9 +128,9 @@ export default function Feed(){
 
   commands = groupBy(commands, 'tokenid')
 
-  useEffect( () =>{
+  useEffect(() => {
     if (!latestBlock) return setLatestBlock(getLatestBlock(state))
-    const id = setTimeout( () => {
+    const id = setTimeout(() => {
       if (getLatestBlock(state) === latestBlock) return
       setLatestBlock(getLatestBlock(state))
       tokens.current = {
@@ -159,23 +142,15 @@ export default function Feed(){
     return () => clearTimeout(id)
   }, [getLatestBlock(state)])
 
-
-  /*<ul>
-  {
-    Object.entries(commands).map( (tokenid, commands => <CommandStat command={command} key={command.id} tokens={tokens.current.now}/>)
-  }
-  </ul>
-  <TokenStat token={token} previous={tokens.current.previous[token.name]} key={token.id}/>*/
-  // console.log(commands)
   return (
     <div className='card'>
       <div className='card-body'>
         <h5 className='card-title'>Feed</h5>
         <p>Block {latestBlock}</p>
 
-        { Object.values(tokens.current.now).map( token => {
+        { Object.values(tokens.current.now).map(token => {
           if (!commands[token.id] || token.pending) return null
-          return <TokenStat token={token} commands={commands[token.id]} key={token.id}/>
+          return <TokenStat token={token} commands={commands[token.id]} key={token.id} />
         }) }
       </div>
 

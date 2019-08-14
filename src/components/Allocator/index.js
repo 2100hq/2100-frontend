@@ -4,12 +4,25 @@ import { get } from 'lodash'
 import { useStoreContext } from '../../contexts/Store'
 import './style.scss'
 
+const dotsConfig = [{
+  'class': 'no-stake',
+  tooltip: 'None'
+},
+{
+  'class': 'min-stake',
+  tooltip: 'A little'
+},
+{
+  'class': 'max-stake',
+  tooltip: 'A lot'
+}]
+
 export default function Allocator ({ token }) {
   const { state, dispatch, actions } = useStoreContext()
   const isDisabled = get(state, 'intents.allocating')
-
+  const [uiLevel, setUiLevel] = useState(Number(token.level || '0'))
   const { available, total } = state.controller.balances
-  const [value, setValue] = useState(toDecimals(token.myStake))
+
   const [commandId, setCommandId] = useState()
   const myCommand = commandId
     ? get(state, `private.myCommands.${commandId}`)
@@ -25,54 +38,36 @@ export default function Allocator ({ token }) {
   }, [myCommand, commandId])
 
   useEffect(() => {
-    setValue(toDecimals(token.myStake))
-  }, [token.myStake])
+    if (token.level == null || isDisabled) return
+    console.log('setting', token.name, token.level)
+    setUiLevel(Number(token.level || '0'))
+  }, [token.level, uiLevel, isDisabled])
 
-  function stats (value) {
-    const vals = {}
-    vals.current = fromDecimals(value)
-    vals.myStake = BN(token.myStake)
-    vals.change = vals.current.sub(vals.myStake)
-    return vals
-  }
-
-  function isMoreThanAvailable (value) {
-    const { change } = stats(value)
-    return change.gt(available) // change cant be greater than available balance
-  }
-
-  function handleChange (e) {
-    const value = e.target.value
-    if (isMoreThanAvailable(value)) return
-    setValue(convertToTwoDecimals(value))
-  }
-
-  async function handleMouseUp (e) {
-    const { current, myStake } = stats(e.target.value)
-    if (current.eq(myStake)) return // new stake didnt change
-    const address = token.id
+  async function handleClick (i) {
+    if (isDisabled) return
+    const newLevel = Number(i) > 0 && Number(i) === uiLevel ? uiLevel - 1 : Number(i)
+    if (newLevel === uiLevel) return
     dispatch(actions.update('intents.allocating', true))
-    const resp = await dispatch(actions.setStake(address, current.toString()))
-    setCommandId(resp.id)
+    console.log('clicked', token.name, newLevel, 'prev:', token.level)
+    setUiLevel(newLevel)
+    const resp = await dispatch(actions.setStakeLevel(token.id, newLevel))
+    setCommandId(resp && resp.id)
   }
+
+  const stakeDots = [0, 1, 2].map((i) => {
+    const classNames = [dotsConfig[i].class]
+    if (i == 0 && uiLevel > 0) classNames.push('active')
+    if (i > 0 && uiLevel >= i) classNames.push('active')
+    if (isDisabled) classNames.push('disabled')
+    const className = classNames.join(' ')
+    return (
+      <span key={i} className={className} onClick={() => handleClick(i)} />
+    )
+  })
 
   return (
-    <form className='Allocator'>
-      <div className='form-group'>
-        <input
-          type='range'
-          className='form-control-range Allocator-input'
-          id={`Allocator-${token.name}`}
-          min='0'
-          max={toDecimals(total)}
-          value={value}
-          onChange={handleChange}
-          onMouseUp={handleMouseUp}
-          step='0.01'
-          disabled={isDisabled ? 'disabled' : ''}
-        />
-        {value}
-      </div>
-    </form>
+    <div className='stake-dots'>
+      {stakeDots}
+    </div>
   )
 }

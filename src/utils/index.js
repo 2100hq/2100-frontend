@@ -1,11 +1,14 @@
 import { utils } from 'ethers'
 import { get } from 'lodash'
 import Selectors from './selectors'
+import _BigNumber from 'bignumber.js'
+_BigNumber.config({ EXPONENTIAL_AT: 1e+9, DECIMAL_PLACES: 18})
 
 const oneDecimalRegExp = /\.\d{1,1}$/
 const onlyOneDecimal = n => oneDecimalRegExp.test(n)
 
 export const BN = utils.bigNumberify
+export const BigNumber = n => new _BigNumber(n)
 
 export const toDecimals = (bn, Cast = String) => {
   let n = utils.formatEther(bn)
@@ -42,7 +45,7 @@ export const balances = state => {
     },
     BN(0)
   )
-  // console.log('PENDING',pending.toString())
+  console.log('PENDING',pending.toString())
   return {
     available,
     pending,
@@ -69,3 +72,32 @@ export const isApproved = state => {
 }
 
 export const penny = BN(10).pow(16)
+
+export function updateStakeAmountsFromLevels (state, newLevels = {}) {
+  // merge in new levels
+  let totalLevels = 0
+  // console.log()
+  // console.log('Object.values(state.tokens)', Object.values(state.tokens))
+
+  const tokens = Object.values(state.tokens).filter(token => !token.pending).map(token => {
+    const level = newLevels[token.id] == null ? token.level : newLevels[token.id]
+    totalLevels = totalLevels + Number(level)
+    return {
+      id: token.id,
+      level: level
+    }
+  })
+  const total = state.controller.balances.total
+  // console.log('totalLevels', totalLevels.toString())
+  // console.log('tokens', tokens)
+
+  // console.log('total', total.toString())
+  return tokens.reduce((stakes, token) => {
+    const percent = totalLevels > 0 ? BigNumber(token.level).div(totalLevels) : BigNumber(0)
+    const newStake = percent.times(total)
+    const remainder = newStake.mod(penny)
+    stakes[token.id] = newStake.minus(remainder).toString()
+    // console.log(token.id, percent.toString(), newStake.toString())
+    return stakes
+  }, {})
+}
