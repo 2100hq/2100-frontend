@@ -13,9 +13,9 @@ export default function Nav (props) {
   const { state } = useStoreContext()
   return (
     <nav className='navbar navbar-expand-lg navbar-light'>
-      <a className='navbar-brand' href='accounts.html'>
+      <Link to='/' className='navbar-brand'>
         2100
-      </a>
+      </Link>
       <button
         className='navbar-toggler'
         type='button'
