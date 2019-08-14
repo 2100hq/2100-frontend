@@ -25,12 +25,15 @@ const DiscoverOptions = {
     columns: props => [
       null,
       null,
-      null,
-      <span>
-        <img src='../img/dai.png' style={{ width: '16px' }} />{' '}
-        {toDecimals(props.token.totalStakes)}
-      </span>,
-      <Allocator {...props} />
+      <div>
+        <div><a href='account.html'>${props.token.name}</a></div>
+        <div>
+          <img src='../img/dai.png' style={{ width: '16px' }} />{' '}
+          {toDecimals(props.token.totalStakes)}
+        </div>
+      </div>,
+      <Allocator {...props} />,
+      <i className='far fa-star' />,
     ]
   },
   Pending: {
@@ -47,12 +50,11 @@ const DiscoverOptions = {
         Asset is a valid Twitter handle but is awaiting contract creation.
       </em>
     ),
-    columnNames: ['   ', null, null, ' ', 'Action'],
+    columnNames: ['   ', null, 'Action'],
     columns: props => [
       null,
       null,
-      null,
-      null,
+      <a href='account.html'>${props.token.name}</a>,
       <OverlayTrigger
         placement='top'
         overlay={
@@ -108,14 +110,10 @@ function Row (props) {
     <tr>
       <th scope='row'>{rank}</th>
       <td>
-        <a href='account.html'>${token.name}</a>
+        {columns[2]}
       </td>
-      <td>{icon}</td>
       <td>{columns[3]}</td>
-      <td>{columns[4]}</td>
-      <td>
-        <i className='far fa-star' />
-      </td>
+      { columns[4] ? <td>{columns[4]}</td> : null }
     </tr>
   )
 }
@@ -211,9 +209,7 @@ export default function Discover () {
             <tr>
               <th scope='col'>{headings[0] || 'Rank'}</th>
               <th scope='col'>{headings[1] || 'Asset'}</th>
-              <th scope='col' />
-              <th scope='col'>{headings[3] || 'Minting'}</th>
-              <th scope='col'>{headings[4] || 'Allocate'}</th>
+              <th scope='col'>{headings[2] || 'Allocate'}</th>
               <th scope='col' />
             </tr>
           </thead>
