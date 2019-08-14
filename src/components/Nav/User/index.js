@@ -116,8 +116,15 @@ export default function User (props) {
 
   // Auto Sign in
   useEffect(() => {
+    if (isSignedIn || signingIn) return
     if (prevRoute) setSigningIn(true)
   }, [prevRoute])
+
+  useEffect(() => {
+    if (state.config.disableAuth == null) return
+    if (isSignedIn || signingIn || !state.config.disableAuth) return
+    if (state.web3.hasWallet) setSigningIn(true)
+  }, [state.web3.hasWallet, state.config.disableAuth])
 
   useEffect(() => {
     console.log('isSignedIn')

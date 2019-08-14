@@ -8,6 +8,7 @@ const artifacts = [
 
 export const networkId = process.env.REACT_APP_NETWORK_ID
 export const host = process.env.REACT_APP_SOCKET_URL
+export const disableAuth = JSON.parse(process.env.REACT_APP_DISABLE_AUTH || 'false')
 
 assert(networkId != null, 'A networkId is required')
 assert(host != null, 'A host is required')
@@ -30,5 +31,6 @@ export default {
   networkName: networkNames[networkId.toString()],
   networkId,
   host,
+  disableAuth,
   contracts
 }

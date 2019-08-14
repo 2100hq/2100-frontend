@@ -20,15 +20,17 @@ export default function AsyncHandlers (libs = {}) {
       if (!libs.web3.active || !libs.web3.account) {
         libs.dispatch(actions.error(action.type, errors.login.NOT_UNLOCKED))
       }
-      let signed
+      let signed = ''
       let token
       let resp
+
       try {
-        token = await libs.socket.auth('token')
-        signed = token
-        // signed = await libs.web3.library
-        //   .getSigner()
-        //   .signMessage('2100 Login: ' + token)
+        if (!libs.state.config.disableAuth){
+          token = await libs.socket.auth('token')
+          signed = await libs.web3.library
+            .getSigner()
+            .signMessage('2100 Login: ' + token)
+        }
         resp = await libs.socket.auth('authenticate', signed, libs.web3.account)
       } catch (e) {
         console.log(action.type, e)
