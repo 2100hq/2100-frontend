@@ -27,10 +27,13 @@ const networkNames = {
   '1': 'Ethereum Mainnet'
 }
 
+const stakeLevels = Number(process.env.REACT_APP_STAKE_LEVELS || 2)
+
 export default {
   networkName: networkNames[networkId.toString()],
   networkId,
   host,
   disableAuth,
+  stakeLevels,
   contracts
 }
