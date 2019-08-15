@@ -11,7 +11,7 @@ const DiscoverOptions = {
     filter: tokens => {
       tokens = tokens.filter(token => !token.pending)
       tokens = sortBy(tokens, token => {
-        return token.id // Number(toDecimals(token.totalStakes))*-1
+        return Number(toDecimals(token.totalStakes))*-1 // token.id //
       })
       return tokens
     },
