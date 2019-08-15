@@ -28,8 +28,8 @@ const DiscoverOptions = {
       <div>
         <div><a href='account.html'>${props.token.name}</a></div>
         <div>
-          <img src='../img/dai.png' style={{ width: '16px' }} />{' '}
-          {toDecimals(props.token.totalStakes)}
+          <img src='../img/dai.png' style={{ width: '16px' }} />
+          {' '}{toDecimals(props.token.myStake)} / {toDecimals(props.token.totalStakes)}
         </div>
       </div>,
       <Allocator {...props} />,
