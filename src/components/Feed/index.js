@@ -3,6 +3,8 @@ import { useStoreContext } from '../../contexts/Store'
 import { toDecimals, BN } from '../../utils'
 import { get, sortBy, cloneDeep, groupBy } from 'lodash'
 import { useCountUp } from 'react-countup'
+import Blocks from './Blocks'
+import './style.scss'
 
 function BalanceCountUp ({token}) {
   const { countUp, update } = useCountUp({
@@ -75,11 +77,11 @@ function getStakeStats (token, previous) {
 //   )
 // }
 
-function getCommands (state, latestBlock) {
+function getCommands (state) {
   return state.commands.filter(command => {
     if (!command.done) return false
     if (!/transferStakeReward|transferOwnerReward|transferCreatorReward/.test(command.type)) return false
-    return command.blockNumber === latestBlock
+    return true
   })
 }
 
@@ -117,41 +119,21 @@ function TokenStat ({token, commands}) {
   )
 }
 
+
 export default function Feed () {
   const { state } = useStoreContext()
-  const [latestBlock, setLatestBlock] = useState(getLatestBlock(state))
 
-  const [delay, setDelay] = useState(0)
-  const tokens = useRef({previous: [], now: getTokens(state) })
   const isSignedIn = getIsSignedIn(state)
-  let commands = getCommands(state, latestBlock)
+  let commands = getCommands(state)
 
-  commands = groupBy(commands, 'tokenid')
+  commands = groupBy(commands, 'blockNumber')
 
-  useEffect(() => {
-    if (!latestBlock) return setLatestBlock(getLatestBlock(state))
-    const id = setTimeout(() => {
-      if (getLatestBlock(state) === latestBlock) return
-      setLatestBlock(getLatestBlock(state))
-      tokens.current = {
-        previous: tokens.current.now,
-        now: getTokens(state)
-      }
-    }, delay)
-    if (delay === 0) setDelay(defaultDelay)
-    return () => clearTimeout(id)
-  }, [getLatestBlock(state)])
+  const latestBlock = getLatestBlock(state)
 
   return (
     <div className='card'>
       <div className='card-body'>
-        <h5 className='card-title'>Feed</h5>
-        <p>Block {latestBlock}</p>
-
-        { Object.values(tokens.current.now).map(token => {
-          if (!commands[token.id] || token.pending) return null
-          return <TokenStat token={token} commands={commands[token.id]} key={token.id} />
-        }) }
+        <Blocks commands={commands} />
       </div>
 
     </div>

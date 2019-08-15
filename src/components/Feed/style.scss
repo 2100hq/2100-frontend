@@ -1,0 +1,32 @@
+.card.block {
+  border-color: #aaa;
+  margin-bottom: 1.25em;
+}
+
+.card.block:first{
+  margin-top:0;
+}
+
+.fadein {
+  opacity: 1;
+  animation: fadein ease 2s;
+}
+
+@keyframes fadein {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+.slide-left{
+  transform: translateX(0);
+  animation: slide-left ease 0.05s;
+}
+
+@keyframes slide-left{
+  0% {
+    transform: translateX(10%);
+  }
+  100% {
+    transform: translateX(0%);
+  }
+}
