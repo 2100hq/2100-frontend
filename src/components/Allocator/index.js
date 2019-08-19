@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { BN, toDecimals, fromDecimals, convertToTwoDecimals } from '../../utils'
 import { get } from 'lodash'
 import { useStoreContext } from '../../contexts/Store'
+import Dots from '../Dots'
 import './style.scss'
 
 const dotsConfig = [{
@@ -59,20 +60,8 @@ export default function Allocator ({ token }) {
     }
     setCommandId(resp.id)
   }
-  const stakeDots = Array.from(Array(state.config.stakeLevels || 2)).map( (_,i) => {
-    const classNames = [`stake${i}`]
-    if (i == 0 && uiLevel > 0) classNames.push('active')
-    if (i > 0 && uiLevel >= i) classNames.push('active')
-    if (isDisabled) classNames.push('disabled')
-    const className = classNames.join(' ')
-    return (
-      <span key={i} className={className} onClick={() => handleClick(i)} />
-    )
-  })
 
   return (
-    <div className='stake-dots'>
-      {stakeDots}
-    </div>
+    <Dots total={state.config.stakeLevels} current={uiLevel} onClick={handleClick} isDisabled={isDisabled} />
   )
 }
