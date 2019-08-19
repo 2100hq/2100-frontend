@@ -8,6 +8,7 @@ import 'bootstrap/dist/css/bootstrap.css'
 import Web3Provider, { Connectors, Web3Consumer } from 'web3-react'
 import SocketProvider from './contexts/Socket'
 import StoreProvider from './contexts/Store'
+import FollowMeProvider from './contexts/FollowMe'
 
 const MetaMask = new Connectors.InjectedConnector({
   supportedNetworks: [Number(process.env.REACT_APP_NETWORK_ID)]
@@ -17,7 +18,9 @@ ReactDOM.render(
   <Web3Provider connectors={{ MetaMask }} libraryName={'ethers.js'}>
     <SocketProvider>
       <StoreProvider>
-        <App />
+        <FollowMeProvider>
+          <App />
+        </FollowMeProvider>
       </StoreProvider>
     </SocketProvider>
   </Web3Provider>,

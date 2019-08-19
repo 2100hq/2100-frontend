@@ -6,6 +6,8 @@ import { OverlayTrigger, Tooltip } from 'react-bootstrap'
 import Allocator from '../Allocator'
 import Feed from '../Feed'
 import {get} from 'lodash'
+import FollowMeFeed from '../FollowMeFeed'
+
 const DiscoverOptions = {
   All: {
     filter: tokens => {
@@ -176,7 +178,7 @@ export default function Discover () {
   const headings = DiscoverOptions[active].columnNames || []
   return (
     <div className='row'>
-      <div className='col-md-8' style={{ paddingTop: '1rem' }}>
+      <div className='col-md-5' style={{ paddingTop: '1rem' }}>
         <div className='card' style={{ marginBottom: '1rem' }}>
           <h5 className='card-header'>Discover</h5>
           <div className='card-body'>
@@ -217,6 +219,13 @@ export default function Discover () {
         </table>
       </div>
       <div className='col-md-4' style={{ paddingTop: '1rem' }}>
+        <div className='row'>
+          <div className='col-md-12'>
+            <FollowMeFeed />
+          </div>
+        </div>
+      </div>
+      <div className='col-md-3' style={{ paddingTop: '1rem' }}>
         <div className='row'>
           <div className='col-md-12'>
             <Feed />

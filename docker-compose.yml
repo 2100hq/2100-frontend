@@ -36,7 +36,7 @@ services:
 
   ganache:
       image: trufflesuite/ganache-cli:latest
-      command: "node /app/ganache-core.docker.cli.js --db /db --accounts 10  -e 999 --verbose --blockTime 5 --networkId 21 --mnemonic '${GANACHE_MNEMONIC}'"
+      command: "node /app/ganache-core.docker.cli.js --db /db --accounts 10  -e 999 --blockTime 5 --networkId 21 --mnemonic '${GANACHE_MNEMONIC}'"
       volumes:
         - ./ganache:/db
       ports:
