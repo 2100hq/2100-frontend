@@ -198,7 +198,7 @@ export default function AsyncHandlers (libs = {}) {
         libs.dispatch(actions.error(action.type, errors.auth.NOT_LOGGED_IN))
         return false
       }
-      if (BN(libs.state.controller.balances.available).isZero()) {
+      if (BN(libs.state.controller.balances.total).isZero()) {
         libs.dispatch(actions.error(action.type, errors.staking.NO_DEPOSIT_BALANCE))
         return false
       }
