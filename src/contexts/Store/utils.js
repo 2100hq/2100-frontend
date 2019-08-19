@@ -56,5 +56,8 @@ export const errors = {
   },
   auth: {
     NOT_LOGGED_IN: 'Please sign in'
+  },
+  staking: {
+    NO_DEPOSIT_BALANCE: "You need to deposit funds to stake"
   }
 }
