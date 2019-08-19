@@ -57,7 +57,7 @@ export default function FollowMeProvider ({ children }) {
 
   async function updateFollowerCount(tokenid){
     const followers = await api.private.call('followers', tokenid)
-    update('followerCount', Object.keys(followers).length)
+    update('followers', followers)
   }
 
   useEffect( () => {

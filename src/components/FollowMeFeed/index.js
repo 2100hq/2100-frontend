@@ -16,7 +16,8 @@ function isEmpty(message){
 
 export default function FollowMeFeed(){
   const {state} = useStoreContext()
-  let { api, isSignedIn, myToken, messages = {}, followerCount, actions } = useFollowMeContext()
+  let { api, isSignedIn, myToken, messages = {}, followers = {}, actions } = useFollowMeContext()
+  const followerCount = Object.keys(followers).length
   const [submitting, setSubmitting] = useState(false)
   const [message, setMessage] = useState('')
   const [error, setError] = useState()
