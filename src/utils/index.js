@@ -10,10 +10,10 @@ const onlyOneDecimal = n => oneDecimalRegExp.test(n)
 export const BN = utils.bigNumberify
 export const BigNumber = n => new _BigNumber(n)
 
-export const toDecimals = (bn, Cast = String) => {
-  let n = BigNumber(bn).div(BigNumber(10).pow(18)).dp(6, 1)
+export const toDecimals = (bn, dp=6, round=1) => {
+  let n = BigNumber(bn).div(BigNumber(10).pow(18)).dp(dp, round)
   n = convertToTwoDecimals(n)
-  return Cast(n)
+  return n.toString()
 }
 
 export const convertToTwoDecimals = n => (onlyOneDecimal(n) ? `${n}0` : n)
