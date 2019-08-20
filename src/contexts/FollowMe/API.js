@@ -16,8 +16,8 @@ export default function API(host,channel,method='post'){
     return axios(options).then(result=>{
       return result.data
     }).catch(err=>{
-      console.log(err.response.data)
-      throw new Error(err.response.data)
+      console.log('followme api error',err);
+      throw err
     })
   }
   function setToken(t){
