@@ -11,8 +11,7 @@ function Balances ({ state }) {
   const { available, total } = balances(state)
   return (
     <Link className='nav-link slide-left' to='/wallet'>
-      <img className='dai-logo' src='./img/dai.png' />
-      {toDecimals(available)}/{toDecimals(total)}
+      <img className='dai-logo' src='./img/dai.png' /> {toDecimals(total)}
     </Link>
   )
 }
@@ -28,7 +27,7 @@ function AddressIcon ({ state }) {
   )
   return (
     <span>
-      {displayName} {icon}
+      {icon} {displayName}
     </span>
   )
 }
@@ -61,12 +60,17 @@ function SignedIn ({ state }) {
           <AddressIcon state={state} />
         </Dropdown.Toggle>
         <Dropdown.Menu>
+          <Link className='dropdown-item' to='/wallet'>
+            Wallet
+          </Link>
           <Link className='dropdown-item' to='/manage'>
             Manage
           </Link>
           <AdminLink state={state} />
           <Dropdown.Divider />
-          <Dropdown.Item href='accounts-sign-in.html'>Sign Out</Dropdown.Item>
+          <Link className='dropdown-item' to='/signout'>
+            Sign Out
+          </Link>
         </Dropdown.Menu>
       </Dropdown>
     ]

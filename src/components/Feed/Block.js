@@ -25,10 +25,10 @@ export default function Block({blockNumber, commands = [], tokens = {}}){
 
 
   return (
-    <div className='card block fadein'>
+    <div className='card fadein'>
       <div className='card-body'>
-      <h5>Block {blockNumber}</h5>
       {message}
+      <h6 className='card-subtitle text-muted mb-2 small'>#{blockNumber}</h6>
       </div>
     </div>
   )

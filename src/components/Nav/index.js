@@ -29,25 +29,7 @@ export default function Nav (props) {
       </button>
       <div className='collapse navbar-collapse' id='navbarTogglerDemo03'>
         <ul className='navbar-nav mr-auto mt-2 mt-lg-0'>
-          <li className='nav-item active'>
-            <Link to='/' className='nav-link'>
-              Discover
-            </Link>
-          </li>
-          <ProtectedNavItem state={state}>
-            <li className='nav-item'>
-              <Link to='/portfolio' className='nav-link'>
-                Portfolio
-              </Link>
-            </li>
-          </ProtectedNavItem>
-          <ProtectedNavItem state={state}>
-            <li className='nav-item'>
-              <Link to='/wallet' className='nav-link'>
-                Wallet
-              </Link>
-            </li>
-          </ProtectedNavItem>
+
 
         </ul>
         <ul className='navbar-nav'>

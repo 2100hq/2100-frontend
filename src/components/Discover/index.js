@@ -7,6 +7,8 @@ import Allocator from '../Allocator'
 import Feed from '../Feed'
 import {get} from 'lodash'
 import FollowMeFeed from '../FollowMeFeed'
+import AssetsTable from '../Wallet/AssetsTable'
+import './style.scss'
 
 const DiscoverOptions = {
   All: {
@@ -28,14 +30,13 @@ const DiscoverOptions = {
       null,
       null,
       <div>
-        <div><a href='account.html'>${props.token.name}</a></div>
+        <div><span className='text-muted'>$</span>{props.token.name}</div>
         <div>
-          <img src='../img/dai.png' style={{ width: '16px' }} />
-          {' '}{toDecimals(props.token.myStake)} / {toDecimals(props.token.totalStakes)}
+          <img src='../img/dai.png' style={{ width: '14px','vertical-align': 'baseline' }} /> <span className='text-muted'>{toDecimals(props.token.totalStakes)}</span>
         </div>
       </div>,
       <Allocator {...props} />,
-      <i className='far fa-star' />,
+      null
     ]
   },
   Pending: {
@@ -83,7 +84,7 @@ const DiscoverOptions = {
       </span>
     )
   },
-  Favorites: {
+  Minting: {
     filter: tokens => {
       tokens = tokens.filter(
         token => !token.pending && token.myStake.balance > 0
@@ -115,7 +116,6 @@ function Row (props) {
         {columns[2]}
       </td>
       <td>{columns[3]}</td>
-      { columns[4] ? <td>{columns[4]}</td> : null }
     </tr>
   )
 }
@@ -177,55 +177,53 @@ export default function Discover () {
 
   const headings = DiscoverOptions[active].columnNames || []
   return (
-    <div className='row'>
-      <div className='col-md-5' style={{ paddingTop: '1rem' }}>
-        <div className='card' style={{ marginBottom: '1rem' }}>
-          <h5 className='card-header'>Discover</h5>
-          <div className='card-body'>
-            <div className='row'>
-              <div className='col-md-4'>
-                <form className='form-inline'>
-                  <label className='sr-only'>Username</label>
-                  <div className='input-group mb-2 mr-sm-2'>
-                    <div className='input-group-prepend'>
-                      <div className='input-group-text'>$</div>
+    <div className='row discover'>
+      <div className='col-md-4' style={{ paddingTop: '1rem' }}>
+
+          <div className='card'>
+            <div className='card-body'>
+              <div className='card' style={{ marginBottom: '1rem' }}>
+                <div className='card-body'>
+                  <div className='row'>
+                    <div className='col-md-4'>
+                      <form className='form-inline'>
+                        <label className='sr-only'>Username</label>
+                        <div className='input-group mb-2 mr-sm-2'>
+                          <div className='input-group-prepend'>
+                            <div className='input-group-text'>$</div>
+                          </div>
+                          <input
+                            type='text'
+                            className='form-control'
+                            id='inlineFormInputGroupUsername2'
+                            placeholder='by username'
+                          />
+                        </div>
+                      </form>
                     </div>
-                    <input
-                      type='text'
-                      className='form-control'
-                      id='inlineFormInputGroupUsername2'
-                      placeholder='by username'
-                    />
+                    <div className='col-md-8'>
+                      <ul className='nav nav-pills inline'>{tabs}</ul>
+                    </div>
                   </div>
-                </form>
+                </div>
               </div>
-              <div className='col-md-8'>
-                <ul className='nav nav-pills inline'>{tabs}</ul>
-              </div>
+              <table className='table table-hover'>
+                <tbody>{rows}</tbody>
+              </table>
             </div>
           </div>
-        </div>
 
-        <table className='table table-hover'>
-          <thead>
-            <tr>
-              <th scope='col'>{headings[0] || 'Rank'}</th>
-              <th scope='col'>{headings[1] || 'Asset'}</th>
-              <th scope='col'>{headings[2] || 'Allocate'}</th>
-              <th scope='col' />
-            </tr>
-          </thead>
-          <tbody>{rows}</tbody>
-        </table>
       </div>
       <div className='col-md-4' style={{ paddingTop: '1rem' }}>
+
         <div className='row'>
           <div className='col-md-12'>
             <FollowMeFeed />
           </div>
         </div>
       </div>
-      <div className='col-md-3' style={{ paddingTop: '1rem' }}>
+      <div className='col-md-2' style={{ paddingTop: '1rem' }}>
+
         <div className='row'>
           <div className='col-md-12'>
             <Feed />
