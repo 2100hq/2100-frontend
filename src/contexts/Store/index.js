@@ -45,12 +45,7 @@ export default function StoreProvider ({ children }) {
   // state in the StoreProvider is private
   // public state is a combination of private state and selectors.
   // effects in StoreProvider can only access private state
-  const [privState, dispatch] = useReducer(reducer, initialState)
-
-  // add config to private state
-  useEffect(() => {
-    dispatch(actions.update(['config'], config))
-  }, [])
+  const [privState, dispatch] = useReducer(reducer, { ...initialState, config })
 
   // hook up socket changes to dispatcher/reducer
   useEffect(() => {
