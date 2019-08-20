@@ -30,29 +30,39 @@ function reducer (state, action) {
   }
 }
 
+function InitialState(appstate){
+  return {
+    messages: {},
+    publicMessages: {},
+    api: {
+      public:API(appstate.config.followMeUrl,'public'),
+      private:API(appstate.config.followMeUrl,'private'),
+    }
+  }
+}
 
 export default function FollowMeProvider ({ children }) {
   const { state:appstate, actions, dispatch:appdispatch } = useStoreContext()
-  const [fmstate, dispatch] = useReducer(reducer, {})
+  const [fmstate, dispatch] = useReducer(reducer, InitialState(appstate))
   const { api,isSignedIn, myToken, threshold } = fmstate
   const isSignedIn2100 = appstate.private.isSignedIn
   const ethAddress = appstate.web3.account
   const [followerCount, setFollowerCount] = useState(0)
 
   const update = (path, ...args) => dispatch(actions.update(path, ...args))
-  useEffect( () => {
-
-    if (!appstate.config.followMeUrl || api) return
-    dispatch(actions.update('api', {
-      public:API(appstate.config.followMeUrl,'public'),
-      private:API(appstate.config.followMeUrl,'private'),
-    }))
-  }, [appstate.config.followMeUrl])
 
 
   async function updateInbox(){
-    let resp = await api.private.call('getMyInbox')
-     update('messages', keyBy(resp, 'id'))
+    try {
+      let resp = await api.private.call('getMyInbox')
+       update('messages', keyBy(resp, 'id'))
+    } catch(e){}
+
+  }
+
+  async function updatePublicInbox(){
+    let resp = await api.public.call('feed')
+     update('publicMessages', keyBy(resp, 'id'))
   }
 
   async function updateFollowerCount(tokenid){
@@ -83,34 +93,38 @@ export default function FollowMeProvider ({ children }) {
     update('myToken', null)
     update('isSignedIn', false)
     update('threshold', null)
-    update('messages', [])
+    update('messages', {})
   }, [api, isSignedIn2100, ethAddress])
 
 
   useEffect( ()=> {
-    if (!isSignedIn) return
+    if (!isSignedIn || !isSignedIn2100) return
     updateInbox()
-    const id = setInterval(updateInbox,1000)
+    updatePublicInbox()
+    const id = setInterval( () => {
+      updateInbox()
+      updatePublicInbox()
+    },appstate.config.followMePoll)
     return () => clearInterval(id)
-  }, [isSignedIn])
+  }, [isSignedIn, isSignedIn2100])
 
 
   useEffect( ()=> {
-    if (!isSignedIn || !myToken) return
+    if (!isSignedIn || !myToken || !isSignedIn2100) return
     updateFollowerCount(myToken.id)
-    const id = setInterval(updateFollowerCount,1000,myToken.id)
+    const id = setInterval(updateFollowerCount,appstate.config.followMePoll,myToken.id)
     return () => clearInterval(id)
-  }, [isSignedIn, myToken, threshold])
+  }, [isSignedIn, myToken, threshold, isSignedIn2100])
 
   function SendMessage(fmstate){
     return async (message, threshold) => {
-      if (!fmstate.myToken) return ["You don't have a token"]
+      if (!fmstate.myToken) return null
       try {
         message = await fmstate.api.private.call('sendMessage', fmstate.myToken.id, message, threshold)
         update(`messages.${message.id}`, message)
-        return [null, message]
+        return message
       } catch(e){
-        return [e.message]
+        return null
       }
 
     }
