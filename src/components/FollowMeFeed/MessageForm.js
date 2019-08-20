@@ -11,7 +11,7 @@ function isEmpty(message){
 
 const percentiles = [0, 5, 25, 50, 95]
 
-export default function MessageForm(){
+export default function MessageForm({myTokenName}){
   let { api, isSignedIn, myToken, messages = {}, publicMessages = {}, followers = {}, actions } = useFollowMeContext()
 
   const followerCount = Object.keys(followers).length
@@ -26,6 +26,7 @@ export default function MessageForm(){
   const isDisabled = !hasToken || submitting
 
   const placeholder = !hasToken ? 'Create your token to send messages' : null
+
   function changeMessage(e){
     setMessage(e.target.value)
   }
@@ -66,7 +67,7 @@ export default function MessageForm(){
           <div className='clearfix'>
             <div className='float-left'>
               <Dots current={level} onClick={handleSetLevel} isDisabled={isDisabled}/>
-              <div className="text-muted small"><i className='fas fa-eye' /> {recipientCount} holders ({displayThresh} $brttb)</div>
+              <div className="text-muted small"><i className='fas fa-eye' /> {recipientCount} holders { hasToken && `(${displayThresh} $${myTokenName})`}</div>
             </div>
             <div className='float-right'>
               <Button variant="primary" type="submit" disabled={isDisabled || isEmpty(message) ? 'disabled' : null}>
