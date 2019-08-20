@@ -42,6 +42,7 @@ export default function AsyncHandlers (libs = {}) {
     },
     LOGOUT: async action => {
       console.log(action.type)
+      libs.dispatch(actions.update(['private'], {}))
       const resp = await libs.socket.auth('unauthenticate')
       libs.dispatch(actions.update(['private'], {}))
       console.log('LOGOUT RESP', resp)
