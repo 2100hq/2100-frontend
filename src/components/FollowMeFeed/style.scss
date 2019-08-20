@@ -1,0 +1,14 @@
+.hidden-message{
+  span {
+    opacity: 0.5;
+  }
+}
+
+.card + .card {
+  margin-top:1em;
+}
+
+.text-muted.more-text-muted {
+  opacity: 0.8;
+  color: #989b9e;
+}
