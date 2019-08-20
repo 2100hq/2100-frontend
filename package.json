@@ -3,7 +3,7 @@
   "version": "0.1.1",
   "private": true,
   "dependencies": {
-    "2100-contracts": "github:2100hq/2100-contracts#v0.2.2",
+    "2100-contracts": "github:2100hq/2100-contracts#v0.2.3",
     "@fortawesome/fontawesome-svg-core": "^1.2.19",
     "@fortawesome/free-regular-svg-icons": "^5.9.0",
     "@fortawesome/free-solid-svg-icons": "^5.9.0",
