@@ -30,7 +30,7 @@ const networkNames = {
 const stakeLevels = Number(process.env.REACT_APP_STAKE_LEVELS || 2)
 
 const followMeUrl = process.env.REACT_APP_FOLLOWME_URL
-
+const followMePoll = Number(process.env.REACT_APP_FOLLOWME_POLL || 2000)
 export default {
   networkName: networkNames[networkId.toString()],
   networkId,
@@ -38,5 +38,6 @@ export default {
   disableAuth,
   stakeLevels,
   contracts,
-  followMeUrl
+  followMeUrl,
+  followMePoll
 }
