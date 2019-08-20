@@ -3,7 +3,7 @@ import {useFollowMeContext} from '../../contexts/FollowMe'
 import {useStoreContext} from '../../contexts/Store'
 import {get, sortBy} from 'lodash'
 import { Form, Button } from 'react-bootstrap'
-import { toDecimals } from '../../utils'
+import { BigNumber, toDecimals } from '../../utils'
 import MessageForm from './MessageForm'
 import './style.scss'
 
@@ -20,7 +20,7 @@ function getDisplayName(state, tokenid){
 
 
 function invisibleSubtext(name, message){
-  return <span>holders of {toDecimals(message.threshold)} {name}</span>
+  return <span>holders of {toDecimals(message.threshold,3,0)} {name}</span>
 }
 
 function visibleSubtext(name, message, myToken){

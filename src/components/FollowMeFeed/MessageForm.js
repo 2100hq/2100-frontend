@@ -55,8 +55,6 @@ export default function MessageForm({myTokenName}){
     }).length)
   }, [level, followers])
 
-  const displayThresh = BigNumber(threshold).div(BigNumber(10).pow(18)).dp(3,0).toString()
-
   return (
       <div className='card'>
         <div className='card-body'>
@@ -67,7 +65,7 @@ export default function MessageForm({myTokenName}){
           <div className='clearfix'>
             <div className='float-left'>
               <Dots current={level} onClick={handleSetLevel} isDisabled={isDisabled}/>
-              <div className="text-muted small"><i className='fas fa-eye' /> {recipientCount} holders { hasToken && `(${displayThresh} $${myTokenName})`}</div>
+              <div className="text-muted small"><i className='fas fa-eye' /> {recipientCount} holders { hasToken && `(${toDecimals(threshold,3,1)} $${myTokenName})`}</div>
             </div>
             <div className='float-right'>
               <Button variant="primary" type="submit" disabled={isDisabled || isEmpty(message) ? 'disabled' : null}>
