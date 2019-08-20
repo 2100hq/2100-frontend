@@ -11,7 +11,7 @@ export const BN = utils.bigNumberify
 export const BigNumber = n => new _BigNumber(n)
 
 export const toDecimals = (bn, Cast = String) => {
-  let n = utils.formatEther(bn)
+  let n = BigNumber(bn).div(BigNumber(10).pow(18)).dp(6, 1)
   n = convertToTwoDecimals(n)
   return Cast(n)
 }
