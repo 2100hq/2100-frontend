@@ -6,6 +6,7 @@ import { Form, Button } from 'react-bootstrap'
 import { BigNumber, toDecimals } from '../../utils'
 import MessageForm from './MessageForm'
 import './style.scss'
+const weiDecimals = BigNumber(10).pow(18)
 
 function getToken(state, tokenid){
   if (!tokenid) return {}
@@ -31,11 +32,19 @@ function invisibleSubtext({name, token, message, isSignedIn, state, decodeMessag
 
   const available = get(token, 'balances.available', "0")
   const diff = BigNumber(message.threshold).minus(available)
+  let timeToDecode = null
+
   function handleClick(e){
     e.preventDefault()
     decodeMessage(message.id)
   }
-  if (diff.gt(0)) return <span>get {toDecimals(diff, 3, 0)} {name} to see</span>
+
+  if (BigNumber(token.myStake).gt(0) && diff.gt(0)){
+    const divisor = BigNumber(token.myStake).div(token.totalStakes).times(0.9).times(0.00021).times(weiDecimals)
+    const blocks = diff.div(divisor).dp(0,0).toString()
+    timeToDecode = (<span>({blocks} blocks to go)</span>)
+  }
+  if (diff.gt(0)) return <span>need {toDecimals(diff, 3, 0)} {name} {timeToDecode}</span>
   return <span>you have enough {name} to <a href="#" onClick={handleClick}>decode</a></span>
 }
 
