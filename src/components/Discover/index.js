@@ -8,6 +8,7 @@ import Feed from '../Feed'
 import {get} from 'lodash'
 import FollowMeFeed from '../FollowMeFeed'
 import AssetsTable from '../Wallet/AssetsTable'
+import { Sparklines, SparklinesBars } from 'react-sparklines';
 import './style.scss'
 
 const DiscoverOptions = {
@@ -116,6 +117,11 @@ function Row (props) {
         {columns[2]}
       </td>
       <td>{columns[3]}</td>
+      <td>
+        <Sparklines style={{width: '100px'}} data={[10,15,20,25,30,45,50,25,24,23]}>
+            <SparklinesBars style={{ stroke: "white", strokeWidth: "1", fill: "#eee" }} />
+        </Sparklines>
+      </td>
     </tr>
   )
 }
