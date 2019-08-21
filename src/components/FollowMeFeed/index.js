@@ -15,7 +15,7 @@ function getTokenName(state, tokenid){
 
 function getDisplayName(state, tokenid){
   const name = getTokenName(state,tokenid)
-  return <span><span className='text-muted'>$</span>{name}</span>
+  return <span className="token-name">${name}</span>
 }
 
 

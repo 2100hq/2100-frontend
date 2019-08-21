@@ -30,7 +30,7 @@ const DiscoverOptions = {
       null,
       null,
       <div>
-        <div><span className='text-muted'>$</span>{props.token.name}</div>
+        <div><span className='token-name'>${props.token.name}</span></div>
         <div>
           <img src='../img/dai.png' style={{ width: '14px','vertical-align': 'baseline' }} /> <span className='text-muted'>{toDecimals(props.token.totalStakes)}</span>
         </div>
@@ -180,10 +180,8 @@ export default function Discover () {
     <div className='row discover'>
       {/* 2100 */}
       <div className="col-md-8">
-          <div className="card" style={{ width: '100%'}}>
-            <div className="card-body">
               <div className="row">
-                <div className="col-md-8">
+                <div className="col-md-9">
                   {/* 2100 minting ui*/}
                   <div className='card'>
                     <div className='card-body'>
@@ -212,13 +210,13 @@ export default function Discover () {
                           </div>
                         </div>
                       </div>
-                      <table className='table table-hover'>
+                      <table className='table table-hover table-borderless'>
                         <tbody>{rows}</tbody>
                       </table>
                     </div>
                   </div>
                 </div>
-                <div className="col-md-4">
+                <div className="col-md-3">
                   {/* connected */}
                   <div className='card'>
                     <div className='card-body'>
@@ -238,11 +236,9 @@ export default function Discover () {
                 </div>
               </div>
             </div>
-          </div>
-      </div>
       {/* follow me */}
       <div className="col-md-4">
-          <div className="card" style={{ width: '100%'}}>
+          <div className="card">
             <div className="card-body">
               <div className="row">
                 <div className="col-md-12">

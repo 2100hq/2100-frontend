@@ -1,0 +1,28 @@
+html{
+  height: 100%;
+}
+
+body{
+  height: calc(100% - 58px);
+  font-family: 'Noto Serif JP', serif !important;
+  background-color: #fff !important;
+}
+
+.container-fluid{
+  height: 100%;
+}
+
+.token-name{
+	font-size: 1.1rem;
+	display: inline-block;
+	margin: 0.25rem 0;
+	padding: .25rem .5rem .25rem 0;
+}
+
+.card{
+	border: 1px solid #eee !important;
+}
+
+table.table-borderless tr{
+	border-bottom: 1px solid #eee;
+}
