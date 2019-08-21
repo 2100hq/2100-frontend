@@ -119,7 +119,6 @@ function TokenStat ({token, commands}) {
   )
 }
 
-
 export default function Feed () {
   const { state } = useStoreContext()
 
@@ -131,11 +130,6 @@ export default function Feed () {
   const latestBlock = getLatestBlock(state)
 
   return (
-    <div className='card'>
-      <div className='card-body'>
         <Blocks commands={commands} />
-      </div>
-
-    </div>
   )
 }

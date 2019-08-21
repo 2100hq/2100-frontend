@@ -178,40 +178,83 @@ export default function Discover () {
   const headings = DiscoverOptions[active].columnNames || []
   return (
     <div className='row discover'>
-      <div className='col-md-4' style={{ paddingTop: '1rem' }}>
-
-          <div className='card'>
-            <div className='card-body'>
-              <div className='card' style={{ marginBottom: '1rem' }}>
-                <div className='card-body'>
-                  <div className='row'>
-                    <div className='col-md-4'>
-                      <form className='form-inline'>
-                        <label className='sr-only'>Username</label>
-                        <div className='input-group mb-2 mr-sm-2'>
-                          <div className='input-group-prepend'>
-                            <div className='input-group-text'>$</div>
+      {/* 2100 */}
+      <div className="col-md-8">
+          <div className="card" style={{ width: '100%'}}>
+            <div className="card-body">
+              <div className="row">
+                <div className="col-md-8">
+                  {/* 2100 minting ui*/}
+                  <div className='card'>
+                    <div className='card-body'>
+                      <div className='card' style={{ marginBottom: '1rem' }}>
+                        <div className='card-body'>
+                          <div className='row'>
+                            <div className='col-md-4'>
+                              <form className='form-inline'>
+                                <label className='sr-only'>Username</label>
+                                <div className='input-group mb-2 mr-sm-2'>
+                                  <div className='input-group-prepend'>
+                                    <div className='input-group-text'>$</div>
+                                  </div>
+                                  <input
+                                    type='text'
+                                    className='form-control'
+                                    id='inlineFormInputGroupUsername2'
+                                    placeholder='by username'
+                                  />
+                                </div>
+                              </form>
+                            </div>
+                            <div className='col-md-8'>
+                              <ul className='nav nav-pills inline'>{tabs}</ul>
+                            </div>
                           </div>
-                          <input
-                            type='text'
-                            className='form-control'
-                            id='inlineFormInputGroupUsername2'
-                            placeholder='by username'
-                          />
                         </div>
-                      </form>
-                    </div>
-                    <div className='col-md-8'>
-                      <ul className='nav nav-pills inline'>{tabs}</ul>
+                      </div>
+                      <table className='table table-hover'>
+                        <tbody>{rows}</tbody>
+                      </table>
                     </div>
                   </div>
                 </div>
+                <div className="col-md-4">
+                  {/* connected */}
+                  <div className='card'>
+                    <div className='card-body'>
+                      <div className='small'>
+                        <div>
+                          <i className='fas fa-circle' style={{ color: network.loading ? 'yellow' : network.connected ? 'green' : 'red' }} />{' '}
+                          {network.loading ? 'Loading' : network.connected ? 'Connected' : 'Not Connected'}
+                        </div>
+                        <hr />
+                        <div>{state.config.networkName}</div>
+                        <div>{blockNumberDisplay}</div>
+                      </div>
+                    </div>
+                  </div>
+                  {/* minting rewards */}
+                  <Feed />
+                </div>
               </div>
-              <table className='table table-hover'>
-                <tbody>{rows}</tbody>
-              </table>
             </div>
           </div>
+      </div>
+      {/* follow me */}
+      <div className="col-md-4">
+          <div className="card" style={{ width: '100%'}}>
+            <div className="card-body">
+              <div className="row">
+                <div className="col-md-12">
+                  {/* follow me*/}
+                  <FollowMeFeed />
+                </div>
+              </div>
+            </div>
+          </div>
+      </div>
+      {/* <div className='col-md-4' style={{ paddingTop: '1rem' }}>
+
 
       </div>
       <div className='col-md-4' style={{ paddingTop: '1rem' }}>
@@ -247,7 +290,7 @@ export default function Discover () {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </div>
   )
 }
