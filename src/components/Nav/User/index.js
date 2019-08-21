@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import { useStoreContext } from '../../../contexts/Store'
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon'
@@ -42,23 +42,32 @@ function AdminLink ({ state }) {
   )
 }
 
-function SignedIn ({ state }) {
-  const wave = (
+function Wave(){
+  const [showWave, setShowWave] = useState(true)
+
+  useEffect( ()=>{
+    setTimeout(setShowWave,1500)
+  }, [])
+
+  if (!showWave) return null
+  return (
     <span className='out'>
       <div className='emoji wave'>👋</div>
     </span>
   )
+}
 
+function SignedIn ({ state }) {
   return (
     [
       <li className='nav-item' key='balances'>
         <Balances state={state} />
       </li>,
       <Dropdown as='li' className='nav-item' key='dropdown'>
-        {wave}
         <Dropdown.Toggle as='a' className='nav-link in' href='#'>
           <AddressIcon state={state} />
         </Dropdown.Toggle>
+        <Wave />
         <Dropdown.Menu>
           <Link className='dropdown-item' to='/wallet'>
             Wallet
