@@ -19,10 +19,12 @@ export default function MessageForm({myTokenName}){
   const [message, setMessage] = useState('')
   const [error, setError] = useState()
   const [level, setLevel] = useState(4)
-  const [threshold, setThreshold] = useState()
+  const [threshold, setThreshold] = useState(0)
   const [recipientCount, setRecipientCount] = useState(0)
 
   const hasToken = myToken != null
+  const hasNoFollowers = followerCount === 0
+
   const isDisabled = !hasToken || submitting
 
   const placeholder = !hasToken ? 'Create your token to send messages' : null
@@ -46,6 +48,7 @@ export default function MessageForm({myTokenName}){
   }
 
   useEffect( () => {
+    if (hasNoFollowers) return setThreshold("1")
     const holdings = Object.values(followers)
     const p = percentiles[level]
     const newThresh = percentile(holdings, p)
