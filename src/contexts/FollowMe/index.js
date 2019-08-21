@@ -36,6 +36,7 @@ function InitialState(followMeUrl){
   return {
     messages: {},
     publicMessages: {},
+    decodedMessages: {},
     followers: {},
     isSignedIn: false,
     api: {
@@ -133,8 +134,21 @@ export default function FollowMeProvider ({ children }) {
     }
   }
 
+  function GetMessage(fmstate){
+    return async (id) => {
+      if (!fmstate.isSignedIn) return null
+      try {
+        const message = await fmstate.api.private.call('getMessage', id)
+        update(`decodedMessages.${message.id}`, message)
+        return message
+      } catch(e){
+        return null
+      }
+    }
+  }
+
   const contextValue = useMemo(() => {
-    const actions = { sendMessage: SendMessage(fmstate) }
+    const actions = { sendMessage: SendMessage(fmstate), getMessage: GetMessage(fmstate) }
     return { ...fmstate, actions }
   }, [fmstate])
 
