@@ -91,7 +91,7 @@ export default function MessageForm({myTokenName}){
 
   const tokenRequirement = (
     <div className="small">
-      Need {tokenRequirementNumber()} ${myTokenName}
+      {tokenRequirementNumber()} ${myTokenName} required
     </div>
   )
 
@@ -110,7 +110,7 @@ export default function MessageForm({myTokenName}){
           <div className='clearfix'>
             <div className='float-left'>
               <Dots current={level} onClick={handleSetLevel} isDisabled={isDisabled}/>
-              <div className="text-muted small"><i className='fas fa-eye' /> {recipientCount > 0 && threshold === "1" && 'All'} {hasToken && hasFollowers && recipientCount === 0 ? 'Future' : recipientCount} holders { hasToken && tokenRequirement }</div>
+              <div className="text-muted small">{ hasToken && tokenRequirement }<i className='fas fa-eye' /> {recipientCount > 0 && threshold === "1" && 'All'} {hasToken && hasFollowers && recipientCount === 0 ? 'Future' : recipientCount} holders</div>
             </div>
             <div className='float-right'>
               <Button variant="primary" type="submit" disabled={isDisabled || isEmpty(message) ? 'disabled' : null}>
