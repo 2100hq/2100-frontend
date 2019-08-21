@@ -22,6 +22,8 @@ export const FollowMeContextConsumer = FollowMeContext.Consumer
 
 function reducer (state, action) {
   switch (action.type) {
+    case 'RESET':
+      return action.initalState
     case 'UPDATE':
       // console.log(action.params.path, action.params.data)
       return { ...set(state, action.params.path, action.params.data) }
@@ -30,27 +32,30 @@ function reducer (state, action) {
   }
 }
 
-function InitialState(appstate){
+function InitialState(followMeUrl){
   return {
     messages: {},
     publicMessages: {},
+    followers: {},
+    isSignedIn: false,
     api: {
-      public:API(appstate.config.followMeUrl,'public'),
-      private:API(appstate.config.followMeUrl,'private'),
+      public:API(followMeUrl,'public'),
+      private:API(followMeUrl,'private'),
     }
   }
 }
 
 export default function FollowMeProvider ({ children }) {
-  const { state:appstate, actions, dispatch:appdispatch } = useStoreContext()
-  const [fmstate, dispatch] = useReducer(reducer, InitialState(appstate))
+  const { state:appstate, actions } = useStoreContext()
+  const {followMeUrl, followMePoll} = appstate.config
+  const ethAddress = appstate.web3.account
+
+  const [fmstate, dispatch] = useReducer(reducer, InitialState(followMeUrl))
   const { api,isSignedIn, myToken, threshold } = fmstate
   const isSignedIn2100 = appstate.private.isSignedIn
-  const ethAddress = appstate.web3.account
-  const [followerCount, setFollowerCount] = useState(0)
 
   const update = (path, ...args) => dispatch(actions.update(path, ...args))
-
+  const reset = () => dispatch({ type: 'RESET', initalState: InitialState(followMeUrl)})
 
   async function updateInbox(){
     try {
@@ -65,14 +70,12 @@ export default function FollowMeProvider ({ children }) {
      update('publicMessages', keyBy(resp, 'id'))
   }
 
-  async function updateFollowerCount(tokenid){
-    const followers = await api.private.call('followers', tokenid)
+  async function updateFollowers(tokenid){
+    const followers = await api.private.call('followers', tokenid, "0")
     update('followers', followers)
   }
 
   useEffect( () => {
-    if (!api) return
-
     // logged in and know address
     if (!isSignedIn && isSignedIn2100 && ethAddress){
       api.private.setToken(ethAddress)
@@ -89,32 +92,32 @@ export default function FollowMeProvider ({ children }) {
 
     // either not logged in or unknown address
     api.private.setToken(null)
-    update('followerCount', 0)
-    update('myToken', null)
-    update('isSignedIn', false)
-    update('threshold', null)
-    update('messages', {})
-  }, [api, isSignedIn2100, ethAddress])
+    reset()
+  }, [isSignedIn2100, ethAddress])
 
 
   useEffect( ()=> {
     if (!isSignedIn || !isSignedIn2100) return
     updateInbox()
-    updatePublicInbox()
-    const id = setInterval( () => {
-      updateInbox()
-      updatePublicInbox()
-    },appstate.config.followMePoll)
+    const id = setInterval(updateInbox,followMePoll)
     return () => clearInterval(id)
   }, [isSignedIn, isSignedIn2100])
 
 
   useEffect( ()=> {
-    if (!isSignedIn || !myToken || !isSignedIn2100) return
-    updateFollowerCount(myToken.id)
-    const id = setInterval(updateFollowerCount,appstate.config.followMePoll,myToken.id)
+    if (!api) return
+    updatePublicInbox()
+    const id = setInterval(updatePublicInbox,followMePoll)
     return () => clearInterval(id)
-  }, [isSignedIn, myToken, threshold, isSignedIn2100])
+  }, [api])
+
+
+  useEffect( ()=> {
+    if (!isSignedIn || !myToken || !isSignedIn2100) return
+    updateFollowers(myToken.id)
+    const id = setInterval(updateFollowers,followMePoll,myToken.id)
+    return () => clearInterval(id)
+  }, [isSignedIn, myToken, isSignedIn2100])
 
   function SendMessage(fmstate){
     return async (message, threshold) => {
