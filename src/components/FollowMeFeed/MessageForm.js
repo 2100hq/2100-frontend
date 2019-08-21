@@ -10,6 +10,11 @@ function isEmpty(message){
 }
 
 const percentiles = [0, 5, 25, 50, 95]
+const weiDecimals = BigNumber(10).pow(18)
+
+function ThresholdInput({defaultThreshold, onChange = ()=>{}}){
+  return <input type='number' step="0.01" min="0" className="threshold-input" defaultValue={defaultThreshold} onChange={ (e) => onChange(e.target.value)} />
+}
 
 export default function MessageForm({myTokenName}){
   let { api, isSignedIn, myToken, messages = {}, publicMessages = {}, followers = {}, actions } = useFollowMeContext()
@@ -47,16 +52,28 @@ export default function MessageForm({myTokenName}){
     setLevel(Number(i))
   }
 
+  function handleSetThreshold(val){
+    let newThresh = BigNumber(val).times(weiDecimals)
+    if (newThresh.eq(0)){
+      newThresh = "1"
+    }
+    setThreshold(newThresh.toString())
+  }
+
+  function percentileThreshold(){
+    const holdings = Object.values(followers)
+    const p = percentiles[4-level]
+    return percentile(holdings, p).toString()
+  }
+
   useEffect( () => {
     let newThresh = "1"
     let swappedLevel = 4-level
-    const holdings = Object.values(followers)
     if (hasFollowers && 4-level>0){
-      const p = percentiles[4-level]
-      newThresh = percentile(holdings, p).toString()
+      newThresh = percentileThreshold()
     }
     setThreshold(newThresh)
-  }, [level, followers])
+  }, [level])
 
   useEffect( () => {
     const holdings = Object.values(followers)
@@ -74,9 +91,14 @@ export default function MessageForm({myTokenName}){
 
   const tokenRequirement = (
     <div className="small">
-      Need {threshold === "1" ? 'some' : toDecimals(threshold,3,1)} ${myTokenName}
+      {tokenRequirementNumber()} ${myTokenName} required
     </div>
   )
+
+  function tokenRequirementNumber(){
+    const defaultThreshold = toDecimals(percentileThreshold(),3,1)
+    return level === 0 ? <ThresholdInput defaultThreshold={defaultThreshold} onChange={handleSetThreshold} /> : threshold === "1" ? 'some' : defaultThreshold
+  }
 
   return (
       <div className='card'>
@@ -88,7 +110,7 @@ export default function MessageForm({myTokenName}){
           <div className='clearfix'>
             <div className='float-left'>
               <Dots current={level} onClick={handleSetLevel} isDisabled={isDisabled}/>
-              <div className="text-muted small"><i className='fas fa-eye' /> {recipientCount > 0 && threshold === "1" && 'All'} {recipientCount} holders { hasToken && tokenRequirement }</div>
+              <div className="text-muted small">{ hasToken && tokenRequirement }<i className='fas fa-eye' /> {recipientCount > 0 && threshold === "1" && 'All'} {hasToken && hasFollowers && recipientCount === 0 ? 'Future' : recipientCount} holders</div>
             </div>
             <div className='float-right'>
               <Button variant="primary" type="submit" disabled={isDisabled || isEmpty(message) ? 'disabled' : null}>
