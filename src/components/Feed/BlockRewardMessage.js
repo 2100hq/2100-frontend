@@ -25,7 +25,7 @@ export default function BlockRewardMessage ({command = {}, token = {}}) {
   let amount = toDecimals(command.amount).split('.')
   amount = `${amount[0]}.${amount[1].slice(0, 6)}`
 
-  const name = `$${token.name}`
+  const name = `${token.name}`
   const messages = [
     <p>You just earned some <span class="token-name">{name}</span></p>,
     <p>{action} incoming for {name}</p>,

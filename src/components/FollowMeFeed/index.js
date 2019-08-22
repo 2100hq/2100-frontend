@@ -21,7 +21,7 @@ function getTokenName(state, tokenid){
 
 function getDisplayName(state, tokenid){
   const name = getTokenName(state,tokenid)
-  return <span className="token-name">${name}</span>
+  return <span>${name}</span>
 }
 
 
@@ -61,13 +61,13 @@ function MessageCard({message, myToken, state, isSignedIn, actions}){
   }
 
   const token = getToken(state, message.tokenid)
-  const name = '$' + token.name || 'unknown'
+  const name = token.name || 'unknown'
   const text = message.hidden ? '■■■■■■■■■■■■' : message.message
   const subtext = decoding ? 'decoding...' : message.hidden ? invisibleSubtext({name, token, message, isSignedIn, decodeMessage}) : visibleSubtext(name, message, myToken)
   return (
     <div className='card' key={message.id}>
       <div className={`card-body ${message.hidden ? 'text-muted more-text-muted' : ''}`}>
-        <h5 className='card-title'>{name} <span className='small'>3m</span></h5>
+        <div><span className='token-name medium'>{name}</span> <span className='small'>3m</span></div>
         <p className='card-text'>{text}</p>
         <h6 className='card-subtitle mb-2 text-muted small'>
           <i className='fas fa-eye' />  {subtext}

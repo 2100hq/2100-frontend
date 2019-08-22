@@ -1,4 +1,4 @@
-import React, { useState } from 'react'
+import React, { useState,useEffect } from 'react'
 import { useStoreContext } from '../../contexts/Store'
 import { toDecimals } from '../../utils'
 import { sortBy } from 'lodash'
@@ -10,6 +10,22 @@ import FollowMeFeed from '../FollowMeFeed'
 import AssetsTable from '../Wallet/AssetsTable'
 import { Sparklines, SparklinesBars } from 'react-sparklines';
 import './style.scss'
+import { useCountUp } from 'react-countup'
+
+function BalanceCountUp ({token}) {
+  const balance = toDecimals(token.balances.available,5)
+  const { countUp, update } = useCountUp({
+    start: 0,
+    end: balance,
+    delay: 0,
+    decimals: 5,
+    duration: 0.25
+  })
+  useEffect(() => {
+    update(balance)
+  }, [balance])
+  return (countUp)
+}
 
 const DiscoverOptions = {
   All: {
@@ -31,7 +47,7 @@ const DiscoverOptions = {
       null,
       null,
       <div>
-        <div><span className='token-name'>${props.token.name}</span></div>
+        <div><span className='token-name large'>{props.token.name}</span></div>
       </div>,
       <Allocator {...props} />,
       null
@@ -55,7 +71,7 @@ const DiscoverOptions = {
     columns: props => [
       null,
       null,
-      <a href='account.html'>${props.token.name}</a>,
+      <a href='account.html'>{props.token.name}</a>,
       <OverlayTrigger
         placement='top'
         overlay={
@@ -117,11 +133,11 @@ function Row (props) {
       <td>{columns[3]}</td>
       <td>
         <div>
-          <img src='../img/dai.png' style={{ width: '14px','vertical-align': 'baseline' }} /> <span className='text-muted'>{toDecimals(props.token.totalStakes)}</span>
+          <img src='../img/dai.png' style={{ width: '14px','vertical-align': 'baseline' }} /> <span className='text-muted'>{toDecimals(props.token.myStake)} / {toDecimals(props.token.totalStakes)}</span>
         </div>
       </td>
       <td>
-        0.00      
+        <BalanceCountUp token={props.token} />
       </td>
     </tr>
   )
@@ -223,7 +239,7 @@ export default function Discover () {
                             <th>Rank</th>
                             <th>Asset</th>
                             <th>Mint</th>
-                            <th>Total Minting</th>
+                            <th>Total</th>
                             <th>Balance</th>
                           </tr>
                         </thead>
