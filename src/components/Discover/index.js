@@ -8,6 +8,7 @@ import Feed from '../Feed'
 import {get} from 'lodash'
 import FollowMeFeed from '../FollowMeFeed'
 import AssetsTable from '../Wallet/AssetsTable'
+import { Sparklines, SparklinesBars } from 'react-sparklines';
 import './style.scss'
 
 const DiscoverOptions = {
@@ -31,9 +32,6 @@ const DiscoverOptions = {
       null,
       <div>
         <div><span className='token-name'>${props.token.name}</span></div>
-        <div>
-          <img src='../img/dai.png' style={{ width: '14px','vertical-align': 'baseline' }} /> <span className='text-muted'>{toDecimals(props.token.totalStakes)}</span>
-        </div>
       </div>,
       <Allocator {...props} />,
       null
@@ -111,11 +109,20 @@ function Row (props) {
   columns = columns ? columns(props) : []
   return (
     <tr>
-      <th scope='row'>{rank}</th>
+      <th scope='row'>{rank}
+      </th>
       <td>
         {columns[2]}
       </td>
       <td>{columns[3]}</td>
+      <td>
+        <div>
+          <img src='../img/dai.png' style={{ width: '14px','vertical-align': 'baseline' }} /> <span className='text-muted'>{toDecimals(props.token.totalStakes)}</span>
+        </div>
+      </td>
+      <td>
+        0.00      
+      </td>
     </tr>
   )
 }
@@ -211,6 +218,15 @@ export default function Discover () {
                         </div>
                       </div>
                       <table className='table table-hover table-borderless'>
+                        <thead className='text-muted'>
+                          <tr>
+                            <th>Rank</th>
+                            <th>Asset</th>
+                            <th>Mint</th>
+                            <th>Total Minting</th>
+                            <th>Balance</th>
+                          </tr>
+                        </thead>
                         <tbody>{rows}</tbody>
                       </table>
                     </div>
