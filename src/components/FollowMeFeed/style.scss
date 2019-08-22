@@ -1,7 +1,21 @@
+
+
 .hidden-message{
   span {
     opacity: 0.5;
   }
+}
+
+.message-body{
+	margin: 0.7rem 0;
+
+	& p{
+		margin-bottom: 0;
+	}
+}
+
+.message-time{
+	margin-left: 0.4rem;
 }
 
 .card + .card {
@@ -25,5 +39,4 @@
 	position:relative;
 	top: -1rem;
 	box-shadow: 0px 0px 2px 0px rgba(0,-4px,0,0.2);
-
 }

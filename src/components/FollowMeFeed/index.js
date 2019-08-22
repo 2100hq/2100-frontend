@@ -69,13 +69,19 @@ function MessageCard({message, myToken, state, isSignedIn, actions}){
   const text = message.hidden ? '■■■■■■■■■■■■' : message.message
   const subtext = decoding ? 'decoding...' : message.hidden ? invisibleSubtext({name, token, message, isSignedIn, decodeMessage}) : visibleSubtext(name, message, myToken)
   return (
-    <div className='card' key={message.id}>
+    <div className='message card' key={message.id}>
       <div className={`card-body ${message.hidden ? 'text-muted more-text-muted' : ''}`}>
-        <div><span className='token-name medium'>{name}</span> <span className='small'>{ms(Date.now()-message.created)}</span></div>
-        <p className='card-text'>{text}</p>
-        <h6 className='card-subtitle mb-2 text-muted small'>
-          <i className='fas fa-eye' />  {subtext}
-        </h6>
+        <div className='message-header text-muted'>
+          <span className='token-name'>{name}</span>
+          <span className='message-divider'> · </span>
+          <span className='message-time text-muted'>{ms(Date.now()-message.created)}</span>
+        </div>
+        <div className='message-body'>
+          <p>{text}</p>
+        </div>
+        <div className='message-footer small text-muted'>
+            <i className='fas fa-eye' />  {subtext}
+        </div>
       </div>
     </div>
    )
