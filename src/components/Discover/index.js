@@ -204,7 +204,7 @@ export default function Discover () {
       {/* 2100 */}
       <div className="col-md-8">
               <div className="row">
-                <div className="col-md-9">
+                <div className="col-md-12">
                   {/* 2100 minting ui*/}
                   <div className='card'>
                     <div className='card-body'>
@@ -248,24 +248,7 @@ export default function Discover () {
                     </div>
                   </div>
                 </div>
-                <div className="col-md-3">
-                  {/* connected */}
-                  <div className='card'>
-                    <div className='card-body'>
-                      <div className='small'>
-                        <div>
-                          <i className='fas fa-circle' style={{ color: network.loading ? 'yellow' : network.connected ? 'green' : 'red' }} />{' '}
-                          {network.loading ? 'Loading' : network.connected ? 'Connected' : 'Not Connected'}
-                        </div>
-                        <hr />
-                        <div>{state.config.networkName}</div>
-                        <div>{blockNumberDisplay}</div>
-                      </div>
-                    </div>
-                  </div>
-                  {/* minting rewards */}
-                  <Feed />
-                </div>
+
               </div>
             </div>
       {/* follow me */}
