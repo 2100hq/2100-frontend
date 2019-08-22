@@ -5,7 +5,9 @@ import {get, sortBy} from 'lodash'
 import { Form, Button } from 'react-bootstrap'
 import { BigNumber, toDecimals } from '../../utils'
 import MessageForm from './MessageForm'
+import ms from 'ms'
 import './style.scss'
+const weiDecimals = BigNumber(10).pow(18)
 
 function getToken(state, tokenid){
   if (!tokenid) return {}
@@ -19,37 +21,39 @@ function getTokenName(state, tokenid){
   return get(state, `public.tokens.active.${tokenid}.name`)
 }
 
-function getDisplayName(state, tokenid){
-  const name = getTokenName(state,tokenid)
-  return <span>${name}</span>
-}
-
-
 function invisibleSubtext({name, token, message, isSignedIn, state, decodeMessage=()=>{}}){
-  const defaultSubtext = <span>holders of {toDecimals(message.threshold,3,0)} {name}</span>
+  const defaultSubtext = <span>holders of {toDecimals(message.threshold,3,0)} <span className='token-name'>{name}</span></span>
   if (!isSignedIn) return defaultSubtext
 
   const available = get(token, 'balances.available', "0")
   const diff = BigNumber(message.threshold).minus(available)
+  let timeToDecode = null
+
   function handleClick(e){
     e.preventDefault()
     decodeMessage(message.id)
   }
-  if (diff.gt(0)) return <span>get {toDecimals(diff, 3, 0)} {name} to see</span>
+
+  if (BigNumber(token.myStake).gt(0) && diff.gt(0)){
+    const divisor = BigNumber(token.myStake).div(token.totalStakes).times(0.9).times(0.00021).times(weiDecimals)
+    const blocks = diff.div(divisor).dp(0,0).toNumber()
+    timeToDecode = (<span>({ms(blocks*15000)} to go)</span>)
+  }
+  if (diff.gt(0)) return <span>need {toDecimals(diff, 3, 0)} <span className='token-name'>{name}</span> {timeToDecode}</span>
   return <span>you have enough {name} to <a href="#" onClick={handleClick}>decode</a></span>
 }
 
 function visibleSubtext(name, message, myToken){
   let count = message.recipientcount
   const isOwner = myToken && myToken.id === message.tokenid
-  name = isOwner ? 'your token' : name
+  const displayName = isOwner ? 'your token' : <span className='token-name'>{name}</span>
 
   // didnt store recipient count
-  if (count == null) return <span>some holders of {name}</span>
+  if (count == null) return <span>some holders of <span className='token-name'>{name}</span></span>
 
-  count = isOwner ? count : `${count-1} other`
+  count = isOwner ? count : `${count === 0 ? 'no' : count-1} other`
 
-  return <span>{count} holders of {name}</span>
+  return <span>{count} holders of {displayName}</span>
 }
 
 function MessageCard({message, myToken, state, isSignedIn, actions}){
@@ -67,7 +71,7 @@ function MessageCard({message, myToken, state, isSignedIn, actions}){
   return (
     <div className='card' key={message.id}>
       <div className={`card-body ${message.hidden ? 'text-muted more-text-muted' : ''}`}>
-        <div><span className='token-name medium'>{name}</span> <span className='small'>3m</span></div>
+        <div><span className='token-name medium'>{name}</span> <span className='small'>{ms(Date.now()-message.created)}</span></div>
         <p className='card-text'>{text}</p>
         <h6 className='card-subtitle mb-2 text-muted small'>
           <i className='fas fa-eye' />  {subtext}

@@ -3,7 +3,7 @@ import { Form, Button } from 'react-bootstrap'
 import {useFollowMeContext} from '../../contexts/FollowMe'
 import Dots from '../Dots'
 import percentile from '../../utils/percentile'
-import {BigNumber, toDecimals} from '../../utils'
+import {BigNumber, toDecimals, fromDecimals} from '../../utils'
 
 function isEmpty(message){
   return message.replace(/\s+/, '') === ''
@@ -23,8 +23,8 @@ export default function MessageForm({myTokenName}){
   const [submitting, setSubmitting] = useState(false)
   const [message, setMessage] = useState('')
   const [error, setError] = useState()
-  const [level, setLevel] = useState(4)
-  const [threshold, setThreshold] = useState("1")
+  const [level, setLevel] = useState(0)
+  const [threshold, setThreshold] = useState(fromDecimals("0.00021"))
   const [recipientCount, setRecipientCount] = useState(0)
 
   const hasToken = myToken != null
@@ -60,20 +60,20 @@ export default function MessageForm({myTokenName}){
     setThreshold(newThresh.toString())
   }
 
-  function percentileThreshold(){
-    const holdings = Object.values(followers)
-    const p = percentiles[4-level]
-    return percentile(holdings, p).toString()
-  }
+  // function percentileThreshold(){
+  //   const holdings = Object.values(followers)
+  //   const p = percentiles[4-level]
+  //   return percentile(holdings, p).toString()
+  // }
 
-  useEffect( () => {
-    let newThresh = "1"
-    let swappedLevel = 4-level
-    if (hasFollowers && 4-level>0){
-      newThresh = percentileThreshold()
-    }
-    setThreshold(newThresh)
-  }, [level])
+  // useEffect( () => {
+  //   let newThresh = "1"
+  //   let swappedLevel = 4-level
+  //   if (hasFollowers && 4-level>0){
+  //     newThresh = percentileThreshold()
+  //   }
+  //   setThreshold(newThresh)
+  // }, [level])
 
   useEffect( () => {
     const holdings = Object.values(followers)
@@ -90,16 +90,15 @@ export default function MessageForm({myTokenName}){
   }, [threshold, followers])
 
   const tokenRequirement = (
-    <div className="small">
-      {tokenRequirementNumber()} ${myTokenName} required
+    <div>
+      <ThresholdInput defaultThreshold={toDecimals(threshold,15)} onChange={handleSetThreshold} /> ${myTokenName} required
     </div>
   )
 
-  function tokenRequirementNumber(){
-    const defaultThreshold = toDecimals(percentileThreshold(),3,1)
-    return level === 0 ? <ThresholdInput defaultThreshold={defaultThreshold} onChange={handleSetThreshold} /> : threshold === "1" ? 'some' : defaultThreshold
-  }
-
+  // function tokenRequirementNumber(){
+  //   const defaultThreshold = toDecimals(percentileThreshold(),3,1)
+  //   return level === 0 ? <ThresholdInput defaultThreshold={defaultThreshold} onChange={handleSetThreshold} /> : threshold === "1" ? 'some' : defaultThreshold
+  // }
   return (
       <div className='card'>
         <div className='card-body'>
@@ -109,8 +108,8 @@ export default function MessageForm({myTokenName}){
           </Form.Group>
           <div className='clearfix'>
             <div className='float-left'>
-              <Dots current={level} onClick={handleSetLevel} isDisabled={isDisabled}/>
-              <div className="text-muted small">{ hasToken && tokenRequirement }<i className='fas fa-eye' /> {recipientCount > 0 && threshold === "1" && 'All'} {hasToken && hasFollowers && recipientCount === 0 ? 'Future' : recipientCount} holders</div>
+              {/*<Dots current={level} onClick={handleSetLevel} isDisabled={isDisabled}/>*/}
+              <div className="text-muted small">{ hasToken && tokenRequirement }<i className='fas fa-eye' /> {recipientCount > 0 && recipientCount === followerCount && 'All'} {hasToken && hasFollowers && recipientCount === 0 ? 'Future' : recipientCount} holders</div>
             </div>
             <div className='float-right'>
               <Button variant="primary" type="submit" disabled={isDisabled || isEmpty(message) ? 'disabled' : null}>

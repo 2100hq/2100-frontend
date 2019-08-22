@@ -8,7 +8,6 @@ import Feed from '../Feed'
 import {get} from 'lodash'
 import FollowMeFeed from '../FollowMeFeed'
 import AssetsTable from '../Wallet/AssetsTable'
-import { Sparklines, SparklinesBars } from 'react-sparklines';
 import './style.scss'
 import { useCountUp } from 'react-countup'
 
