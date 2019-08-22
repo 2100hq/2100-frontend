@@ -222,8 +222,8 @@ export default function Discover () {
                           <tr>
                             <th>Rank</th>
                             <th>Asset</th>
-                            <th>Total Minting</th>
                             <th>Mint</th>
+                            <th>Total Minting</th>
                             <th>Balance</th>
                           </tr>
                         </thead>
