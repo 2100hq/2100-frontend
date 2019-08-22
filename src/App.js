@@ -2,7 +2,7 @@ import React, { Component } from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import { merge } from 'lodash'
 
-import Discover from './components/Discover'
+import Main from './components/Main'
 import Asset from './components/Asset'
 import Settle from './components/Settle'
 import Portfolio from './components/Portfolio'
@@ -24,7 +24,7 @@ class App extends Component {
       <Router>
         <Route path='' component={Nav} />
         <div className='container-fluid'>
-          <Route exact path='/' component={Discover} />
+          <Route exact path='/' component={Main} />
           <Route path='/portfolio' component={Portfolio} />
           <Route path='/wallet' component={Wallet} />
           <Route path='/manage' component={Manage} />
