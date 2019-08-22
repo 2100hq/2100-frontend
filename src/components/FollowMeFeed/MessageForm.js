@@ -100,7 +100,7 @@ export default function MessageForm({myTokenName}){
   //   return level === 0 ? <ThresholdInput defaultThreshold={defaultThreshold} onChange={handleSetThreshold} /> : threshold === "1" ? 'some' : defaultThreshold
   // }
   return (
-      <div className='card'>
+      <div className='message-form card'>
         <div className='card-body'>
           <Form onSubmit={handleSend}>
           <Form.Group controlId="message">

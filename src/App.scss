@@ -1,3 +1,15 @@
+//import variables
+@import "Variables";
+
+//then override bootstrap variables
+$theme-colors: (
+  "primary": $twentyoneprimary
+ );
+
+//then import Bootstrap
+@import "node_modules/bootstrap/scss/bootstrap";
+
+//then app wide styles
 html{
   height: 100%;
 }
@@ -7,6 +19,13 @@ body{
   font-family: 'Noto Serif JP', serif !important;
   background-color: #fff !important;
   font-size: 0.9rem !important;
+}
+
+h1{
+	font-family: 'Bungee Hairline', cursive;
+}
+
+h3{
 }
 
 .container-fluid{
@@ -35,4 +54,9 @@ body{
 
 table.table-borderless tr{
 	border-bottom: 1px solid #eee;
+}
+
+.header-background{
+	background: url(img/future-city.jpg) center center;
+	background-size: cover;
 }
