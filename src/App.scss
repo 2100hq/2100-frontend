@@ -14,10 +14,19 @@ body{
 }
 
 .token-name{
-	font-size: 1.1rem;
-	display: inline-block;
-	margin: 0.25rem 0;
-	padding: .25rem .5rem .25rem 0;
+	
+	&::before{
+		content: "$"
+	}
+
+	&.large{
+		font-size: 1.1rem;
+	}
+
+	&.medium{
+		font-size: 1rem !important;
+	}
+
 }
 
 .card{

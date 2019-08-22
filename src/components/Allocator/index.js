@@ -64,7 +64,6 @@ export default function Allocator ({ token }) {
   return (
     <div>
       <Dots total={state.config.stakeLevels} current={uiLevel} onClick={handleClick} isDisabled={isDisabled} />
-       <span className='text-muted'><img src='../img/dai.png' style={{ width: '14px','vertical-align': 'baseline' }} /> {toDecimals(token.myStake)}</span>
     </div>
   )
 }
