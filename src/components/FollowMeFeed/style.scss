@@ -1,4 +1,13 @@
 
+.message-form.card,.message.card{
+border: 1px solid #eee !important;
+
+}
+
+.message-form.card{
+	textarea{
+	}
+}
 
 .hidden-message{
   span {
@@ -38,5 +47,4 @@
 .message-form{
 	position:relative;
 	top: -1rem;
-	box-shadow: 0px 0px 2px 0px rgba(0,-4px,0,0.2);
 }
