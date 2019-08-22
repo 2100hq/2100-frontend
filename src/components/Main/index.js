@@ -20,12 +20,8 @@ export default function Main(){
       <Col md="4">
         <Row>
           <Col md="12">
-            <Card>
-              <Card.Body>
-                {/* follow me */}
-                <FollowMeFeed />
-              </Card.Body>
-            </Card>
+            {/* follow me */}
+            <FollowMeFeed />
           </Col>
         </Row>
       </Col>
