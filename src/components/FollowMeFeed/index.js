@@ -5,6 +5,7 @@ import {get, sortBy} from 'lodash'
 import { Form, Button } from 'react-bootstrap'
 import { BigNumber, toDecimals } from '../../utils'
 import MessageForm from './MessageForm'
+import ms from 'ms'
 import './style.scss'
 const weiDecimals = BigNumber(10).pow(18)
 
@@ -41,8 +42,8 @@ function invisibleSubtext({name, token, message, isSignedIn, state, decodeMessag
 
   if (BigNumber(token.myStake).gt(0) && diff.gt(0)){
     const divisor = BigNumber(token.myStake).div(token.totalStakes).times(0.9).times(0.00021).times(weiDecimals)
-    const blocks = diff.div(divisor).dp(0,0).toString()
-    timeToDecode = (<span>({blocks} blocks to go)</span>)
+    const blocks = diff.div(divisor).dp(0,0).toNumber()
+    timeToDecode = (<span>({ms(blocks*15000)} to go)</span>)
   }
   if (diff.gt(0)) return <span>need {toDecimals(diff, 3, 0)} {name} {timeToDecode}</span>
   return <span>you have enough {name} to <a href="#" onClick={handleClick}>decode</a></span>
@@ -56,7 +57,7 @@ function visibleSubtext(name, message, myToken){
   // didnt store recipient count
   if (count == null) return <span>some holders of {name}</span>
 
-  count = isOwner ? count : `${count-1} other`
+  count = isOwner ? count : `${count === 0 ? 'no' : count-1} other`
 
   return <span>{count} holders of {name}</span>
 }
@@ -76,7 +77,7 @@ function MessageCard({message, myToken, state, isSignedIn, actions}){
   return (
     <div className='card' key={message.id}>
       <div className={`card-body ${message.hidden ? 'text-muted more-text-muted' : ''}`}>
-        <h5 className='card-title'>{name} <span className='small'>3m</span></h5>
+        <h5 className='card-title'>{name} <span className='small'>{ms(Date.now()-message.created)}</span></h5>
         <p className='card-text'>{text}</p>
         <h6 className='card-subtitle mb-2 text-muted small'>
           <i className='fas fa-eye' />  {subtext}
