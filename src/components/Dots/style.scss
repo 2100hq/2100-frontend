@@ -1,3 +1,12 @@
+@import 'src/Variables.scss';
+
+$dot0: lighten($twentyoneprimary,40);
+$dot1: lighten($twentyoneprimary,30);
+$dot2: lighten($twentyoneprimary,20);
+$dot3: lighten($twentyoneprimary,10);
+$dot4: lighten($twentyoneprimary,0);
+
+
 %action-dot{
     border:1px solid transparent;
 }
@@ -21,41 +30,40 @@
 }
 
 
-
 .dot0{
     &.active{
-        border-color: hsl(90, 20%, 85%);
-        background-color: hsl(90, 20%, 85%);
+        border-color: $dot0;
+        background-color: $dot0;
     }
 }
 .dot1{
     @extend %action-dot;
     &.active{
-        background-color: hsl(90, 70%, 75%);
-        border-color: hsl(90, 70%, 75%);
+        background-color: $dot1;
+        border-color: $dot1;
     }
 }
 
 .dot2 {
     @extend %action-dot;
     &.active{
-        background-color: hsl(90, 80%, 60%);
-        border-color: hsl(90, 100%, 47%);
+        background-color: $dot2;
+        border-color: $dot2;
     }
 }
 
 .dot3 {
     @extend %action-dot;
     &.active{
-        background-color: hsl(90, 90%, 55%);
-        border-color: hsl(90, 100%, 47%);
+        background-color: $dot3;
+        border-color: $dot3;
     }
 }
 
 .dot4 {
     @extend %action-dot;
     &.active{
-        background-color: hsl(90, 100%, 47%);
-        border-color: hsl(90, 100%, 47%);
+        background-color: $dot4;
+        border-color: $dot4;
     }
 }

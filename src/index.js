@@ -3,7 +3,6 @@ import ReactDOM from 'react-dom'
 import './index.css'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
-import 'bootstrap/dist/css/bootstrap.css'
 
 import Web3Provider, { Connectors, Web3Consumer } from 'web3-react'
 import SocketProvider from './contexts/Socket'
