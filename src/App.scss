@@ -43,3 +43,11 @@ h3{
 table.table-borderless tr{
 	border-bottom: 1px solid #eee;
 }
+
+.header-background{
+	background: linear-gradient(90deg,#6226fc 0,#ad23fc);
+}
+
+$theme-colors: (
+	"primary": red !important
+);

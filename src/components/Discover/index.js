@@ -252,15 +252,11 @@ export default function Discover () {
             </div>
       {/* follow me */}
       <div className="col-md-4">
-          <div className="card">
-            <div className="card-body">
               <div className="row">
                 <div className="col-md-12">
                   {/* follow me*/}
                   <FollowMeFeed />
                 </div>
-              </div>
-            </div>
           </div>
       </div>
       {/* <div className='col-md-4' style={{ paddingTop: '1rem' }}>

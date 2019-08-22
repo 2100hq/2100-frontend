@@ -92,7 +92,11 @@ export default function FollowMeFeed(){
   return (
     <div>
         { state.private.isSignedIn && <MessageForm myTokenName={getTokenName(state, myToken)}/> }
-        {messages}
+        <div className="card">
+          <div className="card-body">
+            {messages}
+          </div>
+        </div>
     </div>
   )
 }
