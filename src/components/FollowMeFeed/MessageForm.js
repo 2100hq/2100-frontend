@@ -3,14 +3,13 @@ import { Form, Button } from 'react-bootstrap'
 import {useFollowMeContext} from '../../contexts/FollowMe'
 import Dots from '../Dots'
 import percentile from '../../utils/percentile'
-import {BigNumber, toDecimals, fromDecimals} from '../../utils'
+import {BigNumber, toDecimals, fromDecimals, weiDecimals} from '../../utils'
 
 function isEmpty(message){
   return message.replace(/\s+/, '') === ''
 }
 
 const percentiles = [0, 5, 25, 50, 95]
-const weiDecimals = BigNumber(10).pow(18)
 
 function ThresholdInput({defaultThreshold, onChange = ()=>{}}){
   return <input type='number' step="0.01" min="0" className="threshold-input" defaultValue={defaultThreshold} onChange={ (e) => onChange(e.target.value)} />

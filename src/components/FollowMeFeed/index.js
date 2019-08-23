@@ -3,23 +3,10 @@ import {useFollowMeContext} from '../../contexts/FollowMe'
 import {useStoreContext} from '../../contexts/Store'
 import {get, sortBy} from 'lodash'
 import { Form, Button } from 'react-bootstrap'
-import { BigNumber, toDecimals } from '../../utils'
+import { BigNumber, toDecimals, weiDecimals } from '../../utils'
 import MessageForm from './MessageForm'
 import ms from 'ms'
 import './style.scss'
-const weiDecimals = BigNumber(10).pow(18)
-
-function getToken(state, tokenid){
-  if (!tokenid) return {}
-  if (tokenid.tokenid || tokenid.id) tokenid=tokenid.tokenid || tokenid.id
-  return get(state, `public.tokens.active.${tokenid}`, {})
-}
-
-function getTokenName(state, tokenid){
-  if (!tokenid) return
-  if (tokenid.tokenid || tokenid.id) tokenid=tokenid.tokenid || tokenid.id
-  return get(state, `public.tokens.active.${tokenid}.name`)
-}
 
 function invisibleSubtext({name, token, message, isSignedIn, state, decodeMessage=()=>{}}){
   const defaultSubtext = <span>holders of {toDecimals(message.threshold,3,0)} <span className='token-name'>{name}</span></span>
@@ -56,15 +43,13 @@ function visibleSubtext(name, message, myToken){
   return <span>{count} holders of {displayName}</span>
 }
 
-function MessageCard({message, myToken, state, isSignedIn, actions}){
+function MessageCard({message, myToken, token, isSignedIn, actions}){
   const [decoding, setDecoding] = useState(false)
   async function decodeMessage(id){
     setDecoding(true)
     const message = await actions.getMessage(id)
     setDecoding(false)
   }
-
-  const token = getToken(state, message.tokenid)
   const name = token.name || 'unknown'
   const text = message.hidden ? '■■■■■■■■■■■■' : message.message
   const subtext = decoding ? 'decoding...' : message.hidden ? invisibleSubtext({name, token, message, isSignedIn, decodeMessage}) : visibleSubtext(name, message, myToken)
@@ -88,16 +73,16 @@ function MessageCard({message, myToken, state, isSignedIn, actions}){
 }
 
 export default function FollowMeFeed(){
-  const {state} = useStoreContext()
+  const {state, query} = useStoreContext()
   let { api, isSignedIn, myToken, messages = {}, publicMessages = {}, decodedMessages = {}, followers = {}, actions } = useFollowMeContext()
 
   messages = { ...publicMessages, ...messages, ...decodedMessages }
   messages = Object.values(sortBy(messages, msg => msg.created * -1))
-  messages = messages.map( message => <MessageCard message={message} myToken={myToken} state={state} isSignedIn={isSignedIn} actions={actions} key={message.id+(message.hidden||'visible')}/>)
+  messages = messages.map( message => <MessageCard message={message} myToken={myToken} token={query.getToken(message.tokenid)} isSignedIn={isSignedIn} actions={actions} key={message.id+(message.hidden||'visible')}/>)
 
   return (
     <div>
-        { state.private.isSignedIn && <MessageForm myTokenName={getTokenName(state, myToken)}/> }
+        { state.private.isSignedIn && <MessageForm myTokenName={query.getTokenName(myToken)}/> }
         <div className="card">
           <div className="card-body">
             {messages}
