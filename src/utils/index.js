@@ -101,3 +101,6 @@ export function updateStakeAmountsFromLevels (state, newLevels = {}) {
     return stakes
   }, {})
 }
+
+
+export const weiDecimals = BigNumber(10).pow(18)
