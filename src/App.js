@@ -6,6 +6,7 @@ import Main from './components/Main'
 import Asset from './components/Asset'
 import Settle from './components/Settle'
 import Portfolio from './components/Portfolio'
+import Profile from './components/Profile'
 import Nav from './components/Nav'
 import Wallet from './components/Wallet'
 import Alerts from './components/Alerts'
@@ -29,6 +30,7 @@ class App extends Component {
           <Route path='/wallet' component={Wallet} />
           <Route path='/manage' component={Manage} />
           <Route path='/admin' component={Admin} />
+          <Route path='/profile' component={Profile} />
           <Alerts />
           <ErrorModal />
         </div>

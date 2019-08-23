@@ -27,7 +27,8 @@ function Row ({ rank, token }) {
       <th scope='row'>{rank}
       </th>
       <td>
-        <span className='token-name large'>{token.name}</span>
+        <div className='token-name large'>{token.name}</div>
+        <div className='token-description' style={{ fontSize: '0.7rem',color:'#aaa'}}>Access my new sci-fi story ...</div>
       </td>
       <td>
         <Allocator token={token} />
