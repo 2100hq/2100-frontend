@@ -1,6 +1,6 @@
 import React from 'react'
 import {Row, Col, Card} from 'react-bootstrap'
-import FollowMeFeed from '../FollowMeFeed'
+import FollowMePublicFeed from '../FollowMe/PublicFeed'
 import Discover from '../Discover'
 
 export default function Main(){
@@ -21,7 +21,7 @@ export default function Main(){
         <Row>
           <Col md="12">
             {/* follow me */}
-            <FollowMeFeed />
+            <FollowMePublicFeed />
           </Col>
         </Row>
       </Col>

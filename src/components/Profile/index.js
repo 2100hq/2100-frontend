@@ -1,5 +1,5 @@
 import React, { useState } from 'react'
-import FollowMeFeed from '../FollowMeFeed'
+import FollowMe from '../FollowMe'
 import Allocator from '../Allocator'
 import { toDecimals } from '../../utils'
 
@@ -18,7 +18,7 @@ export default function Profile (token) {
 					</div>
 					<hr/>
 					<span>** when signed in and owner**</span>
-					<FollowMeFeed />
+					<FollowMe />
     		</div>
     	</div>
     </div>
