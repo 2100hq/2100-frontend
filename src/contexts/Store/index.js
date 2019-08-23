@@ -18,6 +18,7 @@ import Signer from '../../utils/signer'
 import { useWeb3Context } from 'web3-react'
 
 import { BN, unlimitedAllowance } from '../../utils'
+import Query from '../../utils/query'
 import Selectors from '../../utils/selectors'
 
 const ethers = require('ethers')
@@ -137,6 +138,7 @@ export default function StoreProvider ({ children }) {
     const userToken = activeTokens.find(token => get(token, 'ownerAddress', '').toLowerCase() === publicAddress)
 
     if (!userToken) return
+    dispatch(actions.update('private.mytoken', userToken))
     dispatch(actions.update('private.username', userToken.name))
   }, [Object.values(get(privState, 'public.tokens.active', {})), privState.private.me, privState.private.isSignedIn])
 
@@ -145,11 +147,11 @@ export default function StoreProvider ({ children }) {
   // provide context of all these to children
   const contextValue = useMemo(() => {
     const state = { ...privState, ...Selectors(privState) }
-    // console.log()
+    const query = Query(state)
     window.appstate = state
 
     const dispatcher = Dispatcher({ dispatch, socket, web3, state, actions })
-    return { dispatch: dispatcher, state, actions }
+    return { dispatch: dispatcher, state, actions, query }
   }, [privState, socket, web3])
 
   return (
