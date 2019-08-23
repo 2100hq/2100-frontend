@@ -16,13 +16,11 @@ function Balances ({ state }) {
   )
 }
 
-function AddressIcon ({ state }) {
-  const account = state.web3.account
-  const username = get(state, 'private.username')
-  const displayName = username || account.slice(0, 7)
+function AddressIcon ({ username, useraddress }) {
+  const displayName = username || useraddress.slice(0, 7)
   const icon = (
     <span className='in'>
-      <Jazzicon diameter={15} seed={jsNumberForAddress(account)} />
+      <Jazzicon diameter={15} seed={jsNumberForAddress(useraddress)} />
     </span>
   )
   return (
@@ -57,7 +55,8 @@ function Wave(){
   )
 }
 
-function SignedIn ({ state }) {
+function SignedIn () {
+  const { state, query } = useStoreContext()
   return (
     [
       <li className='nav-item' key='balances'>
@@ -65,7 +64,7 @@ function SignedIn ({ state }) {
       </li>,
       <Dropdown as='li' className='nav-item' key='dropdown'>
         <Dropdown.Toggle as='a' className='nav-link in' href='#'>
-          <AddressIcon state={state} />
+          <AddressIcon username={query.getUserName()} useraddress={query.getUserAddress()} />
         </Dropdown.Toggle>
         <Wave />
         <Dropdown.Menu>
@@ -184,7 +183,7 @@ export default function User (props) {
 
   if (isSignedIn) {
     if (prevRoute) return <Redirect to={prevRoute} key='redirect' />
-    return <SignedIn state={state} key='signedin' />
+    return <SignedIn key='signedin' />
   } else if (signingIn) {
     return <SigningIn key='signingin' />
   } else {

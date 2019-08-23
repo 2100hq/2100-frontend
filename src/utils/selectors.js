@@ -1,13 +1,13 @@
 import { get, keyBy } from 'lodash'
 import { BN, BigNumber } from './'
 function selectPending (state) {
-  const pending = keyBy(get(state, ['public', 'tokens', 'pending'], {}), 'name') // key both by name
+  const pending = get(state, ['public', 'tokens', 'pending'], {})
   const createCoupons = get(state, ['public', 'coupons', 'create'], {})
   Object.values(pending).forEach(token => {
     token.pending = true
     token.coupon = get(createCoupons, [token.couponid, 'data'], {})
   })
-  return pending
+  return keyBy(pending,'name')
 }
 
 function getStakeLevels (state) {
@@ -36,7 +36,7 @@ function getStakeLevels (state) {
 }
 
 function selectActive (state) {
-  const active = keyBy(get(state, ['public', 'tokens', 'active'], {}), 'name') // key both by name
+  const active = get(state, ['public', 'tokens', 'active'], {})
 
   const allStakes = get(state, ['public', 'stakes'], {})
   const myStakes = get(state, ['private', 'myStakes'], {})
@@ -46,8 +46,8 @@ function selectActive (state) {
   // console.log('stakeLevels', stakeLevels);
 
   Object.values(active).forEach(token => {
-    const tokenStakes = get(allStakes, token.id, {})
-    token.totalStakes = Object.values(tokenStakes).reduce((sum, stake) => {
+    token.stakes = get(allStakes, token.id, {})
+    token.totalStakes = Object.values(token.stakes).reduce((sum, stake) => {
       return sum.add(BN(stake))
     }, BN(0)).toString()
     token.myStake = get(myStakes, token.id, '0')
@@ -58,7 +58,7 @@ function selectActive (state) {
     }
   })
 
-  return active
+  return keyBy(active, 'name')
 }
 
 function selectTokens (state) {
