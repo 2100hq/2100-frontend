@@ -9,7 +9,7 @@ import React, {
 
 import { set,sortBy, keyBy } from 'lodash'
 import {useStoreContext} from '../Store'
-
+import { get } from 'lodash'
 import API from './API'
 
 export const FollowMeContext = createContext()
@@ -25,7 +25,11 @@ function reducer (state, action) {
     case 'RESET':
       return action.initalState
     case 'UPDATE':
-      // console.log(action.params.path, action.params.data)
+      if (action.params.path.split('.').length == 2){
+        const [_root, _id] = action.params.path.split('.')
+        action.params.data = { ...set(get(state, _root), _id, action.params.data) }
+        action.params.path = _root
+      }
       return { ...set(state, action.params.path, action.params.data) }
     default:
       throw new Error(`Reducer does not handle ${action.type}`)
