@@ -50,6 +50,13 @@ function VisibleSubtext({name, message, myToken}){
   return <span>{count} holders of {displayName}</span>
 }
 
+
+function ago(past){
+  let elapsed = Date.now()-past
+  elapsed = Math.floor(elapsed/1000)*1000
+  if (elapsed === 0) return 'now'
+  return ms(elapsed)
+}
 export default function MessageCard({message, myToken, token, isSignedIn, actions}){
   const name = token.name || 'unknown'
   const text = message.hidden ? '■■■■■■■■■■■■' : message.message
@@ -60,7 +67,7 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
         <div className='message-header text-muted'>
           <span className='token-name'>{name}</span>
           <span className='message-divider'> · </span>
-          <span className='message-time text-muted'>{ms(Date.now()-message.created)}</span>
+          <span className='message-time text-muted'>{ago(message.created)}</span>
         </div>
         <div className='message-body'>
           <p>{text}</p>
