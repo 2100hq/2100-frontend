@@ -1,6 +1,8 @@
 import React, {useState, useEffect} from 'react'
 import { Form, Button } from 'react-bootstrap'
 import {useFollowMeContext} from '../../contexts/FollowMe'
+import {useStoreContext} from '../../contexts/Store'
+
 import Dots from '../Dots'
 import percentile from '../../utils/percentile'
 import {BigNumber, toDecimals, fromDecimals, weiDecimals} from '../../utils'
@@ -15,8 +17,12 @@ function ThresholdInput({defaultThreshold, onChange = ()=>{}}){
   return <input type='number' step="0.01" min="0" className="threshold-input" defaultValue={defaultThreshold} onChange={ (e) => onChange(e.target.value)} />
 }
 
-export default function MessageForm({myTokenName}){
+export default function MessageForm(){
+  const {query} = useStoreContext()
+
   let { api, isSignedIn, myToken, messages = {}, publicMessages = {}, followers = {}, actions } = useFollowMeContext()
+
+  const myTokenName=query.getTokenName(myToken)
 
   const followerCount = Object.keys(followers).length
   const [submitting, setSubmitting] = useState(false)
@@ -41,7 +47,9 @@ export default function MessageForm({myTokenName}){
     e.preventDefault()
     if (isEmpty(message)) return
     setSubmitting(true)
-    const resp = await actions.sendMessage(message, threshold)
+    console.log('handleSend', message, threshold.toString())
+    const resp = await actions.sendMessage(message, threshold.toString())
+    console.log('handleSend', resp)
     setSubmitting(false)
     if (resp) setMessage('')
 
@@ -101,7 +109,7 @@ export default function MessageForm({myTokenName}){
   return (
       <div className='message-form card'>
         <div className='card-body'>
-          <Form onSubmit={handleSend}>
+          <Form>
           <Form.Group controlId="message">
             <Form.Control as="textarea" rows="2" value={message} onChange={changeMessage} disabled={isDisabled ? 'disabled' : null} placeholder={placeholder}/>
           </Form.Group>
@@ -111,7 +119,7 @@ export default function MessageForm({myTokenName}){
               <div className="text-muted small">{ hasToken && tokenRequirement }<i className='fas fa-eye' /> {recipientCount > 0 && recipientCount === followerCount && 'All'} {hasToken && hasFollowers && recipientCount === 0 ? 'Future' : recipientCount} holders</div>
             </div>
             <div className='float-right'>
-              <Button variant="primary" type="submit" disabled={isDisabled || isEmpty(message) ? 'disabled' : null}>
+              <Button variant="primary" disabled={isDisabled || isEmpty(message) ? 'disabled' : null}  onClick={handleSend}>
                 { submitting ? 'Sending' : 'Send' }
               </Button>
             </div>
