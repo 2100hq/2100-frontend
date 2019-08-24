@@ -152,8 +152,20 @@ export default function FollowMeProvider ({ children }) {
     }
   }
 
+  function GetTokenFeed(fmstate){
+    return async (tokenid) => {
+      const channel = fmstate.isSignedIn ? 'private' : 'public'
+      try {
+        const messages = await fmstate.api[channel].call('getTokenFeed', tokenid)
+        return keyBy(messages, 'id')
+      } catch(e){
+        return null
+      }
+    }
+  }
+
   const contextValue = useMemo(() => {
-    const actions = { sendMessage: SendMessage(fmstate), getMessage: GetMessage(fmstate) }
+    const actions = { sendMessage: SendMessage(fmstate), getMessage: GetMessage(fmstate), getTokenFeed: GetTokenFeed(fmstate) }
     return { ...fmstate, actions }
   }, [fmstate])
 
