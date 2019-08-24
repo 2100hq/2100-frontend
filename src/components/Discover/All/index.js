@@ -4,7 +4,7 @@ import { toDecimals } from '../../../utils'
 import Allocator from '../../Allocator'
 import { useCountUp } from 'react-countup'
 import { sortBy } from 'lodash'
-
+import { Link } from 'react-router-dom'
 function BalanceCountUp ({token}) {
   const balance = toDecimals(token.balances.available,5)
   const { countUp, update } = useCountUp({
@@ -27,7 +27,7 @@ function Row ({ rank, token }) {
       <th scope='row'>{rank}
       </th>
       <td>
-        <div className='token-name large'>{token.name}</div>
+        <div className='token-name large'><Link to={`$${token.name}`}>{token.name}</Link></div>
         <div className='token-description' style={{ fontSize: '0.7rem',color:'#aaa'}}>Access my new sci-fi story ...</div>
       </td>
       <td>

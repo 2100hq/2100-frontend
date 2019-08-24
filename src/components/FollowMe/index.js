@@ -6,7 +6,7 @@ import MessageForm from './MessageForm'
 import MessageCard from './MessageCard'
 import './style.scss'
 
-export default function FollowMeFeed({messages={}, showForm={}, className, styles}){
+export default function FollowMeFeed({messages={}, showForm, className, styles}){
   const {query} = useStoreContext()
   let { isSignedIn, myToken, actions } = useFollowMeContext()
 

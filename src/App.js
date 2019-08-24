@@ -26,11 +26,11 @@ class App extends Component {
         <Route path='' component={Nav} />
         <div className='container-fluid'>
           <Route exact path='/' component={Main} />
+          <Route path='/:username([$].*)' component={Profile} />
           <Route path='/portfolio' component={Portfolio} />
           <Route path='/wallet' component={Wallet} />
           <Route path='/manage' component={Manage} />
           <Route path='/admin' component={Admin} />
-          <Route path='/profile' component={Profile} />
           <Alerts />
           <ErrorModal />
         </div>
