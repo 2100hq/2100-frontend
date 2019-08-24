@@ -38,7 +38,8 @@ function reducer (state, action) {
 
 function InitialState(followMeUrl){
   return {
-    messages: {},
+    privateMessages: {},
+    sentMessages: {},
     publicMessages: {},
     decodedMessages: {},
     followers: {},
@@ -65,7 +66,7 @@ export default function FollowMeProvider ({ children }) {
   async function updateInbox(){
     try {
       let resp = await api.private.call('getMyInbox')
-       update('messages', keyBy(resp, 'id'))
+       update('privateMessages', keyBy(resp, 'id'))
     } catch(e){}
 
   }
@@ -129,7 +130,7 @@ export default function FollowMeProvider ({ children }) {
       if (!fmstate.myToken) return null
       try {
         message = await fmstate.api.private.call('sendMessage', fmstate.myToken.id, message, threshold)
-        update(`messages.${message.id}`, message)
+        update(`sentMessages.${message.id}`, message)
         return message
       } catch(e){
         return null
