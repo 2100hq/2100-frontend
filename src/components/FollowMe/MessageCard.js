@@ -57,9 +57,41 @@ function ago(past){
   if (elapsed === 0) return 'now'
   return ms(elapsed)
 }
+
+function HiddenMessage({message}){
+  let chars = []
+  let alphabet = "😂😎💩🦊🐔🍕🍤🍎📱⌚️🇰🇵🇯🇵🇨🇦🦷"
+  for (var index = 0; index < message.length; index++){
+
+    switch(index % 5) {
+      case 0:
+        chars.push(<span className={'hidden-char '+ 'c' + index % 5 } key={index}>💩</span>)
+        break;
+      case 1:
+        chars.push(<span className={'hidden-char '+ 'c' + index % 5 } key={index}>🦊</span>)
+        break;
+      case 2:
+        chars.push(<span className={'hidden-char '+ 'c' + index % 5 } key={index}>🍕</span>)
+        break;
+      case 3:
+        chars.push(<span className={'hidden-char '+ 'c' + index % 5 } key={index}>🐔</span>)
+        break;
+      case 4:
+        chars.push(<span className={'hidden-char '+ 'c' + index % 5 } key={index}>😎</span>)
+        break;
+    }
+  }
+
+  return(
+    <span>
+      {chars}
+    </span>
+  )
+}
+
 export default function MessageCard({message, myToken, token, isSignedIn, actions}){
   const name = token.name || 'unknown'
-  const text = message.hidden ? '■■■■■■■■■■■■' : message.message
+  const text = message.hidden ? <HiddenMessage message={message}/> : message.message
   const subtext = message.hidden ? <InvisibleSubtext name={name} token={token} message={message} isSignedIn={isSignedIn} actions={actions} /> : <VisibleSubtext name={name} message={message} myToken={myToken} />
   return (
     <div className='message card' key={message.id}>

@@ -1,4 +1,30 @@
 
+.hidden-char{
+  user-select: all; 
+  &.c0{
+    color: red;
+  }
+  &.c1{
+    color: orange;
+  }
+  &.c2{
+    color: yellow;
+  }
+  &.c3{
+    color: green;
+  }
+  &.c4{
+    color: blue;
+  }
+  &.c5{
+    color: indigo;
+  }
+  &.c6{
+    color: violet;
+  }
+}
+
+
 .message-form.card,.message.card{
 border: 1px solid #eee !important;
 
