@@ -72,11 +72,11 @@ function HiddenMessage({message, emojis = [], limit = emojis.length}){
 export default function MessageCard({message, myToken, token, isSignedIn, actions}){
 
   let lively = "😂,😎,💩,🦊,🐔,🍕,🍤,🍎,📱,⌚️,🇰🇵,🇯🇵,🇨🇦".split(',')
-  let monochrome = "🎩,🎓,🌑,🌚,🎱,🎬,🖤,⚫️,◼️,🏴".split(',')
-  const [emojis] = useState(shuffle(lively))
+  let monochrome = "◼️,🎩,🎓,🌑,🌚,🎱,🎬,🖤,⚫️,🏴".split(',')
+  const [emojis] = useState(monochrome)
 
   const name = token.name || 'unknown'
-  const text = message.hidden ? <HiddenMessage message={message} emojis={emojis} limit={2}/> : message.message
+  const text = message.hidden ? <HiddenMessage message={message} emojis={emojis} limit={1}/> : message.message
   const subtext = message.hidden ? <InvisibleSubtext name={name} token={token} message={message} isSignedIn={isSignedIn} actions={actions} /> : <VisibleSubtext name={name} message={message} myToken={myToken} />
   return (
     <div className='message card' key={message.id}>
