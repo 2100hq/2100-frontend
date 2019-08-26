@@ -126,10 +126,10 @@ export default function FollowMeProvider ({ children }) {
   }, [isSignedIn, myToken, isSignedIn2100])
 
   function SendMessage(fmstate){
-    return async (message, threshold) => {
+    return async (message, hint, threshold) => {
       if (!fmstate.myToken) return null
       try {
-        message = await fmstate.api.private.call('sendMessage', fmstate.myToken.id, message, threshold)
+        message = await fmstate.api.private.call('sendMessage', fmstate.myToken.id, message, hint, threshold)
         update(`sentMessages.${message.id}`, message)
         return message
       } catch(e){

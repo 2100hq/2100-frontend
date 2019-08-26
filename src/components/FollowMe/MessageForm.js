@@ -8,6 +8,7 @@ import percentile from '../../utils/percentile'
 import {BigNumber, toDecimals, fromDecimals, weiDecimals} from '../../utils'
 
 function isEmpty(message){
+  if (!message) return true
   return message.replace(/\s+/, '') === ''
 }
 
@@ -26,7 +27,9 @@ export default function MessageForm(){
 
   const followerCount = Object.keys(followers).length
   const [submitting, setSubmitting] = useState(false)
-  const [message, setMessage] = useState('')
+  const [showHint, setShowHint] = useState(false)
+  const [data, setData] = useState({})
+  const { message, hint } = data
   const [error, setError] = useState()
   const [level, setLevel] = useState(0)
   const [threshold, setThreshold] = useState(fromDecimals("0.00021"))
@@ -39,20 +42,25 @@ export default function MessageForm(){
 
   const placeholder = !hasToken ? 'Create your token to send messages' : null
 
-  function changeMessage(e){
-    setMessage(e.target.value)
+  function changeData(e){
+    const { id, value } = e.target
+    setData({
+      ...data,
+      [id]: value
+    })
   }
 
   async function handleSend(e){
     e.preventDefault()
     if (isEmpty(message)) return
     setSubmitting(true)
-    console.log('handleSend', message, threshold.toString())
-    const resp = await actions.sendMessage(message, threshold.toString())
+    const resp = await actions.sendMessage(message, hint, threshold.toString())
     console.log('handleSend', resp)
     setSubmitting(false)
-    if (resp) setMessage('')
-
+    if (resp) {
+      setData({})
+      setShowHint(false)
+    }
   }
 
   function handleSetLevel(i){
@@ -106,25 +114,51 @@ export default function MessageForm(){
   //   const defaultThreshold = toDecimals(percentileThreshold(),3,1)
   //   return level === 0 ? <ThresholdInput defaultThreshold={defaultThreshold} onChange={handleSetThreshold} /> : threshold === "1" ? 'some' : defaultThreshold
   // }
+  let hintInput = null
+  if (showHint && hasToken){
+    const maxlength = 75
+    hintInput = (
+      <Form.Group controlId="hint" className='form-group-hint'>
+        <Form.Label>
+            Visible to everyone:
+        </Form.Label>
+        <Form.Control as="input" plaintext value={hint || ''} onChange={changeData} disabled={isDisabled ? 'disabled' : null} maxlength={maxlength} />
+        <Form.Label className='char-count'>
+            {(hint || '').length}/{maxlength}
+        </Form.Label>
+      </Form.Group>
+    )
+  }
+
+  function openHint(e){
+    e.preventDefault()
+    setShowHint(true)
+  }
+
   return (
       <div className='message-form card'>
         <div className='card-body'>
           <Form>
-          <Form.Group controlId="message">
-            <Form.Control as="textarea" rows="2" value={message} onChange={changeMessage} disabled={isDisabled ? 'disabled' : null} placeholder={placeholder}/>
-          </Form.Group>
-          <div className='clearfix'>
-            <div className='float-left'>
-              {/*<Dots current={level} onClick={handleSetLevel} isDisabled={isDisabled}/>*/}
-              <div className="text-muted small">{ hasToken && tokenRequirement }<i className='fas fa-eye' /> {recipientCount > 0 && recipientCount === followerCount && 'All'} {hasToken && hasFollowers && recipientCount === 0 ? 'Future' : recipientCount} holders</div>
+            <Form.Group controlId="message">
+              <Form.Control as="textarea" rows="2" value={message || ''} onChange={changeData} disabled={isDisabled ? 'disabled' : null} placeholder={placeholder}/>
+              <Form.Text className="text-muted">
+                {!hintInput && hasToken && <a href='#' onClick={openHint}>Add a hint</a>}
+                {hintInput}
+              </Form.Text>
+            </Form.Group>
+
+            <div className='clearfix'>
+              <div className='float-left'>
+                {/*<Dots current={level} onClick={handleSetLevel} isDisabled={isDisabled}/>*/}
+                <div className="text-muted small">{ hasToken && tokenRequirement }<i className='fas fa-eye' /> {recipientCount > 0 && recipientCount === followerCount && 'All'} {hasToken && hasFollowers && recipientCount === 0 ? 'Future' : recipientCount} holders</div>
+              </div>
+              <div className='float-right'>
+                <Button variant="primary" disabled={isDisabled || isEmpty(message) ? 'disabled' : null}  onClick={handleSend}>
+                  { submitting ? 'Sending' : 'Send' }
+                </Button>
+              </div>
             </div>
-            <div className='float-right'>
-              <Button variant="primary" disabled={isDisabled || isEmpty(message) ? 'disabled' : null}  onClick={handleSend}>
-                { submitting ? 'Sending' : 'Send' }
-              </Button>
-            </div>
-          </div>
-        </Form>
+          </Form>
       </div>
     </div>
   )

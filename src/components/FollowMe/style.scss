@@ -1,6 +1,6 @@
 
 .hidden-char{
-  user-select: all; 
+  user-select: all;
   &.c0{
     color: red;
   }
@@ -35,6 +35,23 @@ border: 1px solid #eee !important;
 	}
 }
 
+.form-group-hint {
+  label {
+    display: inline;
+  }
+  input {
+    display: inline;
+    margin-left: 1em;
+    width: 40em;
+    border-radius: 0;
+    padding-bottom: 0;
+    border-bottom: 1px solid #ccc;
+    outline: none;
+  }
+  .char-count {
+    margin-left: 0.5em;
+  }
+}
 .hidden-message{
   span {
     opacity: 0.5;

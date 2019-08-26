@@ -89,6 +89,7 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
         <div className='message-body'>
           <p>{text}</p>
         </div>
+         {message.hint && <p className='text-muted small'>hint: {message.hint}</p>}
         <div className='message-footer small text-muted'>
             <i className='fas fa-eye' />  {subtext}
         </div>
