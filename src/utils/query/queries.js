@@ -5,7 +5,7 @@ const queries = {
   getLatestBlock: state => get(state, 'public.latestBlock.number'),
   getToken: (state, tokenid) => {
     if (!tokenid) return {}
-    if (tokenid.tokenid) tokenid=tokenid.tokenid
+    if (tokenid.tokenid || tokenid.id) tokenid=tokenid.tokenid || tokenid.id
     // if tokenid is an address
      if (/^0x/.test(tokenid)){
        // try both active and pending paths
