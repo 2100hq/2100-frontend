@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react'
 import { useStoreContext } from '../../../contexts/Store'
 import { toDecimals, BN, isApproved } from '../../../utils'
 
-const diffSteps = BN(10).pow(16)
+const diffSteps = BN(10).pow(18)
 
 export default function Bank () {
   const [diff, setDiff] = useState(BN(0))
