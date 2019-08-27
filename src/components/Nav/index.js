@@ -17,11 +17,9 @@ function MiniProfile(){
   const myToken = query.getMyToken()
   if (!myToken || !myToken.id) return null
   return (
-    <div className="token-name-area">
-      <div className="inner">
+    <div className="inner">
       <img src='../img/dai.png' style={{ width: '20px','vertical-align': 'middle' }} />{toDecimals(myToken.totalStakes,5)} minting
       <h3><span class='token-name'>{myToken.name}</span></h3>
-      </div>
     </div>
   )
 }
@@ -52,7 +50,9 @@ export default function Nav (props) {
         </div>
       </nav>
       <div>
+        <div className="token-name-area">
           <MiniProfile />
+        </div>
       </div>
     </div>
     )
