@@ -18,7 +18,7 @@ function MiniProfile(){
   if (!myToken || !myToken.id) return null
   return (
     <div className="inner">
-      <img src='../img/dai.png' style={{ width: '20px','vertical-align': 'middle' }} />{toDecimals(myToken.totalStakes,5)} minting
+      <img src='../img/dai.png' style={{ width: '20px','vertical-align': 'middle' }} />{toDecimals(myToken.totalStakes,5)} staking
       <h3><span class='token-name'>{myToken.name}</span></h3>
     </div>
   )

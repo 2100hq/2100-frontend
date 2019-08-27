@@ -60,7 +60,7 @@ export default function All({tokens = {}}){
         <tr>
           <th>Rank</th>
           <th>Asset</th>
-          <th>Mint</th>
+          <th>Stake</th>
           <th>Total</th>
           <th>Balance</th>
         </tr>
