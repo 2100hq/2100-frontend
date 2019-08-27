@@ -114,9 +114,10 @@ export default function User (props) {
   const intent = ['intents', 'signingIn']
   const signingIn = get(state, intent)
 
-  const isUnlocked = Boolean(state.web3.active && state.web3.account)
-  const isAuthenticated = get(state, 'private.me')
-  const isSignedIn = Boolean(isUnlocked && isAuthenticated)
+  const isUnlocked = get(state,'web3.isUnlocked', false)
+  const isSignedIn = get(state, 'private.isSignedIn', false)
+  const authToken = get(state, 'auth.token')
+
   const isError =
     get(state, ['error', 'LOGIN']) ||
     get(state, ['error', 'UNLOCK_WALLET']) ||
@@ -128,20 +129,9 @@ export default function User (props) {
 
   // Auto Sign in
   useEffect(() => {
-    if (isSignedIn || signingIn) return
-    if (prevRoute) setSigningIn(true)
-  }, [prevRoute])
-
-  useEffect(() => {
-    if (state.config.disableAuth == null) return
-    if (isSignedIn || signingIn || !state.config.disableAuth) return
+    if (isSignedIn || signingIn || !authToken) return
     if (state.web3.hasWallet) setSigningIn(true)
-  }, [state.web3.hasWallet, state.config.disableAuth])
-
-  useEffect(() => {
-    console.log('isSignedIn')
-    dispatch(actions.update(['private', 'isSignedIn'], isSignedIn))
-  }, [isSignedIn])
+  }, [authToken, state.web3.hasWallet])
 
   // unlock/login action effect
   useEffect(() => {

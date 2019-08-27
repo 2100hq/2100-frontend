@@ -16,34 +16,50 @@ export default function AsyncHandlers (libs = {}) {
         libs.dispatch(actions.error(action.type, e))
       }
     },
+    VALIDATE: async action => {
+      if (!libs.state.auth.token) return false
+      try {
+        await libs.socket.auth('validate', libs.state.auth.token)
+        const privateState = await libs.socket.private('state')
+        libs.dispatch(actions.update('private', privateState))
+
+        return true
+      } catch(e){
+        console.log(action.type, e)
+        libs.dispatch(actions.update('auth.token', null))
+        return false
+      }
+    },
     LOGIN: async action => {
       if (!libs.web3.active || !libs.web3.account) {
         libs.dispatch(actions.error(action.type, errors.login.NOT_UNLOCKED))
       }
-      let signed = ''
-      let token
-      let resp
 
+      if (await libs.dispatch(actions.validate())) return
+      console.log(action.type)
       try {
-        if (!libs.state.config.disableAuth){
-          token = await libs.socket.auth('token')
-          signed = await libs.web3.library
-            .getSigner()
-            .signMessage('2100 Login: ' + token)
-        }
-        resp = await libs.socket.auth('authenticate', signed, libs.web3.account)
+        const authtoken = await libs.socket.auth('token')
+        const signed = await libs.web3.library
+          .getSigner()
+          .signMessage('2100 Login: ' + authtoken)
+        await libs.socket.auth('authenticate', signed, libs.web3.account)
+        libs.dispatch(actions.update('auth.token', authtoken))
       } catch (e) {
         console.log(action.type, e)
-        return libs.dispatch(actions.error(action.type, e))
+        if (/you are already logged in/.test(e)){
+          await libs.dispatch(actions.logout())
+          return libs.dispatch(actions.login())
+        }
+        libs.dispatch(actions.error(action.type, e))
+        return false
       }
-      // libs.web3.account
-
-      console.log('LOGIN RESP', resp)
     },
     LOGOUT: async action => {
       console.log(action.type)
       libs.dispatch(actions.update(['private'], {}))
-      const resp = await libs.socket.auth('unauthenticate')
+      libs.dispatch(actions.update(['auth'], {}))
+      const resp = await libs.socket.auth('unauthenticate').catch(()=>{})
+      libs.dispatch(actions.update(['auth'], {}))
       libs.dispatch(actions.update(['private'], {}))
       console.log('LOGOUT RESP', resp)
     },
