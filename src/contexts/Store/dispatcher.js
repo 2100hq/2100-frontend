@@ -1,11 +1,14 @@
 import AsyncHandlers from './AsyncHandlers'
 
-export default function Dispatcher (libs) {
+export default function Dispatcher (libs = {}) {
   const asyncHandlers = AsyncHandlers(libs)
-  return async action => {
+  const dispatch = libs.dispatch // cache this; its going to be overriden
+  const fn = async action => {
     if (!action) return
-    // console.log('ACTION >', action.type, JSON.stringify(action.params))
+    console.log('ACTION >', action.type, JSON.stringify(action.params))
     if (asyncHandlers[action.type]) return asyncHandlers[action.type](action)
-    libs.dispatch(action)
+    dispatch(action)
   }
+  fn.replaceLib = (key, val) => libs[key] = val
+  return fn
 }

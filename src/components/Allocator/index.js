@@ -40,7 +40,7 @@ export default function Allocator ({ token }) {
 
   useEffect(() => {
     if (token.level == null || isDisabled) return
-    console.log('setting', token.name, token.level)
+    // console.log('setting', token.name, token.level)
     setUiLevel(Number(token.level || '0'))
   }, [token.level, uiLevel, isDisabled])
 

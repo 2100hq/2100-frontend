@@ -13,6 +13,7 @@ export const initialState = {
     connected: false,
     error: null
   },
+  auth: {},
   web3: {}
 }
 
