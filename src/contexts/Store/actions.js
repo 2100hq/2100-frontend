@@ -5,6 +5,7 @@ const actions = {
   unlockWallet: () => actionGenerator('UNLOCK_WALLET'),
   login: () => actionGenerator('LOGIN'),
   logout: () => actionGenerator('LOGOUT'),
+  validate: () => actionGenerator('VALIDATE'),
   update: (path, data) => actionGenerator('UPDATE', { path, data }),
   approve: () => actionGenerator('APPROVE'),
   deposit: amount => actionGenerator('DEPOSIT', { amount }),

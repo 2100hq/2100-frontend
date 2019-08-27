@@ -46,7 +46,7 @@ export default function StoreProvider ({ children }) {
   // state in the StoreProvider is private
   // public state is a combination of private state and selectors.
   // effects in StoreProvider can only access private state
-  const [privState, dispatch] = useReducer(reducer, { ...initialState, config })
+  const [privState, dispatch] = useReducer(reducer, { ...initialState, config, auth: { token: localStorage.getItem('token')} })
 
   // hook up socket changes to dispatcher/reducer
   useEffect(() => {
@@ -126,6 +126,24 @@ export default function StoreProvider ({ children }) {
     privState.config.contracts
   ])
 
+  const isUnlocked = get(privState,'web3.isUnlocked', false)
+  const isAuthenticated = get(privState, 'private.me')
+
+  useEffect( () => {
+    dispatch(actions.update(['private', 'isSignedIn'], Boolean(isUnlocked && isAuthenticated)))
+  }, [isUnlocked,isAuthenticated])
+
+  useEffect( () => {
+    const isUnlocked = Boolean(get(privState,'web3.active') && get(privState,'web3.account'))
+    dispatch(actions.update(['web3', 'isUnlocked'], isUnlocked))
+  }, [get(privState,'web3.active'), get(privState,'web3.account')])
+
+  // store auth token in local storage
+  useEffect( () => {
+    if (!privState.auth.token) return localStorage.removeItem('token')
+    localStorage.setItem('token', privState.auth.token)
+  }, [privState.auth.token])
+
   // set username
   useEffect(() => {
     if (!privState.private.isSignedIn) return
@@ -150,7 +168,8 @@ export default function StoreProvider ({ children }) {
     const query = Query(state)
     window.appstate = state
 
-    const dispatcher = Dispatcher({ dispatch, socket, web3, state, actions })
+    const dispatcher = Dispatcher({dispatch, socket, web3, state, actions })
+    dispatcher.replaceLib('dispatch', dispatcher)
     return { dispatch: dispatcher, state, actions, query }
   }, [privState, socket, web3])
 

@@ -59,7 +59,7 @@ export default function FollowMeProvider ({ children }) {
   const [fmstate, dispatch] = useReducer(reducer, InitialState(followMeUrl))
   const { api,isSignedIn, myToken, threshold } = fmstate
   const isSignedIn2100 = appstate.private.isSignedIn
-
+  const authToken2100 = appstate.auth.token
   const update = (path, ...args) => dispatch(actions.update(path, ...args))
   const reset = () => dispatch({ type: 'RESET', initalState: InitialState(followMeUrl)})
 
@@ -83,8 +83,8 @@ export default function FollowMeProvider ({ children }) {
 
   useEffect( () => {
     // logged in and know address
-    if (!isSignedIn && isSignedIn2100 && ethAddress){
-      api.private.setToken(ethAddress)
+    if (!isSignedIn && isSignedIn2100 && authToken2100){
+      api.private.setToken(authToken2100)
       const asyncs = [api.private.call('me'),api.private.call('myTokens')]
       Promise.all(asyncs).then( async ([me, tokens]) => {
         if (tokens.length > 0){
@@ -99,7 +99,7 @@ export default function FollowMeProvider ({ children }) {
     // either not logged in or unknown address
     api.private.setToken(null)
     reset()
-  }, [isSignedIn2100, ethAddress])
+  }, [isSignedIn2100, authToken2100])
 
 
   useEffect( ()=> {
@@ -128,6 +128,7 @@ export default function FollowMeProvider ({ children }) {
   function SendMessage(fmstate){
     return async (message, hint, threshold) => {
       if (!fmstate.myToken) return null
+      console.log('sendMessage', {message, hint, threshold})
       try {
         message = await fmstate.api.private.call('sendMessage', fmstate.myToken.id, message, hint, threshold)
         update(`sentMessages.${message.id}`, message)
