@@ -28,9 +28,11 @@ h3{
 }
 
 .token-name{
-	
+	font-weight: bold;
+
 	&::before{
-		content: "$"
+		content: "$";
+		color: $twentyoneprimary;
 	}
 
 	&.large{

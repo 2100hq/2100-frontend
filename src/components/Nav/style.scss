@@ -8,10 +8,20 @@
 }
 
 
+
+
 .header-background{
 	background: url(../../img/background10.png) center center;
 	background-size: cover;
 
+	.token-name{
+		color: white;
+
+		&::before{
+			color: white;
+		}
+
+	}
 
 	.token-name-area{
 		color: white;

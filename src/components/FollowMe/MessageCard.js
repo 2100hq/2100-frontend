@@ -2,6 +2,7 @@ import React, {useState } from 'react'
 import {useStoreContext} from '../../contexts/Store'
 import {get, shuffle} from 'lodash'
 import { BigNumber, toDecimals, weiDecimals } from '../../utils'
+import { Link } from 'react-router-dom'
 import ms from 'ms'
 
 function InvisibleSubtext({name, token, message, isSignedIn, state, actions}){
@@ -82,9 +83,7 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
     <div className='message card' key={message.id}>
       <div className={`card-body ${message.hidden ? 'text-muted more-text-muted' : ''}`}>
         <div className='message-header text-muted'>
-          <span className='token-name'>{name}</span>
-          <span className='message-time text-muted'>{ago(message.created)}</span>
-        </div>
+        <div className='token-name large'><Link to={`$${token.name}`}>{token.name}</Link><span className='message-time text-muted'>{ago(message.created)}</span></div>        </div>
         <div className='message-body'>
           <p>{text}</p>
         </div>
