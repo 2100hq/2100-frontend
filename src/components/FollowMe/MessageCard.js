@@ -83,7 +83,6 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
       <div className={`card-body ${message.hidden ? 'text-muted more-text-muted' : ''}`}>
         <div className='message-header text-muted'>
           <span className='token-name'>{name}</span>
-          <span className='message-divider'> · </span>
           <span className='message-time text-muted'>{ago(message.created)}</span>
         </div>
         <div className='message-body'>

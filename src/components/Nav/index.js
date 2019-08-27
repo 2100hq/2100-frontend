@@ -17,9 +17,11 @@ function MiniProfile(){
   const myToken = query.getMyToken()
   if (!myToken || !myToken.id) return null
   return (
-    <div className="col-md-4 text-center">
-      <div><img src='../img/dai.png' style={{ width: '20px','vertical-align': 'middle' }} />{toDecimals(myToken.totalStakes,5)} minting</div>
+    <div className="token-name-area">
+      <div className="inner">
+      <img src='../img/dai.png' style={{ width: '20px','vertical-align': 'middle' }} />{toDecimals(myToken.totalStakes,5)} minting
       <h3><span class='token-name'>{myToken.name}</span></h3>
+      </div>
     </div>
   )
 }
@@ -28,7 +30,7 @@ export default function Nav (props) {
   const { state, query } = useStoreContext()
   return (
     <div className="header-background">
-      <nav className='navbar navbar-expand-lg navbar-dark'>
+      <nav className='navbar navbar-expand-lg navbar-dark' style={{position: 'absolute', width: '100%'}}>
         <Link to='/' className='navbar-brand'>2100</Link>
         <button
         className='navbar-toggler'
@@ -49,10 +51,8 @@ export default function Nav (props) {
           </ul>
         </div>
       </nav>
-      <div style={{color: 'white'}}>
-        <div style={{minHeight: '9rem'}} className="row align-items-center justify-content-center">
+      <div>
           <MiniProfile />
-        </div>
       </div>
     </div>
     )

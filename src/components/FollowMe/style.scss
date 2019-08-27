@@ -1,3 +1,41 @@
+//import variables
+@import "../../Variables";
+
+.message-form.card,.message.card{
+
+}
+
+.message-form.card{
+  position: relative;
+  top: -1rem;
+  font-size: 1.2rem;
+box-shadow: 0px 10px 5px 0px rgba(0,0,0,0.2);
+
+
+  textarea{
+  }
+}
+
+.message.card{
+  border-radius: 0;
+  border-top: 1px dashed black !important;
+  border-bottom: 1px dashed black !important;
+
+  font-size: 1.1rem;
+
+  .card-body{
+    padding: 2rem 0;
+  }
+
+  .token-name{
+    color: black;
+    font-weight: bold;
+  }
+
+  .message-time{
+    font-size: 0.7rem;
+  }
+}
 
 .hidden-char{
   margin-left: -0.15em;
@@ -26,16 +64,6 @@
   }
 }
 
-
-.message-form.card,.message.card{
-border: 1px solid #eee !important;
-
-}
-
-.message-form.card{
-	textarea{
-	}
-}
 
 .form-group-hint {
   label {
