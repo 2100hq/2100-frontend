@@ -68,9 +68,8 @@ function Row ({ rank, token, myToken }) {
       <td>
         <Allocator token={token} /><span className="small"><CountUp balance={toDecimals(token.myStake)} decimals={2} /> DAI</span>
       </td>
-      <td>{ showEarning && <span><CountUp balance={earning} decimals={6} /> <span className='text-muted'>${token.name}</span></span> }</td>
       <td>
-        <span className='small'><i className="fas fa-coins"></i></span> <CountUp balance={toDecimals(token.balances.available,5)} />
+        <div><span className='small'><i className="fas fa-coins"></i></span> <CountUp balance={toDecimals(token.balances.available,5)} /></div><span className='small'> { showEarning && <span><CountUp balance={earning} decimals={6} /></span> } per block </span>
       </td>
     </tr>
   )
@@ -96,7 +95,6 @@ export default function All({tokens = {}, myToken}){
           <th>Asset</th>
           <th>All Stakers</th>
           <th>My Stake</th>
-          <th>Earning per block</th>
           <th>My Balance</th>
         </tr>
       </thead>
