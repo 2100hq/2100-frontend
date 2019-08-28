@@ -47,8 +47,8 @@ function Row ({ rank, token, myToken }) {
     const direction = BigNumber(prevTotalStakeRef.current).lt(token.totalStakes) ? 'up' : 'down'
     setStakeArrowDirection(direction)
     prevTotalStakeRef.current=token.totalStakes
-    // const id = setTimeout(setStakeArrowDirection, 5000, null)
-    // return () => clearTimeout(id)
+    const id = setTimeout(setStakeArrowDirection, 10000, null)
+    return () => clearTimeout(id)
   }, [token.totalStakes])
   return (
     <tr>
