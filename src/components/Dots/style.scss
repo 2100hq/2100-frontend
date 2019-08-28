@@ -17,14 +17,13 @@ $dot4: lighten($twentyoneprimary,0);
 
 .dots span{
     cursor: pointer;
-    display: inline-block;
-    height: 0.9em;
-    width: 0.9em;
+    height: 1rem;
+    width: .5rem;
     // border-radius: 50%;
     display: inline-block;
     margin-right: 0.25em;
     border:1px solid #ccc;
-    border-radius: 10rem;
+
     &.disabled{
         @extend %disabled;
     }
@@ -62,6 +61,46 @@ $dot4: lighten($twentyoneprimary,0);
 }
 
 .dot4 {
+    @extend %action-dot;
+    &.active{
+        background-color: $dot4;
+        border-color: $dot4;
+    }
+}
+
+.dot5 {
+    @extend %action-dot;
+    &.active{
+        background-color: $dot4;
+        border-color: $dot4;
+    }
+}
+
+.dot6 {
+    @extend %action-dot;
+    &.active{
+        background-color: $dot4;
+        border-color: $dot4;
+    }
+}
+
+.dot7 {
+    @extend %action-dot;
+    &.active{
+        background-color: $dot4;
+        border-color: $dot4;
+    }
+}
+
+.dot8 {
+    @extend %action-dot;
+    &.active{
+        background-color: $dot4;
+        border-color: $dot4;
+    }
+}
+
+.dot9 {
     @extend %action-dot;
     &.active{
         background-color: $dot4;
