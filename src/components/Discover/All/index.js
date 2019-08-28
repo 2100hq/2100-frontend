@@ -1,6 +1,6 @@
 import React, { useState,useEffect } from 'react'
 import { useStoreContext } from '../../../contexts/Store'
-import { toDecimals } from '../../../utils'
+import { toDecimals, BigNumber, weiDecimals } from '../../../utils'
 import Allocator from '../../Allocator'
 import { useCountUp } from 'react-countup'
 import { sortBy } from 'lodash'
@@ -22,6 +22,18 @@ function BalanceCountUp ({token}) {
 
 
 function Row ({ rank, token }) {
+  let earning = BigNumber(0)
+  console.log();
+
+
+  if (BigNumber(token.myStake).gt(0)){
+    console.log('earning')
+    console.log(token.name, token.myStake.toString(), token.totalStakes.toString());
+    earning = BigNumber(token.myStake).div(token.totalStakes).times(0.9).times(0.00021)
+  }
+
+  earning = earning.dp(5,1).toString()
+
   return (
     <tr>
       <th scope='row'>{rank}
@@ -36,7 +48,7 @@ function Row ({ rank, token }) {
       <td>
         <Allocator token={token} /><span className="small">{toDecimals(token.myStake)} DAI</span>
       </td>
-      <td>0.00021</td>
+      <td>{earning}</td>
       <td>
         <span className='small'><i class="fas fa-coins"></i></span> <BalanceCountUp token={token} />
       </td>
