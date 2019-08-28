@@ -2,6 +2,7 @@ import React, {useState } from 'react'
 import {useStoreContext} from '../../contexts/Store'
 import {get, shuffle} from 'lodash'
 import { BigNumber, toDecimals, weiDecimals } from '../../utils'
+import { Link } from 'react-router-dom'
 import ms from 'ms'
 
 function InvisibleSubtext({name, token, message, isSignedIn, state, actions}){
@@ -63,7 +64,7 @@ function HiddenMessage({message, emojis = [], limit = emojis.length}){
 
   for (var index = 0; index < message.length; index++){
     const i = index % limit
-    chars.push(<span className={'hidden-char '+ 'c' + i} key={index}>{emojis[i]}</span>)
+    chars.push(<span className={'hidden-char '+ 'c' + i} key={index}>x</span>)
   }
 
   return chars
@@ -80,16 +81,14 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
   const subtext = message.hidden ? <InvisibleSubtext name={name} token={token} message={message} isSignedIn={isSignedIn} actions={actions} /> : <VisibleSubtext name={name} message={message} myToken={myToken} />
   return (
     <div className='message card' key={message.id}>
-      <div className={`card-body ${message.hidden ? 'text-muted more-text-muted' : ''}`}>
+      <div className={`card-body`}>
         <div className='message-header text-muted'>
-          <span className='token-name'>{name}</span>
-          <span className='message-time text-muted'>{ago(message.created)}</span>
-        </div>
+        <div className='token-name large'><Link to={`$${token.name}`}>{token.name}</Link><span className='message-time text-muted'>{ago(message.created)}</span></div>        </div>
         <div className='message-body'>
           <p>{text}</p>
         </div>
-         {message.hint && <p className='text-muted small'>hint: {message.hint}</p>}
-        <div className='message-footer small text-muted'>
+         {message.hint && <p className='small'>hint: {message.hint}</p>}
+        <div className='message-footer small'>
             <i className='fas fa-eye' />  {subtext}
         </div>
       </div>

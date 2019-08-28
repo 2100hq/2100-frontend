@@ -31,11 +31,12 @@ function Row ({ rank, token }) {
         <div className='token-description' style={{ fontSize: '0.7rem',color:'#aaa'}}>Access my new sci-fi story ...</div>
       </td>
       <td>
-        <Allocator token={token} />
+        <span className='text-muted'>{toDecimals(token.totalStakes)} DAI</span>
       </td>
       <td>
-        <img src='../img/dai.png' style={{ width: '14px','vertical-align': 'baseline' }} /> <span className='text-muted'>{toDecimals(token.myStake)} / {toDecimals(token.totalStakes)}</span>
+        <Allocator token={token} /><span className="small">{toDecimals(token.myStake)} DAI</span>
       </td>
+      <td>0.00021</td>
       <td>
         <BalanceCountUp token={token} />
       </td>
@@ -60,8 +61,9 @@ export default function All({tokens = {}}){
         <tr>
           <th>Rank</th>
           <th>Asset</th>
-          <th>Stake</th>
-          <th>Total</th>
+          <th>All Stakers</th>
+          <th>My Stake</th>
+          <th>Earning per block</th>
           <th>Balance</th>
         </tr>
       </thead>
