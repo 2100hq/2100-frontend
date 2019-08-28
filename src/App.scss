@@ -10,6 +10,17 @@ $theme-colors: (
 @import "node_modules/bootstrap/scss/bootstrap";
 
 //then app wide styles
+
+
+@font-face {
+    font-family: "Redacted";
+    src: url("/fonts/redacted-regular.eot");
+    src: url("/fonts/redacted-regular.woff2") format("woff2"),
+         url("/fonts/redacted-regular.woff") format("woff"),
+         url("/fonts/redacted-regular.otf") format("opentype"),
+         url("/fonts/redacted-regular.svg#filename") format("svg");
+}
+
 html{
   height: 100%;
 }

@@ -1,6 +1,8 @@
 //import variables
 @import "../../Variables";
 
+
+
 .message-form.card,.message.card{
 
 }
@@ -17,6 +19,7 @@ box-shadow: 0px 10px 5px 0px rgba(0,0,0,0.2);
 }
 
 .message.card{
+  color: black;
   border-radius: 0;
   border-top: 1px dashed #888 !important;
   border-bottom: 1px dashed #888 !important;
@@ -38,32 +41,11 @@ box-shadow: 0px 10px 5px 0px rgba(0,0,0,0.2);
 }
 
 .hidden-char{
-  margin-left: -0.15em;
-  margin-right: -0.15em;
-  user-select: all;
-  &.c0{
-    color: red;
-  }
-  &.c1{
-    color: orange;
-  }
-  &.c2{
-    color: yellow;
-  }
-  &.c3{
-    color: green;
-  }
-  &.c4{
-    color: blue;
-  }
-  &.c5{
-    color: indigo;
-  }
-  &.c6{
-    color: violet;
-  }
-}
 
+  font-family: "Redacted";
+  color: black;
+
+}
 
 .form-group-hint {
   label {
@@ -104,10 +86,6 @@ box-shadow: 0px 10px 5px 0px rgba(0,0,0,0.2);
   margin-top:1em;
 }
 
-.text-muted.more-text-muted {
-  opacity: 0.8;
-  color: #989b9e;
-}
 
 .threshold-input {
   color: #6c757d;
