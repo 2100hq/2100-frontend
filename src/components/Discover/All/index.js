@@ -21,18 +21,21 @@ function BalanceCountUp ({token}) {
 }
 
 
-function Row ({ rank, token }) {
-  let earning = BigNumber(0)
-  console.log();
-
+function Row ({ rank, token, myToken }) {
+  let earning = null
 
   if (BigNumber(token.myStake).gt(0)){
-    console.log('earning')
-    console.log(token.name, token.myStake.toString(), token.totalStakes.toString());
-    earning = BigNumber(token.myStake).div(token.totalStakes).times(0.9).times(0.00021)
+    earning = BigNumber(token.myStake).div(token.totalStakes).times('0.000189')
   }
 
-  earning = earning.dp(5,1).toString()
+  // owners reward
+  if (myToken && token.id === myToken.id){
+    if (earning == null) earning = BigNumber(0)
+    earning = earning.plus('0.000021')
+  }
+
+  const showEarning = earning != null
+  if (showEarning) earning = earning.dp(6,1).toString()
 
   return (
     <tr>
@@ -48,7 +51,7 @@ function Row ({ rank, token }) {
       <td>
         <Allocator token={token} /><span className="small">{toDecimals(token.myStake)} DAI</span>
       </td>
-      <td>{earning}</td>
+      <td>{ showEarning && <span>{earning} <span className='text-muted'>${token.name}</span></span> }</td>
       <td>
         <span className='small'><i class="fas fa-coins"></i></span> <BalanceCountUp token={token} />
       </td>
@@ -58,12 +61,13 @@ function Row ({ rank, token }) {
 
 
 
-export default function All({tokens = {}}){
+export default function All({tokens = {}, myToken}){
 
   const rows = Object.values(tokens).map((token, i) => (
     <Row
       rank={i + 1}
       token={token}
+      myToken={myToken}
       key={token.name}
     />
   ))
@@ -76,7 +80,7 @@ export default function All({tokens = {}}){
           <th>All Stakers</th>
           <th>My Stake</th>
           <th>Earning per block</th>
-          <th>Balance</th>
+          <th>My Balance</th>
         </tr>
       </thead>
       <tbody>{rows}</tbody>

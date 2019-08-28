@@ -75,12 +75,12 @@ function Badge({ text, isActive }){
 }
 
 export default function Discover () {
-  const { state } = useStoreContext()
+  const { state, query } = useStoreContext()
   const [currentTab, setTab] = useState('All')
   const pendingTokens = getPendingTokens(state)
 
   const tabMap = {
-    All: () => <All tokens={getActiveTokens(state)}/>,
+    All: () => <All tokens={getActiveTokens(state)} myToken={query.getMyToken()}/>,
     Pending: () => <Pending  tokens={pendingTokens} />
   }
 
