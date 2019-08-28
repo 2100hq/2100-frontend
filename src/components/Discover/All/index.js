@@ -38,7 +38,7 @@ function Row ({ rank, token }) {
       </td>
       <td>0.00021</td>
       <td>
-        <BalanceCountUp token={token} />
+        <span className='small'><i class="fas fa-coins"></i></span> <BalanceCountUp token={token} />
       </td>
     </tr>
   )
