@@ -35,7 +35,7 @@ function InvisibleSubtext({name, token, message, isSignedIn, state, actions}){
 
   if (decoding) return <span>decoding...</span>
 
-  return <span>you have enough {name} to <a href="#" onClick={handleClick}>decode</a></span>
+  return <span>you have enough <span className='token-name'>{name}</span> to <a href="#" onClick={handleClick}>decode</a></span>
 }
 
 function VisibleSubtext({name, message, myToken}){
