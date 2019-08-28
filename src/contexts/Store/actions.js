@@ -7,6 +7,7 @@ const actions = {
   logout: () => actionGenerator('LOGOUT'),
   validate: () => actionGenerator('VALIDATE'),
   update: (path, data) => actionGenerator('UPDATE', { path, data }),
+  destroy: (path) => actionGenerator('DESTROY', { path }),
   approve: () => actionGenerator('APPROVE'),
   deposit: amount => actionGenerator('DEPOSIT', { amount }),
   withdraw: amount => actionGenerator('WITHDRAW', { amount }),

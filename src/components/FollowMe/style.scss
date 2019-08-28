@@ -38,6 +38,23 @@ box-shadow: 0px 10px 5px 0px rgba(0,0,0,0.2);
   .message-time{
     font-size: 0.7rem;
   }
+  .message-delete{
+    display: none;
+    float: right;
+    margin-right: 1em;
+    opacity: 0.75;
+    &:hover{
+      text-decoration: none;
+    }
+  }
+  &.message-destroy-countdown, &:hover {
+    .destroying {
+      color: red;
+    }
+    .message-delete{
+      display: block;
+    }
+  }
 }
 
 .hidden-char{
