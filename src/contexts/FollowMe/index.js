@@ -31,6 +31,13 @@ function reducer (state, action) {
         action.params.path = _root
       }
       return { ...set(state, action.params.path, action.params.data) }
+    case 'DESTROY':
+      const paths = action.params.path.split('.')
+      const id = paths[paths.length - 1]
+      const _root = paths.slice(0,paths.length-1).join('.')
+      let data = { ...get(state, _root) }
+      delete data[id]
+      return { ...set(state, _root, data) }
     default:
       throw new Error(`Reducer does not handle ${action.type}`)
   }
@@ -42,6 +49,7 @@ function InitialState(followMeUrl){
     sentMessages: {},
     publicMessages: {},
     decodedMessages: {},
+    tokenFeedMessages: {},
     followers: {},
     isSignedIn: false,
     api: {
@@ -61,6 +69,7 @@ export default function FollowMeProvider ({ children }) {
   const isSignedIn2100 = appstate.private.isSignedIn
   const authToken2100 = appstate.auth.token
   const update = (path, ...args) => dispatch(actions.update(path, ...args))
+  const destroy = path => dispatch(actions.destroy(path))
   const reset = () => dispatch({ type: 'RESET', initalState: InitialState(followMeUrl)})
 
   async function updateInbox(){
@@ -157,16 +166,35 @@ export default function FollowMeProvider ({ children }) {
     return async (tokenid) => {
       const channel = fmstate.isSignedIn ? 'private' : 'public'
       try {
+        destroy(`tokenFeedMessages.${tokenid}`)
         const messages = await fmstate.api[channel].call('getTokenFeed', tokenid)
-        return keyBy(messages, 'id')
+        update(`tokenFeedMessages.${tokenid}`, keyBy(messages, 'id'))
       } catch(e){
         return null
       }
     }
   }
 
+  function Destroy(fmstate){
+    return async (message) => {
+      try {
+        const resp = await fmstate.api.private.call('destroy', message.id)
+        destroy(`tokenFeedMessages.${message.tokenid}.${message.id}`)
+        destroy(`privateMessages.${message.id}`)
+        destroy(`sentMessages.${message.id}`)
+        destroy(`publicMessages.${message.id}`)
+        destroy(`decodedMessages.${message.id}`)
+        return true
+      } catch(e){
+        console.log('destroy', e)
+        return null
+      }
+    }
+  }
+
   const contextValue = useMemo(() => {
-    const actions = { sendMessage: SendMessage(fmstate), getMessage: GetMessage(fmstate), getTokenFeed: GetTokenFeed(fmstate) }
+    const actions = { sendMessage: SendMessage(fmstate), getMessage: GetMessage(fmstate), getTokenFeed: GetTokenFeed(fmstate), destroy: Destroy(fmstate) }
+    window.fmstate = fmstate
     return { ...fmstate, actions }
   }, [fmstate])
 

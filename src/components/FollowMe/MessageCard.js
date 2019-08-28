@@ -1,4 +1,4 @@
-import React, {useState } from 'react'
+import React, {useState, useEffect } from 'react'
 import {useStoreContext} from '../../contexts/Store'
 import {get, shuffle} from 'lodash'
 import { BigNumber, toDecimals, weiDecimals } from '../../utils'
@@ -71,7 +71,7 @@ function HiddenMessage({message, emojis = [], limit = emojis.length}){
 }
 
 export default function MessageCard({message, myToken, token, isSignedIn, actions}){
-
+  const [destroyCountDown, setDestroyCountDown] = useState(null)
   let lively = "😂,😎,💩,🦊,🐔,🍕,🍤,🍎,📱,⌚️,🇰🇵,🇯🇵,🇨🇦".split(',')
   let monochrome = "◼️,🎩,🎓,🌑,🌚,🎱,🎬,🖤,⚫️,🏴".split(',')
   const [emojis] = useState(monochrome)
@@ -79,9 +79,33 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
   const name = token.name || 'unknown'
   const text = message.hidden ? <HiddenMessage message={message} emojis={emojis} limit={1}/> : message.message
   const subtext = message.hidden ? <InvisibleSubtext name={name} token={token} message={message} isSignedIn={isSignedIn} actions={actions} /> : <VisibleSubtext name={name} message={message} myToken={myToken} />
+
+  function destroyMessage(e){
+    e.preventDefault()
+    if (destroyCountDown == null) return setDestroyCountDown(3)
+    setDestroyCountDown(null)
+  }
+
+  useEffect( ()=>{
+    if (destroyCountDown == null) return
+    const id = destroyCountDown > 0 ? setTimeout(setDestroyCountDown, 1000, destroyCountDown-1) : setTimeout(actions.destroy, 1000, message)
+    return () => clearTimeout(id)
+  }, [destroyCountDown])
+
+  let destroyIcon = null
+  if (myToken && message.tokenid === myToken.id){
+    destroyIcon = (
+      <a href="#" onClick={destroyMessage} className='message-delete'>
+        { destroyCountDown == null ? <i className="fas fa-times"></i> : destroyCountDown <= 0 ? <i className="fas fa-circle destroying"></i> : destroyCountDown }
+      </a>
+    )
+  }
+
+
   return (
-    <div className='message card' key={message.id}>
-      <div className={`card-body`}>
+    <div className={`message card ${destroyCountDown != null && 'message-destroy-countdown'}`} key={message.id}>
+     <div className="card-body">
+        {destroyIcon}
         <div className='message-header text-muted'>
         <div className='token-name large'><Link to={`$${token.name}`}>{token.name}</Link><span className='message-time text-muted'>{ago(message.created)}</span></div>        </div>
         <div className='message-body'>

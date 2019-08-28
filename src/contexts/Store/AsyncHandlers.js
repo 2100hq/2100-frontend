@@ -20,9 +20,6 @@ export default function AsyncHandlers (libs = {}) {
       if (!libs.state.auth.token) return false
       try {
         await libs.socket.auth('validate', libs.state.auth.token)
-        const privateState = await libs.socket.private('state')
-        libs.dispatch(actions.update('private', privateState))
-
         return true
       } catch(e){
         console.log(action.type, e)
