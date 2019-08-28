@@ -47,8 +47,8 @@ function Row ({ rank, token, myToken }) {
     const direction = BigNumber(prevTotalStakeRef.current).lt(token.totalStakes) ? 'up' : 'down'
     setStakeArrowDirection(direction)
     prevTotalStakeRef.current=token.totalStakes
-    // const id = setTimeout(setStakeArrowDirection, 5000, null)
-    // return () => clearTimeout(id)
+    const id = setTimeout(setStakeArrowDirection, 10000, null)
+    return () => clearTimeout(id)
   }, [token.totalStakes])
   return (
     <tr>
@@ -69,7 +69,7 @@ function Row ({ rank, token, myToken }) {
         <Allocator token={token} /><span className="small"><CountUp balance={toDecimals(token.myStake)} decimals={2} /> DAI</span>
       </td>
       <td>
-        <div><span className='small'><i className="fas fa-coins"></i></span> <CountUp balance={toDecimals(token.balances.available,5)} /></div><span className='small'> { showEarning && <span><CountUp balance={earning} decimals={6} /></span> } per block </span>
+        <div><span className='small'><i className="fas fa-coins"></i></span> <CountUp balance={toDecimals(token.balances.available,5)} /></div><span className='small'> { showEarning && <span><CountUp balance={earning} decimals={6} /> per block</span> } </span>
       </td>
     </tr>
   )
