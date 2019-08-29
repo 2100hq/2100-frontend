@@ -14,3 +14,12 @@
 tbody tr td{
 	padding: 1.4rem 0.7rem !important;
 }
+
+.token-description{
+  font-size: 0.7rem;
+  color:'#aaa';
+  width: 10em;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
