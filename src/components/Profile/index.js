@@ -1,5 +1,7 @@
 import React, { useState, useEffect } from 'react'
 import FollowMeProfileFeed from '../FollowMe/ProfileFeed'
+import FollowMeSingleMessage from '../FollowMe/SingleMessage'
+import { Route } from "react-router-dom";
 import Allocator from '../Allocator'
 import { toDecimals } from '../../utils'
 import { Redirect }  from 'react-router-dom'
@@ -18,6 +20,7 @@ export default function Profile ({match}) {
 
   const { query } = useStoreContext()
   const username = match.params.username.replace(/^\$/,'')
+  const messageid = match.params.messageid
   const isLoading = query.getIsLoading()
   const isConnected = query.getIsConnected()
 
@@ -53,7 +56,7 @@ export default function Profile ({match}) {
         <img src='../img/dai.png' style={{ width: '14px','vertical-align': 'baseline' }} /> <span className='text-muted'>{stakeText}</span>
 					</div>
 					<hr/>
-					<FollowMeProfileFeed token={token} />
+          { messageid ? <FollowMeSingleMessage messageid={messageid} token={token}/> : <FollowMeProfileFeed token={token} />}
     		</div>
     	</div>
     </div>

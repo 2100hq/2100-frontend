@@ -14,13 +14,13 @@ function filterByToken(messages, token){
 
 export default function ProfileFeed({token}){
   const {query} = useStoreContext()
-  const { privateMessages, sentMessages, publicMessages, decodedMessages, tokenFeedMessages, actions, myToken, isSignedIn } = useFollowMeContext()
+  const { messages, tokenFeedMessages, actions, myToken, isSignedIn } = useFollowMeContext()
   const showForm = isSignedIn && myToken && myToken.id === token.id
-  const messages = { ...(tokenFeedMessages[token.id] || {}), ...filterByToken({...publicMessages, ...privateMessages, ...decodedMessages, ...sentMessages}, token) }
+  const tokenMessages = { ...(tokenFeedMessages[token.id] || {}), ...filterByToken(messages, token) }
 
   useEffect(() => {
     actions.getTokenFeed(token.id)
   }, [isSignedIn])
 
-  return <FollowMe messages={messages} showForm={showForm} className='profile-feed'/>
+  return <FollowMe messages={tokenMessages} showForm={showForm} className='profile-feed'/>
 }

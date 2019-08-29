@@ -4,7 +4,7 @@ import {get, shuffle} from 'lodash'
 import { BigNumber, toDecimals, weiDecimals } from '../../utils'
 import { Link } from 'react-router-dom'
 import ms from 'ms'
-
+import { CopyToClipboard } from 'react-copy-to-clipboard'
 function InvisibleSubtext({name, token, message, isSignedIn, state, actions}){
   const [decoding, setDecoding] = useState(false)
 
@@ -16,7 +16,7 @@ function InvisibleSubtext({name, token, message, isSignedIn, state, actions}){
 
   async function decodeMessage(id){
     setDecoding(true)
-    const resp = await actions.getMessage(id)
+    const resp = await actions.decodeMessage(id)
     setDecoding(false)
   }
 
@@ -59,7 +59,7 @@ function ago(past){
   return ms(elapsed)
 }
 
-function HiddenMessage({message, emojis = [], limit = emojis.length}){
+function HiddenMessage({message, limit = 1}){
   let chars = []
 
   for (var index = 0; index < message.length; index++){
@@ -72,12 +72,9 @@ function HiddenMessage({message, emojis = [], limit = emojis.length}){
 
 export default function MessageCard({message, myToken, token, isSignedIn, actions}){
   const [destroyCountDown, setDestroyCountDown] = useState(null)
-  let lively = "😂,😎,💩,🦊,🐔,🍕,🍤,🍎,📱,⌚️,🇰🇵,🇯🇵,🇨🇦".split(',')
-  let monochrome = "◼️,🎩,🎓,🌑,🌚,🎱,🎬,🖤,⚫️,🏴".split(',')
-  const [emojis] = useState(monochrome)
-
+  const [copied, setCopied] = useState(null)
   const name = token.name || 'unknown'
-  const text = message.hidden ? <HiddenMessage message={message} emojis={emojis} limit={1}/> : message.message
+  const text = message.hidden ? <HiddenMessage message={message}/> : message.message
   const subtext = message.hidden ? <InvisibleSubtext name={name} token={token} message={message} isSignedIn={isSignedIn} actions={actions} /> : <VisibleSubtext name={name} message={message} myToken={myToken} />
 
   function destroyMessage(e){
@@ -96,23 +93,34 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
   if (myToken && message.tokenid === myToken.id){
     destroyIcon = (
       <a href="#" onClick={destroyMessage} className='message-delete'>
-        { destroyCountDown == null ? <i className="fas fa-times"></i> : destroyCountDown <= 0 ? <i className="fas fa-circle destroying"></i> : destroyCountDown }
+        { destroyCountDown == null ? <i className="fas fa-times"></i> : destroyCountDown <= 0 ? <i className="fas fa-circle destroying"></i> : <span>{destroyCountDown} <span className='small text-muted'>(cancel)</span></span> }
       </a>
     )
   }
+
+  useEffect(() => {
+    const id = setTimeout(setCopied, 1500, null)
+    return () => clearTimeout(id)
+  }, [copied])
+
+  const messageUrl = `/$${token.name}/${message.shortid || message.id}`
 
   return (
     <div className={`message card ${destroyCountDown != null && 'message-destroy-countdown'}`} key={message.id}>
      <div className="card-body">
         {destroyIcon}
         <div className='message-header text-muted'>
-        <div className='token-name large'><Link to={`$${token.name}`}>{token.name}</Link><span className='message-time text-muted'>{ago(message.created)}</span></div>        </div>
+        <div className='token-name large'><Link to={`/$${token.name}`}>{token.name}</Link><span className='message-time text-muted'><Link to={messageUrl}>{ago(message.created)}</Link></span></div>        </div>
         <div className='message-body'>
           <p>{text}</p>
         </div>
          {message.hint && <p className='small'>hint: {message.hint}</p>}
         <div className='message-footer small'>
             <i className='fas fa-eye' />  {subtext}
+            <CopyToClipboard text={window.location.href.replace(/\/$/,'') + messageUrl}
+              onCopy={() => setCopied(true)}>
+              <div className="small message-copy-url"><i className="fas fa-link"></i><span>{copied ? 'Copied!' : 'Copy link'}</span></div>
+            </CopyToClipboard>
         </div>
       </div>
     </div>

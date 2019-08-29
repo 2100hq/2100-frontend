@@ -6,8 +6,7 @@ import FollowMe from './'
 export default function PublicFeed(){
   const {query} = useStoreContext()
   const isSignedIn = query.getIsSignedIn()
-  const { publicMessages, sentMessages, privateMessages, decodedMessages } = useFollowMeContext()
-  const messages = { ...publicMessages, ...privateMessages, ...decodedMessages, ...sentMessages }
+  const { messages } = useFollowMeContext()
 
   return <FollowMe messages={messages} showForm={true} className='public-feed'/>
 }

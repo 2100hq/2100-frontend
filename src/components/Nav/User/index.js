@@ -11,7 +11,7 @@ function Balances ({ state }) {
   const { available, total } = balances(state)
   return (
     <Link className='nav-link slide-left' to='/wallet'>
-      <img className='dai-logo' src='./img/dai.png' /> {toDecimals(total)}
+      <img className='dai-logo' src='../img/dai.png' /> {toDecimals(total)}
     </Link>
   )
 }

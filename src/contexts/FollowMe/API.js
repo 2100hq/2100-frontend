@@ -16,7 +16,7 @@ export default function API(host,channel,method='post'){
     return axios(options).then(result=>{
       return result.data
     }).catch(err=>{
-      console.log('followme api error',err);
+      console.log('followme api error:',action,channel,err);
       throw err
     })
   }
