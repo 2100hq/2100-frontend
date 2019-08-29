@@ -206,7 +206,8 @@ export default function FollowMeProvider ({ children }) {
       destroy: Destroy(fmstate)
     }
     window.fmstate = fmstate
-    return { ...fmstate, actions }
+    const messages = { ...fmstate.publicMessages, ...fmstate.privateMessages, ...fmstate.decodedMessages, ...fmstate.sentMessages }
+    return { ...fmstate, messages, actions }
   }, [fmstate])
 
   return (
