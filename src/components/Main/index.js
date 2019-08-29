@@ -2,12 +2,11 @@ import React from 'react'
 import {Row, Col, Card} from 'react-bootstrap'
 import FollowMePublicFeed from '../FollowMe/PublicFeed'
 import Discover from '../Discover'
-import Onboarding from '../Onboarding'
 
 export default function Main(){
   return (
     <Row className='main'>
-      <Col md="7">
+      <Col md="8">
         <Row>
           <Col md="12">
             <Card>
@@ -18,7 +17,7 @@ export default function Main(){
           </Col>
         </Row>
       </Col>
-      <Col md="5">
+      <Col md="4">
         <Row>
           <Col md="12">
             {/* follow me */}

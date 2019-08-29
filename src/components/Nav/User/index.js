@@ -85,6 +85,12 @@ function SignedIn () {
   )
 }
 
+function GetMetamask(){
+  return(
+  <a href='https://metamask.io/' className='nav-link'>Install Metamask</a>
+  )
+}
+
 function NotSigningIn ({ onClick }) {
   function handleClick (e) {
     e.preventDefault()
@@ -169,7 +175,7 @@ export default function User (props) {
     dispatch(actions.logout())
   }, [isSignedIn, state.web3.account, publicAddress])
 
-  if (!state.web3.hasWallet) return null
+  if (!state.web3.hasWallet) return <GetMetamask />
 
   if (isSignedIn) {
     if (prevRoute) return <Redirect to={prevRoute} key='redirect' />

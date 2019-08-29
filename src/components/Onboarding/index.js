@@ -4,9 +4,9 @@ export default function Onboarding(){
   return (
     <figure>
         <audio
-            id='myVideo'
+            id='myAudio'
             controls
-            src="audio/2100-test.m4a">
+            src="audio/script-demo.mp3">
                 Your browser does not support the
                 <code>audio</code> element.
         </audio>

@@ -4,19 +4,43 @@ import { useStoreContext } from '../../contexts/Store'
 import { toDecimals } from '../../utils'
 import User from './User'
 import './style.scss'
+import Onboarding from '../Onboarding'
+
 
 function ProtectedNavItem ({state, children}) {
   if (!state.private.isSignedIn) return null
     return children
 }
 
-function MiniProfile(){
+
+function NotSignedIn(){
+  return(
+    <div className="inner">
+      <div className="amount-staking">
+        <h1>2100</h1>
+        <Onboarding />
+      </div>
+    </div>
+  )
+}
+
+function NoToken(){
   const { query } = useStoreContext()
-  const isSignedIn = query.getIsSignedIn()
-  if (!isSignedIn) return null
+  const userAddress = query.getUserAddress()
+  return(
+    <div className="inner">
+      <div className="amount-staking">
+        <h1>{userAddress.slice(0, 7)}</h1>
+        <h6><Link to='/manage' style={{color: 'white'}}>Create your token</Link></h6>
+      </div>
+    </div>
+  )
+}
+
+function HasToken(){
+  const { query } = useStoreContext()
   const myToken = query.getMyToken()
-  if (!myToken || !myToken.id) return null
-  return (
+  return(
     <div className="inner">
       <div className="amount-staking">
         <img src='../img/dai.png' style={{ width: '20px','vertical-align': 'middle' }} />{toDecimals(myToken.totalStakes,5)} staking
@@ -24,6 +48,15 @@ function MiniProfile(){
       </div>
     </div>
   )
+}
+
+function MiniProfile(){
+  const { query } = useStoreContext()
+  const isSignedIn = query.getIsSignedIn()
+  if (!isSignedIn) return <NotSignedIn />
+  const myToken = query.getMyToken()
+  if (!myToken || !myToken.id) return <NoToken />
+  return <HasToken />
 }
 
 export default function Nav (props) {
