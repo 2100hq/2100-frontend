@@ -93,8 +93,8 @@ export default function Profile ({match}) {
   const stakeText = isSignedIn ? <>{toDecimals(token.myStake)} / {toDecimals(token.totalStakes)}</> : toDecimals(token.totalStakes)
 
   const isMyToken = query.getIsMyToken(token)
-  const description = (token.description || '').replace(/\s*/g,'')
-  const hasDescription = Boolean(description)
+  const description = token.description || ''
+  const hasDescription = Boolean(description.replace(/\s*/g,''))
   return (
     <div className='row justify-content-center'>
     	<div className='col-md-6'>
