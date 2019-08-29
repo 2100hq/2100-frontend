@@ -101,13 +101,14 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
     )
   }
 
+  const messageUrl = `/$${token.name}/${message.shortid || message.id}`
 
   return (
     <div className={`message card ${destroyCountDown != null && 'message-destroy-countdown'}`} key={message.id}>
      <div className="card-body">
         {destroyIcon}
         <div className='message-header text-muted'>
-        <div className='token-name large'><Link to={`$${token.name}`}>{token.name}</Link><span className='message-time text-muted'>{ago(message.created)}</span></div>        </div>
+        <div className='token-name large'><Link to={`/$${token.name}`}>{token.name}</Link><span className='message-time text-muted'><Link to={messageUrl}>{ago(message.created)}</Link></span></div>        </div>
         <div className='message-body'>
           <p>{text}</p>
         </div>
