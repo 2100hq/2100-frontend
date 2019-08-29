@@ -9,8 +9,12 @@
 
 
 .header-background{
-	background: url(../../img/background10.png) center center;
+	background: url(../../img/background18.png) center center;
 	background-size: cover;
+
+	h1{
+		font-weight: bold !important;
+	}
 
 	.token-name{
 		color: white;
@@ -26,12 +30,13 @@
 		text-align: center;
 		padding: 5rem 0;
 		font-size: 1.5rem;
-		background-color: rgba(0,0,0,0.25);
+		background-color: rgba(0,0,0,.25);
+		box-shadow: inset 0px 0px 50px 0px rgba(0,0,0,0.5);
+
 	}
 
 	.token-name{
 		font-size: 2.4rem;
-
 	}
 
 	.amount-staking{
