@@ -37,8 +37,7 @@ function Row ({ rank, token, myToken }) {
     earning = earning.plus('0.000021')
   }
 
-  const showEarning = earning != null
-  if (showEarning) earning = earning.dp(6,1).toString()
+  earning = earning == null ? '0.000000' : earning.dp(6,1).toString()
 
   const stakers = Object.values(token.stakes || {}).filter( stake => BigNumber(stake).gt(0) ).length
 
@@ -69,7 +68,7 @@ function Row ({ rank, token, myToken }) {
         <Allocator token={token} /><span className="small"><CountUp balance={toDecimals(token.myStake)} decimals={2} /> DAI</span>
       </td>
       <td>
-        <div><span className='small'><img src='../img/coin-icon.png' style={{width: '1rem', position: 'relative', top: '-0.15rem', left: '0.1rem'}}/></span> <CountUp balance={toDecimals(token.balances.available,5)} /></div><span className='small'> { showEarning && <span><CountUp balance={earning} decimals={6} /> per block</span> } </span>
+        <div><span className='small'><img src='../img/coin-icon.png' style={{width: '1rem', position: 'relative', top: '-0.15rem', left: '0.1rem'}}/></span> <CountUp balance={toDecimals(token.balances.available,5)} /></div><span className='small'> { <span><CountUp balance={earning} decimals={6} /> per block</span> } </span>
       </td>
     </tr>
   )
