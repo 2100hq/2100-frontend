@@ -55,15 +55,16 @@ function Row ({ rank, token, myToken }) {
       <th scope='row'>{rank}
       </th>
       <td>
-        <div className='token-name large'>
-          <Link to={`$${token.name}`}>{token.name}</Link>
-        </div>
-          <div className='small text-muted'>
-            {stakers > 0 && <span><i className="fas fa-user stakers-icon"></i> <CountUp balance={stakers} decimals={0} /></span>} <span className='divider' style={{margin: '0 0.3rem'}}>|</span>
-            <CountUp balance={toDecimals(token.totalStakes)} decimals={2} /> DAI
-        </div>
+        <div className='token-name large'><Link to={`$${token.name}`}>{token.name}</Link></div>
+        <div className='token-description' style={{ fontSize: '0.7rem',color:'#aaa'}}>Access my new sci-fi story ...</div>
       </td>
-
+      <td>
+        <span className='text-muted' style={{position: 'relative'}}>
+          { stakeArrowDirection && <i className={`fas fa-arrow-${stakeArrowDirection} stake-arrow`}></i> }
+          <CountUp balance={toDecimals(token.totalStakes)} decimals={2} /> DAI
+        </span>
+        <div className='small text-muted'>{stakers > 0 && <span><i className="fas fa-user stakers-icon"></i> <CountUp balance={stakers} decimals={0} /></span>}</div>
+      </td>
       <td>
         <Allocator token={token} /><span className="small"><CountUp balance={toDecimals(token.myStake)} decimals={2} /> DAI</span>
       </td>
@@ -92,6 +93,7 @@ export default function All({tokens = {}, myToken}){
         <tr>
           <th>Rank</th>
           <th>Asset</th>
+          <th>All Stakers</th>
           <th>My Stake</th>
           <th>My Balance</th>
         </tr>
