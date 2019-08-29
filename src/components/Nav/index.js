@@ -17,8 +17,6 @@ function NotSignedIn(){
   return(
     <div className="inner">
       <div>
-        <h1 style={{fontSize: '3rem'}}><span>What is 2100?</span></h1>
-        <h6><Link to='/manage' style={{color: 'white'}}><i class="fas fa-volume-up"></i> Listen up</Link></h6>
         <Onboarding />
       </div>
     </div>
