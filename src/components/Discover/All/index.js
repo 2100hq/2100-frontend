@@ -75,7 +75,7 @@ function Row ({ rank, token, myToken }) {
       </td>
       <td>
         <div>
-          <span className='small'><img src='../img/coin-icon.png' style={{width: '1rem', position: 'relative', top: '-0.15rem', left: '0.1rem'}}/></span> <CountUp balance={toDecimals(token.balances.available,5)} />
+          <CountUp balance={toDecimals(token.balances.available,5)} />
         </div>
           <span className='small text-muted'> { <span><CountUp balance={earning} decimals={6} /> per block</span> }</span>
       </td>
