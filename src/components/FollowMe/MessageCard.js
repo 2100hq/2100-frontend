@@ -96,7 +96,7 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
   if (myToken && message.tokenid === myToken.id){
     destroyIcon = (
       <a href="#" onClick={destroyMessage} className='message-delete'>
-        { destroyCountDown == null ? <i className="fas fa-times"></i> : destroyCountDown <= 0 ? <i className="fas fa-circle destroying"></i> : destroyCountDown }
+        { destroyCountDown == null ? <i className="fas fa-times"></i> : destroyCountDown <= 0 ? <i className="fas fa-circle destroying"></i> : <span>{destroyCountDown} <span className='small text-muted'>(cancel)</span></span> }
       </a>
     )
   }
