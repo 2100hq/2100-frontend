@@ -2,6 +2,7 @@ import React from 'react'
 import {Row, Col, Card} from 'react-bootstrap'
 import FollowMePublicFeed from '../FollowMe/PublicFeed'
 import Discover from '../Discover'
+import Onboarding from '../Onboarding'
 
 export default function Main(){
   return (

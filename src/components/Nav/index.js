@@ -17,7 +17,8 @@ function NotSignedIn(){
   return(
     <div className="inner">
       <div className="amount-staking">
-        <h1>2100</h1>
+        <h1>Welcome to 2100</h1>
+        <h6><Link to='/manage' style={{color: 'white'}}><i class="fas fa-volume-up"></i> How it works</Link></h6>
         <Onboarding />
       </div>
     </div>
@@ -31,7 +32,7 @@ function NoToken(){
     <div className="inner">
       <div className="amount-staking">
         <h1>{userAddress.slice(0, 7)}</h1>
-        <h6><Link to='/manage' style={{color: 'white'}}>Create your token</Link></h6>
+        <h6><Link to='/manage' style={{color: 'white'}}><i class="fab fa-twitter"></i> Create your token</Link></h6>
       </div>
     </div>
   )
