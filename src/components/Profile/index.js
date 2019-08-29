@@ -29,26 +29,25 @@ function Description({description, token, isMyToken}){
     setSaving(false)
   }
 
-  const editButton = description ? null : <Button variant='light' onClick={handleEdit} className='token-description-edit-link'>How do you plan to use your token?</Button>
+  const editButton = description ? null : <Button variant="link" onClick={handleEdit} className='token-description-edit-link'>How do you plan to use your token?</Button>
   const persistButtons = (
     <span>
       <Button className='token-description-edit-save' onClick={handlePersist}>{ saving ? 'Saving' : 'Save'}</Button>
       {!saving && <Button className='token-description-edit-cancel' variant="link" onClick={()=>setEditing(false)}>Cancel</Button>}
     </span>
   )
-  const edit = isMyToken ? editing ? persistButtons : editButton : null
-  // if (editing) return <EditingDescription description={description} setEditing={setEditing}/>
 
   return (
     <Form class="token-description" onSubmit={handlePersist}>
       <Form.Group as={Row}>
         {(Boolean(description) || editing) && (
           <Col md="8">
-            <Form.Control inline plaintext readOnly={!editing} className='token-description' value={description} maxLength="100" className='token-description-edit-input' value={text} onChange={(e) => setText(e.target.value)} onClick={ () => isMyToken && !editing && setEditing(true) }/>
+            <Form.Control inline plaintext readOnly={!editing} className='token-description'
+            placeholder="I plan to use my token to..." value={description} maxLength="100" className='token-description-edit-input' value={text} onChange={(e) => setText(e.target.value)} onClick={ () => isMyToken && !editing && setEditing(true) }/>
           </Col>)
         }
         <Col md="4">
-          {edit}
+          {isMyToken ? editing ? persistButtons : editButton : null}
         </Col>
       </Form.Group>
     </Form>
@@ -93,8 +92,8 @@ export default function Profile ({match}) {
   const stakeText = isSignedIn ? <>{toDecimals(token.myStake)} / {toDecimals(token.totalStakes)}</> : toDecimals(token.totalStakes)
 
   const isMyToken = query.getIsMyToken(token)
-  const description = (token.description || '').replace(/\s*/g,'')
-  const hasDescription = Boolean(description)
+  const description = token.description || ''
+  const hasDescription = Boolean(description.replace(/\s*/g,''))
   return (
     <div className='row justify-content-center'>
     	<div className='col-md-6'>
