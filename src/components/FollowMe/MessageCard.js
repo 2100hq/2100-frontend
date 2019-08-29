@@ -101,7 +101,6 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
     )
   }
 
-
   return (
     <div className={`message card ${destroyCountDown != null && 'message-destroy-countdown'}`} key={message.id}>
      <div className="card-body">
