@@ -98,8 +98,8 @@ function NotSigningIn ({ onClick }) {
   }
   return (
     <li className='nav-item'>
-      <a href='#' className='nav-link btn' onClick={handleClick}>
-        <img className='wallet-logo' src='./img/metamask.png' />
+      <a href='#' className='nav-link btn ' onClick={handleClick} style={{fontWeight: 'bold'}}>
+        <img className='wallet-logo' src='./img/metamask.png' style={{width: '1.5rem', marginRight: '0.5rem'}} />
         Sign In
       </a>
     </li>
