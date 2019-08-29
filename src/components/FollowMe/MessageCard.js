@@ -117,7 +117,7 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
          {message.hint && <p className='small'>hint: {message.hint}</p>}
         <div className='message-footer small'>
             <i className='fas fa-eye' />  {subtext}
-            <CopyToClipboard text={window.location.href.replace(/\/$/,'') + messageUrl}
+            <CopyToClipboard text={window.location.origin + messageUrl}
               onCopy={() => setCopied(true)}>
               <div className="small message-copy-url"><i className="fas fa-link"></i><span>{copied ? 'Copied!' : 'Copy link'}</span></div>
             </CopyToClipboard>

@@ -41,7 +41,7 @@
     "standard": "standard --verbose --fix",
     "prettier": "prettier-standard '**/*.js' --ignore-path=./scripts",
     "standardize": "npm run prettier && npm run standard --fix",
-    "deploy": "npm run build && firebase deploy"
+    "deploy": "git pull && yarn install && npm run build && firebase deploy"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -61,5 +61,6 @@
   "devDependencies": {
     "prettier-standard": "^8.0.0",
     "standard": "^11.0.0"
-  }
+  },
+  "license": "UNLICENSED"
 }
