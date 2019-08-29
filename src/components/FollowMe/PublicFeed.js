@@ -9,5 +9,5 @@ export default function PublicFeed(){
   const { publicMessages, sentMessages, privateMessages, decodedMessages } = useFollowMeContext()
   const messages = { ...publicMessages, ...privateMessages, ...decodedMessages, ...sentMessages }
 
-  return <FollowMe messages={messages} showForm={isSignedIn} className='public-feed'/>
+  return <FollowMe messages={messages} showForm={true} className='public-feed'/>
 }
