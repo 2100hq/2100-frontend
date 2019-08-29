@@ -4,7 +4,7 @@ import {get, shuffle} from 'lodash'
 import { BigNumber, toDecimals, weiDecimals } from '../../utils'
 import { Link } from 'react-router-dom'
 import ms from 'ms'
-
+import { CopyToClipboard } from 'react-copy-to-clipboard'
 function InvisibleSubtext({name, token, message, isSignedIn, state, actions}){
   const [decoding, setDecoding] = useState(false)
 
@@ -72,6 +72,7 @@ function HiddenMessage({message, limit = 1}){
 
 export default function MessageCard({message, myToken, token, isSignedIn, actions}){
   const [destroyCountDown, setDestroyCountDown] = useState(null)
+  const [copied, setCopied] = useState(null)
   const name = token.name || 'unknown'
   const text = message.hidden ? <HiddenMessage message={message}/> : message.message
   const subtext = message.hidden ? <InvisibleSubtext name={name} token={token} message={message} isSignedIn={isSignedIn} actions={actions} /> : <VisibleSubtext name={name} message={message} myToken={myToken} />
@@ -97,6 +98,11 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
     )
   }
 
+  useEffect(() => {
+    const id = setTimeout(setCopied, 1500, null)
+    return () => clearTimeout(id)
+  }, [copied])
+
   const messageUrl = `/$${token.name}/${message.shortid || message.id}`
 
   return (
@@ -111,6 +117,10 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
          {message.hint && <p className='small'>hint: {message.hint}</p>}
         <div className='message-footer small'>
             <i className='fas fa-eye' />  {subtext}
+            <CopyToClipboard text={window.location.href.replace(/\/$/,'') + messageUrl}
+              onCopy={() => setCopied(true)}>
+              <div className="small message-copy-url"><i className="fas fa-link"></i><span>{copied ? 'Copied!' : 'Copy link'}</span></div>
+            </CopyToClipboard>
         </div>
       </div>
     </div>
