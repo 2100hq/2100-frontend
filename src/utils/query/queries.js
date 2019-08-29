@@ -19,7 +19,8 @@ const queries = {
   getMyToken: state => get(state, 'private.mytoken'),
   getUserAddress: state => get(state, 'web3.account'),
   getIsConnected: state => get(state, 'network.connected'),
-  getIsLoading: state => get(state, 'network.loading')
+  getIsLoading: state => get(state, 'network.loading'),
+  getIsMyToken: (state, token) => (queries.getMyToken(state) || {}).id === token.id
 }
 
 export default queries

@@ -21,6 +21,7 @@ const actions = {
     actionGenerator('SET_STAKE', stakes),
   setStakeLevel: (address, level) =>
     actionGenerator('SET_STAKE_LEVEL', { [address]: level }),
+  setDescription: (tokenid, text) => actionGenerator('SET_DESCRIPTION', { tokenid, text }),
   error: (intent, error) => actionGenerator('ERROR', { [intent]: error })
 }
 
