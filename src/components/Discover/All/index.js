@@ -58,7 +58,7 @@ function Row ({ rank, token, myToken }) {
           <Link to={`$${token.name}`}>{token.name}</Link>
         </div>
         <div className='token-description small text-muted'>
-          Access my new sci-fi story ...
+          {token.description}
         </div>
       </td>
       <td>

@@ -6,7 +6,54 @@ import Allocator from '../Allocator'
 import { toDecimals } from '../../utils'
 import { Redirect }  from 'react-router-dom'
 import { useStoreContext } from '../../contexts/Store'
+import { Button, Form, Col, Row } from 'react-bootstrap'
+import './style.scss'
 
+function Description({description, token, isMyToken}){
+  const { state, dispatch, actions } = useStoreContext()
+  const [editing, setEditing] = useState(false)
+  const [saving, setSaving] = useState(false)
+  const [text, setText] = useState(description)
+
+  function handleEdit(e){
+    e.preventDefault()
+    setEditing(true)
+  }
+
+  async function handlePersist(e){
+    e.preventDefault()
+    if (saving) return
+    setSaving(true)
+    const resp = await dispatch(actions.setDescription(token.id, text))
+    if (resp) setEditing(false)
+    setSaving(false)
+  }
+
+  const editButton = description ? null : <Button variant='light' onClick={handleEdit} className='token-description-edit-link'>How do you plan to use your token?</Button>
+  const persistButtons = (
+    <span>
+      <Button className='token-description-edit-save' onClick={handlePersist}>{ saving ? 'Saving' : 'Save'}</Button>
+      {!saving && <Button className='token-description-edit-cancel' variant="link" onClick={()=>setEditing(false)}>Cancel</Button>}
+    </span>
+  )
+  const edit = isMyToken ? editing ? persistButtons : editButton : null
+  // if (editing) return <EditingDescription description={description} setEditing={setEditing}/>
+
+  return (
+    <Form class="token-description" onSubmit={handlePersist}>
+      <Form.Group as={Row}>
+        {(Boolean(description) || editing) && (
+          <Col md="8">
+            <Form.Control inline plaintext readOnly={!editing} className='token-description' value={description} maxLength="100" className='token-description-edit-input' value={text} onChange={(e) => setText(e.target.value)} onClick={ () => isMyToken && !editing && setEditing(true) }/>
+          </Col>)
+        }
+        <Col md="4">
+          {edit}
+        </Col>
+      </Form.Group>
+    </Form>
+  )
+}
 /*
 Loading states
   0: not connected to the network and loading
@@ -45,12 +92,15 @@ export default function Profile ({match}) {
 
   const stakeText = isSignedIn ? <>{toDecimals(token.myStake)} / {toDecimals(token.totalStakes)}</> : toDecimals(token.totalStakes)
 
+  const isMyToken = query.getIsMyToken(token)
+  const description = (token.description || '').replace(/\s*/g,'')
+  const hasDescription = Boolean(description)
   return (
     <div className='row justify-content-center'>
     	<div className='col-md-6'>
-    		<div style={{marginTop:'2rem'}}>
+    		<div style={{marginTop:'2rem'}} className={`profile ${!hasDescription && 'no-description'}`}>
 					<h1><span className='token-name'>{token.name}</span></h1>
-					<p class="token-description">Use my token to get sweet rewards.</p>
+					<Description description={description} isMyToken={isMyToken} token={token}/>
 					{isSignedIn && <Allocator token={token}/> }
 					<div>
         <img src='../img/dai.png' style={{ width: '14px','vertical-align': 'baseline' }} /> <span className='text-muted'>{stakeText}</span>

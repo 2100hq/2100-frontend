@@ -216,11 +216,23 @@ export default function AsyncHandlers (libs = {}) {
         libs.dispatch(actions.error(action.type, errors.staking.NO_DEPOSIT_BALANCE))
         return false
       }
-      console.log()
-      console.log(action)
 
       try {
         const resp = await libs.socket.private('stake', action.params)
+        return resp
+      } catch (e) {
+        console.log(action.type, e)
+        libs.dispatch(actions.error(action.type, e))
+        return false
+      }
+    },
+    SET_DESCRIPTION: async action => {
+      if (!libs.state.private.isSignedIn) {
+        libs.dispatch(actions.error(action.type, errors.auth.NOT_LOGGED_IN))
+        return false
+      }
+      try {
+        const resp = await libs.socket.private('setTokenDescription', action.params.tokenid, action.params.text)
         return resp
       } catch (e) {
         console.log(action.type, e)
