@@ -59,7 +59,7 @@ function ago(past){
   return ms(elapsed)
 }
 
-function HiddenMessage({message, emojis = [], limit = emojis.length}){
+function HiddenMessage({message, limit = 1}){
   let chars = []
 
   for (var index = 0; index < message.length; index++){
@@ -77,7 +77,7 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
   const [emojis] = useState(monochrome)
 
   const name = token.name || 'unknown'
-  const text = message.hidden ? <HiddenMessage message={message} emojis={emojis} limit={1}/> : message.message
+  const text = message.hidden ? <HiddenMessage message={message}/> : message.message
   const subtext = message.hidden ? <InvisibleSubtext name={name} token={token} message={message} isSignedIn={isSignedIn} actions={actions} /> : <VisibleSubtext name={name} message={message} myToken={myToken} />
 
   function destroyMessage(e){
