@@ -16,9 +16,9 @@ function ProtectedNavItem ({state, children}) {
 function NotSignedIn(){
   return(
     <div className="inner">
-      <div className="amount-staking">
-        <h1>Welcome to 2100</h1>
-        <h6><Link to='/manage' style={{color: 'white'}}><i class="fas fa-volume-up"></i> How it works</Link></h6>
+      <div>
+        <h1 style={{fontSize: '3rem'}}><span>What is 2100?</span></h1>
+        <h6><Link to='/manage' style={{color: 'white'}}><i class="fas fa-volume-up"></i> Listen up</Link></h6>
         <Onboarding />
       </div>
     </div>
@@ -30,7 +30,7 @@ function NoToken(){
   const userAddress = query.getUserAddress()
   return(
     <div className="inner">
-      <div className="amount-staking">
+      <div>
         <h1>{userAddress.slice(0, 7)}</h1>
         <h6><Link to='/manage' style={{color: 'white'}}><i class="fab fa-twitter"></i> Create your token</Link></h6>
       </div>
@@ -43,9 +43,9 @@ function HasToken(){
   const myToken = query.getMyToken()
   return(
     <div className="inner">
-      <div className="amount-staking">
-        <img src='../img/dai.png' style={{ width: '20px','vertical-align': 'middle' }} />{toDecimals(myToken.totalStakes,5)} staking
-        <h3><span class='token-name'>{myToken.name}</span></h3>
+      <div>
+        <h1><span class='token-name'>{myToken.name}</span></h1>
+        <h6><img src='../img/dai.png' style={{ width: '20px','vertical-align': 'middle' }} />{toDecimals(myToken.totalStakes,5)} staking</h6>
       </div>
     </div>
   )

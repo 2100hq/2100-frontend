@@ -37,8 +37,7 @@ function Row ({ rank, token, myToken }) {
     earning = earning.plus('0.000021')
   }
 
-  const showEarning = earning != null
-  if (showEarning) earning = earning.dp(6,1).toString()
+  earning = earning == null ? '0.000000' : earning.dp(6,1).toString()
 
   const stakers = Object.values(token.stakes || {}).filter( stake => BigNumber(stake).gt(0) ).length
 
@@ -55,21 +54,30 @@ function Row ({ rank, token, myToken }) {
       <th scope='row'>{rank}
       </th>
       <td>
-        <div className='token-name large'><Link to={`$${token.name}`}>{token.name}</Link></div>
-        <div className='token-description' style={{ fontSize: '0.7rem',color:'#aaa'}}>Access my new sci-fi story ...</div>
+        <div className='token-name large'>
+          <Link to={`$${token.name}`}>{token.name}</Link>
+        </div>
+        <div className='token-description small text-muted'>
+          Access my new sci-fi story ...
+        </div>
       </td>
       <td>
-        <span className='text-muted' style={{position: 'relative'}}>
+        <span style={{position: 'relative'}}>
           { stakeArrowDirection && <i className={`fas fa-arrow-${stakeArrowDirection} stake-arrow`}></i> }
           <CountUp balance={toDecimals(token.totalStakes)} decimals={2} /> DAI
         </span>
-        <div className='small text-muted'>{stakers > 0 && <span><i className="fas fa-user stakers-icon"></i> <CountUp balance={stakers} decimals={0} /></span>}</div>
+        <div className='small text-muted'>
+          {stakers > 0 && <span><i className="fas fa-user stakers-icon"></i><CountUp balance={stakers} decimals={0} /></span>}
+        </div>
       </td>
       <td>
-        <Allocator token={token} /><span className="small"><CountUp balance={toDecimals(token.myStake)} decimals={2} /> DAI</span>
+        <Allocator token={token} /><span className="small text-muted"><CountUp balance={toDecimals(token.myStake)} decimals={2} /> DAI</span>
       </td>
       <td>
-        <div><span className='small'><i className="fas fa-coins"></i></span> <CountUp balance={toDecimals(token.balances.available,5)} /></div><span className='small'> { showEarning && <span><CountUp balance={earning} decimals={6} /> per block</span> } </span>
+        <div>
+          <span className='small'><img src='../img/coin-icon.png' style={{width: '1rem', position: 'relative', top: '-0.15rem', left: '0.1rem'}}/></span> <CountUp balance={toDecimals(token.balances.available,5)} />
+        </div>
+          <span className='small text-muted'> { <span><CountUp balance={earning} decimals={6} /> per block</span> }</span>
       </td>
     </tr>
   )
