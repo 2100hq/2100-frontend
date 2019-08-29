@@ -151,14 +151,20 @@ export default function FollowMeProvider ({ children }) {
 
   function GetMessage(fmstate){
     return async (id) => {
-      if (!fmstate.isSignedIn) return null
+      const channel = fmstate.isSignedIn ? 'private' : 'public'
       try {
-        const message = await fmstate.api.private.call('getMessage', id)
-        update(`decodedMessages.${message.id}`, message)
-        return message
+        return await fmstate.api[channel].call('getMessage', id)
       } catch(e){
         return null
       }
+    }
+  }
+
+  function DecodeMessage(fmstate){
+    return async (id) => {
+      const message = await GetMessage(fmstate)(id)
+      if (message) update(`decodedMessages.${message.id}`, message)
+      return message
     }
   }
 
@@ -186,14 +192,19 @@ export default function FollowMeProvider ({ children }) {
         destroy(`decodedMessages.${message.id}`)
         return true
       } catch(e){
-        console.log('destroy', e)
         return null
       }
     }
   }
 
   const contextValue = useMemo(() => {
-    const actions = { sendMessage: SendMessage(fmstate), getMessage: GetMessage(fmstate), getTokenFeed: GetTokenFeed(fmstate), destroy: Destroy(fmstate) }
+    const actions = {
+      sendMessage: SendMessage(fmstate),
+      getMessage: GetMessage(fmstate),
+      decodeMessage: DecodeMessage(fmstate),
+      getTokenFeed: GetTokenFeed(fmstate),
+      destroy: Destroy(fmstate)
+    }
     window.fmstate = fmstate
     return { ...fmstate, actions }
   }, [fmstate])
