@@ -16,7 +16,7 @@ function InvisibleSubtext({name, token, message, isSignedIn, state, actions}){
 
   async function decodeMessage(id){
     setDecoding(true)
-    const resp = await actions.getMessage(id)
+    const resp = await actions.decodeMessage(id)
     setDecoding(false)
   }
 
