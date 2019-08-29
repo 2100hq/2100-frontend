@@ -8,5 +8,5 @@ export default function PublicFeed(){
   const isSignedIn = query.getIsSignedIn()
   const { messages } = useFollowMeContext()
 
-  return <FollowMe messages={messages} showForm={isSignedIn} className='public-feed'/>
+  return <FollowMe messages={messages} showForm={true} className='public-feed'/>
 }
