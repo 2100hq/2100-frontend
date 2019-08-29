@@ -72,10 +72,6 @@ function HiddenMessage({message, limit = 1}){
 
 export default function MessageCard({message, myToken, token, isSignedIn, actions}){
   const [destroyCountDown, setDestroyCountDown] = useState(null)
-  let lively = "😂,😎,💩,🦊,🐔,🍕,🍤,🍎,📱,⌚️,🇰🇵,🇯🇵,🇨🇦".split(',')
-  let monochrome = "◼️,🎩,🎓,🌑,🌚,🎱,🎬,🖤,⚫️,🏴".split(',')
-  const [emojis] = useState(monochrome)
-
   const name = token.name || 'unknown'
   const text = message.hidden ? <HiddenMessage message={message}/> : message.message
   const subtext = message.hidden ? <InvisibleSubtext name={name} token={token} message={message} isSignedIn={isSignedIn} actions={actions} /> : <VisibleSubtext name={name} message={message} myToken={myToken} />
