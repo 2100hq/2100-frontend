@@ -50,36 +50,39 @@ function Row ({ rank, token, myToken }) {
     return () => clearTimeout(id)
   }, [token.totalStakes])
   return (
-    <tr>
-      <th scope='row'>{rank}
-      </th>
-      <td>
-        <div className='token-name large'>
-          <Link to={`$${token.name}`}>{token.name}</Link>
-        </div>
-        <div className='token-description small text-muted'>
-          {token.description}
-        </div>
-      </td>
-      <td>
-        <span style={{position: 'relative'}}>
-          { stakeArrowDirection && <i className={`fas fa-arrow-${stakeArrowDirection} stake-arrow`}></i> }
-          <CountUp balance={toDecimals(token.totalStakes)} decimals={2} /> DAI
-        </span>
-        <div className='small text-muted'>
-          {stakers > 0 && <span><i className="fas fa-user stakers-icon"></i><CountUp balance={stakers} decimals={0} /></span>}
-        </div>
-      </td>
-      <td>
-        <Allocator token={token} /><span className="small text-muted"><CountUp balance={toDecimals(token.myStake)} decimals={2} /> DAI</span>
-      </td>
-      <td>
-        <div>
-          <CountUp balance={toDecimals(token.balances.available,5)} />
-        </div>
-          <span className='small text-muted'> { <span><CountUp balance={earning} decimals={6} /> per block</span> }</span>
-      </td>
-    </tr>
+
+<div className="row asset-row align-items-center">
+
+  <div className="col-md-1">
+    {rank}
+  </div>
+  <div className="col-md-3">
+    <div className='token-name large'>
+      <Link to={`$${token.name}`}>{token.name}</Link>
+    </div>
+    <div className='token-description small text-muted'>
+      {token.description}
+    </div>
+  </div>
+  <div className="col-md-2">
+    <span style={{position: 'relative'}}>
+      { stakeArrowDirection && <i className={`fas fa-arrow-${stakeArrowDirection} stake-arrow`}></i> }
+      <CountUp balance={toDecimals(token.totalStakes)} decimals={2} /> DAI
+    </span>
+    <div className='small text-muted'>
+      {stakers > 0 && <span><i className="fas fa-user stakers-icon"></i><CountUp balance={stakers} decimals={0} /></span>}
+    </div>
+  </div>
+  <div className="col-md-3">
+      <Allocator token={token} /><span className="small text-muted"><CountUp balance={toDecimals(token.myStake)} decimals={2} /> DAI</span>
+  </div>
+  <div className="col-md-3">
+    <div>
+      <CountUp balance={toDecimals(token.balances.available,5)} />
+    </div>
+      <span className='small text-muted'> { <span><CountUp balance={earning} decimals={6} /> per block</span> }</span>
+  </div>
+</div>
   )
 }
 
@@ -96,17 +99,15 @@ export default function All({tokens = {}, myToken}){
     />
   ))
   return (
-    <table className='table table-hover table-borderless'>
-      <thead className='text-muted'>
-        <tr>
-          <th>Rank</th>
-          <th>Asset</th>
-          <th>All Stakers</th>
-          <th>My Stake</th>
-          <th>My Balance</th>
-        </tr>
-      </thead>
-      <tbody>{rows}</tbody>
-    </table>
+    <div className="asset-table">
+      <div className="row heading-row">
+        <div className="col-md-1">Rank</div>
+        <div className="col-md-3">Asset</div>
+        <div className="col-md-2">All Stakers</div>
+        <div className="col-md-3">My Stake</div>
+        <div className="col-md-3">My Balance</div>
+      </div>
+      {rows}
+    </div>
   )
 }

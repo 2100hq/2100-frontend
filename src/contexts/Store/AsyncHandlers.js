@@ -147,7 +147,7 @@ export default function AsyncHandlers (libs = {}) {
       }
 
       try {
-        await libs.socket.admin('createToken', {
+        await libs.socket.admin('createPendingToken', {
           name: action.params.username,
           ownerAddress: action.params.address
         })

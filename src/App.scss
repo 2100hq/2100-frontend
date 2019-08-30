@@ -27,7 +27,9 @@ html{
 
 body{
   height: calc(100% - 58px);
+  font-size: 1rem;
   font-family: 'Noto Serif JP', serif !important;
+  background-color: ghostwhite;
 }
 
 
@@ -44,11 +46,11 @@ body{
 	}
 
 	&.large{
-		font-size: 1.1rem;
+		font-size: 1.2rem;
 	}
 
 	&.medium{
-		font-size: 1rem !important;
+		font-size: 1rem;
 	}
 
 }

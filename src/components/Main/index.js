@@ -10,11 +10,7 @@ export default function Main(){
       <Col md="8">
         <Row>
           <Col md="12">
-            <Card>
-              <Card.Body>
-                <Discover />
-              </Card.Body>
-            </Card>
+            <Discover />
           </Col>
         </Row>
       </Col>
