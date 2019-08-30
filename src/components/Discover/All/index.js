@@ -73,8 +73,11 @@ function Row ({ rank, token, myToken }) {
       {stakers > 0 && <span><i className="fas fa-user stakers-icon"></i><CountUp balance={stakers} decimals={0} /></span>}
     </div>
   </div>
-  <div className="col-md-3">
-      <Allocator token={token} /><span className="small text-muted"><CountUp balance={toDecimals(token.myStake)} decimals={2} /> DAI</span>
+  <div className="col-md-2">
+      <Allocator token={token} />
+  </div>
+  <div className="col-md-1" style={{position: 'relative', left: '-1rem'}}>
+      <span className="small text-muted"><CountUp balance={toDecimals(token.myStake)} decimals={2} /> DAI</span>
   </div>
   <div className="col-md-3">
     <div>

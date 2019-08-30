@@ -17,12 +17,11 @@ $dot4: lighten($twentyoneprimary,0);
 
 .dots span{
     cursor: pointer;
-    height: 1rem;
-    width: .5rem;
-    // border-radius: 50%;
+    height: 1.5rem;
+    width: 0.5rem;
     display: inline-block;
     margin-right: 0.25em;
-    border:1px solid #ccc;
+    background-color: #ddd;
 
     &.disabled{
         @extend %disabled;

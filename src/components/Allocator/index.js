@@ -62,8 +62,6 @@ export default function Allocator ({ token }) {
   }
 
   return (
-    <div>
-      <Dots total={state.config.stakeLevels} current={uiLevel} onClick={handleClick} isDisabled={isDisabled} />
-    </div>
+    <Dots total={state.config.stakeLevels} current={uiLevel} onClick={handleClick} isDisabled={isDisabled} />
   )
 }
