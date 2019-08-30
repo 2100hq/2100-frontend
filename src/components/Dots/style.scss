@@ -5,6 +5,11 @@ $dot1: lighten($twentyoneprimary,30);
 $dot2: lighten($twentyoneprimary,20);
 $dot3: lighten($twentyoneprimary,10);
 $dot4: lighten($twentyoneprimary,0);
+$dot5: lighten($twentyoneprimary,0);
+$dot6: lighten($twentyoneprimary,0);
+$dot7: lighten($twentyoneprimary,0);
+$dot8: lighten($twentyoneprimary,0);
+$dot9: lighten($twentyoneprimary,0);
 
 
 %action-dot{
@@ -70,39 +75,39 @@ $dot4: lighten($twentyoneprimary,0);
 .dot5 {
     @extend %action-dot;
     &.active{
-        background-color: $dot4;
-        border-color: $dot4;
+        background-color: $dot5;
+        border-color: $dot5;
     }
 }
 
 .dot6 {
     @extend %action-dot;
     &.active{
-        background-color: $dot4;
-        border-color: $dot4;
+        background-color: $dot6;
+        border-color: $dot6;
     }
 }
 
 .dot7 {
     @extend %action-dot;
     &.active{
-        background-color: $dot4;
-        border-color: $dot4;
+        background-color: $dot7;
+        border-color: $dot7;
     }
 }
 
 .dot8 {
     @extend %action-dot;
     &.active{
-        background-color: $dot4;
-        border-color: $dot4;
+        background-color: $dot8;
+        border-color: $dot8;
     }
 }
 
 .dot9 {
     @extend %action-dot;
     &.active{
-        background-color: $dot4;
-        border-color: $dot4;
+        background-color: $dot9;
+        border-color: $dot9;
     }
 }

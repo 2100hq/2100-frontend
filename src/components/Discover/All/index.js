@@ -80,16 +80,12 @@ function Row ({ rank, token, myToken }) {
       <span className="small text-muted"><CountUp balance={toDecimals(token.myStake)} decimals={2} /> DAI</span>
   </div>
   <div className="col-md-3">
-    <div>
-      <CountUp balance={toDecimals(token.balances.available,5)} />
-    </div>
+    <div style={{fontWeight: 'bold'}}><CountUp balance={toDecimals(token.balances.available,5)} /></div>
       <span className='small text-muted'> { <span><CountUp balance={earning} decimals={6} /> per block</span> }</span>
   </div>
 </div>
   )
 }
-
-
 
 export default function All({tokens = {}, myToken}){
 
