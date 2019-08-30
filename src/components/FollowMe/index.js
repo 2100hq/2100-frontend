@@ -15,11 +15,7 @@ export default function FollowMeFeed({messages={}, showForm, className, styles})
   return (
     <div className={className} styles={styles}>
         { showForm && <MessageForm /> }
-        <div className="card">
-          <div className="card-body">
-            {cards}
-          </div>
-        </div>
+        {cards}
     </div>
   )
 }
