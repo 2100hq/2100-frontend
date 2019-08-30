@@ -1,4 +1,27 @@
 .asset-table{
+
+  div.rank{
+      font-weight: bold;
+  	  display: inline-block;
+  	  border-radius: 50%;
+  	  width: 2rem;
+  	  height: 2rem;
+  	  line-height: calc(2rem - 2px);
+  	  text-align: center;
+
+	  &.rank1{
+	  	border: 1px solid #F6D543;
+	  }
+
+	  &.rank2{
+	  	border: 1px solid #2D49A1;
+	  }
+
+	  &.rank3{
+	  	border: 1px solid #A82C76;
+	  }
+  }
+
   .heading-row{
 
   }

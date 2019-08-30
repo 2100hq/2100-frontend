@@ -46,7 +46,7 @@ function Row ({ rank, token, myToken }) {
     const direction = BigNumber(prevTotalStakeRef.current).lt(token.totalStakes) ? 'up' : 'down'
     setStakeArrowDirection(direction)
     prevTotalStakeRef.current=token.totalStakes
-    const id = setTimeout(setStakeArrowDirection, 1000, null)
+    const id = setTimeout(setStakeArrowDirection, 3000, null)
     return () => clearTimeout(id)
   }, [token.totalStakes])
   return (
@@ -54,7 +54,7 @@ function Row ({ rank, token, myToken }) {
 <div className="row asset-row align-items-center">
 
   <div className="col-md-1">
-    {rank}
+    <div className={'rank rank'+rank}>{rank}</div>
   </div>
   <div className="col-md-3">
     <div className='token-name large'>
