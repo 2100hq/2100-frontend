@@ -89,9 +89,7 @@ export default function Discover () {
   return (
     <Row>
       <Col md='12'>
-        <Card className='mb-3'>
-          <Card.Body>
-            <Row>
+            <Row className='mt-4 mb-4'>
               <Col md='4'>
                 <Search />
               </Col>
@@ -99,8 +97,6 @@ export default function Discover () {
                 <ul className='nav nav-pills inline'>{tabs}</ul>
               </Col>
             </Row>
-          </Card.Body>
-        </Card>
         {currentTab ? tabMap[currentTab]() : null}
       </Col>
     </Row>

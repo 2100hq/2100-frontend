@@ -14,9 +14,9 @@ export default function Main(){
           </Col>
         </Row>
       </Col>
-      <Col md="4">
+      <Col md="4" className='followme'>
         <Row>
-          <Col md="12" style={{paddingLeft: '0'}}>
+          <Col md="12">
             {/* follow me */}
             <FollowMePublicFeed />
           </Col>
