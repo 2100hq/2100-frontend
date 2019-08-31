@@ -37,12 +37,15 @@ body{
   height: 100%;
 }
 
+.main.row{
+	border-top: 1px solid #eee;
+}
+
 .token-name{
 	font-weight: bold;
 
 	&::before{
 		content: "$";
-		color: $twentyoneprimary;
 	}
 
 	&.large{

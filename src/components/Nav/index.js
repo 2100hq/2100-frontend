@@ -49,11 +49,9 @@ function HasToken(){
   const { query } = useStoreContext()
   const myToken = query.getMyToken()
   return(
-    <div className="inner">
-      <div>
-        <h1><span class='token-name'>{myToken.name}</span></h1>
-        <h6><img src='../img/dai.png' style={{ width: '20px','vertical-align': 'middle' }} />{toDecimals(myToken.totalStakes,5)} staking</h6>
-      </div>
+    <div>
+      <div className='mytokenname'><span>${myToken.name}</span></div>
+      <div className='mytokenstake'><span><img src='../img/dai.png' style={{ width: '20px','vertical-align': 'middle' }} />{toDecimals(myToken.totalStakes,5)} staking</span></div>
     </div>
   )
 }
@@ -71,7 +69,7 @@ export default function Nav (props) {
   const { state, query } = useStoreContext()
   return (
     <div className="header-background">
-      <nav className='navbar navbar-expand-lg navbar-dark' style={{position: 'absolute', width: '100%'}}>
+      <nav className='navbar navbar-expand-lg navbar-light' style={{position: 'absolute', width: '100%'}}>
         <Link to='/' className='navbar-brand'>2100</Link>
         <button
         className='navbar-toggler'

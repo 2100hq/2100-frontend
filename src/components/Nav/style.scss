@@ -12,36 +12,27 @@
 	background: url(../../img/background25.png) center center;
 	background-size: cover;
 
-	h1{
-		font-weight: bold !important;
-	}
-
-	.token-name{
-		color: white;
-
-		&::before{
-			color: white;
-		}
-
-	}
+	background-color: ghostwhite;
 
 	.token-name-area{
-		color: white;
-		text-align: center;
-		padding: 3.5rem 0;
-		background-color: rgba(0,0,0,0);
+		color: black;
+		padding: 3rem 0.5rem;
+		background-color: rgba(255,255,255,0);
 
+		.mytokenname{
+			font-weight: bold;
+			font-size: 2.2rem;
+			span{
+				background-color: white;
+			}
+		}
+
+		.mytokenstake{
+			font-size: 1.3rem;
+			span{
+				background-color: white;
+			}
+		}
 	}
 
-	.token-name{
-		font-size: 2.4rem;
-	}
-
-	.amount-staking{
-		font-size: 1.1rem;
-	}
-
-	.row{
-		margin: 0;
-	}
 }
