@@ -20,6 +20,10 @@ $dot9: lighten($twentyoneprimary,0);
     cursor: default;
 }
 
+.dots{
+    min-width: 8rem;
+}
+
 .dots span{
     cursor: pointer;
     height: 1.5rem;
