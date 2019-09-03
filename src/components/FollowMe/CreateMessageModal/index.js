@@ -22,7 +22,7 @@ function Hesitate({onCancel, onDisgard}){
   )
 }
 
-export default function CreateModal ({show,onHide}) {
+export default function CreateMessageModal ({show,onHide}) {
   const { state, actions } = useFollowMeContext()
   const [showHesitate, setShowHesitate] = useState(false)
   const [close, setClose] = useState(false)
