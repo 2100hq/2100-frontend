@@ -58,7 +58,7 @@ function Row ({ rank, token, myToken }) {
   </div>
   <div className="col-md-3">
     <div className='token-name large'>
-      <Link to={`$${token.name}`}>{token.name}</Link>
+      <Link to={`/$${token.name}`}>{token.name}</Link>
     </div>
     <div className='token-description small text-muted'>
       {token.description}

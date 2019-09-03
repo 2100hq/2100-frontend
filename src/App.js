@@ -24,26 +24,34 @@ class App extends Component {
     return (
       <Router>
         <Route path='' component={Nav} />
-        <div className='container-fluid'>
-          <Route exact path='/' component={Main} />
-          <Route exact path='/:username([$].*)' render = {
-            props => {
-              const {match} = props
-              const [username, messageid] = match.params.username.split('/')
-              match.params.username = username
-              match.params.messageid = messageid
-              return <Profile {...props} />
-            }
-          } />
-          <Route path='/portfolio' component={Portfolio} />
-          <Route path='/wallet' component={Wallet} />
-          <Route path='/manage' component={Manage} />
-          <Route path='/admin' component={Admin} />
-          <Alerts />
-          <ErrorModal />
-        </div>
+        <Main />
+        <Alerts />
+        <ErrorModal />
       </Router>
     )
+    // return (
+    //   <Router>
+    //     <Route path='' component={Nav} />
+    //     <div className='container-fluid'>
+    //       <Route exact path='/' component={Main} />
+    //       <Route exact path='/:username([$].*)' render = {
+    //         props => {
+    //           const {match} = props
+    //           const [username, messageid] = match.params.username.split('/')
+    //           match.params.username = username
+    //           match.params.messageid = messageid
+    //           return <Profile {...props} />
+    //         }
+    //       } />
+    //       <Route path='/portfolio' component={Portfolio} />
+    //       <Route path='/wallet' component={Wallet} />
+    //       <Route path='/manage' component={Manage} />
+    //       <Route path='/admin' component={Admin} />
+    //       <Alerts />
+    //       <ErrorModal />
+    //     </div>
+    //   </Router>
+    // )
   }
 }
 

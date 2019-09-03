@@ -94,25 +94,20 @@ export default function Profile ({match}) {
   const isMyToken = query.getIsMyToken(token)
   const description = token.description || ''
   const hasDescription = Boolean(description.replace(/\s*/g,''))
-
-
   return (
-    <FollowMeProfileFeed token={token} />
+    <div className='row justify-content-center'>
+    	<div className='col-md-6'>
+    		<div style={{marginTop:'2rem'}} className={`profile ${!hasDescription && 'no-description'}`}>
+					<h1><span className='token-name'>{token.name}</span></h1>
+					<Description description={description} isMyToken={isMyToken} token={token}/>
+					{isSignedIn && <Allocator token={token}/> }
+					<div>
+        <img src='../img/dai.png' style={{ width: '14px','vertical-align': 'baseline' }} /> <span className='text-muted'>{stakeText}</span>
+					</div>
+					<hr/>
+          { messageid ? <FollowMeSingleMessage messageid={messageid} token={token}/> : <FollowMeProfileFeed token={token} />}
+    		</div>
+    	</div>
+    </div>
   )
-  // return (
-  //   <div className='row justify-content-center'>
-  //   	<div className='col-md-6'>
-  //   		<div style={{marginTop:'2rem'}} className={`profile ${!hasDescription && 'no-description'}`}>
-		// 			<h1><span className='token-name'>{token.name}</span></h1>
-		// 			<Description description={description} isMyToken={isMyToken} token={token}/>
-		// 			{isSignedIn && <Allocator token={token}/> }
-		// 			<div>
-  //       <img src='../img/dai.png' style={{ width: '14px','vertical-align': 'baseline' }} /> <span className='text-muted'>{stakeText}</span>
-		// 			</div>
-		// 			<hr/>
-  //         { messageid ? <FollowMeSingleMessage messageid={messageid} token={token}/> : <FollowMeProfileFeed token={token} />}
-  //   		</div>
-  //   	</div>
-  //   </div>
-  // )
 }
