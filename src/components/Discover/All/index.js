@@ -58,12 +58,9 @@ function Row ({ rank, token, myToken, currentUsername }) {
 <div className={"row asset-row align-items-center"+selected}>
 
   <div className="col-md-1">
-    <div className={'rank rank'+rank}>{rank}</div>
-  </div>
-  <div className="col-md-1">
     <img className='profile-image' src={`https://res.cloudinary.com/dhvvhdndp/image/twitter_name/${token.name}.png`}/>
   </div>
-  <div className="col-md-2">
+  <div className="col-md-3">
     <div className='token-name large' style={{display: 'inline-block'}}>
       <Link to={`/$${token.name}`}>{token.name}
       </Link>
@@ -100,9 +97,9 @@ function All({tokens = {}, location, myToken}){
   return (
     <div className="asset-table">
       <div className="row heading-row">
-        <div className="col-md-1">Rank</div>
-        <div className="col-md-3">Asset</div>
-        <div className="col-md-2">All Stakers</div>
+        <div className="col-md-1">Image</div>
+        <div className="col-md-3">Name</div>
+        <div className="col-md-2">Total Stakes</div>
         <div className="col-md-3">My Stake</div>
         <div className="col-md-3">My Balance</div>
       </div>
