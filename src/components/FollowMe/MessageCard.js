@@ -5,6 +5,9 @@ import { BigNumber, toDecimals, weiDecimals } from '../../utils'
 import { Link } from 'react-router-dom'
 import ms from 'ms'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
+import * as linkify from 'linkifyjs';
+import Linkify from 'linkifyjs/react';
+
 function InvisibleSubtext({name, token, message, isSignedIn, state, actions}){
   const [decoding, setDecoding] = useState(false)
 
@@ -74,7 +77,7 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
   const [destroyCountDown, setDestroyCountDown] = useState(null)
   const [copied, setCopied] = useState(null)
   const name = token.name || 'unknown'
-  const text = message.hidden ? <HiddenMessage message={message}/> : message.message
+  const text = message.hidden ? <HiddenMessage message={message}/> : <Linkify>{message.message}</Linkify>
   const subtext = message.hidden ? <InvisibleSubtext name={name} token={token} message={message} isSignedIn={isSignedIn} actions={actions} /> : <VisibleSubtext name={name} message={message} myToken={myToken} />
 
   function destroyMessage(e){
