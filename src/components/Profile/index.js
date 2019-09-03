@@ -98,14 +98,26 @@ export default function Profile ({match}) {
 
   return (
   <div className='profile'>
-    <div className='profile-header'>
+    <div className='row justify-content-center'>
+      <div className='col-md-4'>
+        <div className='profile-header'>
           <img className='profile-image' src={`https://res.cloudinary.com/dhvvhdndp/image/twitter_name/${token.name}.png`} />
-          <h1><span className='token-name'>{token.name}</span></h1>
-          <Description description={description} isMyToken={isMyToken} token={token}/>
+          <div className='token-name'>
+            {token.name}
+          </div>
+          <div className='token-stakes'>
+            <img src='../img/dai.png' style={{ width: '16px','vertical-align': 'baseline' }} /> {toDecimals(token.totalStakes)} staking
+          </div>
+          <div className='token-url small'>
+            <a href={`https://twitter.com/${token.name}`}>{`twitter.com/${token.name}`}</a>
+          </div>
+        </div>
+      </div>
     </div>
     <div className='profile-body'>
           <FollowMeProfileFeed token={token} />
     </div>
+
   </div>
   )
   // return (

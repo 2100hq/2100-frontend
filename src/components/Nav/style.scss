@@ -17,21 +17,15 @@
 	.token-name-area{
 		color: black;
 		padding: 3rem 0.5rem;
-		background-color: rgba(255,255,255,0);
+		background-color: rgba(255,255,255,0.8);
 
 		.mytokenname{
 			font-weight: bold;
 			font-size: 2.2rem;
-			span{
-				background-color: white;
-			}
 		}
 
 		.mytokenstake{
 			font-size: 1.3rem;
-			span{
-				background-color: white;
-			}
 		}
 	}
 

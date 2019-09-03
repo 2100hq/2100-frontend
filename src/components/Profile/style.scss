@@ -1,11 +1,17 @@
 .profile{
 
 	.profile-header{
+		margin-top: -1rem;
 		text-align: center;
+		font-weight: bold;
 
 		.profile-image{
 			width: 10rem;
 			border-radius: 50%;
+		}
+
+		.token-name{
+			font-size: 1.7rem;
 		}
 	}
 
