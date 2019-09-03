@@ -61,26 +61,7 @@
   }
 
   .form-group-hint {
-    label {
-      display: inline;
-    }
-    input {
-      display: inline;
-      margin-left: 1em;
-      width: 30em;
-      border-radius: 0;
-      padding-bottom: 0;
-      border-bottom: 1px solid #ccc;
-      outline: none;
-    }
-    .char-count {
-      margin-left: 0.5em;
-    }
-  }
-  .hidden-message{
-    span {
-      opacity: 0.5;
-    }
+
   }
 
   .message-body{
@@ -97,11 +78,7 @@
 
 
 .threshold-input {
-  color: #6c757d;
-  border: 0;
-  border-bottom:0.1px solid #ccc;
-  width: 5.25em;
-  padding-left: 0.25em;
+
 }
 
 .message-copy-url{
