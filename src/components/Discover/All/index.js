@@ -56,24 +56,19 @@ function Row ({ rank, token, myToken, currentUsername }) {
   return (
 
 <div className={"row asset-row align-items-center"+selected}>
-
-  <div className="col-md-1">
-    <img className='profile-image' src={`https://res.cloudinary.com/dhvvhdndp/image/twitter_name/${token.name}.png`}/>
-  </div>
-  <div className="col-md-3">
-    <div className='token-name large' style={{display: 'inline-block'}}>
-      <Link to={`/$${token.name}`}>{token.name}
-      </Link>
-    </div>
+  <div className="col-md-4">
+      <img className='profile-image' src={`https://res.cloudinary.com/dhvvhdndp/image/twitter_name/${token.name}.png`}/>
+      <Link style={{marginLeft: '1rem'}} className='token-name large' to={`/$${token.name}`}>{token.name}</Link>
   </div>
   <div className="col-md-2">
-    <span style={{position: 'relative'}}>
+    <span style={{fontWeight: 'bold'}}>
       { stakeArrowDirection && <i className={`fas fa-arrow-${stakeArrowDirection} stake-arrow`}></i> }
-      <CountUp balance={toDecimals(token.totalStakes)} decimals={2} /> DAI
+      <img src='../img/dai.png' style={{ width: '16px','vertical-align': 'baseline' }} /> <CountUp balance={toDecimals(token.totalStakes)} decimals={2} />
     </span>
   </div>
   <div className="col-md-3">
       <Allocator token={token} />
+
   </div>
   <div className="col-md-3">
     <div style={{fontWeight: 'bold'}}><CountUp balance={toDecimals(token.balances.available,5)} /></div>
@@ -96,12 +91,11 @@ function All({tokens = {}, location, myToken}){
   ))
   return (
     <div className="asset-table">
-      <div className="row heading-row">
-        <div className="col-md-1">Image</div>
-        <div className="col-md-3">Name</div>
-        <div className="col-md-2">Total Stakes</div>
+      <div className="row heading-row text-muted">
+        <div className="col-md-4">User</div>
+        <div className="col-md-2">Staking</div>
         <div className="col-md-3">My Stake</div>
-        <div className="col-md-3">My Balance</div>
+        <div className="col-md-2">Balance</div>
       </div>
       {rows}
     </div>
