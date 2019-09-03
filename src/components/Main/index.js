@@ -6,20 +6,10 @@ import Discover from '../Discover'
 import Onboarding from '../Onboarding'
 import Profile from '../Profile'
 import { withRouter, matchPath } from "react-router";
-
-const usernameRoute = {
-  exact:true,
-  path:'/:username([$].*)'
-}
-
-function extractMessageIdFromUsernameRoute (match){
-  if (!match || !match.params) return {}
-  const [username, messageid] = match.params.username.split('/')
-  return {username, messageid}
-}
+import { extractUsernameAndMessageIdFromLocation,extractMessageIdFromUsernameRoute } from '../../utils'
 
 function Main({location}){
-  const {username, messageid} = extractMessageIdFromUsernameRoute(matchPath(location.pathname, usernameRoute))
+  const {username, messageid} = extractUsernameAndMessageIdFromLocation(location)
   return (
     <div className='container-fluid'>
       <Row className='main'>

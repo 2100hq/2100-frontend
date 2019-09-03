@@ -1,3 +1,4 @@
+import { matchPath } from "react-router";
 import { utils } from 'ethers'
 import { get } from 'lodash'
 import Selectors from './selectors'
@@ -104,3 +105,20 @@ export function updateStakeAmountsFromLevels (state, newLevels = {}) {
 
 
 export const weiDecimals = BigNumber(10).pow(18)
+
+
+export const usernameRoute = {
+  exact:true,
+  path:'/:username([$].*)'
+}
+
+export function extractMessageIdFromUsernameRoute (match){
+  if (!match || !match.params) return {}
+  const [username, messageid] = match.params.username.split('/')
+
+  return {username: username.replace(/^\$/,''), messageid}
+}
+
+export function extractUsernameAndMessageIdFromLocation(location = window.location){
+  return extractMessageIdFromUsernameRoute(matchPath(location.pathname, usernameRoute))
+}

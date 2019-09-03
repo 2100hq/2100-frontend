@@ -1,10 +1,11 @@
 import React, { useState,useEffect, useRef } from 'react'
 import { useStoreContext } from '../../../contexts/Store'
-import { toDecimals, BigNumber, weiDecimals } from '../../../utils'
+import { toDecimals, BigNumber, weiDecimals, extractUsernameAndMessageIdFromLocation } from '../../../utils'
 import Allocator from '../../Allocator'
 import { useCountUp } from 'react-countup'
 import { sortBy } from 'lodash'
 import { Link } from 'react-router-dom'
+import { withRouter } from 'react-router'
 import './style.scss'
 
 function CountUp ({balance, decimals = 5}) {
@@ -22,7 +23,7 @@ function CountUp ({balance, decimals = 5}) {
 }
 
 
-function Row ({ rank, token, myToken }) {
+function Row ({ rank, token, myToken, currentUsername }) {
   const prevTotalStakeRef = useRef(token.totalStakes)
   const [stakeArrowDirection, setStakeArrowDirection]=useState(null)
   let earning = null
@@ -49,16 +50,22 @@ function Row ({ rank, token, myToken }) {
     const id = setTimeout(setStakeArrowDirection, 3000, null)
     return () => clearTimeout(id)
   }, [token.totalStakes])
+
+  const selected = currentUsername === token.name ? ' selected' : ''
+
   return (
 
-<div className="row asset-row align-items-center">
+<div className={"row asset-row align-items-center"+selected}>
 
   <div className="col-md-1">
     <div className={'rank rank'+rank}>{rank}</div>
   </div>
   <div className="col-md-3">
-    <div className='token-name large'>
-      <Link to={`/$${token.name}`}>{token.name}</Link>
+  <img src={`https://res.cloudinary.com/dhvvhdndp/image/twitter_name/${token.name}.png`} style={{borderRadius: '50%', width: '25px' }}/>
+
+    <div className='token-name large' style={{display: 'inline-block'}}>
+      <Link to={`/$${token.name}`}>{token.name}
+      </Link>
     </div>
     <div className='token-description small text-muted'>
       {token.description}
@@ -87,14 +94,15 @@ function Row ({ rank, token, myToken }) {
   )
 }
 
-export default function All({tokens = {}, myToken}){
-
+function All({tokens = {}, location, myToken}){
+  const {username} = extractUsernameAndMessageIdFromLocation(location)
   const rows = Object.values(tokens).map((token, i) => (
     <Row
       rank={i + 1}
       token={token}
       myToken={myToken}
       key={token.name}
+      currentUsername={username}
     />
   ))
   return (
@@ -110,3 +118,5 @@ export default function All({tokens = {}, myToken}){
     </div>
   )
 }
+
+export default withRouter(All)

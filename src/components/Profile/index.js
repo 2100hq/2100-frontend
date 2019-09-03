@@ -65,7 +65,7 @@ export default function Profile ({match}) {
   const [loadingState, setLoadingState] = useState(0)
 
   const { query } = useStoreContext()
-  const username = match.params.username.replace(/^\$/,'')
+  const username = match.params.username
   const messageid = match.params.messageid
   const isLoading = query.getIsLoading()
   const isConnected = query.getIsConnected()
@@ -97,7 +97,12 @@ export default function Profile ({match}) {
 
 
   return (
-    <FollowMeProfileFeed token={token} />
+    <div>
+      <img src={`https://res.cloudinary.com/dhvvhdndp/image/twitter_name/${token.name}.png`} />
+      <h1><span className='token-name'>{token.name}</span></h1>
+      <Description description={description} isMyToken={isMyToken} token={token}/>
+      <FollowMeProfileFeed token={token} />
+    </div>
   )
   // return (
   //   <div className='row justify-content-center'>
