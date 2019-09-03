@@ -6,7 +6,7 @@ import Allocator from '../Allocator'
 import { toDecimals } from '../../utils'
 import { Redirect }  from 'react-router-dom'
 import { useStoreContext } from '../../contexts/Store'
-import { Button, Form, Col, Row } from 'react-bootstrap'
+import { Button, Form, Col, Row, Card } from 'react-bootstrap'
 import './style.scss'
 
 function Description({description, token, isMyToken}){
@@ -97,12 +97,14 @@ export default function Profile ({match}) {
 
 
   return (
-    <div>
-      <img src={`https://res.cloudinary.com/dhvvhdndp/image/twitter_name/${token.name}.png`} />
-      <h1><span className='token-name'>{token.name}</span></h1>
-      <Description description={description} isMyToken={isMyToken} token={token}/>
-      <FollowMeProfileFeed token={token} />
-    </div>
+    <Card className='profile-header'>
+      <Card.Body>
+        <img className='profile-image' src={`https://res.cloudinary.com/dhvvhdndp/image/twitter_name/${token.name}.png`} />
+        <h1><span className='token-name'>{token.name}</span></h1>
+        <Description description={description} isMyToken={isMyToken} token={token}/>
+        <FollowMeProfileFeed token={token} />
+      </Card.Body>
+    </Card>
   )
   // return (
   //   <div className='row justify-content-center'>

@@ -226,14 +226,12 @@ class Asset extends Component {
         <div className='row'>
           <div className='col-sm-4'>
             <div className='profile'>
-              <span>
-                <img
-                  src={`https://res.cloudinary.com/dhvvhdndp/image/twitter_name/${
-                    this.state.asset.username
-                  }`}
-                  alt='#'
-                />
-              </span>
+              <img
+                src={`https://res.cloudinary.com/dhvvhdndp/image/twitter_name/${
+                  this.state.asset.username
+                }`}
+                alt='#'
+              />
               <span className='profile-info'>
                 <div className='profile-name'>
                   {this.state.asset.displayName}
