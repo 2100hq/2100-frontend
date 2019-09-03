@@ -97,14 +97,16 @@ export default function Profile ({match}) {
 
 
   return (
-    <Card className='profile-header'>
-      <Card.Body>
-        <img className='profile-image' src={`https://res.cloudinary.com/dhvvhdndp/image/twitter_name/${token.name}.png`} />
-        <h1><span className='token-name'>{token.name}</span></h1>
-        <Description description={description} isMyToken={isMyToken} token={token}/>
-        <FollowMeProfileFeed token={token} />
-      </Card.Body>
-    </Card>
+  <div className='profile'>
+    <div className='profile-header'>
+          <img className='profile-image' src={`https://res.cloudinary.com/dhvvhdndp/image/twitter_name/${token.name}.png`} />
+          <h1><span className='token-name'>{token.name}</span></h1>
+          <Description description={description} isMyToken={isMyToken} token={token}/>
+    </div>
+    <div className='profile-body'>
+          <FollowMeProfileFeed token={token} />
+    </div>
+  </div>
   )
   // return (
   //   <div className='row justify-content-center'>

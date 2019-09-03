@@ -29,7 +29,6 @@ body{
   height: calc(100% - 58px);
   font-size: 1rem;
   font-family: 'Noto Serif JP', serif !important;
-  background-color: ghostwhite;
 }
 
 
@@ -39,6 +38,14 @@ body{
 
 .main.row{
 	border-top: 1px solid #eee;
+}
+
+.followme{
+	background-color: ghostwhite;
+}
+
+.twentyonehundred{
+	background-color: ghostwhite;
 }
 
 .token-name{

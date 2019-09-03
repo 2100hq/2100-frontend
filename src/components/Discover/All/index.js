@@ -60,15 +60,13 @@ function Row ({ rank, token, myToken, currentUsername }) {
   <div className="col-md-1">
     <div className={'rank rank'+rank}>{rank}</div>
   </div>
-  <div className="col-md-3">
-  <img src={`https://res.cloudinary.com/dhvvhdndp/image/twitter_name/${token.name}.png`} style={{borderRadius: '50%', width: '25px' }}/>
-
+  <div className="col-md-1">
+    <img className='profile-image' src={`https://res.cloudinary.com/dhvvhdndp/image/twitter_name/${token.name}.png`}/>
+  </div>
+  <div className="col-md-2">
     <div className='token-name large' style={{display: 'inline-block'}}>
       <Link to={`/$${token.name}`}>{token.name}
       </Link>
-    </div>
-    <div className='token-description small text-muted'>
-      {token.description}
     </div>
   </div>
   <div className="col-md-2">
@@ -76,15 +74,9 @@ function Row ({ rank, token, myToken, currentUsername }) {
       { stakeArrowDirection && <i className={`fas fa-arrow-${stakeArrowDirection} stake-arrow`}></i> }
       <CountUp balance={toDecimals(token.totalStakes)} decimals={2} /> DAI
     </span>
-    <div className='small text-muted'>
-      {stakers > 0 && <span><i className="fas fa-user stakers-icon"></i><CountUp balance={stakers} decimals={0} /></span>}
-    </div>
   </div>
-  <div className="col-md-2">
+  <div className="col-md-3">
       <Allocator token={token} />
-  </div>
-  <div className="col-md-1" style={{position: 'relative', left: '-1rem'}}>
-      <span className="small text-muted"><CountUp balance={toDecimals(token.myStake)} decimals={2} /> DAI</span>
   </div>
   <div className="col-md-3">
     <div style={{fontWeight: 'bold'}}><CountUp balance={toDecimals(token.balances.available,5)} /></div>
