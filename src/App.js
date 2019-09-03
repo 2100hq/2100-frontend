@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { BrowserRouter as Router, Route } from 'react-router-dom'
+import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
 import { merge } from 'lodash'
 
 import Main from './components/Main'
@@ -24,7 +24,13 @@ class App extends Component {
     return (
       <Router>
         <Route path='' component={Nav} />
-        <Main />
+        <Switch>
+          <Route path='/portfolio' exact component={Portfolio} />
+          <Route path='/wallet' exact component={Wallet} />
+          <Route path='/manage' exact component={Manage} />
+          <Route path='/admin' exact component={Admin} />
+          <Route component={Main} />
+        </Switch>
         <Alerts />
         <ErrorModal />
       </Router>
@@ -43,10 +49,6 @@ class App extends Component {
     //           return <Profile {...props} />
     //         }
     //       } />
-    //       <Route path='/portfolio' component={Portfolio} />
-    //       <Route path='/wallet' component={Wallet} />
-    //       <Route path='/manage' component={Manage} />
-    //       <Route path='/admin' component={Admin} />
     //       <Alerts />
     //       <ErrorModal />
     //     </div>
