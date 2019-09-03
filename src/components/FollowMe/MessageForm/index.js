@@ -20,7 +20,26 @@ function ThresholdInput({defaultThreshold, onChange = ()=>{}}){
   return <input type='number' step="0.01" min="0" className="threshold-input" defaultValue={defaultThreshold} onChange={ (e) => onChange(e.target.value)} />
 }
 
-export default function MessageForm(){
+function Tab({currentTab, tabName, setTab}){
+  function handleClick(e){
+    e.preventDefault()
+    setTab(tabName)
+  }
+  const isActive = currentTab === tabName
+  return(
+    <li className='nav-item' key={tabName}>
+      <a
+        className={`nav-link ${isActive && 'active'}`}
+        onClick={handleClick}
+        href="#"
+      >
+        {tabName}
+      </a>
+    </li>
+  )
+}
+
+export default function MessageForm({onSubmitted}){
   const {query} = useStoreContext()
 
   let { api, isSignedIn, myToken, messages = {}, publicMessages = {}, followers = {}, actions } = useFollowMeContext()
@@ -29,7 +48,7 @@ export default function MessageForm(){
 
   const followerCount = Object.keys(followers).length
   const [submitting, setSubmitting] = useState(false)
-  const [showHint, setShowHint] = useState(false)
+
   const [data, setData] = useState({})
   const { message, hint } = data
   const [error, setError] = useState()
@@ -42,7 +61,7 @@ export default function MessageForm(){
 
   const isDisabled = !hasToken || submitting
 
-  const placeholder = !hasToken ? 'Create your token to send messages' : null
+
 
   function changeData(e){
     const { id, value } = e.target
@@ -57,11 +76,10 @@ export default function MessageForm(){
     if (isEmpty(message)) return
     setSubmitting(true)
     const resp = await actions.sendMessage(message, hint, threshold.toString())
-    console.log('handleSend', resp)
     setSubmitting(false)
     if (resp) {
       setData({})
-      setShowHint(false)
+      onSubmitted && onSubmitted(resp)
     }
   }
 
@@ -76,21 +94,6 @@ export default function MessageForm(){
     }
     setThreshold(newThresh.toString())
   }
-
-  // function percentileThreshold(){
-  //   const holdings = Object.values(followers)
-  //   const p = percentiles[4-level]
-  //   return percentile(holdings, p).toString()
-  // }
-
-  // useEffect( () => {
-  //   let newThresh = "1"
-  //   let swappedLevel = 4-level
-  //   if (hasFollowers && 4-level>0){
-  //     newThresh = percentileThreshold()
-  //   }
-  //   setThreshold(newThresh)
-  // }, [level])
 
   useEffect( () => {
     const holdings = Object.values(followers)
@@ -107,52 +110,48 @@ export default function MessageForm(){
   }, [threshold, followers])
 
   const tokenRequirement = (
-    <div>
-      <ThresholdInput defaultThreshold={toDecimals(threshold,15)} onChange={handleSetThreshold} /> ${myTokenName} required
+    <div style={{marginTop: '1rem'}}>
+      <ThresholdInput defaultThreshold={toDecimals(threshold,15)} onChange={handleSetThreshold} /> ${myTokenName} required to decode
     </div>
   )
 
-  // function tokenRequirementNumber(){
-  //   const defaultThreshold = toDecimals(percentileThreshold(),3,1)
-  //   return level === 0 ? <ThresholdInput defaultThreshold={defaultThreshold} onChange={handleSetThreshold} /> : threshold === "1" ? 'some' : defaultThreshold
-  // }
-  let hintInput = null
-  if (showHint && hasToken){
-    const maxlength = 75
-    hintInput = (
-      <Form.Group controlId="hint" className='form-group-hint'>
-        <Form.Label>
-            Visible to everyone:
-        </Form.Label>
-        <Form.Control as="input" plaintext value={hint || ''} onChange={changeData} disabled={isDisabled ? 'disabled' : null} maxlength={maxlength} />
-        <Form.Label className='char-count'>
-            {(hint || '').length}/{maxlength}
-        </Form.Label>
-      </Form.Group>
-    )
+  function inputPlaceHolder(type = 'Post'){
+    return !hasToken ? 'Create your token to send messages' : type === 'Post' ? 'Decodable Text' : 'Decodable Url'
   }
 
-  function openHint(e){
-    e.preventDefault()
-    setShowHint(true)
+  const tabMap = {
+    Post: (type='Post') => <Form.Control as="textarea" rows="6" value={message || ''} onChange={changeData} disabled={isDisabled ? 'disabled' : null} placeholder={inputPlaceHolder(type)}/>,
+    Link: (type='Link') => <Form.Control as="input" value={message || ''} onChange={changeData} disabled={isDisabled ? 'disabled' : null} placeholder={inputPlaceHolder(type)}/>
   }
+
+  const [currentTab, setTab] = useState(Object.keys(tabMap)[0])
+
+  const tabs = Object.keys(tabMap).map( tabName => <Tab currentTab={currentTab} tabName={tabName} setTab={setTab} key={tabName} /> )
 
   return (
       <div className='message-form card'>
         <div className='card-body'>
+          {hasToken && <ul className='nav nav-tabs'>{tabs}</ul> }
           <Form>
+            <Form.Group controlId="hint" className='form-group-hint'>
+              <Form.Control as="input" value={hint || ''} onChange={changeData} disabled={isDisabled ? 'disabled' : null} maxlength={75} placeholder='Public hint'/>
+              <Form.Label className='small'>
+                  <i className='fas fa-eye' /> Everyone
+              </Form.Label>
+              {/*<Form.Label className='char-count'>
+                  {(hint || '').length}/{maxlength}
+              </Form.Label>*/}
+            </Form.Group>
             <Form.Group controlId="message">
-              <Form.Control as="textarea" rows="2" value={message || ''} onChange={changeData} disabled={isDisabled ? 'disabled' : null} placeholder={placeholder}/>
-              <Form.Text className="text-muted">
-                {!hintInput && hasToken && <a href='#' onClick={openHint}>Add a hint</a>}
-                {hintInput}
-              </Form.Text>
+              {currentTab ? tabMap[hasToken ? currentTab : 'Link']() : null}
+              <Form.Label className='small'>
+                <i className='fas fa-eye' /> {hasToken && hasFollowers && recipientCount === 0 ? 'Future' : !hasToken ? 0 : `${recipientCount}/${followerCount}`} holders
+              </Form.Label>
             </Form.Group>
 
             <div className='clearfix'>
               <div className='float-left'>
-                {/*<Dots current={level} onClick={handleSetLevel} isDisabled={isDisabled}/>*/}
-                <div className="text-muted small">{ hasToken && tokenRequirement }<i className='fas fa-eye' /> {recipientCount > 0 && recipientCount === followerCount && 'All'} {hasToken && hasFollowers && recipientCount === 0 ? 'Future' : recipientCount} holders</div>
+                <div className="small">{ hasToken && tokenRequirement }</div>
               </div>
               <div className='float-right'>
                 <Button variant="primary" disabled={isDisabled || isEmpty(message) ? 'disabled' : null}  onClick={handleSend}>
