@@ -56,16 +56,18 @@ function Row ({ rank, token, myToken, currentUsername }) {
   return (
 
 <div className={"row asset-row align-items-center"+selected}>
-  <div className="col-md-4">
-      <img className='profile-image' src={`https://res.cloudinary.com/dhvvhdndp/image/twitter_name/${token.name}.png`} onError={ e => e.target.src="https://res.cloudinary.com/dhvvhdndp/image/twitter_name/0x00000.png" } />
-      <Link style={{marginLeft: '1rem'}} className='token-name large' to={`/$${token.name}`}>{token.name}</Link>
+  <div className="col-md-5">
+      <img className='profile-image' src={`https://res.cloudinary.com/dhvvhdndp/image/twitter_name/${token.name}.png`}  onError={ e => e.target.src="https://res.cloudinary.com/dhvvhdndp/image/twitter_name/0x00000.png" } />
+      <Link style={{marginLeft: '1rem'}} className='token-name medium' to={`/$${token.name}`}>{token.name}</Link>
   </div>
-  <div className="col-md-4">
+  <div className="col-md-3">
       <Allocator token={token} />
   </div>
-  <div className="col-md-4">
+  <div className="col-md-2">
     <div style={{fontWeight: 'bold'}}><CountUp balance={toDecimals(token.balances.available,5)} /></div>
-      <span className='small text-muted'> { <span><CountUp balance={earning} decimals={6} /> per block</span> }</span>
+  </div>
+  <div className="col-md-2 small text-muted" style={{fontWeight: 'bold'}}>
+    <span className='locked' style={{marginRight: '1rem'}}>1 / 6 <i class="fas fa-unlock"></i></span>
   </div>
 </div>
   )
@@ -85,9 +87,10 @@ function All({tokens = {}, location, myToken}){
   return (
     <div className="asset-table">
       <div className="row heading-row text-muted">
-        <div className="col-md-4">User</div>
-        <div className="col-md-4">Staking</div>
-        <div className="col-md-4">Balance</div>
+        <div className="col-md-5">User</div>
+        <div className="col-md-3">Staking</div>
+        <div className="col-md-3">Balance</div>
+        <div className="col-md-2">Content</div>
       </div>
       {rows}
     </div>
