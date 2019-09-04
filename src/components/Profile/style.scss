@@ -3,15 +3,30 @@
 	.profile-header{
 		margin-top: -5rem;
 		font-weight: bold;
+		text-align: center;
+
+		.profile-image{
+			width: 10rem;
+			border-radius: 50%;
+			margin-bottom: 0.4rem;
+			box-shadow: 2px 2px 0px rgba(5px,0,0,0.1);
+
+		}
+
+		.token-stakes{
+			font-size: 1.1rem;
+			position: relative;
+			top: 0.1rem;
+		}
 
 		.token-name{
 			font-size: 2rem;
 		}
 
-		.profile-image{
-			width: 90%;
-			border-radius: 50%;
+		.token-url{
 		}
+
+
 	}
 
 	.profile-body{

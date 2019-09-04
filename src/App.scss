@@ -29,7 +29,6 @@ body{
   height: calc(100% - 58px);
   font-size: 1rem;
   font-family: 'Noto Serif JP', serif !important;
-  background-color: ghostwhite;
 }
 
 
@@ -51,20 +50,17 @@ body{
 }
 
 .followme{
-	background-color: ghostwhite;
 	padding-left: 0;
 
 	.card{
 		padding: 2rem;
-		margin-right: -2rem;
 		margin-top: 3rem;
-		border-radius: 2rem 0 0 0;
-		box-shadow: 0px 0px 6px rgba(5px,0,0,0.08);
+		border-radius: 2rem;
+    	box-shadow: 2px 2px 0px rgba(5px,0,0,0.05);
 	}
 }
 
 .discover{
-	background-color: ghostwhite;
 }
 
 .token-name{
