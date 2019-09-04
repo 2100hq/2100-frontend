@@ -4,8 +4,8 @@
 .asset-table{
 
   .profile-image{
-  	width: 3rem;
-  	height: 3rem;
+  	width: 2.5rem;
+  	height: 2.5rem;
   	border-radius: 50%;
   }
 
@@ -37,18 +37,17 @@
   }
   .asset-row{
   	background-color: #fff;
-    padding: 1rem 0;
+    padding: 0.8rem 0;
     margin: 0.5rem 0;
-    border: 1px solid white;
-    box-shadow: 0px 0px 3px rgba(0,0,0,0.1);
+    border: 2px solid white;
+    border-radius: 1rem;
 
     &:hover{
-    	border: 1px solid lighten($twentyoneprimary,50%);
+    box-shadow: 0px 0px 3px rgba(0,0,0,0.2);
     }
 
     &.selected{
-    	border: 1px solid $twentyoneprimary;
-
+    box-shadow: 0px 0px 3px rgba(0,0,0,0.3);
     }
   }
 }

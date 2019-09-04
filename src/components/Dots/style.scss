@@ -26,11 +26,12 @@ $dot9: lighten($twentyoneprimary,0);
 
 .dots span{
     cursor: pointer;
-    height: 1.5rem;
+    height: 1.3rem;
     width: 0.5rem;
     display: inline-block;
     margin-right: 0.25em;
     background-color: #ddd;
+    border-radius: 2px;
 
     &.disabled{
         @extend %disabled;
