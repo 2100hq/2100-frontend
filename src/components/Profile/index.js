@@ -98,7 +98,7 @@ export default function Profile ({match}) {
 
   return (
   <div className='profile'>
-    <div className='profile-header row align-items-center justify-content-center'>
+    <div className='profile-header row align-items-center'>
       <div className='col-md-4'>
           <img className='profile-image' src={`https://res.cloudinary.com/dhvvhdndp/image/twitter_name/${token.name}.png`} />
       </div>

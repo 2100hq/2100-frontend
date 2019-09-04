@@ -13,7 +13,6 @@ function Main({location}){
   const {username, messageid} = extractUsernameAndMessageIdFromLocation(location)
   return (
     <div className='container-fluid'>
-      <Header />
       <Row className='main'>
         <Col md="6" className='discover'>
           <Row>

@@ -29,15 +29,25 @@ body{
   height: calc(100% - 58px);
   font-size: 1rem;
   font-family: 'Noto Serif JP', serif !important;
+  background-color: ghostwhite;
 }
 
 
 .container-fluid{
   height: 100%;
+  padding-top: $navbarHeight;
 }
 
 .main.row{
 	border-top: 1px solid #eee;
+}
+
+.followme{
+	height: 120vh;
+	overflow-y: scroll;
+	::-webkit-scrollbar { 
+    display: none; 
+	}
 }
 
 .followme{
@@ -46,10 +56,10 @@ body{
 
 	.card{
 		padding: 2rem;
-		border-radius: 2rem;
-		margin-top: 4rem;
+		margin-right: -2rem;
+		margin-top: 3rem;
+		border-radius: 2rem 0 0 0;
 		box-shadow: 0px 0px 6px rgba(5px,0,0,0.08);
-
 	}
 }
 
