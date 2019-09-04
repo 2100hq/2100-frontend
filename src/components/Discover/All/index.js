@@ -66,7 +66,7 @@ function Row ({ rank, token, myToken, currentUsername }) {
         <span style={{marginLeft: '1rem'}} className='token-name medium' to={`/$${token.name}`}>{token.name}</span>
       </Link>
   </div>
-  <div className="col-auto">
+  <div className="col-md-2">
     <span style={{position: 'relative', fontWeight: 'bold'}}>
       { stakeArrowDirection && <i className={`fas fa-arrow-${stakeArrowDirection} stake-arrow`}></i> }
       <img src='../img/dai.png' style={{ width: '14px','vertical-align': 'baseline' }} /> <CountUp balance={toDecimals(token.totalStakes)} decimals={2} />
@@ -99,7 +99,7 @@ function All({tokens = {}, location, myToken}){
       <div className="row heading-row text-muted">
         <div className="col-md-1">Rank</div>
         <div className="col-md-4">User</div>
-        <div className="col-auto">Staking</div>
+        <div className="col-md-2">Staking</div>
         <div className="col-md-3">My Stake</div>
         <div className="col-md-2">Balance</div>
       </div>

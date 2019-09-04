@@ -38,15 +38,12 @@
   .asset-row{
   	background-color: #fff;
     padding: 0.8rem 0;
-    margin: 0.5rem 0;
-    border: 1px solid white;
-    border-radius: 0.5rem;
-
+    border-bottom: 1px solid #eee;
     &:hover{
     }
 
     &.selected{
-      border: 1px solid #ddd;
+    box-shadow: 2px 2px 0px rgba(5px,0,0,0.05);
     }
   }
 }
