@@ -51,7 +51,7 @@ body{
 	}
 }
 
-.twentyonehundred{
+.discover{
 	background-color: ghostwhite;
 }
 
@@ -90,4 +90,17 @@ table.table-borderless tr{
 
 .fa-coins{
 	color: #F6B14A;
+}
+
+
+.screen-size-xs.page-name-main{
+  .followme {
+    display: none;
+  }
+}
+
+.screen-size-xs.page-name-profile{
+  .discover {
+    display: none;
+  }
 }
