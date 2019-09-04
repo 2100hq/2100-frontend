@@ -2,6 +2,7 @@ import React, { useState,useEffect, useRef } from 'react'
 import { useStoreContext } from '../../../contexts/Store'
 import { toDecimals, BigNumber, weiDecimals, extractUsernameAndMessageIdFromLocation } from '../../../utils'
 import Allocator from '../../Allocator'
+import ProfileImage from '../../ProfileImage'
 import { useCountUp } from 'react-countup'
 import { sortBy } from 'lodash'
 import { Link } from 'react-router-dom'
@@ -61,7 +62,7 @@ function Row ({ rank, token, myToken, currentUsername }) {
   </div>
   <div className="col-md-4">
       <Link to={`/$${token.name}`}>
-        <img className='profile-image' src={`https://res.cloudinary.com/dhvvhdndp/image/twitter_name/${token.name}.png`}  onError={ e => e.target.src="https://res.cloudinary.com/dhvvhdndp/image/twitter_name/0x00000.png" } />
+        <ProfileImage token={token} />
         <span style={{marginLeft: '1rem'}} className='token-name medium' to={`/$${token.name}`}>{token.name}</span>
       </Link>
   </div>
