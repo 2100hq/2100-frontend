@@ -21,21 +21,25 @@ function Main({location}){
           </Row>
         </Col>
         <Col md="6" className='followme'>
-          <Row>
-            <Col md="12">
-              {/* follow me */}
-              <Route exact path='/' component={FollowMePublicFeed} />
-              <Route exact path='/:username([$].*)' render = {
-                props => {
-                  let {match} = props
-                  const {username, messageid} = extractMessageIdFromUsernameRoute(match)
-                  match = {...match, params: {...match.params, username, messageid }}
-                  props = {...props, match}
-                  return <Profile {...props} />
-                }
-              } />
-            </Col>
-          </Row>
+          <Card>
+          <Card.Body>
+            <Row>
+              <Col md="12">
+                {/* follow me */}
+                <Route exact path='/' component={FollowMePublicFeed} />
+                <Route exact path='/:username([$].*)' render = {
+                  props => {
+                    let {match} = props
+                    const {username, messageid} = extractMessageIdFromUsernameRoute(match)
+                    match = {...match, params: {...match.params, username, messageid }}
+                    props = {...props, match}
+                    return <Profile {...props} />
+                  }
+                } />
+              </Col>
+            </Row>
+            </Card.Body>
+          </Card>
         </Col>
       </Row>
     </div>
