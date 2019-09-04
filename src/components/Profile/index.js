@@ -102,7 +102,7 @@ export default function Profile ({match}) {
       <div className='col-md-4'>
           <img className='profile-image' src={`https://res.cloudinary.com/dhvvhdndp/image/twitter_name/${token.name}.png`} />
       </div>
-      <div className='col-md-4'>
+      <div className='col-md-auto'>
           <div className='token-name'>
             {token.name}
           </div>
