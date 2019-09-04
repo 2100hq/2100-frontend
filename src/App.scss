@@ -51,12 +51,16 @@ body{
 
 .followme{
 		padding-left: 0;
-		padding: 2rem;
-		border-radius: 2rem;
+		padding: 3rem;
     	box-shadow: 2px 2px 0px rgba(5px,0,0,0.05);
 }
 
 .discover{
+}
+
+.feed{
+	min-height: 100%;
+	background-color: #aaa;
 }
 
 .token-name{

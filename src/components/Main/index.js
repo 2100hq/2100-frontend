@@ -21,7 +21,7 @@ function Main({location}){
             </Col>
           </Row>
         </Col>
-        <Col md="6" className='followme'>
+        <Col md="5" className='followme'>
             <Row>
               <Col md="12">
                 {/* follow me */}
@@ -38,6 +38,7 @@ function Main({location}){
               </Col>
             </Row>
         </Col>
+        <Col md='1' className='feed'></Col>
       </Row>
     </div>
   )
