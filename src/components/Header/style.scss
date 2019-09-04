@@ -1,0 +1,12 @@
+@import "../../Variables"; 
+
+.marketing-header{
+	padding-top: $navbarHeight;
+}
+
+.user-header{
+	padding-top: $navbarHeight;
+	height: 9rem;
+	background: url(../../img/background29.png) center center;
+	background-size: 100%;
+}
