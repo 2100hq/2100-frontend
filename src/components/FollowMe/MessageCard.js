@@ -7,6 +7,7 @@ import ms from 'ms'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import * as linkify from 'linkifyjs';
 import Linkify from 'linkifyjs/react';
+import ProfileImage from '../ProfileImage'
 
 function InvisibleSubtext({name, token, message, isSignedIn, state, actions}){
   const [decoding, setDecoding] = useState(false)
@@ -112,8 +113,9 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
     <div className={`message ${destroyCountDown != null && 'message-destroy-countdown'}`} key={message.id}>
         {destroyIcon}
         <div className='message-header text-muted'>
-          <div className='token-name large'><Link to={`/$${token.name}`}>{token.name}</Link><span className='message-time text-muted'><Link to={messageUrl}>{ago(message.created)}</Link></span>
-          </div>        
+          <ProfileImage token={token} /><div className='token-name large'>
+            <Link to={`/$${token.name}`}>{token.name}</Link><span className='message-time text-muted'><Link to={messageUrl}>{ago(message.created)}</Link></span>
+          </div>
         </div>
         <div className='message-body'>
           <p>{text}</p>

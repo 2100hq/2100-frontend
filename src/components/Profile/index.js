@@ -3,6 +3,7 @@ import FollowMeProfileFeed from '../FollowMe/ProfileFeed'
 import FollowMeSingleMessage from '../FollowMe/SingleMessage'
 import { Route } from "react-router-dom";
 import Allocator from '../Allocator'
+import ProfileImage from '../ProfileImage'
 import { toDecimals } from '../../utils'
 import { Redirect }  from 'react-router-dom'
 import { useStoreContext } from '../../contexts/Store'
@@ -100,7 +101,7 @@ export default function Profile ({match}) {
   <div className='profile'>
     <div className='profile-header row align-items-center'>
       <div className='col-md-4'>
-          <img className='profile-image' src={`https://res.cloudinary.com/dhvvhdndp/image/twitter_name/${token.name}.png`} />
+          <ProfileImage token={token}/>
       </div>
       <div className='col-md-auto'>
           <div className='token-name'>
