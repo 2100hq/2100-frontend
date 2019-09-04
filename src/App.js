@@ -13,7 +13,7 @@ import Alerts from './components/Alerts'
 import ErrorModal from './components/ErrorModal'
 import Manage from './components/Manage'
 import Admin from './components/Admin'
-
+import BrowserClasses from './components/BrowserClasses'
 // import API from './api'
 import { findStake } from './utils'
 
@@ -23,16 +23,18 @@ class App extends Component {
   render () {
     return (
       <Router>
-        <Route path='' component={Nav} />
-        <Switch>
-          <Route path='/portfolio' exact component={Portfolio} />
-          <Route path='/wallet' exact component={Wallet} />
-          <Route path='/manage' exact component={Manage} />
-          <Route path='/admin' exact component={Admin} />
-          <Route component={Main} />
-        </Switch>
-        <Alerts />
-        <ErrorModal />
+        <BrowserClasses>
+          <Route path='' component={Nav} />
+          <Switch>
+            <Route path='/portfolio' exact component={Portfolio} />
+            <Route path='/wallet' exact component={Wallet} />
+            <Route path='/manage' exact component={Manage} />
+            <Route path='/admin' exact component={Admin} />
+            <Route component={Main} />
+          </Switch>
+          <Alerts />
+          <ErrorModal />
+        </BrowserClasses>
       </Router>
     )
     // return (
