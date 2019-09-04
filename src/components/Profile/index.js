@@ -99,7 +99,7 @@ export default function Profile ({match}) {
 
   return (
   <div className='profile'>
-    <div className='profile-header row align-items-center'>
+    <div className='profile-header row align-items-center justify-content-center'>
       <div className='col-md-4'>
           <ProfileImage token={token}/>
       </div>
