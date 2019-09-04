@@ -19,6 +19,10 @@ const routeConfigs = {
     exact: true,
     path: '/manage'
   },
+  'admin': {
+    exact: true,
+    path: '/admin'
+  },
   'main': {
     exact: true,
     path: '/'
