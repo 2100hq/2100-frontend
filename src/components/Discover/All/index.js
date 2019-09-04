@@ -57,8 +57,10 @@ function Row ({ rank, token, myToken, currentUsername }) {
 
 <div className={"row asset-row align-items-center"+selected}>
   <div className="col-md-5">
-      <img className='profile-image' src={`https://res.cloudinary.com/dhvvhdndp/image/twitter_name/${token.name}.png`}  onError={ e => e.target.src="https://res.cloudinary.com/dhvvhdndp/image/twitter_name/0x00000.png" } />
-      <Link style={{marginLeft: '1rem'}} className='token-name medium' to={`/$${token.name}`}>{token.name}</Link>
+      <Link to={`/$${token.name}`}>
+        <img className='profile-image' src={`https://res.cloudinary.com/dhvvhdndp/image/twitter_name/${token.name}.png`}  onError={ e => e.target.src="https://res.cloudinary.com/dhvvhdndp/image/twitter_name/0x00000.png" } />
+        <span style={{marginLeft: '1rem'}} className='token-name medium' to={`/$${token.name}`}>{token.name}</span>
+      </Link>
   </div>
   <div className="col-md-3">
       <Allocator token={token} />
