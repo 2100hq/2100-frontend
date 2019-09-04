@@ -13,7 +13,7 @@ function Main({location}){
   return (
     <div className='container-fluid'>
       <Row className='main'>
-        <Col md="6" className='twentyonehundred'>
+        <Col md="6" className='discover'>
           <Row>
             <Col md="12">
               <Discover />
