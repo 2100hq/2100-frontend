@@ -12,11 +12,13 @@
 	background: url(../../img/background29.png) center center;
 	background-size: cover;
 
-	background-color: ghostwhite;
+	background-color: white;
 
 	.token-name-area{
 		color: black;
 		padding: 3rem 0.5rem;
+  		text-align: center;
+  		background: rgba(255,255,255,0.7);
 
 		.mytokenname{
 			font-weight: bold;

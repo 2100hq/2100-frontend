@@ -92,7 +92,6 @@ export default function Nav (props) {
       </nav>
       <div>
         <div className="token-name-area">
-          <MiniProfile />
         </div>
       </div>
     </div>
