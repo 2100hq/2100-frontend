@@ -2,76 +2,62 @@
 @import "../../Variables";
 
 
-  .message{
+.message{
+  padding: 3rem 0;
+  margin: 0 2rem;
+  color: black;
+  font-size: 1.1rem;
+  border-bottom: 1px dotted #ccc;
+
+  .token-name{
     color: black;
-    font-size: 1.1rem;
-    padding: 0.5rem;
-    margin: 1rem 0;
-    border-radius: 0rem;
+    font-weight: bold;
+    margin-bottom: 1.5rem;
+  }
 
-    .card-body{
+  .message-time{
+    font-size: 0.7rem;
+  }
+
+  .message-delete{
+    display: none;
+    float: right;
+    margin-right: 1em;
+    opacity: 0.75;
+    &:hover{
+      text-decoration: none;
     }
+  }
 
-    .token-name{
-      color: black;
-      font-weight: bold;
-    }
-
-    .message-time{
-      font-size: 0.7rem;
+  &.message-destroy-countdown, &:hover {
+    .destroying {
+      color: red;
     }
     .message-delete{
-      display: none;
-      float: right;
-      margin-right: 1em;
+      display: block;
+    }
+  }
+
+  &:hover {
+    .message-copy-url{
       opacity: 0.75;
-      &:hover{
-        text-decoration: none;
-      }
+      display: inline-block;
     }
-    &.message-destroy-countdown, &:hover {
-      .destroying {
-        color: red;
-      }
-      .message-delete{
-        display: block;
-      }
-    }
-    &:hover {
-      .message-copy-url{
-        opacity: 0.75;
-        display: inline-block;
-      }
-    }
-  }
-
-  .hidden-char{
-
-    font-family: "Redacted";
-    color: #eee;
-
-  }
-
-  .form-group-hint {
-
-  }
-
-  .message-body{
-   margin: 0.7rem 0;
-
-   & p{
-    margin-bottom: 0;
   }
 }
+
+.hidden-char{
+
+  font-family: "Redacted";
+  color: #eee;
+
+}
+
 
 .message-time{
 	margin-left: 0.4rem;
 }
 
-
-.threshold-input {
-
-}
 
 .message-copy-url{
   cursor: pointer;
