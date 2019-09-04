@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route } from 'react-router-dom'
 import {Row, Col, Card} from 'react-bootstrap'
 import FollowMePublicFeed from '../FollowMe/PublicFeed'
 import Discover from '../Discover'
+import Header from '../Header'
 import Onboarding from '../Onboarding'
 import Profile from '../Profile'
 import { withRouter, matchPath } from "react-router";
@@ -12,6 +13,7 @@ function Main({location}){
   const {username, messageid} = extractUsernameAndMessageIdFromLocation(location)
   return (
     <div className='container-fluid'>
+      <Header />
       <Row className='main'>
         <Col md="6" className='discover'>
           <Row>

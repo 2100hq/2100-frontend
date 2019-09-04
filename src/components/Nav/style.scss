@@ -1,5 +1,8 @@
 .navbar{
 	font-size: 1.2rem;
+	background: none !important;
+	position: absolute !important;
+	width: 100%;
 }
 
 .navbar-brand {
@@ -13,21 +16,5 @@
 	background-size: cover;
 
 	background-color: white;
-
-	.token-name-area{
-		color: black;
-		padding: 3rem 0.5rem;
-  		text-align: center;
-  		background: rgba(255,255,255,0.7);
-
-		.mytokenname{
-			font-weight: bold;
-			font-size: 2.2rem;
-		}
-
-		.mytokenstake{
-			font-size: 1.3rem;
-		}
-	}
 
 }
