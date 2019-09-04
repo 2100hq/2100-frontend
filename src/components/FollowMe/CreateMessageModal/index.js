@@ -4,19 +4,19 @@ import VertiallyCenteredModal from '../../VerticallyCenteredModal'
 import { useFollowMeContext } from '../../../contexts/FollowMe'
 import { Modal, Button } from 'react-bootstrap'
 
-function Hesitate({onCancel, onDisgard}){
+function Hesitate({onCancel, onDiscard}){
   return (
     <>
     <Modal.Header>
       <Modal.Title>
-        Disgard?
+        Done?
       </Modal.Title>
     </Modal.Header>
     <Modal.Body>
-      This can't be undone and you'll lose your message
+      Discarding your message can't be undone. You'll lose your message
     </Modal.Body>
     <Modal.Footer>
-      <Button onClick={onCancel} variant="secondary">Cancel</Button><Button onClick={onDisgard} variant="danger">Disgard</Button>
+      <Button onClick={onCancel} variant="secondary">Cancel</Button><Button onClick={onDiscard} variant="danger">Discard</Button>
     </Modal.Footer>
     </>
   )
@@ -46,7 +46,7 @@ export default function CreateMessageModal ({show,onHide}) {
         <Modal.Header closeButton />
       )}
       <div style={{display: showHesitate ? 'none' : 'block'}}><MessageForm onSubmitted={onHide}/></div>
-      {showHesitate && <Hesitate onCancel={()=>setShowHesitate(false)} onDisgard={()=>setClose(true)} /> }
+      {showHesitate && <Hesitate onCancel={()=>setShowHesitate(false)} onDiscard={()=>setClose(true)} /> }
     </Modal>
   )
 }
