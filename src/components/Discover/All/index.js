@@ -56,11 +56,20 @@ function Row ({ rank, token, myToken, currentUsername }) {
   return (
 
 <div className={"row asset-row align-items-center"+selected}>
-  <div className="col-md-5">
+  <div className='col-md-1'>
+    {rank}
+  </div>
+  <div className="col-md-4">
       <Link to={`/$${token.name}`}>
         <img className='profile-image' src={`https://res.cloudinary.com/dhvvhdndp/image/twitter_name/${token.name}.png`}  onError={ e => e.target.src="https://res.cloudinary.com/dhvvhdndp/image/twitter_name/0x00000.png" } />
         <span style={{marginLeft: '1rem'}} className='token-name medium' to={`/$${token.name}`}>{token.name}</span>
       </Link>
+  </div>
+  <div className="col-auto">
+    <span style={{position: 'relative', fontWeight: 'bold'}}>
+      { stakeArrowDirection && <i className={`fas fa-arrow-${stakeArrowDirection} stake-arrow`}></i> }
+      <img src='../img/dai.png' style={{ width: '14px','vertical-align': 'baseline' }} /> <CountUp balance={toDecimals(token.totalStakes)} decimals={2} />
+    </span>
   </div>
   <div className="col-md-3">
       <Allocator token={token} />
@@ -68,9 +77,7 @@ function Row ({ rank, token, myToken, currentUsername }) {
   <div className="col-md-2">
     <div style={{fontWeight: 'bold'}}><CountUp balance={toDecimals(token.balances.available,5)} /></div>
   </div>
-  <div className="col-md-2 small text-muted" style={{fontWeight: 'bold'}}>
-    <span className='locked' style={{marginRight: '1rem'}}>1 / 6 <i class="fas fa-unlock"></i></span>
-  </div>
+
 </div>
   )
 }
@@ -89,10 +96,11 @@ function All({tokens = {}, location, myToken}){
   return (
     <div className="asset-table">
       <div className="row heading-row text-muted">
-        <div className="col-md-5">User</div>
-        <div className="col-md-3">Staking</div>
-        <div className="col-md-3">Balance</div>
-        <div className="col-md-2">Content</div>
+        <div className="col-md-1">Rank</div>
+        <div className="col-md-4">User</div>
+        <div className="col-auto">Staking</div>
+        <div className="col-md-3">My Stake</div>
+        <div className="col-md-2">Balance</div>
       </div>
       {rows}
     </div>
