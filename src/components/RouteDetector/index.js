@@ -27,14 +27,21 @@ const routeConfigs = {
 
 function RouteDetector({children, location = {pathname: '/'}, setPageName, setParams}){
 
- const [page, params] = Object.entries(routeConfigs).map(([page, routeConfig])=>{
+ const result = Object.entries(routeConfigs).map(([page, routeConfig])=>{
    const match = matchPath(location.pathname, routeConfig)
    if (!match) return [null]
    return [page, match.params]
-   }).find( ([page, params]) => page)
+   }).find( ([page]) => page)
 
- page && setPageName && setPageName(page)
- params && setParams && setParams(params)
+ if (result){
+   const [page, params] = result
+   page && setPageName && setPageName(page)
+   params && setParams && setParams(params)
+ } else {
+   setParams(null)
+   setPageName('unknown')
+ }
+
  return children
 }
 
