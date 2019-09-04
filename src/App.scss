@@ -93,14 +93,15 @@ table.table-borderless tr{
 }
 
 
-.screen-size-xs.page-name-main{
-  .followme {
-    display: none;
+.screen-size-xs{
+  &.page-name-main{
+    .followme {
+      display: none;
+    }
   }
-}
-
-.screen-size-xs.page-name-profile{
-  .discover {
-    display: none;
+  &.page-name-profile{
+    .discover {
+      display: none;
+    }
   }
 }
