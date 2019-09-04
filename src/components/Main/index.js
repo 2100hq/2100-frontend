@@ -22,8 +22,6 @@ function Main({location}){
           </Row>
         </Col>
         <Col md="6" className='followme'>
-          <Card>
-          <Card.Body>
             <Row>
               <Col md="12">
                 {/* follow me */}
@@ -39,8 +37,6 @@ function Main({location}){
                 } />
               </Col>
             </Row>
-            </Card.Body>
-          </Card>
         </Col>
       </Row>
     </div>

@@ -31,7 +31,7 @@ $dot9: lighten($twentyoneprimary,0);
     display: inline-block;
     margin-right: 0.25em;
     background-color: #ddd;
-    border-radius: 2px;
+    border-radius: 1px;
 
     &.disabled{
         @extend %disabled;
