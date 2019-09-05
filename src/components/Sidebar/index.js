@@ -7,7 +7,7 @@ export default function Sidebar (props) {
   return (
   	<div>
   		<div className='public-header'>
-  			
+
   		</div>
 	  	<div className='public-sub-header row'>
 			<ul className="nav nav-pills">
