@@ -6,7 +6,29 @@ import { TwitterTweetEmbed } from 'react-twitter-embed';
 import './style.scss'
 const nodeURL = require('url');
 
-function HiddenMessage({message, limit = 1}){
+function HiddenMessageImage(){
+  return(
+    <div className='hidden-message-block hidden-message-image'>
+      <i class="far fa-image"></i>
+    </div>
+  )
+}
+function HiddenMessageYoutube(){
+  return(
+    <div className='hidden-message-block hidden-message-youtube'>
+      <i class="fab fa-youtube"></i>
+    </div>
+  )
+}
+function HiddenMessageTwitter(){
+  return(
+    <div className='hidden-message-block hidden-message-twitter'>
+      <i class="fab fa-twitter-square"></i>
+    </div>
+  )
+}
+
+function HiddenMessageDefault({message, limit = 1}){
   let chars = []
 
   for (var index = 0; index < message.length; index++){
@@ -15,6 +37,19 @@ function HiddenMessage({message, limit = 1}){
   }
 
   return chars
+}
+
+function HiddenMessage({message}){
+  switch(message.type) {
+    case 'image':
+      return <HiddenMessageImage />
+    case 'youtube':
+      return <HiddenMessageYoutube />
+    case 'twitter':
+      return <HiddenMessageTwitter />
+    default:
+      return <HiddenMessageDefault message={message} />
+  }
 }
 
 function VisibleMessageImage({message}){
