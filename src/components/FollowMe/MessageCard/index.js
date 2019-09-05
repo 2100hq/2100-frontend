@@ -7,10 +7,11 @@ import ms from 'ms'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import ProfileImage from '../../ProfileImage'
 import MessageBody from '../MessageBody'
+import Decoded from '../Decoded'
 function InvisibleSubtext({name, token, message, isSignedIn, state, actions}){
   const [decoding, setDecoding] = useState(false)
 
-  if (!isSignedIn) return <span>holders of {toDecimals(message.threshold,3,0)} <span className='token-name'>{name}</span></span>
+  if (!isSignedIn) return <span>visible to holders of {toDecimals(message.threshold,3,0)} <span className='token-name'>{name}</span></span>
 
   const available = get(token, 'balances.available', "0")
   const diff = BigNumber(message.threshold).minus(available)
@@ -109,6 +110,7 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
         </div>
         <MessageBody message={message} />
         <div className='message-footer small'>
+          <Decoded />
           <i className='fas fa-eye' />  {subtext}
           <CopyToClipboard text={window.location.origin + messageUrl}
             onCopy={() => setCopied(true)}>
