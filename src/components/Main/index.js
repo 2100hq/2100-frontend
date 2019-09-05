@@ -2,6 +2,7 @@ import React from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import {Row, Col, Card} from 'react-bootstrap'
 import FollowMePublicFeed from '../FollowMe/PublicFeed'
+import CreateMessageButton from '../FollowMe/CreateMessageButton'
 import Discover from '../Discover'
 import Header from '../Header'
 import Onboarding from '../Onboarding'
@@ -13,6 +14,7 @@ import { extractUsernameAndMessageIdFromLocation,extractMessageIdFromUsernameRou
 function Main({location}){
   const {username, messageid} = extractUsernameAndMessageIdFromLocation(location)
   return (
+
     <div className='container-fluid'>
       <Row className='main'>
         <Col md="6" className='discover'>
@@ -23,6 +25,9 @@ function Main({location}){
           </Row>
         </Col>
         <Col md="5" className='followme'>
+            <div className='create-messages-button-fixed'>
+              <CreateMessageButton />
+            </div>
             <Row>
               <Col md="12">
                 {/* follow me */}

@@ -10,7 +10,6 @@ export default function PublicFeed(){
 
   return (
     <>
-      <CreateMessageButton />
       <FollowMe messages={messages} showForm={false} className='public-feed'/>
     </>
   )

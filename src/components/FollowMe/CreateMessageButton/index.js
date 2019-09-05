@@ -10,7 +10,7 @@ export default function CreateMessageButton(props){
   return (
     <>
     <CreateMessageModal show={show} onHide={()=>setShow(false)} />
-    <Button {...props}  variant="dark" onClick={()=>setShow(true)}><i class="fas fa-pen"></i></Button>
+    <div className='compose-button' {...props} onClick={()=>setShow(true)}><i class="fas fa-pen"></i></div>
     </>
   )
 }
