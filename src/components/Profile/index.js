@@ -4,6 +4,7 @@ import FollowMeSingleMessage from '../FollowMe/SingleMessage'
 import { Route } from "react-router-dom";
 import Allocator from '../Allocator'
 import ProfileImage from '../ProfileImage'
+import { Link } from 'react-router-dom'
 import { toDecimals } from '../../utils'
 import { Redirect }  from 'react-router-dom'
 import { useStoreContext } from '../../contexts/Store'
@@ -99,6 +100,7 @@ export default function Profile ({match}) {
 
   return (
   <div className='profile'>
+    <Link className='close-link' to='/'><i class="fas fa-times-circle"></i></Link>
     <div className='profile-header row align-items-center justify-content-center'>
       <div className='col-auto'>
           <ProfileImage token={token}/>
