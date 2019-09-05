@@ -1,5 +1,12 @@
 .message-body{
+	padding: 1rem 0;
+
+	.hint{
+		font-weight: bold;
+		margin-top: 1rem;
+	}
 	img, iframe{
 		max-width: 100%;
+		border-radius: 1.5rem;
 	}
 }

@@ -100,12 +100,12 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
         {destroyIcon}
         <div className='message-header text-muted'>
           <ProfileImage token={token} />
-          <div className='token-name large'>
+          <span className='token-name large'>
             <Link to={`/$${token.name}`}>{token.name}</Link>
             <span className='message-time text-muted'>
               <Link to={messageUrl}>{ago(message.created)}</Link>
             </span>
-          </div>
+          </span>
         </div>
         <MessageBody message={message} />
         <div className='message-footer small'>

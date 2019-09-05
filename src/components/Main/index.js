@@ -17,14 +17,14 @@ function Main({location}){
 
     <div className='container-fluid'>
       <Row className='main'>
-        <Col md="6" className='discover'>
+        <Col className='discover'>
           <Row>
             <Col md="12">
               <Discover />
             </Col>
           </Row>
         </Col>
-        <Col md="5" className='followme'>
+        <Col className='followme'>
             <div className='create-messages-button-fixed'>
               <CreateMessageButton />
             </div>

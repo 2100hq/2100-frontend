@@ -62,8 +62,8 @@ export default function MessagageBody({message}){
   return (
     <div className='message-body'>
       {message.hint && hintLocation === 'top' && <h5>{message.hint}</h5>}
-      <div className='message'>{text}</div>
-      {message.hint && hintLocation === 'bottom' && <p className='small'>hint: {message.hint}</p>}
+      <div className='message-target'>{text}</div>
+      {message.hint && hintLocation === 'bottom' && <div className='hint small'>hint: {message.hint}</div>}
     </div>
   )
 }

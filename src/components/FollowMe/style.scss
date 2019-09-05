@@ -1,9 +1,12 @@
 //import variables
 @import "../../Variables";
 
+.profile-feed,.public-feed{
+  padding: 2rem;
+} 
 
 .message{
-  padding: 3rem 0;
+  padding: 2rem 0;
   color: black;
   font-size: 1.1rem;
   border-bottom: 1px dotted #ccc;
@@ -12,6 +15,7 @@
     color: black;
     font-weight: bold;
     margin-bottom: 1.5rem;
+    margin-left: 0.5rem;
   }
 
   .message-time{
