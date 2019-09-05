@@ -3,9 +3,32 @@ import * as linkify from 'linkifyjs';
 import Linkify from 'linkifyjs/react';
 import YouTube from 'react-youtube';
 import { TwitterTweetEmbed } from 'react-twitter-embed';
+import './style.scss'
 const nodeURL = require('url');
 
-function HiddenMessage({message, limit = 1}){
+function HiddenMessageImage(){
+  return(
+    <div className='hidden-message-block hidden-message-image'>
+      <i class="far fa-image"></i>
+    </div>
+  )
+}
+function HiddenMessageYoutube(){
+  return(
+    <div className='hidden-message-block hidden-message-youtube'>
+      <i class="fab fa-youtube"></i>
+    </div>
+  )
+}
+function HiddenMessageTwitter(){
+  return(
+    <div className='hidden-message-block hidden-message-twitter'>
+      <i class="fab fa-twitter-square"></i>
+    </div>
+  )
+}
+
+function HiddenMessageDefault({message, limit = 1}){
   let chars = []
 
   for (var index = 0; index < message.length; index++){
@@ -14,6 +37,19 @@ function HiddenMessage({message, limit = 1}){
   }
 
   return chars
+}
+
+function HiddenMessage({message}){
+  switch(message.type) {
+    case 'image':
+      return <HiddenMessageImage />
+    case 'youtube':
+      return <HiddenMessageYoutube />
+    case 'twitter':
+      return <HiddenMessageTwitter />
+    default:
+      return <HiddenMessageDefault message={message} />
+  }
 }
 
 function VisibleMessageImage({message}){
@@ -61,8 +97,8 @@ export default function MessagageBody({message}){
   return (
     <div className='message-body'>
       {message.hint && hintLocation === 'top' && <h5>{message.hint}</h5>}
-      <p>{text}</p>
-      {message.hint && hintLocation === 'bottom' && <p className='small'>hint: {message.hint}</p>}
+      <div className='message-target'>{text}</div>
+      {message.hint && hintLocation === 'bottom' && <div className='hint small'>hint: {message.hint}</div>}
     </div>
   )
 }

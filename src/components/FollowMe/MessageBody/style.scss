@@ -1,0 +1,36 @@
+.message-body{
+	padding: 1rem 0;
+
+	.hint{
+		font-weight: bold;
+		margin-top: 1rem;
+	}
+
+	img, iframe{
+		max-width: 100%;
+		border-radius: 1.5rem;
+	}
+
+	.hidden-message-block{
+		display: flex;
+		align-items: center;
+  		justify-content: center;
+		width: 50%;
+		height: 10rem;
+		background-color: #eee;
+		color: white;
+		font-size: 5rem;
+
+		&.hidden-message-image{
+
+		}
+
+		&.hidden-message-youtube{
+
+		}
+
+		&.hidden-message-twitter{
+
+		}
+	}
+}
