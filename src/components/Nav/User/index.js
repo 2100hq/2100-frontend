@@ -17,7 +17,7 @@ function Balances ({ state }) {
 }
 
 function AddressIcon ({ username, useraddress }) {
-  const displayName = username || useraddress.slice(0, 7)
+  const displayName = username || (useraddress||'').slice(0, 7)
   const icon = (
     <span className='in'>
       <Jazzicon diameter={15} seed={jsNumberForAddress(useraddress)} />
