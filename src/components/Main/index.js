@@ -1,7 +1,7 @@
 import React from 'react'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 import {Row, Col, Card} from 'react-bootstrap'
-import FollowMePublicFeed from '../FollowMe/PublicFeed'
+import Sidebar from '../Sidebar'
 import CreateMessageButton from '../FollowMe/CreateMessageButton'
 import Discover from '../Discover'
 import Header from '../Header'
@@ -31,7 +31,7 @@ function Main({location}){
             <Row>
               <Col md="12">
                 {/* follow me */}
-                <Route exact path='/' component={FollowMePublicFeed} />
+                <Route exact path='/' component={Sidebar} />
                 <Route exact path='/:username([$].*)' render = {
                   props => {
                     let {match} = props
