@@ -3,6 +3,7 @@ import * as linkify from 'linkifyjs';
 import Linkify from 'linkifyjs/react';
 import YouTube from 'react-youtube';
 import { TwitterTweetEmbed } from 'react-twitter-embed';
+import './style.scss'
 const nodeURL = require('url');
 
 function HiddenMessage({message, limit = 1}){
@@ -61,7 +62,7 @@ export default function MessagageBody({message}){
   return (
     <div className='message-body'>
       {message.hint && hintLocation === 'top' && <h5>{message.hint}</h5>}
-      <p>{text}</p>
+      <div className='message'>{text}</div>
       {message.hint && hintLocation === 'bottom' && <p className='small'>hint: {message.hint}</p>}
     </div>
   )
