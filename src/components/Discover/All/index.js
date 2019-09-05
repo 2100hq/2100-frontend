@@ -97,7 +97,7 @@ function All({tokens = {}, location, myToken}){
   return (
     <div className="asset-table">
       <div className="row heading-row text-muted">
-        <div className="col-md-1">Rank</div>
+        <div className="col-md-1">#</div>
         <div className="col-md-4">User</div>
         <div className="col-md-2" style={{position: 'relative', left: '-1rem'}}><img src='../img/dai.png' style={{ width: '14px','vertical-align': 'baseline' }} /> Staking</div>
         <div className="col-md-3">My Stake</div>

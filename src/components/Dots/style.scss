@@ -1,15 +1,15 @@
 @import 'src/Variables.scss';
 
-$dot0: lighten($twentyoneprimary,40);
-$dot1: lighten($twentyoneprimary,30);
-$dot2: lighten($twentyoneprimary,20);
-$dot3: lighten($twentyoneprimary,10);
-$dot4: lighten($twentyoneprimary,0);
-$dot5: lighten($twentyoneprimary,0);
-$dot6: lighten($twentyoneprimary,0);
-$dot7: lighten($twentyoneprimary,0);
-$dot8: lighten($twentyoneprimary,0);
-$dot9: lighten($twentyoneprimary,0);
+$dot0: lighten($twentyoneprimary,20%);
+$dot1: lighten($twentyoneprimary,20%);
+$dot2: lighten($twentyoneprimary,20%);
+$dot3: lighten($twentyoneprimary,20%);
+$dot4: lighten($twentyoneprimary,20%);
+$dot5: lighten($twentyoneprimary,20%);
+$dot6: lighten($twentyoneprimary,20%);
+$dot7: lighten($twentyoneprimary,20%);
+$dot8: lighten($twentyoneprimary,20%);
+$dot9: lighten($twentyoneprimary,20%);
 
 
 %action-dot{
@@ -26,12 +26,11 @@ $dot9: lighten($twentyoneprimary,0);
 
 .dots span{
     cursor: pointer;
-    height: 1.3rem;
+    height: 1rem;
     width: 0.5rem;
     display: inline-block;
-    margin-right: 0.25em;
-    background-color: #ddd;
-    border-radius: 1px;
+    margin-right: 3px;
+    background-color: #eee;
 
     &.disabled{
         @extend %disabled;

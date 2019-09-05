@@ -56,11 +56,12 @@ body{
 }
 
 .discover{
+	border-right: 1px solid #eee;
 }
 
 .feed{
 	min-height: 100%;
-	background-color: #aaa;
+	background-color: $twentyoneprimary;
 }
 
 .token-name{
