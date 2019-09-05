@@ -68,6 +68,16 @@ function VisibleMessageTwitter({message}){
   return <TwitterTweetEmbed tweetId={tweetId} />
 }
 
+function VisibleMessageVideo({message}){
+  let videourl = message.link.replace('.gifv', '.mp4');
+  return (
+    <video controls loop="true" autoplay="true" muted="true">
+      <source src={videourl} />
+      Your browser does not support video
+    </video>
+  )
+}
+
 function VisibleMessage({message}){
   switch(message.type) {
     case 'image':
@@ -76,6 +86,10 @@ function VisibleMessage({message}){
       return <VisibleMessageYoutube message={message} />
     case 'twitter':
       return <VisibleMessageTwitter message={message} />
+    case 'video':
+      return <VisibleMessageVideo message={message} />
+    case 'imgur':
+      return <VisibleMessageVideo message={message} />
     default:
       return <Linkify>{message.message}</Linkify>
   }
