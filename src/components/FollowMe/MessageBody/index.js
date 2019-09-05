@@ -43,6 +43,10 @@ function HiddenMessage({message}){
   switch(message.type) {
     case 'image':
       return <HiddenMessageImage />
+    case 'imgur':
+      return <HiddenMessageImage />
+    case 'video':
+      return <HiddenMessageYoutube />
     case 'youtube':
       return <HiddenMessageYoutube />
     case 'twitter':
