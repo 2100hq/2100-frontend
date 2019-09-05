@@ -6,6 +6,7 @@ import Discover from '../Discover'
 import Header from '../Header'
 import Onboarding from '../Onboarding'
 import Profile from '../Profile'
+import Feed from '../Feed'
 import { withRouter, matchPath } from "react-router";
 import { extractUsernameAndMessageIdFromLocation,extractMessageIdFromUsernameRoute } from '../../utils'
 
@@ -38,7 +39,9 @@ function Main({location}){
               </Col>
             </Row>
         </Col>
-        <Col md='1' className='feed'></Col>
+        <Col md='1' className='feed'>
+          <Feed />
+        </Col>
       </Row>
     </div>
   )

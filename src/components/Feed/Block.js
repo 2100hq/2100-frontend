@@ -25,11 +25,9 @@ export default function Block({blockNumber, commands = [], tokens = {}}){
 
 
   return (
-    <div className='card fadein'>
-      <div className='card-body'>
+    <div className='fadein small'>
       {message}
-      <h6 className='card-subtitle text-muted mb-2 small'>#{blockNumber}</h6>
-      </div>
+      #{blockNumber}
     </div>
   )
 }

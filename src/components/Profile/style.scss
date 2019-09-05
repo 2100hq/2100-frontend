@@ -1,8 +1,11 @@
 .profile{
 
+
 	.profile-header{
 		font-weight: bold;
 		text-align: center;
+		background-color: ghostwhite;
+		padding: 3rem;
 
 		.profile-image{
 			width: 10rem;
@@ -29,7 +32,7 @@
 	}
 
 	.profile-body{
-
+		padding: 3rem;
 	}	
 }
 
