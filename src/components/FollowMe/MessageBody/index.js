@@ -57,7 +57,7 @@ function HiddenMessage({message}){
 }
 
 function VisibleMessageImage({message}){
-  return <img src={message.link} style={{width: '640px'}} />
+  return <img src={message.link} style={{maxWidth: '500px', maxHeight: '400px'}} />
 }
 
 function VisibleMessageYoutube({message}){
