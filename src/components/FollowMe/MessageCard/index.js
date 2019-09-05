@@ -1,14 +1,12 @@
 import React, {useState, useEffect } from 'react'
-import {useStoreContext} from '../../contexts/Store'
+import {useStoreContext} from '../../../contexts/Store'
 import {get, shuffle} from 'lodash'
-import { BigNumber, toDecimals, weiDecimals } from '../../utils'
+import { BigNumber, toDecimals, weiDecimals } from '../../../utils'
 import { Link } from 'react-router-dom'
 import ms from 'ms'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
-import * as linkify from 'linkifyjs';
-import Linkify from 'linkifyjs/react';
-import ProfileImage from '../ProfileImage'
-
+import ProfileImage from '../../ProfileImage'
+import MessageBody from '../MessageBody'
 function InvisibleSubtext({name, token, message, isSignedIn, state, actions}){
   const [decoding, setDecoding] = useState(false)
 
@@ -63,22 +61,10 @@ function ago(past){
   return ms(elapsed)
 }
 
-function HiddenMessage({message, limit = 1}){
-  let chars = []
-
-  for (var index = 0; index < message.length; index++){
-    const i = index % limit
-    chars.push(<span className={'hidden-char '+ 'c' + i} key={index}>x</span>)
-  }
-
-  return chars
-}
-
 export default function MessageCard({message, myToken, token, isSignedIn, actions}){
   const [destroyCountDown, setDestroyCountDown] = useState(null)
   const [copied, setCopied] = useState(null)
   const name = token.name || 'unknown'
-  const text = message.hidden ? <HiddenMessage message={message}/> : <Linkify>{message.message}</Linkify>
   const subtext = message.hidden ? <InvisibleSubtext name={name} token={token} message={message} isSignedIn={isSignedIn} actions={actions} /> : <VisibleSubtext name={name} message={message} myToken={myToken} />
 
   function destroyMessage(e){
@@ -110,24 +96,25 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
   const messageUrl = `/$${token.name}/${message.shortid || message.id}`
 
   return (
-    <div className={`message ${destroyCountDown != null && 'message-destroy-countdown'}`} key={message.id}>
+    <div className={`message ${destroyCountDown != null && 'message-destroy-countdown'} message-type-${message.type}`} key={message.id}>
         {destroyIcon}
         <div className='message-header text-muted'>
-          <ProfileImage token={token} /><div className='token-name large'>
-            <Link to={`/$${token.name}`}>{token.name}</Link><span className='message-time text-muted'><Link to={messageUrl}>{ago(message.created)}</Link></span>
+          <ProfileImage token={token} />
+          <div className='token-name large'>
+            <Link to={`/$${token.name}`}>{token.name}</Link>
+            <span className='message-time text-muted'>
+              <Link to={messageUrl}>{ago(message.created)}</Link>
+            </span>
           </div>
         </div>
-        <div className='message-body'>
-          <p>{text}</p>
-        </div>
-         {message.hint && <p className='small'>hint: {message.hint}</p>}
+        <MessageBody message={message} />
         <div className='message-footer small'>
-            <i className='fas fa-eye' />  {subtext}
-            <CopyToClipboard text={window.location.origin + messageUrl}
-              onCopy={() => setCopied(true)}>
-              <div className="small message-copy-url"><i className="fas fa-link"></i><span>{copied ? 'Copied!' : 'Copy link'}</span></div>
-            </CopyToClipboard>
-      </div>
+          <i className='fas fa-eye' />  {subtext}
+          <CopyToClipboard text={window.location.origin + messageUrl}
+            onCopy={() => setCopied(true)}>
+            <div className="small message-copy-url"><i className="fas fa-link"></i><span>{copied ? 'Copied!' : 'Copy link'}</span></div>
+          </CopyToClipboard>
+        </div>
     </div>
    )
 }
