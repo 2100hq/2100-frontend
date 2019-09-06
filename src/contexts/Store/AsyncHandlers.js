@@ -177,25 +177,25 @@ export default function AsyncHandlers (libs = {}) {
         return false
       }
     },
-    USE_CREATE_COUPON: async action => {
-      if (
-        !libs.web3.active ||
-        !libs.web3.account ||
-        !libs.web3.library ||
-        !libs.state.private.isSignedIn
-      ) {
-        libs.dispatch(actions.error(action.type, errors.auth.NOT_LOGGED_IN))
-        return false
-      }
-      const { controller } = libs.state
-      const { symbol, messageId, v, r, s } = action.params
-      try {
-        await controller.contract.create(symbol, messageId, v, r, s)
-      } catch (e) {
-        console.log(action.type, e)
-        libs.dispatch(actions.error(action.type, e))
-      }
-    },
+    // USE_CREATE_COUPON: async action => {
+    //   if (
+    //     !libs.web3.active ||
+    //     !libs.web3.account ||
+    //     !libs.web3.library ||
+    //     !libs.state.private.isSignedIn
+    //   ) {
+    //     libs.dispatch(actions.error(action.type, errors.auth.NOT_LOGGED_IN))
+    //     return false
+    //   }
+    //   const { controller } = libs.state
+    //   const { symbol, messageId, v, r, s } = action.params
+    //   try {
+    //     await controller.contract.create(symbol, messageId, v, r, s)
+    //   } catch (e) {
+    //     console.log(action.type, e)
+    //     libs.dispatch(actions.error(action.type, e))
+    //   }
+    // },
     SET_STAKE_LEVEL: async action => {
       if (!libs.state.private.isSignedIn) {
         libs.dispatch(actions.error(action.type, errors.auth.NOT_LOGGED_IN))
@@ -236,6 +236,19 @@ export default function AsyncHandlers (libs = {}) {
         return resp
       } catch (e) {
         console.log(action.type, e)
+        libs.dispatch(actions.error(action.type, e))
+        return false
+      }
+    },
+    VERIFY_TWITTER: async action => {
+      if (!libs.state.private.isSignedIn) {
+        libs.dispatch(actions.error(action.type, errors.auth.NOT_LOGGED_IN))
+        return false
+      }
+      try{
+        const resp = await libs.socket.private('verifyTwitter', action.params)
+        return resp
+      } catch(e){
         libs.dispatch(actions.error(action.type, e))
         return false
       }

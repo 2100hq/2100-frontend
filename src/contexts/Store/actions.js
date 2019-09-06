@@ -22,7 +22,8 @@ const actions = {
   setStakeLevel: (address, level) =>
     actionGenerator('SET_STAKE_LEVEL', { [address]: level }),
   setDescription: (tokenid, text) => actionGenerator('SET_DESCRIPTION', { tokenid, text }),
-  error: (intent, error) => actionGenerator('ERROR', { [intent]: error })
+  error: (key, error) => actionGenerator('ERROR', { [key]: error }),
+  verifyTwitter: ({link, description='', tweetType}) => actionGenerator('VERIFY_TWITTER', {link, description, tweetType}),
 }
 
 function actionGenerator (type, params, resp) {
