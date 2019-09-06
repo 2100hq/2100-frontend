@@ -1,14 +1,12 @@
 //import variables
 @import "../../../Variables";
 
-$hidden-message-color: #ddd;
-
 .message-body{
 	padding: 1rem 0;
 
-	.hint{
-		font-size: 1rem;
-		margin-top: 1rem;
+	.message-hint{
+		color: #aaa;
+		font-style: italic;
 	}
 
 	img, iframe, video{
@@ -18,29 +16,23 @@ $hidden-message-color: #ddd;
 
 	.hidden-message-block{
 		width: 20rem;
-		padding: 2rem;
-		background-color: $hidden-message-color;
-		border-radius: 1rem;
+		padding: 1rem 0 ;
+		background-color: fff;
+		border-radius: 1.5rem;
 
 		.pretend-encryption{
-			color: white;
+			color: #666;
 		}
 
 		.content-type-hint{
-			margin: 0 auto;
-			margin-top: 2rem;
-			text-align: center;
-			line-height: 2rem;
-			font-size: 1rem;
-			background-color: white;
-			width: 2rem;
-			height: 2rem;
-			border-radius: 50%;
+			color: #666;
+			font-size: 2rem;
 		}
 	}
 
 	.hidden-message-inline{
-		color: $hidden-message-color;
+		font-size: 1.3rem;
+		color: #ddd;
 		font-family: "Redacted";
 	}
 }

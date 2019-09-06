@@ -9,14 +9,15 @@ const nodeURL = require('url');
 function HiddenMessageBlock({faicon}){
   return(
     <div className='hidden-message-block'>
-      <span className='pretend-encryption'>
-        3 3 8 0 3 E 9 1 6 9 F B 4 E B 5 
-        7 E E E E 5 B B 8 9 9 8 7 A 3 C 
-        2 1 A 0 F 7 3 D 9 2 2 0 9 3 4 F
-      </span>
-      <div className='content-type-hint'>
-        <i class={'fas '+faicon}></i>
+      <div className='row'>
+        <div className='col-md-2 content-type-hint'><i class={faicon}></i></div>
+        <div className='col pretend-encryption'>
+          3 3 8 0 3 E 9 1 6 9 F B 4 E B 5 
+          7 E E E E 5 B B 8 9 9 8 7 A 3 C 
+          2 1 A 0 F 7 3 D 9 2 2 0 9 3 4 F
+        </div>
       </div>
+
     </div>
   )
 }
@@ -34,17 +35,17 @@ function HiddenMessageInline({message, limit = 1}){
 function HiddenMessage({message}){
   switch(message.type) {
     case 'image':
-      return <HiddenMessageBlock faicon={'fa-image'} />
+      return <HiddenMessageBlock faicon={'fas fa-image'} />
     case 'imgur':
-      return <HiddenMessageBlock faicon={'fa-image'} />
+      return <HiddenMessageBlock faicon={'fas fa-image'} />
     case 'video':
-      return <HiddenMessageBlock faicon={'fa-video'} />
+      return <HiddenMessageBlock faicon={'fas fa-video'} />
     case 'youtube':
-      return <HiddenMessageBlock faicon={'fa-youtube'} />
+      return <HiddenMessageBlock faicon={'fab fa-youtube'} />
     case 'twitter':
-      return <HiddenMessageBlock faicon={'fa-twitter'} />
+      return <HiddenMessageBlock faicon={'fas fa-twitter'} />
     default:
-      return <HiddenMessageInline message={message} />
+      return <HiddenMessageBlock faicon={'fas fa-align-left'} />
   }
 }
 
@@ -103,12 +104,11 @@ function getHintLocation(message){
 
 export default function MessagageBody({message}){
   const text = message.hidden ? <HiddenMessage message={message}/> : <VisibleMessage message={message} />
-  const hintLocation = getHintLocation(message)
   return (
     <div className='message-body'>
-      {message.hint && hintLocation === 'top' && <h5>{message.hint}</h5>}
       <div className='message-target'>{text}</div>
-      {message.hint && hintLocation === 'bottom' && <div className='hint small'>hint: {message.hint}</div>}
+      {message.hint && <div className='message-hint'>hint: {message.hint}</div>}
+
     </div>
   )
 }
