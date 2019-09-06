@@ -59,10 +59,13 @@ function TweetContent ({ publicAddress }) {
   )
 }
 
-export default function Manage () {
+export default function Manage (props) {
   const [username, setUsername] = useState()
   const { state, dispatch, actions } = useStoreContext()
-  if (!state.private.isSignedIn) return <Redirect to='/' />
+  if (!state.private.isSignedIn) return <Redirect to={{
+      pathname: '/',
+      state: { from: props.location }
+    }} />
   const publicAddress =
     state.private && state.private.me && state.private.me.publicAddress
 
