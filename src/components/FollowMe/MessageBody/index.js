@@ -1,51 +1,87 @@
 import React, {useState, useEffect } from 'react'
+import {get, shuffle} from 'lodash'
+import { BigNumber, toDecimals, weiDecimals } from '../../../utils'
+import ms from 'ms'
 import * as linkify from 'linkifyjs';
 import Linkify from 'linkifyjs/react';
 import YouTube from 'react-youtube';
 import { TwitterTweetEmbed } from 'react-twitter-embed';
+import { Row, Col } from 'react-bootstrap'
 import './style.scss'
 const nodeURL = require('url');
 
-function HiddenMessageBlock({faicon}){
+function InvisibleSubtext({name, token, message, isSignedIn, actions}){
+  /* 4 states
+   - Not signed in
+   - Signed in, not staking
+   - Signed in, staking (not able to decode)
+   - Signed in, able to decode
+  */
+  const [decoding, setDecoding] = useState(false)
+
+  if (!isSignedIn) return <span>hold {toDecimals(message.threshold,3,0)} <span className='token-name'>{name} to see</span></span>
+
+  const available = get(token, 'balances.available', "0")
+  const diff = BigNumber(message.threshold).minus(available)
+  const isStaking = BigNumber(token.myStake).gt(0)
+  let timeToDecode = null
+
+  async function decodeMessage(id){
+    setDecoding(true)
+    const resp = await actions.decodeMessage(id)
+    setDecoding(false)
+  }
+
+  function handleClick(e){
+    e.preventDefault()
+    decodeMessage(message.id)
+  }
+
+  if (isStaking && diff.gt(0)){
+    const divisor = BigNumber(token.myStake).div(token.totalStakes).times(0.9).times(0.00021).times(weiDecimals)
+    const blocks = diff.div(divisor).dp(0,0).toNumber()
+    timeToDecode = (<span>({ms(blocks*15000)} to go)</span>)
+  }
+
+
+
+  if (diff.gt(0) && isStaking) return <span>getting {toDecimals(diff, 3, 0)} <span className='token-name'>{name}</span> {timeToDecode}</span>
+
+  if (decoding) return <span>decoding...</span>
+
+  if (diff.lte(0)) return <span>you have enough <span className='token-name'>{name}</span> to <a href="#" onClick={handleClick}>decode</a></span>
+
+  if (!isStaking) return <span>hold {toDecimals(message.threshold,3,0)} <span className='token-name'>{name} to see</span></span>
+}
+
+function HiddenMessage({message}){
   return(
     <div className='hidden-message-block'>
-      <div className='row'>
-        <div className='col-md-2 content-type-hint'><i class={faicon}></i></div>
-        <div className='col pretend-encryption'>
-          3 3 8 0 3 E 9 1 6 9 F B 4 E B 5 
-          7 E E E E 5 B B 8 9 9 8 7 A 3 C 
+        <div className='pretend-encryption'>
+          3 3 8 0 3 E 9 1 6 9 F B 4 E B 5
+          7 E E E E 5 B B 8 9 9 8 7 A 3 C
           2 1 A 0 F 7 3 D 9 2 2 0 9 3 4 F
-        </div>
       </div>
 
     </div>
   )
 }
 
-function HiddenMessageInline({message, limit = 1}){
-  let chars = []
-
-  for (var index = 0; index < message.length; index++){
-    chars.push('x ')
-  }
-
-  return <span className='hidden-message-inline'>{chars.join('')}</span>
-}
-
-function HiddenMessage({message}){
+function MessageIcon({message}){
+  if (!message.hidden) return null
   switch(message.type) {
     case 'image':
-      return <HiddenMessageBlock faicon={'fas fa-image'} />
+      return <i className={'fas fa-image'} />
     case 'imgur':
-      return <HiddenMessageBlock faicon={'fas fa-image'} />
+      return <i className={'fas fa-image'} />
     case 'video':
-      return <HiddenMessageBlock faicon={'fas fa-video'} />
+      return <i className={'fas fa-video'} />
     case 'youtube':
-      return <HiddenMessageBlock faicon={'fab fa-youtube'} />
+      return <i className={'fab fa-youtube'} />
     case 'twitter':
-      return <HiddenMessageBlock faicon={'fas fa-twitter'} />
+      return <i className={'fas fa-twitter'} />
     default:
-      return <HiddenMessageBlock faicon={'fas fa-align-left'} />
+      return <i className={'fas fa-align-left'} />
   }
 }
 
@@ -102,13 +138,20 @@ function getHintLocation(message){
 
 }
 
-export default function MessagageBody({message}){
+export default function MessagageBody({message, token, isSignedIn, actions}){
+  const name = token.name || 'unknown'
+  const hiddentext = message.hidden ? <div><i className='fas fa-key' /> <InvisibleSubtext name={name} token={token} message={message} isSignedIn={isSignedIn} actions={actions} /></div> : null
   const text = message.hidden ? <HiddenMessage message={message}/> : <VisibleMessage message={message} />
   return (
-    <div className='message-body'>
-      <div className='message-target'>{text}</div>
-      {message.hint && <div className='message-hint'>hint: {message.hint}</div>}
-
-    </div>
+    <>
+      <Col md="1">
+        <MessageIcon message={message} />
+      </Col>
+      <Col>
+        <div className='message-target'>{text}</div>
+        {hiddentext}
+        {message.hint && <div className='message-hint'>hint: {message.hint}</div>}
+      </Col>
+    </>
   )
 }

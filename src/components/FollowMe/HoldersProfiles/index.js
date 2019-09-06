@@ -40,22 +40,25 @@ function CountHolders({prefix,count,suffix=' holders'}){
   )
 }
 
-export default function HoldersProfiles({holders, prefix, suffix, noholderstext='no one', facesCount=3}) {
+export default function HoldersProfiles({holders, prefix, suffix, noholderstext, facesCount=3}) {
 
-  if (holders == null) return <NoHolders prefix={prefix} noholderstext={noholderstext} suffix={suffix} />
+  noholderstext = noholderstext || <>{prefix}no one{suffix}</>
+
+  if (holders == null) return noholderstext
 
   if (typeof holders === 'number') return <CountHolders prefix={prefix} count={holders} suffix={suffix} />
 
   holders = holders.filter(userid => parseInt(userid) > 0) // filter out zero address
   const holdersCount = holders.length
 
-  if (holdersCount === 0) return <NoHolders prefix={prefix} noholderstext={noholderstext} suffix={suffix} />
+  if (holdersCount === 0) return noholderstext
 
   const andMore = holdersCount > facesCount ? `and ${holdersCount-facesCount} more` : null
 
   if (!suffix){
     suffix = holdersCount > facesCount ? ` holder${holdersCount-facesCount>1?'s':''}` : ' only'
   }
+
   return(
       <div className='holders-profiles'>
         {prefix}
