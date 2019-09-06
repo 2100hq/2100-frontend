@@ -6,53 +6,45 @@ import { TwitterTweetEmbed } from 'react-twitter-embed';
 import './style.scss'
 const nodeURL = require('url');
 
-function HiddenMessageImage(){
+function HiddenMessageBlock({faicon}){
   return(
-    <div className='hidden-message-block hidden-message-image'>
-      <i class="far fa-image"></i>
-    </div>
-  )
-}
-function HiddenMessageYoutube(){
-  return(
-    <div className='hidden-message-block hidden-message-youtube'>
-      <i class="fab fa-youtube"></i>
-    </div>
-  )
-}
-function HiddenMessageTwitter(){
-  return(
-    <div className='hidden-message-block hidden-message-twitter'>
-      <i class="fab fa-twitter-square"></i>
+    <div className='hidden-message-block'>
+      <span className='pretend-encryption'>
+        3 3 8 0 3 E 9 1 6 9 F B 4 E B 5 
+        7 E E E E 5 B B 8 9 9 8 7 A 3 C 
+        2 1 A 0 F 7 3 D 9 2 2 0 9 3 4 F
+      </span>
+      <div className='content-type-hint'>
+        <i class={'fas '+faicon}></i>
+      </div>
     </div>
   )
 }
 
-function HiddenMessageDefault({message, limit = 1}){
+function HiddenMessageInline({message, limit = 1}){
   let chars = []
 
   for (var index = 0; index < message.length; index++){
-    const i = index % limit
-    chars.push(<span className={'hidden-char '+ 'c' + i} key={index}>x</span>)
+    chars.push('x ')
   }
 
-  return chars
+  return <span className='hidden-message-inline'>{chars.join('')}</span>
 }
 
 function HiddenMessage({message}){
   switch(message.type) {
     case 'image':
-      return <HiddenMessageImage />
+      return <HiddenMessageBlock faicon={'fa-image'} />
     case 'imgur':
-      return <HiddenMessageImage />
+      return <HiddenMessageBlock faicon={'fa-image'} />
     case 'video':
-      return <HiddenMessageYoutube />
+      return <HiddenMessageBlock faicon={'fa-video'} />
     case 'youtube':
-      return <HiddenMessageYoutube />
+      return <HiddenMessageBlock faicon={'fa-youtube'} />
     case 'twitter':
-      return <HiddenMessageTwitter />
+      return <HiddenMessageBlock faicon={'fa-twitter'} />
     default:
-      return <HiddenMessageDefault message={message} />
+      return <HiddenMessageInline message={message} />
   }
 }
 

@@ -1,3 +1,8 @@
+//import variables
+@import "../../../Variables";
+
+$hidden-message-color: #ddd;
+
 .message-body{
 	padding: 1rem 0;
 
@@ -12,25 +17,30 @@
 	}
 
 	.hidden-message-block{
-		display: flex;
-		align-items: center;
-  		justify-content: center;
-		width: 50%;
-		height: 10rem;
-		background-color: #eee;
-		color: white;
-		font-size: 5rem;
+		width: 20rem;
+		padding: 2rem;
+		background-color: $hidden-message-color;
+		border-radius: 1rem;
 
-		&.hidden-message-image{
-
+		.pretend-encryption{
+			color: white;
 		}
 
-		&.hidden-message-youtube{
-
+		.content-type-hint{
+			margin: 0 auto;
+			margin-top: 2rem;
+			text-align: center;
+			line-height: 2rem;
+			font-size: 1rem;
+			background-color: white;
+			width: 2rem;
+			height: 2rem;
+			border-radius: 50%;
 		}
+	}
 
-		&.hidden-message-twitter{
-
-		}
+	.hidden-message-inline{
+		color: $hidden-message-color;
+		font-family: "Redacted";
 	}
 }
