@@ -64,7 +64,7 @@ function SignedIn () {
       </li>,
       <Dropdown as='li' className='nav-item' key='dropdown'>
         <Dropdown.Toggle as='a' className='nav-link in' href='#'>
-          <AddressIcon username={query.getUserName()} useraddress={query.getUserAddress()} />
+          <AddressIcon username={query.getUserMyName()} useraddress={query.getUserAddress()} />
         </Dropdown.Toggle>
         <Wave />
         <Dropdown.Menu>

@@ -7,15 +7,25 @@ import ms from 'ms'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import ProfileImage from '../../ProfileImage'
 import MessageBody from '../MessageBody'
-import Decoded from '../Decoded'
+import HoldersProfiles from '../HoldersProfiles'
+
 function InvisibleSubtext({name, token, message, isSignedIn, state, actions}){
+  /* 4 states
+   - Not signed in
+   - Signed in, not staking
+   - Signed in, staking (not able to decode)
+   - Signed in, able to decode
+  */
   const [decoding, setDecoding] = useState(false)
 
-  if (!isSignedIn) return <span>visible to holders of {toDecimals(message.threshold,3,0)} <span className='token-name'>{name}</span></span>
+  if (!isSignedIn) return <span>hold {toDecimals(message.threshold,3,0)} <span className='token-name'>{name} to see</span></span>
 
   const available = get(token, 'balances.available', "0")
   const diff = BigNumber(message.threshold).minus(available)
+  const isStaking = BigNumber(token.myStake).gt(0)
   let timeToDecode = null
+
+  if (!isStaking) return <span>hold {toDecimals(message.threshold,3,0)} <span className='token-name'>{name} to see</span></span>
 
   async function decodeMessage(id){
     setDecoding(true)
@@ -28,31 +38,33 @@ function InvisibleSubtext({name, token, message, isSignedIn, state, actions}){
     decodeMessage(message.id)
   }
 
-  if (BigNumber(token.myStake).gt(0) && diff.gt(0)){
+  if (isStaking && diff.gt(0)){
     const divisor = BigNumber(token.myStake).div(token.totalStakes).times(0.9).times(0.00021).times(weiDecimals)
     const blocks = diff.div(divisor).dp(0,0).toNumber()
     timeToDecode = (<span>({ms(blocks*15000)} to go)</span>)
   }
 
-  if (diff.gt(0)) return <span>need {toDecimals(diff, 3, 0)} <span className='token-name'>{name}</span> {timeToDecode}</span>
+
+
+  if (diff.gt(0)) return <span>getting {toDecimals(diff, 3, 0)} <span className='token-name'>{name}</span> {timeToDecode}</span>
 
   if (decoding) return <span>decoding...</span>
 
   return <span>you have enough <span className='token-name'>{name}</span> to <a href="#" onClick={handleClick}>decode</a></span>
 }
 
-function VisibleSubtext({name, message, myToken}){
-  let count = message.recipientcount
-  const isOwner = myToken && myToken.id === message.tokenid
-  const displayName = isOwner ? 'your token' : <span className='token-name'>{name}</span>
+// function VisibleSubtext({name, message, myToken}){
+//   let count = message.recipientcount
+//   const isOwner = myToken && myToken.id === message.tokenid
+//   const displayName = isOwner ? 'your token' : <span className='token-name'>{name}</span>
 
-  // didnt store recipient count
-  if (count == null) return <span>some holders of <span className='token-name'>{name}</span></span>
+//   // didnt store recipient count
+//   if (count == null) return <span>some holders of <span className='token-name'>{name}</span></span>
 
-  count = isOwner ? count : `${count === 0 ? 'no' : count-1} other`
+//   count = isOwner ? count : `${count === 0 ? 'no' : count-1} other`
 
-  return <span>{count} holders of {displayName}</span>
-}
+//   return <span>{count} holders of {displayName}</span>
+// }
 
 
 function ago(past){
@@ -66,7 +78,7 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
   const [destroyCountDown, setDestroyCountDown] = useState(null)
   const [copied, setCopied] = useState(null)
   const name = token.name || 'unknown'
-  const subtext = message.hidden ? <InvisibleSubtext name={name} token={token} message={message} isSignedIn={isSignedIn} actions={actions} /> : <VisibleSubtext name={name} message={message} myToken={myToken} />
+  const hiddentext = message.hidden ? <div><i className='fas fa-eye' /> <InvisibleSubtext name={name} token={token} message={message} isSignedIn={isSignedIn} actions={actions} /></div> : null //<VisibleSubtext name={name} message={message} myToken={myToken} />
 
   function destroyMessage(e){
     e.preventDefault()
@@ -110,8 +122,9 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
         </div>
         <MessageBody message={message} />
         <div className='message-footer small'>
-          <Decoded />
-          <i className='fas fa-eye' />  {subtext}
+          <hr />
+            {hiddentext}
+            <HoldersProfiles prefix='Visible to ' holders={message.recipients || message.recipientcount}/>
           <CopyToClipboard text={window.location.origin + messageUrl}
             onCopy={() => setCopied(true)}>
             <div className="small message-copy-url"><i className="fas fa-link"></i><span>{copied ? 'Copied!' : 'Copy link'}</span></div>

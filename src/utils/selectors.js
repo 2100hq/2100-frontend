@@ -160,15 +160,23 @@ function selectCommands (state) {
   return Object.values({...get(state, 'private.myCommands', {}), ...get(state, 'private.myCommandHistory', {})})
 }
 
+function selectOwners(state = {}){
+  const tokens = get(state, ['public', 'tokens', 'active'], {})
+  return keyBy(tokens, 'ownerAddress')
+}
+
 export default function Selectors (state) {
   const contracts = selectContracts(state)
 
   const tokens = selectTokens(state)
 
   const commands = selectCommands(state)
+
+  const owners = selectOwners(state)
   return {
     ...contracts,
     ...tokens,
+    owners,
     commands
   }
 }

@@ -15,12 +15,13 @@ const queries = {
     return get(state, `tokens.${tokenid}`, {})
   },
   getTokenName: (state, tokenid) => get(queries.getToken(state,tokenid), 'name'),
-  getUserName: state => get(state,'private.username'),
+  getUserMyName: state => get(state,'private.username'),
   getMyToken: state => get(state, 'private.mytoken'),
   getUserAddress: state => get(state, 'web3.account'),
   getIsConnected: state => get(state, 'network.connected'),
   getIsLoading: state => get(state, 'network.loading'),
-  getIsMyToken: (state, token) => (queries.getMyToken(state) || {}).id === token.id
+  getIsMyToken: (state, token) => (queries.getMyToken(state) || {}).id === token.id,
+  getUserName: (state, userid) => get(state, ['owners', userid, 'name'])
 }
 
 export default queries
