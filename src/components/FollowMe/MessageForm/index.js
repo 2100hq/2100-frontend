@@ -6,7 +6,7 @@ import {useStoreContext} from '../../../contexts/Store'
 import Dots from '../../Dots'
 import percentile from '../../../utils/percentile'
 import {BigNumber, toDecimals, fromDecimals, weiDecimals} from '../../../utils'
-
+import HoldersProfiles from '../HoldersProfiles'
 import './style.scss'
 
 function isEmpty(message){
@@ -55,6 +55,7 @@ export default function MessageForm({onSubmitted}){
   const [level, setLevel] = useState(0)
   const [threshold, setThreshold] = useState(fromDecimals("0.00021"))
   const [recipientCount, setRecipientCount] = useState(0)
+  const [recipients, setRecipients] = useState([])
 
   const hasToken = myToken != null
   const hasFollowers = myToken && followerCount > 0
@@ -96,15 +97,16 @@ export default function MessageForm({onSubmitted}){
   }
 
   useEffect( () => {
-    const holdings = Object.values(followers)
+    const holdings = Object.entries(followers)
     let count = hasFollowers ? holdings.length : 0
-
-    if (threshold != null && threshold !== "1"){
-      count = holdings.filter( amount => {
+    let recipients = []
+    if (threshold != null){
+      recipients = holdings.filter( ([address, amount]) => {
         return BigNumber(amount).gte(threshold)
-      }).length
+      }).map( ([address]) => address )
+      count = recipients.length
     }
-
+    setRecipients(recipients)
     setRecipientCount(count)
 
   }, [threshold, followers])
@@ -128,6 +130,16 @@ export default function MessageForm({onSubmitted}){
 
   const tabs = Object.keys(tabMap).map( tabName => <Tab currentTab={currentTab} tabName={tabName} setTab={setTab} key={tabName} /> )
 
+  let footerText = null
+
+  if (hasToken && hasFollowers && recipientCount === 0){
+     footerText = 'Future holders'
+  } else if (hasToken) {
+    footerText = <HoldersProfiles holders={recipients} prefix="Visible to " />
+  } else {
+    footerText = '0 holders'
+  }
+
   return (
       <div className='message-form card'>
         <div className='card-body'>
@@ -145,7 +157,7 @@ export default function MessageForm({onSubmitted}){
             <Form.Group controlId="message">
               {currentTab ? tabMap[hasToken ? currentTab : 'Link']() : null}
               <Form.Label className='small'>
-                <i className='fas fa-eye' /> {hasToken && hasFollowers && recipientCount === 0 ? 'Future' : !hasToken ? 0 : `${recipientCount}/${followerCount}`} holders
+                <i className='fas fa-eye' /> {footerText}
               </Form.Label>
             </Form.Group>
 
