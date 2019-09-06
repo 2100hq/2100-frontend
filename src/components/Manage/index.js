@@ -59,38 +59,60 @@ function TweetContent ({ publicAddress }) {
   )
 }
 
+function StepOne({next, publicAddress}){
+  return (
+    <div>
+      <h5>Get your own token</h5>
+      <ol>
+      <li>
+        <p>
+          Post a new tweet linking your Twitter username to {publicAddress}
+          <br/><span className='text-muted'>Or use a previous <a href='https://humanitydao.org' target='_blank' className='text-muted'>HumanityDAO</a> tweet</span>
+        </p>
+      </li>
+      <li>Paste a link to your tweet</li>
+      </ol>
+      <Button onClick={next}>Next</Button>
+    </div>
+  )
+}
+
+function StepTwo({next, publicAddress}){
+  return (
+    <div>
+      <TweetContent publicAddress={publicAddress} />
+      <Button onClick={next}>Next</Button>
+    </div>
+  )
+}
+
 export default function Manage (props) {
   const [username, setUsername] = useState()
-  const { state, dispatch, actions } = useStoreContext()
+  const { state, query, dispatch, actions } = useStoreContext()
+  const [step, setStep] = useState(1)
   if (!state.private.isSignedIn) return <Redirect to={{
       pathname: '/',
       state: { from: props.location }
     }} />
-  const publicAddress =
-    state.private && state.private.me && state.private.me.publicAddress
 
+  const publicAddress = query.getUserAddress()
+
+  const steps = {
+    [1]: (props) => <StepOne {...props} />,
+    [2]: (props) => <StepTwo {...props} />
+  }
+
+  function next(){
+    let nextStep = step+1
+    if (nextStep > Object.keys(steps).length) nextStep = 1
+    setStep(nextStep)
+  }
   return (
     <div className='row'>
       <div className='col-md-5'>
         <div className='card'>
           <div className='card-body'>
-            <ul className='nav nav-pills'>
-              {/* <li className='nav-item'>
-                              <a className='nav-link active'>Create</a>
-                            </li> */}
-            </ul>
-            <div className='card-body'>
-              <div className='row'>
-                <div className='col-md-12'>
-                  <h5>Create your 2100</h5>
-                  <p>
-                    To create the 2100 asset for an account that you own, tweet
-                    this message.
-                  </p>
-                  <TweetContent publicAddress={publicAddress} />
-                </div>
-              </div>
-            </div>
+            {steps[step]({publicAddress, next})}
           </div>
         </div>
       </div>
