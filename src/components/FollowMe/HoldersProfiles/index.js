@@ -53,6 +53,9 @@ export default function HoldersProfiles({holders, prefix, suffix, noholderstext=
 
   const andMore = holdersCount > facesCount ? `and ${holdersCount-facesCount} more` : null
 
+  if (!suffix){
+    suffix = holdersCount > facesCount ? ` holder${holdersCount-facesCount>1?'s':''}` : ' only'
+  }
   return(
       <div className='holders-profiles'>
         {prefix}
