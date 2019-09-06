@@ -5,7 +5,9 @@
 	padding: 1rem 0;
 
 	.message-hint{
-		color: #aaa;
+		margin-top: 1rem;
+		color: #666;
+		font-size: 0.9rem;
 		font-style: italic;
 	}
 
@@ -16,23 +18,21 @@
 
 	.hidden-message-block{
 		width: 20rem;
-		padding: 1rem 0 ;
+		padding: 0 ;
 		background-color: fff;
 		border-radius: 1.5rem;
 
 		.pretend-encryption{
-			color: #666;
+			font-size: 1rem;
+			color: #333;
 		}
 
 		.content-type-hint{
 			color: #666;
-			font-size: 2rem;
+			font-size: 1.5rem;
+			position: relative;
+			left: 0.5rem;
 		}
 	}
 
-	.hidden-message-inline{
-		font-size: 1.3rem;
-		color: #ddd;
-		font-family: "Redacted";
-	}
 }
