@@ -90,7 +90,7 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
         <Col md="1" />
         <Col>
           <hr />
-          <HoldersProfiles prefix='' suffix=' can see' noholderstext="Be the first to see" holders={message.recipients || message.recipientcount} noholders/>
+          <HoldersProfiles prefix='' suffix=' can already see' noholderstext="Be the first to see" holders={message.recipients || message.recipientcount} noholders/>
         <CopyToClipboard text={window.location.origin + messageUrl}
           onCopy={() => setCopied(true)}>
           <div className="small message-copy-url"><i className="fas fa-link"></i><span>{copied ? 'Copied!' : 'Copy link'}</span></div>
