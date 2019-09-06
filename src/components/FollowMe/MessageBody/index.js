@@ -19,7 +19,7 @@ function InvisibleSubtext({name, token, message, isSignedIn, actions}){
   */
   const [decoding, setDecoding] = useState(false)
 
-  if (!isSignedIn) return <span>hold {toDecimals(message.threshold,3,0)} <span className='token-name'>{name} to see</span></span>
+  if (!isSignedIn) return <span>hold <span style={{fontWeight: 'bold'}}>{toDecimals(message.threshold,3,0)} ${name} </span>to see</span>
 
   const available = get(token, 'balances.available', "0")
   const diff = BigNumber(message.threshold).minus(available)
@@ -141,7 +141,7 @@ function getHintLocation(message){
 
 export default function MessagageBody({message, token, isSignedIn, actions}){
   const name = token.name || 'unknown'
-  const hiddentext = message.hidden ? <div><i className='fas fa-key' /> <InvisibleSubtext name={name} token={token} message={message} isSignedIn={isSignedIn} actions={actions} /></div> : null
+  const hiddentext = message.hidden ? <div className='hidden-text'><i className='far fa-handshake' /> <InvisibleSubtext name={name} token={token} message={message} isSignedIn={isSignedIn} actions={actions} /></div> : null
   const text = message.hidden ? <HiddenMessage message={message}/> : <VisibleMessage message={message} />
   return (
     <>
