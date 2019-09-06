@@ -55,12 +55,13 @@ function InvisibleSubtext({name, token, message, isSignedIn, actions}){
 }
 
 function HiddenMessage({message}){
+
+  const id = message.id.replace(/-/g,'').toUpperCase().split('').map( c => <span className={`char-${c}`}>{c} </span>)
+
   return(
     <div className='hidden-message-block'>
         <div className='pretend-encryption'>
-          3 3 8 0 3 E 9 1 6 9 F B 4 E B 5
-          7 E E E E 5 B B 8 9 9 8 7 A 3 C
-          2 1 A 0 F 7 3 D 9 2 2 0 9 3 4 F
+        {id} {id}
       </div>
 
     </div>
