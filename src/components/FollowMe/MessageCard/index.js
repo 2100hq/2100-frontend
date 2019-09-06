@@ -25,8 +25,6 @@ function InvisibleSubtext({name, token, message, isSignedIn, state, actions}){
   const isStaking = BigNumber(token.myStake).gt(0)
   let timeToDecode = null
 
-  if (!isStaking) return <span>hold {toDecimals(message.threshold,3,0)} <span className='token-name'>{name} to see</span></span>
-
   async function decodeMessage(id){
     setDecoding(true)
     const resp = await actions.decodeMessage(id)
@@ -46,11 +44,13 @@ function InvisibleSubtext({name, token, message, isSignedIn, state, actions}){
 
 
 
-  if (diff.gt(0)) return <span>getting {toDecimals(diff, 3, 0)} <span className='token-name'>{name}</span> {timeToDecode}</span>
+  if (diff.gt(0) && isStaking) return <span>getting {toDecimals(diff, 3, 0)} <span className='token-name'>{name}</span> {timeToDecode}</span>
 
   if (decoding) return <span>decoding...</span>
 
-  return <span>you have enough <span className='token-name'>{name}</span> to <a href="#" onClick={handleClick}>decode</a></span>
+  if (diff.lte(0)) return <span>you have enough <span className='token-name'>{name}</span> to <a href="#" onClick={handleClick}>decode</a></span>
+
+  if (!isStaking) return <span>hold {toDecimals(message.threshold,3,0)} <span className='token-name'>{name} to see</span></span>
 }
 
 // function VisibleSubtext({name, message, myToken}){
