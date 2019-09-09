@@ -57,6 +57,7 @@ function Wave(){
 
 function SignedIn () {
   const { state, query } = useStoreContext()
+  const hasToken = query.getMyToken()
   return (
     [
       <li className='nav-item' key='balances'>
@@ -71,9 +72,13 @@ function SignedIn () {
           <Link className='dropdown-item' to='/wallet'>
             Wallet
           </Link>
-          <Link className='dropdown-item' to='/manage'>
-            Manage
-          </Link>
+          {
+            !hasToken && (
+              <Link className='dropdown-item' to='/manage'>
+                Link Username
+              </Link>
+            )
+          }
           <AdminLink state={state} />
           <Dropdown.Divider />
           <Link className='dropdown-item' to='/signout'>
