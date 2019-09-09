@@ -57,17 +57,15 @@ function Row ({ rank, token, myToken, currentUsername }) {
   return (
 
 <div className={"row asset-row align-items-center"+selected}>
-  <div className='col-md-1'>
-    {rank}
-  </div>
-  <div className="col-md-4">
+  <div className="col-md-5">
+      {rank}
       <Link to={`/$${token.name}`}>
         <ProfileImage token={token} />
-        <span style={{marginLeft: '1rem'}} className='token-name medium' to={`/$${token.name}`}>{token.name}</span>
+        <span style={{fontWeight: 'bold'}} to={`/$${token.name}`}>${token.name}</span>
       </Link>
   </div>
   <div className="col-md-2">
-    <span style={{position: 'relative', fontWeight: 'bold'}}>
+    <span style={{position: 'relative'}}>
       { stakeArrowDirection && <i className={`fas fa-arrow-${stakeArrowDirection} stake-arrow`}></i> }
       <CountUp balance={toDecimals(token.totalStakes)} decimals={2} />
     </span>
@@ -76,7 +74,7 @@ function Row ({ rank, token, myToken, currentUsername }) {
       <Allocator token={token} />
   </div>
   <div className="col-md-2">
-    <div style={{fontWeight: 'bold'}}><CountUp balance={toDecimals(token.balances.available,5)} /></div>
+    <div><CountUp balance={toDecimals(token.balances.available,5)} /></div>
   </div>
 
 </div>

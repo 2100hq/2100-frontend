@@ -26,7 +26,7 @@ html{
 }
 
 body{
-  height: calc(100% - 58px);
+  height: 100%;
   font-size: 1rem;
   font-family: 'Noto Serif JP', serif !important;
 }
@@ -34,7 +34,6 @@ body{
 
 .container-fluid{
   height: 100%;
-  padding-top: $navbarHeight;
 }
 
 .main.row{

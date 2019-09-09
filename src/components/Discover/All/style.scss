@@ -3,15 +3,17 @@
 
 .asset-table{
 
+  font-size: 1rem;
+
   .profile-image{
   	width: 2.5rem;
   	height: 2.5rem;
   	border-radius: 50%;
+    margin: 0 1rem;
   }
 
   div.rank{
   	  color: white;
-      font-weight: bold;
   	  display: inline-block;
   	  border-radius: 50%;
   	  width: 2rem;
@@ -54,20 +56,4 @@
    position: absolute;
   left: -1.5em;
   top: 0.2em;
-}
-
-.stakers-icon {
-  position: relative;
-  top: -0.15em;
-  font-size: 0.5rem;
-  opacity: 0.75;
-}
-
-.token-description{
-  font-size: 0.7rem;
-  color:'#aaa';
-  width: 10em;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
 }

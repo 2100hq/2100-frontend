@@ -11,10 +11,18 @@ function ProtectedNavItem ({state, children}) {
     return children
 }
 
+function Logo(){
+  return(
+    <>
+    <img src='img/logo3.png' style={{width: '2.5rem'}} />
+    </>
+    ) 
+}
+
 function NavBrand(){
   const { query } = useStoreContext()
   const isSignedIn = query.getIsSignedIn()
-  if (!isSignedIn) return  <Link to='/' className='navbar-brand'>2100</Link>
+  if (!isSignedIn) return  <Link to='/' className='navbar-brand'><Logo /></Link>
   const myToken = query.getMyToken()
   if (!myToken || !myToken.id) return <Link to='/' className='navbar-brand'>{query.getUserAddress().slice(0, 7)}</Link>
   return <Link to='/' className='navbar-brand'>{query.getMyToken().name}</Link>
@@ -24,7 +32,7 @@ export default function Nav (props) {
   const { state, query } = useStoreContext()
   return (
     <nav className='navbar navbar-expand-lg navbar-light'>
-      <Link to='/' className='navbar-brand'>2100</Link>
+      <Link to='/' className='navbar-brand'><Logo /></Link>
       <button
       className='navbar-toggler'
       type='button'
