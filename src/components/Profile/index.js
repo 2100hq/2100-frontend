@@ -9,7 +9,19 @@ import { toDecimals } from '../../utils'
 import { Redirect }  from 'react-router-dom'
 import { useStoreContext } from '../../contexts/Store'
 import { Button, Form, Col, Row, Card } from 'react-bootstrap'
+import Confetti from 'react-confetti'
 import './style.scss'
+
+function NewUserWelcome({clearNewUser}){
+  const [showConfetti, setShowConfetti] = useState(true)
+
+  useEffect(()=>{
+    if (showConfetti) return
+    clearNewUser()
+  },[showConfetti])
+
+  return <Confetti numberOfPieces={200} recycle={false} onConfettiComplete={() => setShowConfetti(false)} />
+}
 
 function Description({description, token, isMyToken}){
   const { state, dispatch, actions } = useStoreContext()
@@ -63,7 +75,12 @@ Loading states
   3: connected to the network, data, found token
 */
 
-export default function Profile ({match}) {
+export default function Profile (props) {
+
+  const { match } = props
+  const isNewUser = props.location.state && props.location.state.newuser
+  const clearNewUser = () => props.history.replace({ state: {} })
+
   const [loadingState, setLoadingState] = useState(0)
 
   const { query } = useStoreContext()
@@ -100,6 +117,7 @@ export default function Profile ({match}) {
 
   return (
   <div className='profile'>
+    {isNewUser && <NewUserWelcome clearNewUser={clearNewUser}/>}
     <Link className='close-link' to='/'><i class="fas fa-times-circle"></i></Link>
     <div className='profile-header row align-items-center justify-content-center'>
       <div className='col-auto'>
