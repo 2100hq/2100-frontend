@@ -78,7 +78,7 @@ export default function StoreProvider ({ children }) {
   }, [web3.active, web3.account])
 
   // add contract with signer to private state
-  useEffect(() => {
+/*  useEffect(() => {
     if (get(privState, 'config.contracts.dai')) return // already inited dai
     if (!web3.library) return // no library to fetch data from the blockchain
     const signer = web3.account
@@ -94,10 +94,10 @@ export default function StoreProvider ({ children }) {
       const dai = new ethers.Contract(address, ERC20.abi, signer)
       dispatch(actions.update(['config', 'contracts'], { controller, dai }))
     })
-  }, [web3.library, web3.account])
+  }, [web3.library, web3.account])*/
 
   // add DAI balance to private state on new blocks and signing in
-  useEffect(() => {
+/*  useEffect(() => {
     const { dai, controller } = Selectors(privState)
     if (!dai || !dai.contract || !privState.private.isSignedIn) return
     if (dai.wallet.latestBlock === privState.public.latestBlock.number) return
@@ -125,7 +125,7 @@ export default function StoreProvider ({ children }) {
     privState.private.isSignedIn,
     privState.config.contracts
   ])
-
+*/
   const isUnlocked = get(privState,'web3.isUnlocked', false)
   const isAuthenticated = get(privState, 'private.me')
 

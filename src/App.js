@@ -5,7 +5,7 @@ import Main from './components/Main'
 import Portfolio from './components/Portfolio'
 import Profile from './components/Profile'
 import Nav from './components/Nav'
-import Wallet from './components/Wallet'
+// import Wallet from './components/Wallet'
 import Alerts from './components/Alerts'
 import ErrorModal from './components/ErrorModal'
 import Manage from './components/Manage'
@@ -23,7 +23,7 @@ class App extends Component {
           <div className='container-fluid'>
             <Switch>
               <Route path='/portfolio' exact component={Portfolio} />
-              <Route path='/wallet' exact component={Wallet} />
+              {/*<Route path='/wallet' exact component={Wallet} />*/}
               <Route path='/manage' exact component={Manage} />
               <Route path='/admin' exact component={Admin} />
               <Route component={Main} />

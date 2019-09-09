@@ -143,16 +143,16 @@ function selectContracts (state) {
   controller.balances = controllerBalances(state, controller)
 
   const dai = {}
-  dai.contract = get(state, 'config.contracts.dai')
-  dai.address = (dai.contract || {}).address
-  dai.walletPath = [
-    'private',
-    'myWallets',
-    'available',
-    (dai.contract || {}).address
-  ]
-  dai.wallet = get(state, dai.walletPath, {})
-  dai.balances = daiBalances(state, dai)
+  // dai.contract = get(state, 'config.contracts.dai')
+  // dai.address = (dai.contract || {}).address
+  // dai.walletPath = [
+  //   'private',
+  //   'myWallets',
+  //   'available',
+  //   (dai.contract || {}).address
+  // ]
+  // dai.wallet = get(state, dai.walletPath, {})
+  // dai.balances = daiBalances(state, dai)
   return { dai, controller }
 }
 

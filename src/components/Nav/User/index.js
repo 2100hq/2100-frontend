@@ -4,15 +4,17 @@ import { useStoreContext } from '../../../contexts/Store'
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon'
 import './style.scss'
 import Dropdown from 'react-bootstrap/Dropdown'
-import { BN, toDecimals, daiAddress, balances } from '../../../utils'
+import { BN, toDecimals } from '../../../utils'
 import { get } from 'lodash'
 function Balances ({ state }) {
   if (!state.private || !state.private.me) return null
-  const { available, total } = balances(state)
+  const { total } = state.controller.balances
   return (
-    <Link className='nav-link slide-left' to='/wallet'>
+    <div className='nav-link slide-left'>
+    {/* wallet no more <Link className='nav-link slide-left' to='/wallet'>*/}
       <img className='dai-logo' src='../img/dai.png' /> {toDecimals(total)}
-    </Link>
+    {/*</Link>*/}
+    </div>
   )
 }
 
@@ -69,9 +71,9 @@ function SignedIn () {
         </Dropdown.Toggle>
         <Wave />
         <Dropdown.Menu>
-          <Link className='dropdown-item' to='/wallet'>
+          {/*<Link className='dropdown-item' to='/wallet'>
             Wallet
-          </Link>
+          </Link>*/}
           {
             !hasToken && (
               <Link className='dropdown-item' to='/manage'>

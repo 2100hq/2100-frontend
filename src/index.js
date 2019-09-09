@@ -9,8 +9,9 @@ import SocketProvider from './contexts/Socket'
 import StoreProvider from './contexts/Store'
 import FollowMeProvider from './contexts/FollowMe'
 
+const supportedNetworks = process.env.REACT_APP_NETWORK_ID === '*' ? undefined: [Number(process.env.REACT_APP_NETWORK_ID)]
 const MetaMask = new Connectors.InjectedConnector({
-  supportedNetworks: [Number(process.env.REACT_APP_NETWORK_ID)]
+  supportedNetworks
 })
 
 ReactDOM.render(
