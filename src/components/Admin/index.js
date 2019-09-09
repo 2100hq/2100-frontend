@@ -48,8 +48,6 @@ export default function Admin () {
     </li>
   )
 
-  console.log(nav)
-
   return (
     <div className='row'>
       <div className='col-md-5'>
