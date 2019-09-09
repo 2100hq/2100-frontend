@@ -14,7 +14,7 @@ import { extractUsernameAndMessageIdFromLocation,extractMessageIdFromUsernameRou
 function Main({location}){
   const {username, messageid} = extractUsernameAndMessageIdFromLocation(location)
   return (
-
+    <>  
     <div className='container-fluid'>
       <Row className='main'>
         <Col className='discover'>
@@ -49,6 +49,7 @@ function Main({location}){
         </Col>
       </Row>
     </div>
+    </>
   )
 }
 
