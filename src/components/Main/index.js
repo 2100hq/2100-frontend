@@ -45,7 +45,7 @@ function Main({location}){
             </Row>
         </Col>
         <Col md='1' className='feed'>
-          <Feed />
+          {/*<Feed />*/}
         </Col>
       </Row>
     </>
