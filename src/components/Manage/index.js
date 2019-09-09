@@ -2,10 +2,11 @@ import React, { useState, useEffect } from 'react'
 import { Redirect } from 'react-router-dom'
 import { Button, Form } from 'react-bootstrap'
 import { useStoreContext } from '../../contexts/Store'
+import {get} from 'lodash'
 import './style.scss'
 
 function content2100(publicAddress){
-  return `Add me @2100hq: ${publicAddress}`
+  return `Add me to @2100hq using the Ethereum address ${publicAddress}`
 }
 
 function contentHumanityDAO(publicAddress){
@@ -27,7 +28,7 @@ function StepOne({gotoStep, publicAddress, setTweetType}){
     <div className='start'>
       <h5>Get on the leaderboard</h5>
       <p>
-        Tweet to link your Twitter username to your Ethereum address
+        Tweet this to claim your username
       </p>
       <div>
         <div className='tweet-content'>{tweet}</div>
@@ -45,14 +46,54 @@ function StepOne({gotoStep, publicAddress, setTweetType}){
   )
 }
 
-function StepTwo({gotoStep, publicAddress, tweetType}){
+function StepTwo({gotoStep, publicAddress,tweetType}){
+  const { state, query, dispatch, actions } = useStoreContext()
+  const [link, setLink] = useState()
+  const [isSubmitting, setIsSubmitting] = useState(false)
+  const [commandId, setCommandId] = useState()
+  const [verifiedName, setVerifiedName] = useState(false)
+  const myCommand = commandId
+    ? get(state, `private.myCommands.${commandId}`)
+    : { done: false }
+
+  useEffect(() => {
+    if (commandId == null) {
+      return
+    }
+    if (!myCommand.done) return
+
+    setCommandId(null)
+    setVerifiedName(myCommand.name)
+    setIsSubmitting(false)
+  }, [myCommand, commandId])
+
+
+  const isDisabled = !/^https:\/\/twitter\.com\/\w+\/status\/\d+/i.test(link || '') || isSubmitting
+  async function handleSubmit(){
+    setIsSubmitting(true)
+    const resp = await dispatch(actions.verifyTwitter({link, tweetType}))
+    console.log('verifyTweet', resp)
+    if (resp) {
+      setCommandId(resp.id)
+    } else {
+      setIsSubmitting(false)
+    }
+
+  }
+  function handleInput(e){
+    setLink(e.target.value)
+  }
+
+  if (verifiedName) return <Redirect to={{pathname: `/$${verifiedName}`, state: { newuser: true }}} />
+
   return (
     <div className='verify'>
-    <h5>Verify your Tweet</h5>
-    <p className="match-text">Must match "<span>{ tweetType === '2100' ? content2100(publicAddress) : contentHumanityDAO(publicAddress)}</span>"</p>
-    <Form.Control as="input" plaintext inline placeholder="https://twitter.com/me/status/123"/>
-    <Button>Verify</Button>
+    <h5>Link your username</h5>
+    <p>Paste a link to your tweet.</p>
+    <Form.Control as="input" plaintext inline placeholder="https://twitter.com/me/status/123" onChange={handleInput}/>
+    <Button onClick={handleSubmit} disabled={isDisabled}>Submit{isSubmitting && 'ting'}</Button>
     <div>
+      <p className='small text-muted'>Your tweet must match "<span className='match-text'>{ tweetType === '2100' ? content2100(publicAddress) : contentHumanityDAO(publicAddress)}</span>"</p>
       <a href="#" className="small text-muted" onClick={ e => {e.preventDefault(); gotoStep(1)}}><i className="fas fa-undo-alt text-muted"></i> I didn't tweeted this</a>
     </div>
     </div>
@@ -64,8 +105,8 @@ function StepThree({gotoStep, publicAddress, dispatch, actions}){
 }
 
 export default function Manage (props) {
+  const { state, query } = useStoreContext()
   const [username, setUsername] = useState()
-  const { state, query, dispatch, actions } = useStoreContext()
   const [tweetType, setTweetType] = useState('2100')
   const [step, setStep] = useState(1)
   if (!state.private.isSignedIn) return <Redirect to={{
@@ -90,7 +131,7 @@ export default function Manage (props) {
       <div className=''>
         <div className='card create-token'>
           <div className='card-body'>
-            {steps[step]({publicAddress, gotoStep,dispatch, actions, setTweetType, tweetType})}
+            {steps[step]({publicAddress, gotoStep, setTweetType, tweetType})}
           </div>
         </div>
       </div>
