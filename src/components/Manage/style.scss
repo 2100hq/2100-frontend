@@ -1,7 +1,35 @@
-.tweet-content{
-  padding: 1rem;
-  margin: 1rem 0;
+.card.create-token {
+  border: inherit !important;
+  .tweet-content, input{
+    padding: 1rem;
+    margin: 1rem 0;
+    display: inline-block;
+    border: 1px solid lightblue;
+    border-radius: 3px;
+    margin-right: 1rem;
+  }
+  i+a,img+a{
+    margin-left: 0.5rem;
+  }
 
-  border: 1px solid lightblue;
-  border-radius: 3px;
+  input {
+    line-height: 1rem;
+    width: 25rem;
+  }
+
+  .already {
+    div {
+      display: inline-block;
+    }
+    div+div{
+      margin-left: 1rem;
+    }
+    .humanitydao-logo {
+      width: 16px;
+    }
+  }
+
+  .match-text {
+    // border-bottom: 1px solid lightblue;
+  }
 }

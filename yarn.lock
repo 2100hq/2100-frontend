@@ -12025,6 +12025,13 @@ react-bootstrap@1.0.0-beta.10:
     uncontrollable "^7.0.0"
     warning "^4.0.3"
 
+react-confetti@^4.0.1:
+  version "4.0.1"
+  resolved "https://registry.yarnpkg.com/react-confetti/-/react-confetti-4.0.1.tgz#f9e76b198ce02f1c13809a1d1ec1bc92f5450dde"
+  integrity sha512-uQrb1Q4p8Wg3xyxSGtsIxdd+hOd3jRNpVq5qET6m9B+fihsjF7mHbMngoiziya3DZtstaqCBPpTcyByXLu8CnQ==
+  dependencies:
+    tween-functions "^1.2.0"
+
 react-context-toolbox@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/react-context-toolbox/-/react-context-toolbox-2.0.2.tgz#35637287cb23f801e6ed802c2bb7a97e1f04e3fb"
@@ -14376,6 +14383,11 @@ tunnel-agent@^0.6.0:
   integrity sha1-J6XeoGs2sEoKmWZ3SykIaPD8QP0=
   dependencies:
     safe-buffer "^5.0.1"
+
+tween-functions@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/tween-functions/-/tween-functions-1.2.0.tgz#1ae3a50e7c60bb3def774eac707acbca73bbc3ff"
+  integrity sha1-GuOlDnxguz3vd06scHrLynO7w/8=
 
 tweetnacl-util@^0.15.0:
   version "0.15.0"
