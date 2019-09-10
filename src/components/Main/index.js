@@ -15,7 +15,7 @@ function Main({location}){
   const {username, messageid} = extractUsernameAndMessageIdFromLocation(location)
   return (
     <>
-      {/*<Onboarding />*/}
+      <Onboarding />
       <Row className='main'>
         <Col className='discover'>
           <Row>
