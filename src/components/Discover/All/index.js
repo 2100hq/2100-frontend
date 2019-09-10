@@ -23,6 +23,13 @@ function CountUp ({balance, decimals = 5}) {
   return (countUp)
 }
 
+function Crown({token}){
+  if (token.rank == 1){
+     return <i className='fas fa-crown' style={{color: 'orange'}}/>
+  } else {
+    return null
+  }
+}
 
 function Row ({ token, myToken, currentUsername }) {
   const prevTotalStakeRef = useRef(token.totalStakes)
@@ -57,26 +64,24 @@ function Row ({ token, myToken, currentUsername }) {
   return (
 
 <div className={"row asset-row align-items-center"+selected}>
-  <div className="col-md-1">
-      <span className={'rank rank'+token.rank}>{token.rank}</span>
+  <div className="col-md-1" style={{textAlign: 'center'}}>
+    <Crown token={token}/>
+    <span className={'rank rank'+token.rank}>{token.rank}</span>
   </div>
-  <div className="col-md-4">
+  <div className="col-md-5">
       <Link to={`/$${token.name}`}>
         <ProfileImage token={token} />
-        <span style={{fontWeight: 'bold'}} to={`/$${token.name}`}>${token.name}</span>
+        <span style={{fontWeight: 'bold'}} to={`/$${token.name}`}>${token.name}</span> <span className='small'><CountUp balance={toDecimals(token.totalStakes)} decimals={2} /></span>
       </Link>
   </div>
   <div className="col-md-2">
-    <span style={{position: 'relative'}}>
-      { stakeArrowDirection && <i className={`fas fa-arrow-${stakeArrowDirection} stake-arrow`}></i> }
-      <CountUp balance={toDecimals(token.totalStakes)} decimals={2} />
-    </span>
-  </div>
-  <div className="col-md-3">
       <Allocator token={token} />
   </div>
   <div className="col-md-2">
-    <div><CountUp balance={toDecimals(token.balances.available,5)} /></div>
+      <span> { <span><CountUp balance={earning} decimals={6} /></span> }</span>
+  </div>
+  <div className="col-md-2">
+    <div><CountUp  balance={toDecimals(token.balances.available,5)} /></div>
   </div>
 </div>
   )
@@ -96,9 +101,9 @@ function All({tokens = {}, location, myToken}){
     <div className="asset-table">
       <div className="row heading-row text-muted">
         <div className="col-md-1">#</div>
-        <div className="col-md-4">User</div>
-        <div className="col-md-2" style={{position: 'relative', left: '-1rem'}}><img src='../img/dai.png' style={{ width: '14px','vertical-align': 'baseline' }} /> Staking</div>
-        <div className="col-md-3">My Stake</div>
+        <div className="col-md-5">User</div>
+        <div className="col-md-2">My Stake</div>
+        <div className="col-md-2">Per Block</div>
         <div className="col-md-2">Balance</div>
       </div>
       {rows}

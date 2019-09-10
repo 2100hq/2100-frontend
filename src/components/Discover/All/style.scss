@@ -13,24 +13,8 @@
   }
 
   span.rank{
-   display: inline-block;
-   border-radius: 50%;
-   width: 2rem;
-   height: 2rem;
-   line-height: 2rem;
-   text-align: center;
    font-weight: bold;
-	  // &.rank1{
-	  // 	background-color: #DD5933;
-	  // }
-
-	  // &.rank2{
-	  // 	background-color: #28357F;
-	  // }
-
-	  // &.rank3{
-	  // 	background-color: #24171D;
-	  // }
+   font-size: 1.2rem;
   }
 
   .heading-row{
