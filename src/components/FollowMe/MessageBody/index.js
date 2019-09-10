@@ -19,7 +19,7 @@ function InvisibleSubtext({name, token, message, isSignedIn, actions}){
   */
   const [decoding, setDecoding] = useState(false)
 
-  if (!isSignedIn) return <span>hold <span style={{fontWeight: 'bold'}}>{toDecimals(message.threshold,3,0)} ${name} </span>to decode</span>
+  if (!isSignedIn) return <span><i className='fas fa-lock' /> hold <span style={{fontWeight: 'bold'}}>{toDecimals(message.threshold,3,0)} ${name} </span>to decode</span>
 
   const available = get(token, 'balances.available', "0")
   const diff = BigNumber(message.threshold).minus(available)
@@ -45,13 +45,13 @@ function InvisibleSubtext({name, token, message, isSignedIn, actions}){
 
 
 
-  if (diff.gt(0) && isStaking) return <span>getting {toDecimals(diff, 3, 0)} <span className='token-name'>{name}</span> {timeToDecode}</span>
+  if (diff.gt(0) && isStaking) return <span><i class="fas fa-asterisk"></i> getting {toDecimals(diff, 3, 0)} <span className='token-name'>{name}</span> {timeToDecode}</span>
 
-  if (decoding) return <span>decoding...</span>
+  if (decoding) return <span><i class="fas fa-exclamation"></i> decoding...</span>
 
-  if (diff.lte(0)) return <span>you have enough <span className='token-name'>{name}</span> to <a href="#" onClick={handleClick}>decode</a></span>
+  if (diff.lte(0)) return <span><i class="fas fa-exclamation"></i> you have enough <span className='token-name'>{name}</span> to <a href="#" onClick={handleClick}>decode</a></span>
 
-  if (!isStaking) return <span>hold {toDecimals(message.threshold,3,0)} <span className='token-name'>{name} to see</span></span>
+  if (!isStaking) return <span><i className='fas fa-lock' /> hold {toDecimals(message.threshold,3,0)} <span className='token-name'>{name} to see</span></span>
 }
 
 function HiddenMessage({message}){
@@ -141,7 +141,7 @@ function getHintLocation(message){
 
 export default function MessagageBody({message, token, isSignedIn, actions}){
   const name = token.name || 'unknown'
-  const hiddentext = message.hidden ? <div className='hidden-text'><i className='fas fa-lock' /> <InvisibleSubtext name={name} token={token} message={message} isSignedIn={isSignedIn} actions={actions} /></div> : null
+  const hiddentext = message.hidden ? <div className='hidden-text'><InvisibleSubtext name={name} token={token} message={message} isSignedIn={isSignedIn} actions={actions} /></div> : null
   const text = message.hidden ? <HiddenMessage message={message}/> : <VisibleMessage message={message} />
   return (
     <>
