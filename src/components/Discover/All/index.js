@@ -24,7 +24,7 @@ function CountUp ({balance, decimals = 5}) {
 }
 
 
-function Row ({ rank, token, myToken, currentUsername }) {
+function Row ({ token, myToken, currentUsername }) {
   const prevTotalStakeRef = useRef(token.totalStakes)
   const [stakeArrowDirection, setStakeArrowDirection]=useState(null)
   let earning = null
@@ -58,7 +58,7 @@ function Row ({ rank, token, myToken, currentUsername }) {
 
 <div className={"row asset-row align-items-center"+selected}>
   <div className="col-md-5">
-      {rank}
+      {token.rank}
       <Link to={`/$${token.name}`}>
         <ProfileImage token={token} />
         <span style={{fontWeight: 'bold'}} to={`/$${token.name}`}>${token.name}</span>
@@ -85,7 +85,6 @@ function All({tokens = {}, location, myToken}){
   const {username} = extractUsernameAndMessageIdFromLocation(location)
   const rows = Object.values(tokens).map((token, i) => (
     <Row
-      rank={i + 1}
       token={token}
       myToken={myToken}
       key={token.name}

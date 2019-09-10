@@ -36,7 +36,7 @@ function getStakeLevels (state) {
 }
 
 function selectActive (state) {
-  const active = get(state, ['public', 'tokens', 'active'], {})
+  let active = Object.values(get(state, ['public', 'tokens', 'active'], {}))
 
   const allStakes = get(state, ['public', 'stakes'], {})
   const myStakes = get(state, ['private', 'myStakes'], {})
@@ -45,7 +45,7 @@ function selectActive (state) {
   // console.log();
   // console.log('stakeLevels', stakeLevels);
 
-  Object.values(active).forEach(token => {
+  active.forEach(token => {
     token.stakes = get(allStakes, token.id, {})
     token.totalStakes = Object.values(token.stakes).reduce((sum, stake) => {
       return sum.add(BN(stake))
@@ -58,14 +58,18 @@ function selectActive (state) {
     }
   })
 
+  active = active.sort( (a, b) => BN(a.totalStakes).gt(b.totalStakes) ? -1 : 1)
+
+  active.forEach( (token,i) => token.rank = i + 1)
+
   return keyBy(active, 'name')
 }
 
 function selectTokens (state) {
   const active = selectActive(state)
-  const pending = selectPending(state)
-  const tokens = { ...pending, ...active }
-  return { tokens }
+  // const pending = selectPending(state)
+  // const tokens = { ...pending, ...active }
+  return { tokens: active }
 }
 
 function getControllerContract (state) {
