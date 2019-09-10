@@ -1,5 +1,6 @@
 import React from 'react';
-import {Modal,Button,Col,Row} from 'react-bootstrap';
+import {Modal,Button,Col,Row,Carousel} from 'react-bootstrap';
+import ProfileImage from '../ProfileImage';
 import './style.scss';
 
 function HiddenMessageExample(){
@@ -15,6 +16,84 @@ function HiddenMessageExample(){
   )
 }
 
+function OnboardingTwitterProfile({token}){
+  return(
+  <div style={{
+    width: '5rem', 
+    textAlign: 'center', 
+    fontWeight: 'bold',
+    marginRight: '1rem'
+  }}>
+    <ProfileImage token={token} style={{width: '5rem'}} />
+    <div>2100</div>
+  </div>
+  )
+}
+
+function Section1(){
+  return(
+      <div className='section section1'>
+      <Row>
+        <Col md='12'><img src='img/logo3.png' /></Col>
+      </Row>
+      <Row>
+        <Col md='12'>
+          <h3>Welcome to 2100</h3>
+        </Col>
+      </Row>
+      </div>
+    )
+}
+
+function Section2(){
+  return(
+          <div className='section section2'>
+            <Row>
+              <Col md='2'>
+                <OnboardingTwitterProfile token={'benjmnr'}/>
+              </Col>
+              <Col md='2'>
+                <OnboardingTwitterProfile token={'brttb'}/>
+              </Col>
+              <Col md='2'>
+                <OnboardingTwitterProfile token={'vitalikbuterin'}/>
+              </Col>
+              <Col md='2'>
+                <OnboardingTwitterProfile token={'bwertz'}/>
+              </Col>
+              <Col md='2'>
+                <OnboardingTwitterProfile token={'angelatytran'}/>
+              </Col>
+              <Col md='2'>
+                <OnboardingTwitterProfile token={'brttb'}/>
+              </Col>
+            </Row>
+            <Row>
+              <Col md='12'>
+                <h3>Your Twitter account has 2100 tokens</h3>
+              </Col>
+            </Row>
+          </div>
+    )
+}
+
+function Section3(){
+  return(
+      <div className='section section3'>
+        <Row>
+          <Col md='12'>
+            <img src='img/group-stake.png' style={{width: '33%'}}/>
+          </Col>
+        </Row>
+        <Row>
+          <Col md='12'>
+            <h3>Others stake DAI to earn your tokens because...</h3>
+          </Col>
+        </Row>
+      </div>
+    )
+}
+
 export default function Onboarding(){
     return (
       <Modal
@@ -24,23 +103,19 @@ export default function Onboarding(){
       >
         <Modal.Body>
         <div className='container'>
-          <Row>
-            <Col md='8'>
-            <div className='section section1'>
-              <img src='img/logo3.png' />
-              <h1>Welcome to 2100_</h1>
-            </div>
-            <div className='section section2'>
-              <h4>How it works</h4>
-              <ol>
-                <li>Every Twitter account has 2100 tokens</li>
-                <li>Others stake DAI to earn your tokens because...</li>
-                <li>You post hidden messages that only your token holders can see!</li>
-              </ol>
-            </div>
-            <div className='section section3'>
+          <Row className='onboarding-body'>
+            <Col md='12'>
+              <Section1 />
+              <Section2 />
+              <Section3 />
+{/*            
+            <Section2 />*/}
+{/*            <Section3 />*/}
+
+
+           {/* <div className='section section3'>
               <h4>Let's try it out</h4>
-              <p>Below is a hidden message from $vitalik. Add some stake and earn enough $vitalik to reveal the message.</p>
+              <p>Below is a hidden message from <span>$vitalik</span>. <br/>Add some stake and earn enough $vitalik to reveal the message.</p>
               <div>
                 <img src='../img/dai.png' style={{ width: '14px','vertical-align': 'baseline' }} /> 
                 10 DAI 
@@ -53,8 +128,8 @@ export default function Onboarding(){
             <h4>Great job!</h4>
             <p>You're such an efficient capital allocator that we've credited 10 testnet DAI to your account.</p>
             <a href='/'>Sign in with Metamask</a>
-            <p>and be among the first to experience 2100.</p>
-            </div>
+            <p>to claim it and be among the first to experience 2100.</p>
+            </div>*/}
             </Col>
           </Row>
         </div>

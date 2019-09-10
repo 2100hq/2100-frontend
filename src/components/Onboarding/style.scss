@@ -1,24 +1,23 @@
 
 .onboarding{
+
+	.onboarding-body{
+		text-align: center;
+	}
+
+
 	font-size: 1.2rem;
 
 	a{
 		font-weight: bold;
 	}
 
-	ol{
-		padding-left: 1.5rem;
-
-		li{
-			margin-top: 0.5rem;
-		}
-	}
-
-	h4{
-		margin-bottom: 1.5rem;
+	h3{
+		margin-top: 3rem;
 	}
 	.section{
-		margin: 4rem 0;
+		padding: 4rem 0;
+		border-bottom: 1px solid #eee;
 	}
 
 	.modal{
