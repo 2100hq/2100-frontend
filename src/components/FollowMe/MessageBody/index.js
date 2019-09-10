@@ -62,14 +62,12 @@ function HiddenMessage({message}){
     <div className='hidden-message-block'>
         <div className='pretend-encryption'>
         {id} {id}
-      </div>
-
+        </div>
     </div>
   )
 }
 
 function MessageIcon({message}){
-  if (!message.hidden) return null
   switch(message.type) {
     case 'image':
       return <i className={'fas fa-image'} />
@@ -148,7 +146,7 @@ export default function MessagageBody({message, token, isSignedIn, actions}){
       <Col md="1">
         <MessageIcon message={message} />
       </Col>
-      <Col>
+      <Col md="10">
         <div className='message-target'>{text}</div>
         {hiddentext}
         {message.hint && <div className='message-hint'>hint: {message.hint}</div>}
