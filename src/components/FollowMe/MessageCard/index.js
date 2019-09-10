@@ -33,7 +33,7 @@ function ago(past){
   return ms(elapsed)
 }
 
-export default function MessageCard({message, myToken, token, isSignedIn, actions}){
+export default function MessageCard({message, myToken, token, isSignedIn, actions, canCopyUrl=true, canLinkToProfile=true}){
   const [destroyCountDown, setDestroyCountDown] = useState(null)
   const [copied, setCopied] = useState(null)
 
@@ -76,25 +76,27 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
         </Col>
         <Col>
           <span className='token-name large'>
-            <Link to={`/$${token.name}`}>{token.name}</Link>
+            { canLinkToProfile ? <Link to={`/$${token.name}`}>{token.name}</Link> : token.name }
             <span className='message-time text-muted'>
-              <Link to={messageUrl}>{ago(message.created)}</Link>
+              { canLinkToProfile ? <Link to={messageUrl}>{ago(message.created)}</Link> : ago(message.created) }
             </span>
           </span>
         </Col>
       </Row>
       <Row className='message-body'>
-        <MessageBody {...{message, myToken, token, isSignedIn, actions}} />
+        <MessageBody {...{message, myToken, token, isSignedIn, actions, canLinkToProfile}} />
       </Row>
       <Row  className='message-footer small'>
         <Col md="1" />
         <Col>
           <hr />
           <HoldersProfiles prefix='' suffix=' can decode' noholderstext="Be the first to see" holders={message.recipients || message.recipientcount} noholders/>
-        <CopyToClipboard text={window.location.origin + messageUrl}
-          onCopy={() => setCopied(true)}>
-          <div className="small message-copy-url"><i className="fas fa-link"></i><span>{copied ? 'Copied!' : 'Copy link'}</span></div>
-        </CopyToClipboard>
+        {canCopyUrl && (
+          <CopyToClipboard text={window.location.origin + messageUrl}
+            onCopy={() => setCopied(true)}>
+            <div className="small message-copy-url"><i className="fas fa-link"></i><span>{copied ? 'Copied!' : 'Copy link'}</span></div>
+          </CopyToClipboard>
+        )}
         </Col>
       </Row>
     </div>
