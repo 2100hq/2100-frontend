@@ -10,6 +10,30 @@ import { Row, Col } from 'react-bootstrap'
 import './style.scss'
 const nodeURL = require('url');
 
+function CharReveal({encrypted,decrypted, reveal}){
+  const [step, setStep] = useState(0)
+
+  const [intervalId, setIntervalId] = useState()
+  const [randStart] = useState(Math.floor(Math.random()*100))
+  const nextStepTimeout = 0
+  useEffect( () => {
+    if (!reveal) return
+    if (step >= 2) return
+    if (step === 0) {
+      setTimeout(setStep,randStart,step+1)
+      return
+    }
+    setTimeout(setStep,nextStepTimeout,step+1)
+    return
+  },[reveal, step])
+  return (
+    <span className={`char-reveal step-${step}`}>
+      <span className='decrypted'>{decrypted}</span>
+      <span className='encrypted'>{encrypted}</span>
+    </span>
+  )
+}
+
 function InvisibleSubtext({name, token, message, isSignedIn, actions}){
   /* 4 states
    - Not signed in
@@ -55,15 +79,21 @@ function InvisibleSubtext({name, token, message, isSignedIn, actions}){
 }
 
 function HiddenMessage({message}){
-
-  const id = message.id.replace(/-/g,'').toUpperCase().split('').map( c => <span className={`char-${c}`}>{c} </span>)
-
+  const id = message.id.replace(/-/g,'').toUpperCase().split('')
+  const idLength = id.length
+  let encrypted = []
+  message.message.split('').forEach( (char, i) => {
+    const j = i % idLength
+    if (/\S/.test(char)){
+      char = <CharReveal decrypted={char} encrypted={id[j]} reveal={!message.hidden} key={i} />
+    }
+      encrypted.push(<span key={i}>{char}</span>)
+  })
   return(
     <div className='hidden-message-block'>
         <div className='pretend-encryption'>
-        {id} {id}
+        {encrypted}
       </div>
-
     </div>
   )
 }
@@ -125,7 +155,7 @@ function VisibleMessage({message}){
     case 'imgur':
       return <VisibleMessageVideo message={message} />
     default:
-      return <Linkify>{message.message}</Linkify>
+      return <HiddenMessage message={message} />
   }
 }
 
@@ -142,7 +172,7 @@ function getHintLocation(message){
 export default function MessagageBody({message, token, isSignedIn, actions}){
   const name = token.name || 'unknown'
   const hiddentext = message.hidden ? <div className='hidden-text'><InvisibleSubtext name={name} token={token} message={message} isSignedIn={isSignedIn} actions={actions} /></div> : null
-  const text = message.hidden ? <HiddenMessage message={message}/> : <VisibleMessage message={message} />
+  const text = message.hidden ? <HiddenMessage message={message} key={'hidden'+message.id}/> : <VisibleMessage message={message} key={'visible'+message.id}/>
   return (
     <>
       <Col md="1">
