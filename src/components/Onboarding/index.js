@@ -1,6 +1,7 @@
 import React from 'react';
 import {Modal,Button,Col,Row,Carousel} from 'react-bootstrap';
 import ProfileImage from '../ProfileImage';
+import MessageCard from '../FollowMe/MessageCard';
 import './style.scss';
 
 function HiddenMessageExample(){
@@ -19,8 +20,8 @@ function HiddenMessageExample(){
 function OnboardingTwitterProfile({token}){
   return(
   <div style={{
-    width: '5rem', 
-    textAlign: 'center', 
+    width: '5rem',
+    textAlign: 'center',
     fontWeight: 'bold',
     marginRight: '1rem'
   }}>
@@ -96,8 +97,56 @@ function Section3(){
     )
 }
 
+const onehour = 1000*60*60
+const cardData = [
+  {
+    message: {
+      type: 'text',
+      created: Date.now()-(2*onehour),
+      threshold: 0.02*10**18,
+      id: '2b13855d-f2ea-410b-afda-f379b3f081d6',
+      hidden: true
+    },
+    token: {
+      name: 'benjmnr'
+    },
+  },
+  {
+    message: {
+      type: 'text',
+      created: Date.now()-onehour/2,
+      threshold:0.3*10**18,
+      id: 'ce0131a8-968b-45df-8a2b-edb367034837',
+      hidden: true
+    },
+    token: {
+      name: 'bwertz'
+    },
+  },
+  {
+    message: {
+      type: 'text',
+      created: Date.now()-(12*onehour),
+      threshold:1*10**18,
+      id: 'ea545242-779c-4733-b520-688b018ea55e',
+      hidden: true
+    },
+    token: {
+      name: 'angelatytran'
+    },
+  }
+]
 
 function Section4(){
+  const fakeCards = cardData.map( props => {
+    return (
+      <Col md='4'>
+        <Row>
+          <MessageCard {...props} canCopyUrl={false} canLinkToProfile={false}/>
+        </Row>
+      </Col>
+    )
+  })
   return(
       <div className='section section4'>
         <Row>
@@ -106,21 +155,7 @@ function Section4(){
           </Col>
         </Row>
         <Row>
-          <Col md='4'>
-            <HiddenMessageExample />
-            <div className='mt-1 small'><em>hint: a haiku about Devcon</em></div>
-            <h5 className='mt-3'>0.0005 $brttb to decode</h5>
-          </Col>
-          <Col md='4'>
-            <HiddenMessageExample />
-            <div className='mt-1 small'><em>hint: The 10 coolest things in Osaka</em></div>
-            <h5 className='mt-3'>0.5 $brttb to decode</h5>
-          </Col>
-          <Col md='4'>
-            <HiddenMessageExample />
-            <div className='mt-1 small'><em>hint: private key for a rare Cryptokitty</em></div>
-            <h5 className='mt-3'>5 $brttb to decode</h5>
-          </Col>
+          {fakeCards}
         </Row>
         <Row>
           <Col>
@@ -146,7 +181,7 @@ export default function Onboarding(){
               <Section2 />
               <Section3 />
               <Section4 />
-{/*            
+{/*
             <Section2 />*/}
 {/*            <Section3 />*/}
 
@@ -155,8 +190,8 @@ export default function Onboarding(){
               <h4>Let's try it out</h4>
               <p>Below is a hidden message from <span>$vitalik</span>. <br/>Add some stake and earn enough $vitalik to reveal the message.</p>
               <div>
-                <img src='../img/dai.png' style={{ width: '14px','vertical-align': 'baseline' }} /> 
-                10 DAI 
+                <img src='../img/dai.png' style={{ width: '14px','vertical-align': 'baseline' }} />
+                10 DAI
                 [][][][][][][][][]
               </div>
               <div>0 $vitalik</div>
