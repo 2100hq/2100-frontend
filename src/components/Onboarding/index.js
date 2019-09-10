@@ -49,24 +49,26 @@ function Section2(){
   return(
           <div className='section section2'>
             <Row>
-              <Col md='2'>
+              <Col md='3'></Col>
+              <Col md='1'>
                 <OnboardingTwitterProfile token={'benjmnr'}/>
               </Col>
-              <Col md='2'>
+              <Col md='1'>
                 <OnboardingTwitterProfile token={'brttb'}/>
               </Col>
-              <Col md='2'>
+              <Col md='1'>
                 <OnboardingTwitterProfile token={'vitalikbuterin'}/>
               </Col>
-              <Col md='2'>
+              <Col md='1'>
                 <OnboardingTwitterProfile token={'bwertz'}/>
               </Col>
-              <Col md='2'>
+              <Col md='1'>
                 <OnboardingTwitterProfile token={'angelatytran'}/>
               </Col>
-              <Col md='2'>
+              <Col md='1'>
                 <OnboardingTwitterProfile token={'brttb'}/>
               </Col>
+              <Col md='3'></Col>
             </Row>
             <Row>
               <Col md='12'>
@@ -82,12 +84,29 @@ function Section3(){
       <div className='section section3'>
         <Row>
           <Col md='12'>
-            <img src='img/group-stake.png' style={{width: '33%'}}/>
+            <img src='img/group-stake2.png' style={{width: '33%'}}/>
           </Col>
         </Row>
         <Row>
           <Col md='12'>
             <h3>Others stake DAI to earn your tokens because...</h3>
+          </Col>
+        </Row>
+      </div>
+    )
+}
+
+
+function Section4(){
+  return(
+      <div className='section section4'>
+        <Row>
+          <Col md='12'>
+          </Col>
+        </Row>
+        <Row>
+          <Col md='12'>
+            <h3>You post content that only <em>your</em> token holders can see!</h3>
           </Col>
         </Row>
       </div>
@@ -108,6 +127,7 @@ export default function Onboarding(){
               <Section1 />
               <Section2 />
               <Section3 />
+              <Section4 />
 {/*            
             <Section2 />*/}
 {/*            <Section3 />*/}
