@@ -1,5 +1,26 @@
 
 .onboarding{
+	font-size: 1.2rem;
+
+	a{
+		font-weight: bold;
+	}
+
+	ol{
+		padding-left: 1.5rem;
+
+		li{
+			margin-top: 0.5rem;
+		}
+	}
+
+	h4{
+		margin-bottom: 1.5rem;
+	}
+	.section{
+		margin: 4rem 0;
+	}
+
 	.modal{
 		overflow-y: hidden;
 
@@ -14,6 +35,5 @@
 		min-height: 90vh;
 		padding: 10rem;
 	}
-
 
 }
