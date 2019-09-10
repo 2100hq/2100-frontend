@@ -50,7 +50,7 @@ body{
 
 .followme{
 	box-shadow: 2px 2px 0px rgba(5px,0,0,0.05);
-	background-color: #eee;
+	background-color: rgba(0,0,0,0.03);
 	&:hover{
 		background-color:#fff;
 	}
@@ -88,7 +88,7 @@ body{
 
 .discover{
 	border-right: 1px solid #eee;
-	background-color: #eee;
+	background-color: rgba(0,0,0,0.03);
 	&:hover{
 		background-color:#fff;
 	}
