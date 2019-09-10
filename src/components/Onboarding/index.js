@@ -2,6 +2,7 @@ import React from 'react';
 import {Modal,Button,Col,Row,Carousel} from 'react-bootstrap';
 import ProfileImage from '../ProfileImage';
 import MessageCard from '../FollowMe/MessageCard';
+import FakeAllocator from './FakeAllocator'
 import './style.scss';
 
 function HiddenMessageExample(){
@@ -144,6 +145,7 @@ function Section4(){
       <Col md='4'>
         <Row>
           <MessageCard {...props} canCopyUrl={false} canLinkToProfile={false}/>
+          <FakeAllocator />
         </Row>
       </Col>
     )
