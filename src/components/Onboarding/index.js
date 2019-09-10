@@ -117,7 +117,8 @@ const cardData = [
       created: Date.now()-onehour/2,
       threshold:0.3*10**18,
       id: 'ce0131a8-968b-45df-8a2b-edb367034837',
-      hidden: true
+      hidden: true,
+      recipients: ['balajis', 'conniechan', 'benedictevans', 'xyy', 'zyz', 'zzz', 'zzzz', 'zzzzzz', 'zzz3zzz', 'zzz777z', 'zzzzz888', 'xyz', 'yyy']
     },
     token: {
       name: 'bwertz'
