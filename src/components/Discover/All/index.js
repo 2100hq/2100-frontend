@@ -57,8 +57,10 @@ function Row ({ token, myToken, currentUsername }) {
   return (
 
 <div className={"row asset-row align-items-center"+selected}>
-  <div className="col-md-5">
-      {token.rank}
+  <div className="col-md-1">
+      <span className={'rank rank'+token.rank}>{token.rank}</span>
+  </div>
+  <div className="col-md-4">
       <Link to={`/$${token.name}`}>
         <ProfileImage token={token} />
         <span style={{fontWeight: 'bold'}} to={`/$${token.name}`}>${token.name}</span>
@@ -76,7 +78,6 @@ function Row ({ token, myToken, currentUsername }) {
   <div className="col-md-2">
     <div><CountUp balance={toDecimals(token.balances.available,5)} /></div>
   </div>
-
 </div>
   )
 }
