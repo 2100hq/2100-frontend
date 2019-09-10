@@ -14,6 +14,7 @@ function Faces({addresses=[], count=3}){
   const {query} = useStoreContext()
   // look up names and mix them with address, sort by names
   const data = sortBy(addresses.map( address => {
+    if (address.indexOf('0x') !== 0) return { name: address } // treat the address as a name
     const name = query.getUserName(address)
     return {
       name,
@@ -48,7 +49,7 @@ export default function HoldersProfiles({holders, prefix, suffix, noholderstext,
 
   if (typeof holders === 'number') return <CountHolders prefix={prefix} count={holders} suffix={suffix} />
 
-  holders = holders.filter(userid => parseInt(userid) > 0) // filter out zero address
+  holders = holders.filter(userid => userid.indexOf('0x') !== 0 || parseInt(userid) > 0) // filter out zero address
   const holdersCount = holders.length
 
   if (holdersCount === 0) return noholderstext
