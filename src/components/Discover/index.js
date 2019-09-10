@@ -3,9 +3,9 @@ import { useStoreContext } from '../../contexts/Store'
 import { Redirect } from 'react-router-dom'
 import { Row, Col, Card } from 'react-bootstrap'
 import { toDecimals } from '../../utils'
-import { sortBy } from 'lodash'
+import { sortBy, get } from 'lodash'
 import All from './All'
-import Pending from './Pending'
+
 
 function Search(){
   return(
@@ -55,11 +55,15 @@ function getPendingTokens(state){
 }
 
 function getActiveTokens(state){
-  let tokens = Object.values(state.tokens || {}).filter(token => !token.pending)
-  tokens = sortBy(tokens, token => {
-    return Number(toDecimals(token.totalStakes))*-1 // token.id //
-  })
-  return tokens
+  return Object.values(state.tokens || {}).sort( (a, b) => a.rank - b.rank )
+}
+
+function getMyStakedOrHeldTokens(state){
+  return Object.values(state.tokens || {}).filter(token => {
+    const hasBalance = get(token, 'balances.available', "0") !== "0"
+    const isStaking = get(token, 'myStake', "0") !== "0"
+    return hasBalance || isStaking
+  }).sort( (a, b) => a.rank - b.rank )
 }
 
 function Badge({ text, isActive }){
@@ -77,14 +81,13 @@ function Badge({ text, isActive }){
 export default function Discover () {
   const { state, query } = useStoreContext()
   const [currentTab, setTab] = useState('All')
-  const pendingTokens = getPendingTokens(state)
 
   const tabMap = {
     All: () => <All tokens={getActiveTokens(state)} myToken={query.getMyToken()}/>,
-    Pending: () => <Pending  tokens={pendingTokens} />
+    'Holding': () => <All tokens={getMyStakedOrHeldTokens(state)} myToken={query.getMyToken()}/>
   }
-
-  const tabs = Object.keys(tabMap).map( tabName => <Tab currentTab={currentTab} tabName={tabName} setTab={setTab} key={tabName} badge={tabName === 'Pending' && pendingTokens.length} /> )
+  // badge={tabName === 'My Wallet' && `${toDecimals(state.controller.balances.used)}/${toDecimals(state.controller.balances.total)}`  }
+  const tabs = Object.keys(tabMap).map( tabName => <Tab currentTab={currentTab} tabName={tabName} setTab={setTab} key={tabName} /> )
 
   return (
     <Row>
