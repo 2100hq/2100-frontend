@@ -38,7 +38,7 @@ function Section1(){
       </Row>
       <Row>
         <Col md='12'>
-          <h3>Welcome to 2100</h3>
+          <h3 className='mt-5'>Welcome to 2100</h3>
         </Col>
       </Row>
       </div>
@@ -72,7 +72,7 @@ function Section2(){
             </Row>
             <Row>
               <Col md='12'>
-                <h3>Your Twitter account has 2100 tokens</h3>
+                <h3 className='mt-5'>Your Twitter account has 2100 tokens</h3>
               </Col>
             </Row>
           </div>
@@ -89,7 +89,7 @@ function Section3(){
         </Row>
         <Row>
           <Col md='12'>
-            <h3>Others stake DAI to earn your tokens because...</h3>
+            <h3 className='mt-5'>Others stake DAI to earn your tokens...</h3>
           </Col>
         </Row>
       </div>
@@ -102,11 +102,29 @@ function Section4(){
       <div className='section section4'>
         <Row>
           <Col md='12'>
+            <h3 className='mb-5'>Because you post content that only <em>your</em> token holders can see!</h3>
           </Col>
         </Row>
         <Row>
-          <Col md='12'>
-            <h3>You post content that only <em>your</em> token holders can see!</h3>
+          <Col md='4'>
+            <HiddenMessageExample />
+            <div className='mt-1 small'><em>hint: a haiku about Devcon</em></div>
+            <h5 className='mt-3'>0.0005 $brttb to decode</h5>
+          </Col>
+          <Col md='4'>
+            <HiddenMessageExample />
+            <div className='mt-1 small'><em>hint: The 10 coolest things in Osaka</em></div>
+            <h5 className='mt-3'>0.5 $brttb to decode</h5>
+          </Col>
+          <Col md='4'>
+            <HiddenMessageExample />
+            <div className='mt-1 small'><em>hint: private key for a rare Cryptokitty</em></div>
+            <h5 className='mt-3'>5 $brttb to decode</h5>
+          </Col>
+        </Row>
+        <Row>
+          <Col>
+            <h4 className='mt-5'><a href='/'>Let's try it out</a></h4>
           </Col>
         </Row>
       </div>
