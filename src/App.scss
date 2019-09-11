@@ -36,9 +36,6 @@ body{
 	height: 100%;
 }
 
-.main.row{
-	border-top: 1px solid #eee;
-}
 
 .followme, .discover{
 	height: 120vh;
@@ -50,7 +47,8 @@ body{
 
 .followme{
 	box-shadow: 2px 2px 0px rgba(5px,0,0,0.05);
-	background-color: rgba(0,0,0,0.02);
+	background-color: rgba(0,0,0,0.03);
+	padding-left: 0;
 	&:hover{
 		background-color:#fff;
 	}
@@ -72,15 +70,16 @@ body{
 			width: 4.5rem;
 			height: 4.5rem;
 			border-radius: 50%;
-			background-color: white;
-			border: 1px solid #eee;
+			background-color: $twentyonesecondary;
+			color:white;
 			box-shadow: 3px 3px 3px 3px rgba(0,0,0,0.3);
-			transition: all 0.4s linear;
+			transition: all 0.1s linear;
 
 
 			&:hover{
 				cursor: pointer;
-				background-color: yellow;
+				color: white;
+				background-color: $twentyoneaccent;
 			}
 		}
 	}
@@ -88,7 +87,7 @@ body{
 
 .discover{
 	border-right: 1px solid #eee;
-	background-color: rgba(0,0,0,0.02);
+	background-color: rgba(0,0,0,0.03);
 	&:hover{
 		background-color:#fff;
 	}

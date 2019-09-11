@@ -5,14 +5,37 @@
 }
 
 .my-feed,.profile-feed,.public-feed{
-  padding: 2rem;
 }
 
 .message{
-  padding: 2rem 0;
+  padding: 2rem;
   color: black;
   font-size: 1.1rem;
-  border-bottom: 1px dotted #ccc;
+  border-left: 1px solid #ccc;
+
+  &.message-type-text{
+    border-left: 3px solid $twentyoneprimary;
+
+    .content-type-hint{
+      color: $twentyoneprimary;
+    }
+  }
+
+  &.message-type-youtube{
+    border-left: 3px solid #FF0000;
+
+    .content-type-hint{
+      color: #FF0000;
+    }
+  }
+
+  &.message-type-twitter{
+    border-left: 3px solid #1da1f2;
+
+    .content-type-hint{
+      color: #1da1f2;
+    }
+  }
 
   .token-name{
     color: black;

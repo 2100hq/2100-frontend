@@ -163,7 +163,7 @@ function MessageIcon({message}){
     case 'youtube':
       return <i className={'fab fa-youtube'} />
     case 'twitter':
-      return <i className={'fas fa-twitter'} />
+      return <i className={'fab fa-twitter'} />
     default:
       return <i className={'fas fa-align-left'} />
   }
@@ -236,7 +236,7 @@ export default function MessagageBody({message, token, isSignedIn, actions}){
   const text = message.hidden ? <HiddenMessage message={message} key={'hidden'+message.id}/> : <VisibleMessage message={message} key={'visible'+message.id}/>
   return (
     <>
-      <Col md="1">
+      <Col md="1" className='content-type-hint'>
         <MessageIcon message={message} />
       </Col>
       <Col md="10">
