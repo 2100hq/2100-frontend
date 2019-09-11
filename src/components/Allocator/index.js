@@ -26,7 +26,7 @@ export default function Allocator ({ token }) {
 
   const [commandId, setCommandId] = useState()
   const myCommand = commandId
-    ? get(state, `private.myCommands.${commandId}`)
+    ? get(state, `private.myCommands.${commandId}`, { done: false })
     : { done: false }
 
   useEffect(() => {

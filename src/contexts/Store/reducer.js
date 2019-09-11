@@ -17,14 +17,27 @@ export const initialState = {
   web3: {}
 }
 
+function update(state, action, clone=true){
+  if (isPrivateUpdate) {
+    action = remapPrivateData(action)
+  }
+  state = set(state, action.params.path, action.params.data)
+  if (!clone) return state
+  console.log(new Date().toISOString(), 'STATE UPDATE >',action.params.path, action.params.data)
+  return { ...state }
+}
+
 export default function reducer (state, action) {
   switch (action.type) {
     case 'UPDATE':
-      if (isPrivateUpdate) {
-        action = remapPrivateData(action)
-      }
-      // console.log(action.params.path, action.params.data)
-      return { ...set(state, action.params.path, action.params.data) }
+      return update(state, action)
+    case 'BATCH_UPDATE':
+      const events = action.params.events
+      events.forEach( ([path, data]) => {
+        const fakeAction = {...action, params: {path, data} }
+        state = update(state, fakeAction, false)
+      })
+      return {...state}
     case 'ERROR': {
       console.log('ERROR', action.params)
       return { ...state, error: action.params }
