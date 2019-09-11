@@ -117,6 +117,7 @@ function InvisibleSubtext({name, token, message, isSignedIn, actions}){
 }
 
 function EncryptedMessage({encrypted, decrypted}){
+  if (encrypted === decrypted) return encrypted
   const encLengh = encrypted.length
   return decrypted.split('').map( (char, i) => {
     const j = i % encLengh
@@ -125,7 +126,7 @@ function EncryptedMessage({encrypted, decrypted}){
   }).join('')
 }
 
-function DecryptedMessage({encrypted, decrypted}){
+function DecryptedMessage({decrypted}){
    let delay = 750
    const [step, setStep] = useState(1)
    const gifs = ['https://media.giphy.com/media/wcjtdRkYDK0sU/giphy.gif', 'https://media.giphy.com/media/VGuAZNdkPUpEY/giphy.gif']
@@ -149,12 +150,6 @@ function HiddenMessage({message}){
       </div>
     </div>
   )
-}
-
-function VisibleMessageRevealText({message}){
- const encrypted = message.id.replace(/-/g,'').toUpperCase().split('')
-   let decrypted = <Linkify>{!message.message ? encrypted : message.message}</Linkify> // if hidden message text sent by server is null or ''
-  return <DecryptedMessage {...{encrypted, decrypted}} />
 }
 
 function MessageIcon({message}){
@@ -201,20 +196,28 @@ function VisibleMessageVideo({message}){
 }
 
 function VisibleMessage({message}){
+  let decrypted = null
   switch(message.type) {
     case 'image':
-      return <VisibleMessageImage message={message} />
+      decrypted = <VisibleMessageImage message={message} />
+      break
     case 'youtube':
-      return <VisibleMessageYoutube message={message} />
+      decrypted = <VisibleMessageYoutube message={message} />
+      break
     case 'twitter':
-      return <VisibleMessageTwitter message={message} />
+      decrypted = <VisibleMessageTwitter message={message} />
+      break
     case 'video':
-      return <VisibleMessageVideo message={message} />
+      decrypted = <VisibleMessageVideo message={message} />
+      break
     case 'imgur':
-      return <VisibleMessageVideo message={message} />
+      decrypted = <VisibleMessageVideo message={message} />
+      break
     default:
-      return <VisibleMessageRevealText message={message} />
+      decrypted = <Linkify>{message.message}</Linkify>
+      break
   }
+  return <DecryptedMessage {...{decrypted}} />
 }
 
 function getHintLocation(message){
