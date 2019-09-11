@@ -70,7 +70,7 @@ export default function FollowMeProvider ({ children }) {
   const authToken2100 = appstate.auth.token
   const update = (path, ...args) => dispatch(actions.update(path, ...args))
   const destroy = path => dispatch(actions.destroy(path))
-  const reset = () => dispatch({ type: 'RESET', initalState: InitialState(followMeUrl)})
+  const reset = () => dispatch({ type: 'RESET', initalState: { ...InitialState(followMeUrl), publicMessages: fmstate.publicMessages} } )
 
   async function updateInbox(){
     try {
@@ -104,10 +104,12 @@ export default function FollowMeProvider ({ children }) {
       })
       return
     }
+    if (!isSignedIn2100 && !authToken2100){
+      // either not logged in or unknown address
+      api.private.setToken(null)
+      reset()
+    }
 
-    // either not logged in or unknown address
-    api.private.setToken(null)
-    reset()
   }, [isSignedIn2100, authToken2100])
 
 
