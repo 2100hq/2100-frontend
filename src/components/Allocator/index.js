@@ -1,34 +1,44 @@
 import React, { useState, useEffect } from 'react'
-import { BN, toDecimals, fromDecimals, convertToTwoDecimals } from '../../utils'
+import { BigNumber, toDecimals, fromDecimals, convertToTwoDecimals } from '../../utils'
 import { get } from 'lodash'
 import { useStoreContext } from '../../contexts/Store'
-import Dots from '../Dots'
+import {Form} from 'react-bootstrap'
 import './style.scss'
 
-const dotsConfig = [{
-  'class': 'no-stake',
-  tooltip: 'None'
-},
-{
-  'class': 'min-stake',
-  tooltip: 'A little'
-},
-{
-  'class': 'max-stake',
-  tooltip: 'A lot'
-}]
 
 export default function Allocator ({ token }) {
-  const { state, dispatch, actions } = useStoreContext()
+  const { state, query, dispatch, actions } = useStoreContext()
+  const isSignedIn = query.getIsSignedIn()
   const isDisabled = get(state, 'intents.allocating')
-  const [uiLevel, setUiLevel] = useState(Number(token.level || '0'))
-  const { available, total } = state.controller.balances
+
+  const total = toDecimals(state.controller.balances.total)
+  const available = toDecimals(state.controller.balances.available)
 
   const [commandId, setCommandId] = useState()
   const myCommand = commandId
     ? get(state, `private.myCommands.${commandId}`, { done: false })
     : { done: false }
 
+  const myStake = toDecimals(token.myStake || 0)
+
+  const [sliderVal, setSliderVal] = useState(myStake)
+  useEffect( () => {
+    setSliderVal(myStake)
+  },[myStake])
+
+  async function handleMouseUp(){
+    if (isDisabled) return
+    if (BigNumber(sliderVal).eq(myStake)) return
+    dispatch(actions.update('intents.allocating', true))
+
+    const resp = await dispatch(actions.setStake(token.id, fromDecimals(sliderVal).toString()))
+      if (!resp) {
+        setSliderVal(myStake)
+        dispatch(actions.update('intents.allocating', false))
+        return
+      }
+      setCommandId(resp.id)
+  }
   useEffect(() => {
     if (commandId == null) {
       return
@@ -38,30 +48,17 @@ export default function Allocator ({ token }) {
     setCommandId(null)
   }, [myCommand, commandId])
 
-  useEffect(() => {
-    if (token.level == null || isDisabled) return
-    // console.log('setting', token.name, token.level)
-    setUiLevel(Number(token.level || '0'))
-  }, [token.level, uiLevel, isDisabled])
 
-  async function handleClick (i) {
-    if (isDisabled) return
-    const newLevel = Number(i) > 0 && Number(i) === uiLevel ? uiLevel - 1 : Number(i)
-    if (newLevel === uiLevel) return
-    const oldLevel = uiLevel
-    dispatch(actions.update('intents.allocating', true))
-    console.log('clicked', token.name, newLevel, 'prev:', token.level)
-    setUiLevel(newLevel)
-    const resp = await dispatch(actions.setStakeLevel(token.id, newLevel))
-    if (!resp) {
-      setUiLevel(oldLevel)
-      dispatch(actions.update('intents.allocating', false))
-      return
-    }
-    setCommandId(resp.id)
+  function handleChange(e){
+    const newVal = e.target.value
+    const oldVal = myStake
+    const diff = BigNumber(newVal).minus(myStake)
+
+    if (diff.gt(available)) return
+    setSliderVal(newVal)
+
   }
-
   return (
-    <Dots total={state.config.stakeLevels} current={uiLevel} onClick={handleClick} isDisabled={isDisabled} />
+     <input type='range' min="0" max={total} step="0.01" value={sliderVal} onChange={handleChange} onMouseUp={handleMouseUp} disabled={isDisabled}/>
   )
 }
