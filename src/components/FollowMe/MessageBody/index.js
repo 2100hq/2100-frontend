@@ -10,28 +10,66 @@ import { Row, Col } from 'react-bootstrap'
 import './style.scss'
 const nodeURL = require('url');
 
-function CharReveal({encrypted,decrypted, reveal}){
-  const [step, setStep] = useState(0)
+function CharReveal({encrypted,decrypted,length,reveal}){
 
-  const [intervalId, setIntervalId] = useState()
+  const [step, setStep] = useState(-1)
+
+  const [shuffled] = useState(
+    shuffle([...Array(length).keys()])
+  )
   const [randStart] = useState(Math.floor(Math.random()*100))
-  const nextStepTimeout = 0
+  if (decrypted === 'priv2') console.log(step, length, shuffled,shuffled.length)
   useEffect( () => {
+    if (decrypted === 'priv2') console.log('effect')
     if (!reveal) return
-    if (step >= 2) return
-    if (step === 0) {
+    if (step >= shuffled.length) return
+    if (step === -1) {
       setTimeout(setStep,randStart,step+1)
       return
     }
-    setTimeout(setStep,nextStepTimeout,step+1)
+    setTimeout(setStep,10,step+1)
     return
   },[reveal, step])
-  return (
-    <span className={`char-reveal step-${step}`}>
-      <span className='decrypted'>{decrypted}</span>
-      <span className='encrypted'>{encrypted}</span>
-    </span>
-  )
+// if (decrypted !== 'priv2') return null
+  const encLength = encrypted.length
+  const message = []
+
+  return decrypted.split('').map( (char, i) => {
+    const j = i % encLength
+    console.log(char, i)
+    if (/\s/.test(char)){
+      console.log('found space')
+      return char
+    }
+    console.log('current step',step)
+    if (step === -1) return encrypted[j]
+    for (let s = 0; s < step+1; s++){
+      console.log(shuffled[s] === i,shuffled,s,shuffled[s],i,decrypted[i])
+      if (shuffled[s] === i) return decrypted[i]
+    }
+    return encrypted[j]
+  }).join('')
+  //
+
+  // const [intervalId, setIntervalId] = useState()
+
+  // const nextStepTimeout = 0
+  // useEffect( () => {
+  //   if (!reveal) return
+  //   if (step >= 2) return
+  //   if (step === 0) {
+  //     setTimeout(setStep,randStart,step+1)
+  //     return
+  //   }
+  //   setTimeout(setStep,nextStepTimeout,step+1)
+  //   return
+  // },[reveal, step])
+  // return (
+  //   <span className={`char-reveal step-${step}`}>
+  //     <span className='decrypted'>{decrypted}</span>
+  //     <span className='encrypted'>{encrypted}</span>
+  //   </span>
+  // )
 }
 
 function InvisibleSubtext({name, token, message, isSignedIn, actions}){
@@ -78,24 +116,45 @@ function InvisibleSubtext({name, token, message, isSignedIn, actions}){
   if (!isStaking) return <span><i className='fas fa-lock' /> hold {toDecimals(message.threshold,3,0)} <span className='token-name'>{name} to see</span></span>
 }
 
+function EncryptedMessage({encrypted, decrypted}){
+  const encLengh = encrypted.length
+  return decrypted.split('').map( (char, i) => {
+    const j = i % encLengh
+    if (/\s/.test(char)) return char
+    return encrypted[j]
+  }).join('')
+}
+
+function DecryptedMessage({encrypted, decrypted}){
+   let delay = 750
+   const [step, setStep] = useState(1)
+   const gifs = ['https://media.giphy.com/media/wcjtdRkYDK0sU/giphy.gif', 'https://media.giphy.com/media/VGuAZNdkPUpEY/giphy.gif']
+   const [gifIndex] = useState(Math.floor(Math.random()*gifs.length))
+   useEffect( () => {
+     if (step >= 2) return
+     setTimeout(setStep,delay,step+1)
+     return
+   },[step])
+   if (step === 1) return <img className='decoding' src={gifs[gifIndex]} />
+   return decrypted
+}
+
 function HiddenMessage({message}){
-  const id = message.id.replace(/-/g,'').toUpperCase().split('')
-  const idLength = id.length
-  let encrypted = []
-  message.message.split('').forEach( (char, i) => {
-    const j = i % idLength
-    if (/\S/.test(char)){
-      char = <CharReveal decrypted={char} encrypted={id[j]} reveal={!message.hidden} key={i} />
-    }
-      encrypted.push(<span key={i}>{char}</span>)
-  })
+  const encrypted = message.id.replace(/-/g,'').toUpperCase().split('')
+  let decrypted = !message.message ? encrypted : message.message // if hidden message text sent by server is null or ''
   return(
     <div className='hidden-message-block'>
         <div className='pretend-encryption'>
-        {encrypted}
+        <EncryptedMessage {...{encrypted, decrypted}} />
       </div>
     </div>
   )
+}
+
+function VisibleMessageRevealText({message}){
+ const encrypted = message.id.replace(/-/g,'').toUpperCase().split('')
+   let decrypted = <Linkify>{!message.message ? encrypted : message.message}</Linkify> // if hidden message text sent by server is null or ''
+  return <DecryptedMessage {...{encrypted, decrypted}} />
 }
 
 function MessageIcon({message}){
@@ -155,7 +214,7 @@ function VisibleMessage({message}){
     case 'imgur':
       return <VisibleMessageVideo message={message} />
     default:
-      return <HiddenMessage message={message} />
+      return <VisibleMessageRevealText message={message} />
   }
 }
 
