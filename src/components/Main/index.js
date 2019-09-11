@@ -17,6 +17,9 @@ function Main({location}){
     <>
       {/*<Onboarding />*/}
       <Row className='main'>
+       <Col md='1' className='feed'>
+          {/*<Feed />*/}
+        </Col>
         <Col className='discover'>
           <Row>
             <Col md="12">
@@ -44,9 +47,7 @@ function Main({location}){
               </Col>
             </Row>
         </Col>
-        <Col md='1' className='feed'>
-          {/*<Feed />*/}
-        </Col>
+ 
       </Row>
     </>
   )
