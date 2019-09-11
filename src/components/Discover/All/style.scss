@@ -12,33 +12,15 @@
     margin: 0 1rem;
   }
 
-  div.rank{
-  	  color: white;
-  	  display: inline-block;
-  	  border-radius: 50%;
-  	  width: 2rem;
-  	  height: 2rem;
-  	  line-height: 2rem;
-  	  text-align: center;
-
-	  &.rank1{
-	  	background-color: #DD5933;
-	  }
-
-	  &.rank2{
-	  	background-color: #28357F;
-	  }
-
-	  &.rank3{
-	  	background-color: #24171D;
-	  }
+  span.rank{
+   font-weight: bold;
+   font-size: 1.2rem;
   }
 
   .heading-row{
 
   }
   .asset-row{
-  	background-color: #fff;
     padding: 0.8rem 0;
     border-bottom: 1px solid #eee;
     &:hover{
@@ -53,7 +35,7 @@
 }
 
 .stake-arrow {
-   position: absolute;
-  left: -1.5em;
-  top: 0.2em;
+ position: absolute;
+ left: -1.5em;
+ top: 0.2em;
 }

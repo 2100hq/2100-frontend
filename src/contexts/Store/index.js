@@ -32,9 +32,10 @@ export function useStoreContext () {
 export const StoreContextConsumer = StoreContext.Consumer
 
 function socketUpdate (channel, dispatch) {
-  return (path, data) => {
-    path.unshift(channel)
-    dispatch(actions.update(path, data))
+  return events => {
+    console.log(new Date().toISOString(), '*SOCKET UPDATE >', channel, events)
+    events.forEach(event => event[0].unshift(channel))
+    dispatch(actions.batchUpdate(events))
   }
 }
 

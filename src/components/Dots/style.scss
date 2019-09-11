@@ -30,7 +30,7 @@ $dot9: lighten($twentyoneprimary,20%);
     width: 0.5rem;
     display: inline-block;
     margin-right: 3px;
-    background-color: #eee;
+    background-color: #aaa;
 
     &.disabled{
         @extend %disabled;

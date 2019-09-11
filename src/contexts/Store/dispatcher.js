@@ -5,7 +5,7 @@ export default function Dispatcher (libs = {}) {
   const dispatch = libs.dispatch // cache this; its going to be overriden
   const fn = async action => {
     if (!action) return
-    console.log('ACTION >', action.type, JSON.stringify(action.params))
+    console.log(new Date().toISOString(), 'ACTION >', action)
     if (asyncHandlers[action.type]) return asyncHandlers[action.type](action)
     dispatch(action)
   }
