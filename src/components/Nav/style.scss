@@ -1,5 +1,25 @@
+//import variables
+@import "../../Variables";
+
 .navbar{
 	font-size: 1rem;
 	font-weight: bold;
 	border-bottom: none;
+	height: 65px;
+}
+
+.text-logo{
+	font-weight: bold;
+}
+
+.twenty{
+	color: $twentyoneprimary;
+}
+
+.one{
+	color: $twentyonesecondary;
+}
+
+.hundred{
+	color: $twentyoneaccent;
 }

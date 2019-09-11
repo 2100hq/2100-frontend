@@ -95,7 +95,9 @@ body{
 
 .feed{
 	min-height: 100%;
-	background-color: $twentyoneprimary;
+	background: rgb(99,49,246);
+	background: linear-gradient(180deg, rgba(99,49,246,1) 0%, rgba(40,53,127,1) 100%);
+	z-index:-1000;
 }
 
 .token-name{
