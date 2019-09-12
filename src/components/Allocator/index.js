@@ -106,7 +106,7 @@ export default function Allocator ({ token, className }) {
          valueLabelDisplay="on"
          disabled={isDisabled}
         />
-      <div className='available'>{convertToTwoDecimals(remaining)}/{total} available</div>
+      <div className='available text-muted small'>{convertToTwoDecimals(remaining)}/{total} available</div>
     </div>
   )
 }
