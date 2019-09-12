@@ -31,7 +31,15 @@ function NavBrand(){
 export default function Nav (props) {
   const { state, query } = useStoreContext()
   return (
-    <nav className='navbar navbar-expand-lg navbar-light'>
+      <ul class="nav flex-column">
+      <li class="nav-item">
+        <Link to='/' className='navbar-brand'><Logo /></Link>
+      </li>
+      <User {...props} key='user' />
+      </ul>      
+    )
+
+ {/*    <nav className='navbar navbar-expand-lg navbar-light'>
       <Link to='/' className='navbar-brand'><Logo /></Link>
       <button
       className='navbar-toggler'
@@ -50,6 +58,5 @@ export default function Nav (props) {
           <User {...props} key='user' />
         </ul>
       </div>
-    </nav>
-    )
+    </nav>*/} 
 }

@@ -12,6 +12,11 @@ import ErrorModal from './components/ErrorModal'
 import Manage from './components/Manage'
 import Admin from './components/Admin'
 import BrowserClasses from './components/BrowserClasses'
+import {Row, Col, Card} from 'react-bootstrap'
+import Sidebar from './components/Sidebar'
+import CreateMessageButton from './components/FollowMe/CreateMessageButton'
+import Discover from './components/Discover'
+import { extractUsernameAndMessageIdFromLocation,extractMessageIdFromUsernameRoute } from './utils'
 
 import './App.scss'
 
@@ -20,18 +25,50 @@ class App extends Component {
     return (
       <Router>
         <BrowserClasses>
-          <Route path='' component={Nav} />
           <div className='container-fluid'>
-            <Switch>
-              <Route path='/portfolio' exact component={Portfolio} />
-              {/*<Route path='/wallet' exact component={Wallet} />*/}
-              <Route path='/manage' exact component={Manage} />
-              <Route path='/admin' exact component={Admin} />
-              <Route component={Main} />
-            </Switch>
+            <Row>
+              <Col md='2' className='nav-column'>
+                <Route path='' component={Nav} />
+              </Col>
+              <Col md='10'>
+                <Switch>
+                  <Route path='/portfolio' exact component={Portfolio} />
+                  {/*<Route path='/wallet' exact component={Wallet} />*/}
+                  <Route path='/manage' exact component={Manage} />
+                  <Route path='/admin' exact component={Admin} />
+                  
+                  <Row className='main'>
+                    <Col md='6' className='discover'>
+                      <Discover />
+                    </Col>
+                    <Col md='6' className='followme'>
+                        <div className='create-messages-button-fixed'>
+                          <CreateMessageButton />
+                        </div>
+
+                        {/* follow me */}
+                        <Route exact path='/' component={Sidebar} />
+                        <Route exact path='/:username([$].*)' render = {
+                          props => {
+                            let {match} = props
+                            const {username, messageid} = extractMessageIdFromUsernameRoute(match)
+                            match = {...match, params: {...match.params, username, messageid }}
+                            props = {...props, match}
+                            return <Profile {...props} />
+                          }
+                        } />
+                    </Col>
+                  </Row>
+                </Switch>
+              </Col>
+            </Row>
+            <Row>
+              <Col md='12'>
+                <Alerts />
+                <ErrorModal />
+              </Col>
+            </Row>
           </div>
-          <Alerts />
-          <ErrorModal />
         </BrowserClasses>
       </Router>
     )
