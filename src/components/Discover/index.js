@@ -83,8 +83,8 @@ export default function Discover () {
   const [currentTab, setTab] = useState('All')
 
   const tabMap = {
-    All: () => <All tokens={getActiveTokens(state)} myToken={query.getMyToken()}/>,
-    'Holding': () => <All tokens={getMyStakedOrHeldTokens(state)} myToken={query.getMyToken()}/>
+    All: () => <All tokens={getActiveTokens(state)} myToken={query.getMyToken()} isAllocating={query.getIsAllocating()}/>,
+    'Holding': () => <All tokens={getMyStakedOrHeldTokens(state)} myToken={query.getMyToken()} isAllocating={query.getIsAllocating()}/>
   }
   // badge={tabName === 'My Wallet' && `${toDecimals(state.controller.balances.used)}/${toDecimals(state.controller.balances.total)}`  }
   const tabs = Object.keys(tabMap).map( tabName => <Tab currentTab={currentTab} tabName={tabName} setTab={setTab} key={tabName} /> )

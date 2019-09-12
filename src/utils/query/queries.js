@@ -21,7 +21,8 @@ const queries = {
   getIsConnected: state => get(state, 'network.connected'),
   getIsLoading: state => get(state, 'network.loading'),
   getIsMyToken: (state, token) => (queries.getMyToken(state) || {}).id === token.id,
-  getUserName: (state, userid) => get(state, ['owners', userid, 'name'])
+  getUserName: (state, userid) => get(state, ['owners', userid, 'name']),
+  getIsAllocating: state => get(state, 'intents.allocating', false)
 }
 
 export default queries

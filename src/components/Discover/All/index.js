@@ -7,6 +7,7 @@ import { useCountUp } from 'react-countup'
 import { sortBy } from 'lodash'
 import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
+import { Spinner } from 'react-bootstrap'
 import './style.scss'
 
 function CountUp ({balance, decimals = 5}) {
@@ -23,15 +24,8 @@ function CountUp ({balance, decimals = 5}) {
   return (countUp)
 }
 
-function Crown({token}){
-  if (token.rank == 1){
-     return <i className='fas fa-crown' style={{color: 'orange'}}/>
-  } else {
-    return null
-  }
-}
 
-function Row ({ token, myToken, currentUsername }) {
+function Row ({ token, myToken, currentUsername, isAllocating }) {
   const prevTotalStakeRef = useRef(token.totalStakes)
   const [stakeArrowDirection, setStakeArrowDirection]=useState(null)
   let earning = null
@@ -60,47 +54,60 @@ function Row ({ token, myToken, currentUsername }) {
   }, [token.totalStakes])
 
   const selected = currentUsername === token.name ? ' selected' : ''
-
+  const allocating = isAllocating ? ' allocating' : ''
+  const myStake = isAllocating && isAllocating.tokenid === token.id ? isAllocating.val : toDecimals(token.myStake) // show the value will be staked onced allocating is done
+  const spinner = isAllocating && isAllocating.tokenid === token.id ? <i class="fas fa-spinner"></i> : null
   return (
+    <div className={"row asset-row align-items-center"+selected+allocating}>
+      <div className="col-md-5">
+          {token.rank}
+          <Link to={`/$${token.name}`}>
+            <ProfileImage token={token} />
+            <span style={{fontWeight: 'bold'}} to={`/$${token.name}`}>${token.name}</span>
+          </Link>
+      </div>
+      <div className="col-md-2">
+        <span style={{position: 'relative'}}>
+          { stakeArrowDirection && <i className={`fas fa-arrow-${stakeArrowDirection} stake-arrow`}></i> }
+          <CountUp balance={toDecimals(token.totalStakes)} decimals={2} />
+        </span>
+      </div>
+      <div className="col-md-3">
+          <Allocator token={token} className='allocator' />
+          <div className="my-stake">{myStake} {spinner}</div>
+      </div>
+      <div className="col-md-2">
+        <div><CountUp balance={toDecimals(token.balances.available,5)} /></div>
+      </div>
 
-<div className={"row asset-row align-items-center"+selected}>
-  <div className="col-md-1" style={{textAlign: 'center'}}>
-    <Crown token={token}/>
-    <span className={'rank rank'+token.rank}>{token.rank}</span>
-  </div>
-  <div className="col-md-5">
-      <Link to={`/$${token.name}`}>
-        <ProfileImage token={token} />
-        <span style={{fontWeight: 'bold'}} to={`/$${token.name}`}>${token.name}</span> <span className='small'><CountUp balance={toDecimals(token.totalStakes)} decimals={2} /></span>
-      </Link>
-  </div>
-  <div className="col-md-4">
-      <Allocator token={token} />
-      <div className='small'>earning { <span><CountUp balance={earning} decimals={6} /></span> } per block</div>
-  </div>
-  <div className="col-md-2">
-    <div><CountUp  balance={toDecimals(token.balances.available,5)} /></div>
-  </div>
-</div>
+    </div>
   )
 }
 
-function All({tokens = {}, location, myToken}){
+function All({tokens = [], location, myToken, isAllocating}){
+  const [fixedTokens, setFixedTokens] = useState(tokens)
+
+  useEffect( () => {
+    if (fixedTokens.length === tokens.length) return
+    setFixedTokens(tokens)
+  },[tokens.length])
   const {username} = extractUsernameAndMessageIdFromLocation(location)
-  const rows = Object.values(tokens).map((token, i) => (
+  const rows = Object.values(fixedTokens).map((token, i) => (
     <Row
       token={token}
       myToken={myToken}
       key={token.name}
       currentUsername={username}
+      isAllocating={isAllocating}
     />
   ))
   return (
     <div className="asset-table">
       <div className="row heading-row text-muted">
         <div className="col-md-1">#</div>
-        <div className="col-md-5">User</div>
-        <div className="col-md-4">Stake</div>
+        <div className="col-md-4">User</div>
+        <div className="col-md-2" style={{position: 'relative', left: '-1rem'}}><img src='../img/dai.png' style={{ width: '14px','vertical-align': 'baseline' }} /> Staking</div>
+        <div className="col-md-3">My Stake</div>
         <div className="col-md-2">Balance</div>
       </div>
       {rows}
