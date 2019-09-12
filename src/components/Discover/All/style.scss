@@ -37,12 +37,10 @@
 
     }
     &:hover{
-      padding: 1.5rem 0;
+      padding: 2rem 0;
+      background-color: rgba(0,0,0,0.01);
       .fa-edit {display: inline-block;}
     }
-
-      transition: all 0.1s ease-out;
-
 
     &.selected{
       border-top: 1px solid #ccc;
