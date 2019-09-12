@@ -14,7 +14,7 @@ function ProtectedNavItem ({state, children}) {
 function Logo(){
   return(
     <>
-    <img src='img/logo9.png' style={{width: '3rem'}} />
+    <img src='img/logo9.png' style={{width: '4rem'}} />
     </>
     ) 
 }
@@ -31,9 +31,9 @@ function NavBrand(){
 export default function Nav (props) {
   const { state, query } = useStoreContext()
   return (
-      <ul class="nav flex-column">
-      <li class="nav-item">
-        <Link to='/' className='navbar-brand'><Logo /></Link>
+      <ul class="nav flex-column vertical-nav">
+      <li class="nav-item our-brand">
+        <Link to='/'><Logo /></Link>
       </li>
       <User {...props} key='user' />
       </ul>      
