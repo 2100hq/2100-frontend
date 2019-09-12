@@ -170,7 +170,7 @@ function MessageIcon({message}){
 }
 
 function VisibleMessageImage({message}){
-  return <img src={message.link} style={{maxWidth: '500px', maxHeight: '400px'}} />
+  return <img src={message.link} style={{maxWidth: '100%'}} />
 }
 
 function VisibleMessageYoutube({message}){
