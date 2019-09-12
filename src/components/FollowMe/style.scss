@@ -8,6 +8,7 @@
 }
 
 .message{
+  position: relative;
   padding: 2rem;
   color: black;
   font-size: 1.1rem;
@@ -49,8 +50,9 @@
 
   .message-delete{
     display: none;
-    float: right;
-    margin-right: 1em;
+    position: absolute;
+    top: 2rem;
+    right: 2rem;
     opacity: 0.75;
     &:hover{
       text-decoration: none;

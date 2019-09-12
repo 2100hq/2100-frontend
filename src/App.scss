@@ -64,7 +64,7 @@ body{
 		bottom: 0;
 		right: 0;
 		z-index: 999;
-		padding: 5rem;
+		padding: 4rem;
 
 		.compose-button{
 			font-size: 1.4rem;
@@ -74,17 +74,20 @@ body{
 			width: 4.5rem;
 			height: 4.5rem;
 			border-radius: 50%;
-			background-color: $twentyonesecondary;
-			color:white;
+			background-color: white;
+			color:$twentyoneprimary;
 			box-shadow: 3px 3px 3px 3px rgba(0,0,0,0.3);
 			transition: opacity 0.2s linear;
+			border: 3px solid $twentyoneprimary;
 
 
 			&:hover{
 				cursor: pointer;
 				color: white;
-				background-color: $twentyoneaccent;
+				background-color: $twentyoneprimary;
 			}
+
+			transition: all 0.1s linear;
 		}
 	}
 }
