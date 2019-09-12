@@ -37,11 +37,11 @@
 
     }
     &:hover{
-      background-color: rgba(0,0,0,0.03);
+      padding: 1.5rem 0;
       .fa-edit {display: inline-block;}
     }
 
-      transition: background-color 0.05s linear;
+      transition: all 0.1s ease-out;
 
 
     &.selected{
