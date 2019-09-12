@@ -21,7 +21,7 @@ function update(state, action, clone=true){
   if (isPrivateUpdate) {
     action = remapPrivateData(action)
   }
-  console.log(new Date().toISOString(), 'STATE UPDATE >',action.params.path, action.params.data)
+  //console.log(new Date().toISOString(), 'STATE UPDATE >',action.params.path, action.params.data)
   state = set(state, action.params.path, action.params.data)
   if (!clone) return state
   return { ...state }

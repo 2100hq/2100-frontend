@@ -12,14 +12,14 @@ export const BN = utils.bigNumberify
 export const BigNumber = n => new _BigNumber(n)
 
 export const toDecimals = (bn, dp=6, round=1) => {
-  let n = BigNumber(bn).div(BigNumber(10).pow(18)).dp(dp, round)
+  let n = BigNumber(bn).div(weiDecimals).dp(dp, round)
   n = convertToTwoDecimals(n)
   return n.toString()
 }
 
-export const convertToTwoDecimals = n => (onlyOneDecimal(n) ? `${n}0` : n)
+export const convertToTwoDecimals = n => (onlyOneDecimal(n) ? `${n}0` : n === 0 || n === "0" ? "0.00" : n)
 
-export const fromDecimals = utils.parseEther
+export const fromDecimals = n => BigNumber(n).times(weiDecimals)
 
 export const balances = state => {
   const { controller } = state
