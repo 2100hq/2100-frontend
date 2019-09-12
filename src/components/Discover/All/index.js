@@ -76,7 +76,7 @@ function Row ({ token, myToken, currentUsername }) {
   </div>
   <div className="col-md-4">
       <Allocator token={token} />
-      <div className='small'>earning { <span><CountUp balance={earning} decimals={6} /></span> } per block</div>
+      <div className='small'>{ <span><CountUp balance={earning} decimals={6} /></span> } per block</div>
   </div>
   <div className="col-md-2">
     <div><CountUp  balance={toDecimals(token.balances.available,5)} /></div>
