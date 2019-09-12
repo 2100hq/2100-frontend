@@ -61,7 +61,7 @@ export default function Allocator ({ token, className }) {
 
   function handleChange(e, val){
     // if(/bieb/.test(token.name)) console.log('handleChange',val)
-    const newVal = e.target.value
+    const newVal = val //e.target.value
     const oldVal = myStake
     const diff = BigNumber(newVal).minus(oldVal)
     console.log(newVal, oldVal, diff.gt(available))
@@ -83,16 +83,16 @@ export default function Allocator ({ token, className }) {
   />*/
   /*
   <input
-   type="range"
-   min={0}
-   max={Number(total)}
-   step={0.01}
-   value={Number(sliderVal)}
-   onChange={handleChange}
-   onMouseUp={handleMouseUp}
-   valueLabelDisplay="on"
-   disabled={isDisabled}
-  />
+         type="range"
+         min={0}
+         max={Number(total)}
+         step={0.01}
+         value={Number(sliderVal)}
+         onChange={handleChange}
+         onMouseUp={handleMouseUp}
+         valueLabelDisplay="on"
+         disabled={isDisabled}
+        /> {sliderVal}
   */
   return (
     <div className={className}>
@@ -106,7 +106,7 @@ export default function Allocator ({ token, className }) {
          valueLabelDisplay="on"
          disabled={isDisabled}
         />
-    <div className='available'>{convertToTwoDecimals(remaining)} available</div>
+      <div className='available'>{convertToTwoDecimals(remaining)}/{total} available</div>
     </div>
   )
 }

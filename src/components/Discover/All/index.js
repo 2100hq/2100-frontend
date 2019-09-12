@@ -25,7 +25,7 @@ function CountUp ({balance, decimals = 5}) {
 }
 
 
-function Row ({ token, myToken, currentUsername, isAllocating }) {
+function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIsEditing}) {
   const prevTotalStakeRef = useRef(token.totalStakes)
   const [stakeArrowDirection, setStakeArrowDirection]=useState(null)
   let earning = null
@@ -54,11 +54,23 @@ function Row ({ token, myToken, currentUsername, isAllocating }) {
   }, [token.totalStakes])
 
   const selected = currentUsername === token.name ? ' selected' : ''
-  const allocating = isAllocating ? ' allocating' : ''
-  const myStake = isAllocating && isAllocating.tokenid === token.id ? isAllocating.val : toDecimals(token.myStake) // show the value will be staked onced allocating is done
-  const spinner = isAllocating && isAllocating.tokenid === token.id ? <i class="fas fa-spinner"></i> : null
+
+  const isAllocatingToken = isAllocating && isAllocating.tokenid === token.id
+  const myStake = isAllocatingToken ? isAllocating.val : toDecimals(token.myStake) // show the value will be staked onced allocating is done
+
+  isEditing = isEditing.tokenid === token.id
+
+  // don't show the edit button if any token anywhere is allocating
+  const editButton = !isAllocating ? <i class="text-muted far fa-edit" onClick={()=>setIsEditing({tokenid: token.id})}></i> : null
+
+  function handleHover(e){
+    if (!isEditing || isAllocatingToken) return
+
+    setIsEditing({})
+  }
+
   return (
-    <div className={"row asset-row align-items-center"+selected+allocating}>
+    <div className={"row asset-row align-items-center"+selected} onMouseLeave={handleHover}>
       <div className="col-md-5">
           {token.rank}
           <Link to={`/$${token.name}`}>
@@ -73,8 +85,8 @@ function Row ({ token, myToken, currentUsername, isAllocating }) {
         </span>
       </div>
       <div className="col-md-3">
-          <Allocator token={token} className='allocator' />
-          <div className="my-stake">{myStake} {spinner}</div>
+          {isEditing && <Allocator token={token} className='allocator' />}
+          {!isEditing && <div className="my-stake">{myStake} {editButton}</div>}
       </div>
       <div className="col-md-2">
         <div><CountUp balance={toDecimals(token.balances.available,5)} /></div>
@@ -84,7 +96,7 @@ function Row ({ token, myToken, currentUsername, isAllocating }) {
   )
 }
 
-function All({tokens = [], location, myToken, isAllocating}){
+function All({tokens = [], location, myToken, isAllocating, isEditing, setIsEditing}){
   const [fixedTokens, setFixedTokens] = useState(tokens)
 
   useEffect( () => {
@@ -99,6 +111,8 @@ function All({tokens = [], location, myToken, isAllocating}){
       key={token.name}
       currentUsername={username}
       isAllocating={isAllocating}
+      isEditing={isEditing}
+      setIsEditing={setIsEditing}
     />
   ))
   return (

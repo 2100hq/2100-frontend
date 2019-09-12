@@ -81,10 +81,15 @@ function Badge({ text, isActive }){
 export default function Discover () {
   const { state, query } = useStoreContext()
   const [currentTab, setTab] = useState('All')
+  const [isEditing, setIsEditing] = useState({})
+
+  useEffect( ()=>{
+    setIsEditing({})
+  },[currentTab])
 
   const tabMap = {
-    All: () => <All tokens={getActiveTokens(state)} myToken={query.getMyToken()} isAllocating={query.getIsAllocating()}/>,
-    'Holding': () => <All tokens={getMyStakedOrHeldTokens(state)} myToken={query.getMyToken()} isAllocating={query.getIsAllocating()}/>
+    All: () => <All tokens={getActiveTokens(state)} myToken={query.getMyToken()} isAllocating={query.getIsAllocating()} isEditing={isEditing} setIsEditing={setIsEditing}/>,
+    'Holding': () => <All tokens={getMyStakedOrHeldTokens(state)} myToken={query.getMyToken()} isAllocating={query.getIsAllocating()} isEditing={isEditing} setIsEditing={setIsEditing}/>
   }
   // badge={tabName === 'My Wallet' && `${toDecimals(state.controller.balances.used)}/${toDecimals(state.controller.balances.total)}`  }
   const tabs = Object.keys(tabMap).map( tabName => <Tab currentTab={currentTab} tabName={tabName} setTab={setTab} key={tabName} /> )
