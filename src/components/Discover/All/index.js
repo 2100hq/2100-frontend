@@ -155,9 +155,9 @@ function All({tokens = [], location, myToken, isAllocating, isEditing, setIsEdit
     <div className="asset-table">
       <div className="row heading-row text-muted">
         <div className="col-md-1">#</div>
-        <div className="col-md-4">User</div>
-        <div className="col-md-2" style={{position: 'relative', left: '-1rem'}}><img src='../img/dai.png' style={{ width: '14px','vertical-align': 'baseline' }} /> Staking</div>
-        <div className="col-md-3">My Stake</div>
+        <div className="col-md-5">User</div>
+        <div className="col-md-1">Stake</div>
+        <div className="col-md-2">Earning</div>
         <div className="col-md-2">Balance</div>
       </div>
       {rows}
