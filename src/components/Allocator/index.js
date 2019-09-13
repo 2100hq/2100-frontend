@@ -22,7 +22,7 @@ export default function Allocator ({ token, className, onComplete=()=>{}, onClic
     ? get(state, `private.myCommands.${commandId}`, { done: false })
     : { done: false }
 
-  const myStake = useMemo( () => toDecimals(token.myStake || 0), [token.myStake] )
+  const myStake = useMemo( () => Number(toDecimals(token.myStake || 0)), [token.myStake] )
 
   const [sliderVal, setSliderVal] = useState(myStake)
   const [remaining, setRemaining] = useState(available)
@@ -111,6 +111,7 @@ export default function Allocator ({ token, className, onComplete=()=>{}, onClic
         /> {sliderVal}
   */
   const marks = []
+  console.log(available+myStake,available+myStake > total*0.1)
   if (available+myStake > total*0.1){
     marks.push({
       value: available+myStake,
