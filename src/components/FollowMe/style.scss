@@ -1,11 +1,18 @@
 //import variables
 @import "../../Variables";
 
-.pretend-encryption{
-}
 
-.my-feed,.profile-feed,.public-feed{
+/* message compose styles */
+.modal-backdrop{
+  
+  background-color: #ddd !important;
+  &.show{
+    opacity: 0.7 !important;
+  }
 }
+/* message compose styles */
+
+
 
 .message{
   position: relative;
