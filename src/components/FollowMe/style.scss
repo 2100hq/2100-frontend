@@ -13,6 +13,12 @@
   color: black;
   font-size: 1.1rem;
   border-left: 1px solid #ccc;
+  opacity: 0.8;
+    &:hover{
+    opacity: 1;
+  }
+  transition: opacity 0.2s linear;
+
 
   &.message-type-text{
     border-left: 2px solid $twentyoneprimary;

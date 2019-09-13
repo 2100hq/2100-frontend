@@ -22,7 +22,7 @@
   }
   .asset-row{
     padding: 0.8rem 0;
-    border-bottom: 1px solid #eee;
+    border-bottom: 1px dotted #eee;
     .fa-edit {
       display: none;
       cursor: pointer;
@@ -44,6 +44,7 @@
       }
     }
     &:hover{
+      background-color: rgba(0,0,0,0.01);
 
       .fa-edit {
         display: inline-block

@@ -37,26 +37,22 @@ body{
 }
 
 .nav-column{
-	background-color: rgba(0,0,0,0.03);
 }
 
 
 .followme, .discover, .nav-column{
+	padding: 2rem 0;
 	height: 100vh;
 	overflow-y: scroll;
 	::-webkit-scrollbar { 
 		display: none; 
 	}
+
 }
 
 .followme{
-	box-shadow: 2px 2px 0px rgba(5px,0,0,0.05);
 	padding-left: 0;
-		opacity: 0.8;
-	&:hover{
 		opacity: 1;
-	}
-	transition: opacity 0.2s linear;
 
 
 	.create-messages-button-fixed{
@@ -93,11 +89,13 @@ body{
 }
 
 .discover{
-	border-right: 1px solid #eee;
 	opacity: 0.8;
 	&:hover{
 		opacity: 1;
 	}
+
+	transition: opacity 0.2s linear;
+
 }
 
 .token-name{
