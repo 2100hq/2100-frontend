@@ -4,10 +4,15 @@ import {useFollowMeContext} from '../../../contexts/FollowMe'
 import {useStoreContext} from '../../../contexts/Store'
 
 import Dots from '../../Dots'
+import Meme from '../../Meme'
+import memeTypes from '../memeTypes'
 import percentile from '../../../utils/percentile'
 import {BigNumber, toDecimals, fromDecimals, weiDecimals} from '../../../utils'
 import HoldersProfiles from '../HoldersProfiles'
+
+
 import './style.scss'
+
 
 function isEmpty(message){
   if (!message) return true
@@ -76,7 +81,8 @@ export default function MessageForm({onSubmitted}){
     e.preventDefault()
     if (isEmpty(message)) return
     setSubmitting(true)
-    const resp = await actions.sendMessage(message, hint, threshold.toString())
+    const type = /meme/i.test(currentTab) ? `meme:${memeTypes[memeType].key}` : currentTab.toLowerCase()
+    const resp = await actions.sendMessage(message, hint, threshold.toString(), type)
     setSubmitting(false)
     if (resp) {
       setData({})
@@ -117,16 +123,35 @@ export default function MessageForm({onSubmitted}){
     </div>
   )
 
-  function inputPlaceHolder(type = 'Post'){
-    return !hasToken ? 'Create your token to send messages' : type === 'Post' ? 'Decodable Text' : 'Decodable Url'
+  function PrivatePlaceHolder(type = 'Post'){
+    if (!hasToken) return 'Create your token to send messages'
+    switch(type){
+      case 'Post':
+        return 'Decodable Text'
+      case 'Link':
+        return 'Decodable Url'
+      case 'Meme':
+        return 'Bottom Text'
+    }
+  }
+
+  function PublicPlaceHolder(type = 'Post'){
+    if (!hasToken) return ''
+    switch(type){
+      case 'Meme':
+        return 'Top Text'
+      default:
+        return 'Public Hint'
+    }
   }
 
   const tabMap = {
-    Post: (type='Post') => <Form.Control as="textarea" rows="6" value={message || ''} onChange={changeData} disabled={isDisabled ? 'disabled' : null} placeholder={inputPlaceHolder(type)}/>,
-    Link: (type='Link') => <Form.Control as="input" value={message || ''} onChange={changeData} disabled={isDisabled ? 'disabled' : null} placeholder={inputPlaceHolder(type)}/>
+    Post: (type='Post') => <Form.Control as="textarea" rows="6" value={message || ''} onChange={changeData} disabled={isDisabled ? 'disabled' : null} placeholder={PrivatePlaceHolder(type)}/>,
+    Link: (type='Link') => <Form.Control as="input" value={message || ''} onChange={changeData} disabled={isDisabled ? 'disabled' : null} placeholder={PrivatePlaceHolder(type)}/>,
+    Meme: (type='Meme') => <Form.Control as="input" value={message || ''} onChange={changeData} disabled={isDisabled ? 'disabled' : null} placeholder={PrivatePlaceHolder(type)}/>
   }
 
-  const [currentTab, setTab] = useState(Object.keys(tabMap)[0])
+  const [currentTab, setTab] = useState(Object.keys(tabMap)[2])
 
   const tabs = Object.keys(tabMap).map( tabName => <Tab currentTab={currentTab} tabName={tabName} setTab={setTab} key={tabName} /> )
 
@@ -140,13 +165,37 @@ export default function MessageForm({onSubmitted}){
     footerText = '0 holders'
   }
 
+  const publicHint = PublicPlaceHolder(currentTab)
+
+  const [memeType, setMemeType] = useState(0)
+
+  const MemeSelect = function ({memeTypes, memeType, onChange=()=>{}}){
+    function handleChange(e){
+      e.preventDefault()
+      onChange(e.target.value)
+    }
+    console.log();
+    console.log(memeType);
+
+    const options = memeTypes.map( (data,i)=>{
+
+
+      return <option value={i} selected={i === memeType}>{memeTypes[i].name}</option>
+    })
+    return (
+      <select defaultValue={memeType} onChange={handleChange}>
+        {options}
+      </select>
+    )
+  }
+
   return (
       <div className='message-form card'>
         <div className='card-body'>
-          {hasToken && <ul className='nav nav-tabs'>{tabs}</ul> }
+          { <ul className='nav nav-tabs'>{tabs}</ul> }
           <Form>
             <Form.Group controlId="hint" className='form-group-hint'>
-              <Form.Control as="input" value={hint || ''} onChange={changeData} disabled={isDisabled ? 'disabled' : null} maxlength={75} placeholder='Public hint'/>
+              <Form.Control as="input" value={hint || ''} onChange={changeData} disabled={isDisabled ? 'disabled' : null} maxlength={75} placeholder={publicHint}/>
               <Form.Label className='small'>
                   <i className='fas fa-eye' /> Everyone
               </Form.Label>
@@ -160,7 +209,8 @@ export default function MessageForm({onSubmitted}){
                 <i className='fas fa-eye' /> {footerText}
               </Form.Label>
             </Form.Group>
-
+            { currentTab === 'Meme' && <MemeSelect memeTypes={memeTypes} memeType={memeType} onChange={setMemeType} />}
+            { currentTab === 'Meme' && <Meme toptext={hint} bottomtext={message} url={memeTypes[memeType].url}/>}
             <div className='clearfix'>
               <div className='float-left'>
                 <div className="small">{ hasToken && tokenRequirement }</div>
