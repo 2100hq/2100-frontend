@@ -14,8 +14,8 @@ export default function Allocator ({ token, className, onComplete=()=>{}, onClic
   const isAllocating = query.getIsAllocating()
   const isDisabled = isAllocating
   const isAllocatingToken = isAllocating && isAllocating.tokenid === token.id
-  const total = toDecimals(state.controller.balances.total)
-  const available = toDecimals(state.controller.balances.available)
+  const total = useMemo( () => Number(toDecimals(state.controller.balances.total)), [state.controller.balances.total])
+  const available = useMemo( () => Number(toDecimals(state.controller.balances.available)), [state.controller.balances.available])
 
   const [commandId, setCommandId] = useState()
   const myCommand = commandId
@@ -114,7 +114,7 @@ export default function Allocator ({ token, className, onComplete=()=>{}, onClic
     <div className={className} ref={node}>
       <Slider
          min={0}
-         max={Number(total)}
+         max={total}
          step={0.01}
          value={Number(sliderVal)}
          onChange={handleChange}
