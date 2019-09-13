@@ -60,18 +60,15 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
   }, [token.totalStakes])
 
   const selected = currentUsername === token.name ? ' selected' : ''
+  const allocating = isAllocating ? ' allocating' : ''
 
   const isAllocatingToken = isAllocating && isAllocating.tokenid === token.id
-  const myStake = isAllocatingToken ? isAllocating.val : toDecimals(token.myStake) // show the value will be staked onced allocating is done
+  const myStake = toDecimals(token.myStake) // show the value will be staked onced allocating is done
 
   isEditing = isEditing.tokenid === token.id
 
-  // don't show the edit button if any token anywhere is allocating
-  const editButton = !isAllocating ? <i class="text-muted far fa-edit" onClick={()=>setIsEditing({tokenid: token.id})}></i> : null
-
-
   return (
-    <div className={"row asset-row align-items-center"+selected}>
+    <div className={"row asset-row align-items-center"+selected+allocating}>
       <div className="col-md-1" style={{textAlign: 'center'}}>
         <Crown token={token}/>
         <span className={'rank rank'+token.rank}>{token.rank}</span>
@@ -84,11 +81,11 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
       </div>
       <div className="col-md-4">
           {isEditing && <Allocator token={token} onComplete={()=>setIsEditing({})} onClickOutside={()=>setIsEditing({})} className='allocator' />}
-          {!isEditing && <div className="my-stake">{myStake} {editButton}</div>}
+          {!isEditing && <div className="my-stake" onClick={()=>!isAllocating && setIsEditing({tokenid: token.id})}>{myStake}  <i class="text-muted far fa-edit"></i></div>}
           {!isEditing && <div className='small'>{ <span><CountUp balance={earning} decimals={6} /></span> } per block</div> }
       </div>
       <div className="col-md-2">
-        <div><CountUp  balance={toDecimals(token.balances.available,5)} /></div>
+        <div><CountUp balance={toDecimals(token.balances.available,5)} /></div>
       </div>
     </div>
   )
