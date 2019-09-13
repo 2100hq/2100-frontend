@@ -55,8 +55,8 @@
     }
 
     &.selected{
-      border-top: 1px solid #ccc;
-      border-bottom: 1px solid #ccc;
+      background-color: rgba(0,0,0,0.02);
+      color: #000;
 
     }
   }

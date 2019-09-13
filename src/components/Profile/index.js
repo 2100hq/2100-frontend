@@ -119,7 +119,7 @@ export default function Profile (props) {
   <div className='profile'>
     {isNewUser && <NewUserWelcome clearNewUser={clearNewUser}/>}
     <Link className='close-link' to='/'><i class="fas fa-times-circle"></i></Link>
-    <div className='profile-header row align-items-center justify-content-center'>
+    <div className='profile-header align-items-center justify-content-center'>
       <div className='col-auto'>
           <ProfileImage token={token}/>
           <div className='token-stakes'>
