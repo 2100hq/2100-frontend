@@ -1,4 +1,4 @@
-import React, { useState,useEffect, useRef } from 'react'
+import React, { useState,useEffect, useRef, useMemo } from 'react'
 import { useStoreContext } from '../../../contexts/Store'
 import { toDecimals, BigNumber, weiDecimals, extractUsernameAndMessageIdFromLocation } from '../../../utils'
 import Allocator from '../../Allocator'
@@ -34,21 +34,28 @@ function Crown({token}){
 function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIsEditing}) {
   const prevTotalStakeRef = useRef(token.totalStakes)
   const [stakeArrowDirection, setStakeArrowDirection]=useState(null)
-  let earning = null
 
-  if (BigNumber(token.myStake).gt(0)){
-    earning = BigNumber(token.myStake).div(token.totalStakes).times('0.000189')
-  }
+  // only calculate earning when necessary
+  const [earning, setEarning] = useState('0.000000')
+  useEffect(()=> {
+    let newEarning = null
 
-  // owners reward
-  if (myToken && token.id === myToken.id){
-    if (earning == null) earning = BigNumber(0)
-    earning = earning.plus('0.000021')
-  }
+    if (BigNumber(token.myStake).gt(0)){
+      newEarning = BigNumber(token.myStake).div(token.totalStakes).times('0.000189')
+    }
 
-  earning = earning == null ? '0.000000' : earning.dp(6,1).toString()
+    // owners reward
+    if (myToken && token.id === myToken.id){
+      if (newEarning == null) newEarning = BigNumber(0)
+      newEarning = newEarning.plus('0.000021')
+    }
 
-  const stakers = Object.values(token.stakes || {}).filter( stake => BigNumber(stake).gt(0) ).length
+    newEarning = newEarning == null ? '0.000000' : newEarning.dp(6,1).toString()
+    setEarning(newEarning)
+  },[token.myStake,token.totalStakes,(myToken&&myToken.id)])
+
+
+  // const stakers = Object.values(token.stakes || {}).filter( stake => BigNumber(stake).gt(0) ).length
 
   useEffect( () => {
     if (prevTotalStakeRef.current === token.totalStakes) return setStakeArrowDirection(null)
@@ -63,10 +70,12 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
   const allocating = isAllocating ? ' allocating' : ''
 
   const isAllocatingToken = isAllocating && isAllocating.tokenid === token.id
-  const myStake = toDecimals(token.myStake) // show the value will be staked onced allocating is done
+  const myStake = useMemo( ()=>toDecimals(token.myStake), [token.myStake])
 
   isEditing = isEditing.tokenid === token.id
 
+  const balance = useMemo(() => toDecimals(token.balances.available,5), [token.balances.available])
+  const totalStakes = useMemo( ()=>toDecimals(token.totalStakes), [token.totalStakes])
   return (
     <div className={"row asset-row align-items-center"+selected+allocating}>
       <div className="col-md-1" style={{textAlign: 'center'}}>
@@ -76,7 +85,7 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
       <div className="col-md-5">
           <Link to={`/$${token.name}`}>
             <ProfileImage token={token} />
-            <span style={{fontWeight: 'bold'}} to={`/$${token.name}`}>${token.name}</span> <span className='small'><CountUp balance={toDecimals(token.totalStakes)} decimals={2} /></span>
+            <span style={{fontWeight: 'bold'}} to={`/$${token.name}`}>${token.name}</span> <span className='small'><CountUp balance={totalStakes} decimals={2} /></span>
           </Link>
       </div>
       <div className="col-md-4">
@@ -85,7 +94,7 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
           {!isEditing && <div className='small'>{ <span><CountUp balance={earning} decimals={6} /></span> } per block</div> }
       </div>
       <div className="col-md-2">
-        <div><CountUp balance={toDecimals(token.balances.available,5)} /></div>
+        <div><CountUp balance={balance} /></div>
       </div>
     </div>
   )
