@@ -97,14 +97,6 @@ export default function Discover () {
   return (
     <Row>
       <Col md='12'>
-            <Row className='mt-4 mb-4'>
-              <Col md='4'>
-                <Search />
-              </Col>
-              <Col md='8'>
-                <ul className='nav nav-pills inline'>{tabs}</ul>
-              </Col>
-            </Row>
         {currentTab ? tabMap[currentTab]() : null}
       </Col>
     </Row>
