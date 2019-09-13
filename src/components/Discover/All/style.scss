@@ -23,6 +23,7 @@
   .asset-row{
     padding: 0.8rem 0;
     border-bottom: 1px dotted #eee;
+    color: #444;
     .fa-edit {
       display: none;
       cursor: pointer;
@@ -45,6 +46,7 @@
     }
     &:hover{
       background-color: rgba(0,0,0,0.01);
+      color: #000;
 
       .fa-edit {
         display: inline-block
