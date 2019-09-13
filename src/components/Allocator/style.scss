@@ -1,0 +1,28 @@
+//import variables
+@import "../../Variables";
+
+.high {
+  .MuiSlider-colorPrimary.MuiSlider-root {
+    color: $twentyoneprimary;
+    &.Mui-disabled {
+      color: #bbb;
+      opacity: 0.75;
+    }
+  }
+}
+.medium {
+  .MuiSlider-colorPrimary.MuiSlider-root {
+    color: $twentyoneaccent;
+    &.Mui-disabled {
+      color: #bbb;
+    }
+  }
+}
+.low {
+  .MuiSlider-colorPrimary.MuiSlider-root {
+    color: red;
+    &.Mui-disabled {
+      color: #bbb;
+    }
+  }
+}

@@ -7,7 +7,7 @@ import Slider from '@material-ui/core/Slider';
 import './style.scss'
 
 
-export default function Allocator ({ token, className, onComplete=()=>{}, onClickOutside=()=>{} }) {
+export default function Allocator ({ token, className='', onComplete=()=>{}, onClickOutside=()=>{} }) {
   const node = useRef()
   const { state, query, dispatch, actions } = useStoreContext()
   const isSignedIn = query.getIsSignedIn()
@@ -117,8 +117,12 @@ export default function Allocator ({ token, className, onComplete=()=>{}, onClic
       value: available+myStake
     })
   }
+  const color = remaining < 1.00 ? remaining < 0.05 ? 'low' : 'medium' : 'high'
+  console.log();
+  console.log({color});
+
   return (
-    <div className={className} ref={node}>
+    <div className={`${className} ${color}`} ref={node}>
       <Slider
          min={0}
          max={total}
