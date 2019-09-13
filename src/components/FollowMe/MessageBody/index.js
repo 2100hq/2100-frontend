@@ -72,7 +72,7 @@ function CharReveal({encrypted,decrypted,length,reveal}){
   // )
 }
 
-function InvisibleSubtext({name, token, message, isSignedIn, actions}){
+function DecodeThreshold({name, token, message, isSignedIn, actions}){
   /* 4 states
    - Not signed in
    - Signed in, not staking
@@ -232,7 +232,7 @@ function getHintLocation(message){
 
 export default function MessagageBody({message, token, isSignedIn, actions}){
   const name = token.name || 'unknown'
-  const hiddentext = message.hidden ? <div className='hidden-text'><InvisibleSubtext name={name} token={token} message={message} isSignedIn={isSignedIn} actions={actions} /></div> : null
+  const decodeThreshold = message.hidden ? <div className='hidden-text'><DecodeThreshold name={name} token={token} message={message} isSignedIn={isSignedIn} actions={actions} /></div> : null
   const text = message.hidden ? <HiddenMessage message={message} key={'hidden'+message.id}/> : <VisibleMessage message={message} key={'visible'+message.id}/>
   return (
     <>
@@ -241,7 +241,7 @@ export default function MessagageBody({message, token, isSignedIn, actions}){
       </Col>
       <Col md="10">
         <div className='message-target'>{text}</div>
-        {hiddentext}
+        {decodeThreshold}
         {message.hint && <div className='message-hint'>hint: {message.hint}</div>}
       </Col>
     </>
