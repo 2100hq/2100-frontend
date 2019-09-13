@@ -25,21 +25,27 @@
     border-bottom: 1px solid #eee;
     .fa-edit {
       display: none;
-      cursor: pointer;
     }
     .my-stake {
       display: block;
+      cursor: pointer;
     }
-    .editing {
+    &.allocating {
       .my-stake {
-        display: none
+        cursor: default;
       }
-
+      &:hover{
+        .fa-edit {
+          display: none;
+        }
+      }
     }
     &:hover{
-      padding: 2rem 0;
-      background-color: rgba(0,0,0,0.01);
-      .fa-edit {display: inline-block;}
+
+      .fa-edit {
+        display: inline-block
+      }
+
     }
 
     &.selected{
