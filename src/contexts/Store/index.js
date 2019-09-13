@@ -34,7 +34,12 @@ export const StoreContextConsumer = StoreContext.Consumer
 function socketUpdate (channel, dispatch) {
   return events => {
     console.log(new Date().toISOString(), '*SOCKET UPDATE >', channel, events)
-    events.forEach(event => event[0].unshift(channel))
+    events = events
+      .filter( event => !/reward/i.test(event[1].type) )
+      .map( event => {
+        event[0].unshift(channel)
+        return event
+      })
     dispatch(actions.batchUpdate(events))
   }
 }
