@@ -2,6 +2,7 @@ import React, {useState} from 'react'
 import {useStoreContext} from '../../contexts/Store'
 import PublicFeed from '../FollowMe/PublicFeed'
 import MyFeed from '../FollowMe/MyFeed'
+import TopTenFeed from '../FollowMe/TopTenFeed'
 import './style.scss'
 
 
@@ -11,6 +12,7 @@ export default function Sidebar (props) {
   const viewMap = {
     All: () => <PublicFeed />,
     Holding: () => <MyFeed />,
+    'Top Ten': () => <TopTenFeed />
   }
 
   const view = typeof viewMap[currentView] === 'function' ? viewMap[currentView]() : null

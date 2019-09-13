@@ -78,6 +78,7 @@ export default function Discover () {
   const viewMap = {
     All: () => <All tokens={query.getActiveTokensArray()} myToken={query.getMyToken()} isAllocating={query.getIsAllocating()} isEditing={isEditing} setIsEditing={setIsEditing}/>,
     'Holding': () => <All tokens={query.getMyStakedOrHeldTokensArray()} myToken={query.getMyToken()} isAllocating={query.getIsAllocating()} isEditing={isEditing} setIsEditing={setIsEditing}/>,
+    'Top Ten': () => <All tokens={query.getTopTenTokensArray()} myToken={query.getMyToken()} isAllocating={query.getIsAllocating()} isEditing={isEditing} setIsEditing={setIsEditing}/>
   }
 
   const view = typeof viewMap[currentView] === 'function' ? viewMap[currentView]() : null

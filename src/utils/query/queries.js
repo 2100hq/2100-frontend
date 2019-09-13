@@ -30,6 +30,9 @@ const queries = {
       const isStaking = get(token, 'myStake', "0") !== "0"
       return hasBalance || isStaking
     }).sort( (a, b) => a.rank - b.rank ),
+  getTopTenTokensArray: state => Object.values(state.tokens || {}).filter(token => {
+      return token.rank < 11
+    }).sort( (a, b) => a.rank - b.rank )
 }
 
 export default queries
