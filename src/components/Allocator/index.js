@@ -111,7 +111,7 @@ export default function Allocator ({ token, className, onComplete=()=>{}, onClic
         /> {sliderVal}
   */
   const marks = []
-  console.log(available+myStake,available+myStake > total*0.1)
+
   if (available+myStake > total*0.1){
     marks.push({
       value: available+myStake,
