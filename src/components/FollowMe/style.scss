@@ -15,7 +15,7 @@
   border-left: 1px solid #ccc;
 
   &.message-type-text{
-    border-left: 1px solid $twentyoneprimary;
+    border-left: 2px solid $twentyoneprimary;
 
     .content-type-hint{
       color: $twentyoneprimary;
@@ -23,7 +23,7 @@
   }
 
   &.message-type-youtube{
-    border-left: 1px solid #FF0000;
+    border-left: 2px solid #FF0000;
 
     .content-type-hint{
       color: #FF0000;
@@ -31,7 +31,7 @@
   }
 
   &.message-type-twitter{
-    border-left: 1px solid #1da1f2;
+    border-left: 2px solid #1da1f2;
 
     .content-type-hint{
       color: #1da1f2;
@@ -39,7 +39,7 @@
   }
 
   &.message-type-image{
-    border-left: 1px solid #5A0084;
+    border-left: 2px solid #5A0084;
 
     .content-type-hint{
       color: #5A0084;

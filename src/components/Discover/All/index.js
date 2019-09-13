@@ -91,7 +91,7 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
       <div className="col-md-4">
           {isEditing && <Allocator token={token} onComplete={()=>setIsEditing({})} onClickOutside={()=>setIsEditing({})} className='allocator' />}
           {!isEditing && <div className="my-stake" onClick={()=>!isAllocating && setIsEditing({tokenid: token.id})}>{myStake}  <i class="text-muted far fa-edit"></i></div>}
-          {!isEditing && <div className='small'>{ <span><CountUp balance={earning} decimals={6} /></span> } per block</div> }
+          {!isEditing && <div className='per-block'>{ <span><CountUp balance={earning} decimals={6} /></span> }<br/> per block</div> }
       </div>
       <div className="col-md-2">
         <div><CountUp balance={balance} /></div>
