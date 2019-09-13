@@ -170,13 +170,13 @@ function MessageIcon({message}){
 }
 
 function VisibleMessageImage({message}){
-  return <img src={message.link} style={{maxWidth: '100%'}} />
+  return <img src={message.link} style={{width: '100%', maxWidth: '450px'}} />
 }
 
 function VisibleMessageYoutube({message}){
   const matches = message.link.match(/^.*(youtu.be\/|v\/|e\/|u\/\w+\/|embed\/|v=)([^#\&\?]*).*/)
   const videoId = matches[matches.length-1]
-  return <YouTube videoId={videoId} />
+  return <div style={{width: '100%', maxWidth: '450px'}}><YouTube videoId={videoId} /></div>
 }
 
 function VisibleMessageTwitter({message}){
