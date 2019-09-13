@@ -114,8 +114,7 @@ export default function Allocator ({ token, className, onComplete=()=>{}, onClic
 
   if (available+myStake > total*0.1){
     marks.push({
-      value: available+myStake,
-      label: 'max'
+      value: available+myStake
     })
   }
   return (
@@ -131,7 +130,7 @@ export default function Allocator ({ token, className, onComplete=()=>{}, onClic
          disabled={isDisabled}
          marks = {marks}
         />
-      <div className='available text-muted small'>{convertToTwoDecimals(remaining)}/{total} available</div>
+
     </div>
   )
 }

@@ -25,10 +25,13 @@
     border-bottom: 1px solid #eee;
     .fa-edit {
       display: none;
+      cursor: pointer;
+    }
+    .close-allocator {
+      cursor: pointer;
     }
     .my-stake {
       display: block;
-      cursor: pointer;
     }
     &.allocating {
       .my-stake {

@@ -7,6 +7,7 @@ import { useCountUp } from 'react-countup'
 import { sortBy } from 'lodash'
 import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
+import { Spinner } from 'react-bootstrap'
 import './style.scss'
 
 function CountUp ({balance, decimals = 5}) {
@@ -37,6 +38,7 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
 
   // only calculate earning when necessary
   const [earning, setEarning] = useState('0.000000')
+  const [earningZero, setEarningZero] = useState(true)
   useEffect(()=> {
     let newEarning = null
 
@@ -52,6 +54,7 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
 
     newEarning = newEarning == null ? '0.000000' : newEarning.dp(6,1).toString()
     setEarning(newEarning)
+    setEarningZero(BigNumber(newEarning).eq(0))
   },[token.myStake,token.totalStakes,(myToken&&myToken.id)])
 
 
@@ -66,18 +69,54 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
     return () => clearTimeout(id)
   }, [token.totalStakes])
 
-  const selected = currentUsername === token.name ? ' selected' : ''
-  const allocating = isAllocating ? ' allocating' : ''
 
   const isAllocatingToken = isAllocating && isAllocating.tokenid === token.id
-  const myStake = useMemo( ()=>toDecimals(token.myStake), [token.myStake])
+  const myStake = useMemo( ()=>Number(toDecimals(token.myStake)), [token.myStake])
 
   isEditing = isEditing.tokenid === token.id
 
   const balance = useMemo(() => toDecimals(token.balances.available,5), [token.balances.available])
   const totalStakes = useMemo( ()=>toDecimals(token.totalStakes), [token.totalStakes])
+
+
+  const selected = currentUsername === token.name ? ' selected' : ''
+  const allocating = isAllocating ? ' allocating' : ''
+  const editing = isEditing ? ' editing' : ''
+
+  let columns = null
+
+  if (isEditing){
+    columns = (
+      <>
+        <div className="col-md-5">
+          <Allocator token={token} onComplete={()=>setIsEditing({})} onClickOutside={()=>setIsEditing({})} className='allocator' />
+        </div>
+        <div className="col-md-1">
+        { isAllocatingToken ? <Spinner animation="grow" /> : <i className="text-muted fas fa-times-circle close-allocator" onClick={()=>!isAllocating && setIsEditing({})}></i>
+        }
+        </div>
+      </>
+    )
+  } else {
+    columns = (
+      <>
+        <div className="col-md-1">
+            <div className="my-stake">{myStake === 0 ? '-' : myStake}</div>
+        </div>
+        <div className="col-md-2">
+          { !earningZero ? <CountUp balance={earning} decimals={6} /> : '-' }
+        </div>
+        <div className="col-md-2">
+          <div><CountUp balance={balance} /></div>
+        </div>
+        <div className="col-md-1">
+          <i class="text-muted far fa-edit" onClick={()=>!isAllocating && setIsEditing({tokenid: token.id})}></i>
+        </div>
+      </>
+    )
+  }
   return (
-    <div className={"row asset-row align-items-center"+selected+allocating}>
+    <div className={"row asset-row align-items-center"+selected+allocating+editing}>
       <div className="col-md-1" style={{textAlign: 'center'}}>
         <Crown token={token}/>
         <span className={'rank rank'+token.rank}>{token.rank}</span>
@@ -88,14 +127,7 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
             <span style={{fontWeight: 'bold'}} to={`/$${token.name}`}>${token.name}</span> <span className='small'><CountUp balance={totalStakes} decimals={2} /></span>
           </Link>
       </div>
-      <div className="col-md-4">
-          {isEditing && <Allocator token={token} onComplete={()=>setIsEditing({})} onClickOutside={()=>setIsEditing({})} className='allocator' />}
-          {!isEditing && <div className="my-stake" onClick={()=>!isAllocating && setIsEditing({tokenid: token.id})}>{myStake}  <i class="text-muted far fa-edit"></i></div>}
-          {!isEditing && <div className='per-block'>{ <span><CountUp balance={earning} decimals={6} /></span> }<br/> per block</div> }
-      </div>
-      <div className="col-md-2">
-        <div><CountUp balance={balance} /></div>
-      </div>
+      {columns}
     </div>
   )
 }
