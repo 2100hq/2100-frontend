@@ -110,6 +110,13 @@ export default function Allocator ({ token, className, onComplete=()=>{}, onClic
          disabled={isDisabled}
         /> {sliderVal}
   */
+  const marks = []
+  if (available+myStake > total*0.1){
+    marks.push({
+      value: available+myStake,
+      label: 'max'
+    })
+  }
   return (
     <div className={className} ref={node}>
       <Slider
@@ -121,6 +128,7 @@ export default function Allocator ({ token, className, onComplete=()=>{}, onClic
          onChangeCommitted={handleMouseUp}
          valueLabelDisplay="on"
          disabled={isDisabled}
+         marks = {marks}
         />
       <div className='available text-muted small'>{convertToTwoDecimals(remaining)}/{total} available</div>
     </div>
