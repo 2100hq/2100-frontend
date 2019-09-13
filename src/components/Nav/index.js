@@ -4,7 +4,7 @@ import { useStoreContext } from '../../contexts/Store'
 import { toDecimals } from '../../utils'
 import User from './User'
 import './style.scss'
-import Onboarding from '../Onboarding'
+import Navigation from './Navigation'
 
 function ProtectedNavItem ({state, children}) {
   if (!state.private.isSignedIn) return null
@@ -16,7 +16,7 @@ function Logo(){
     <>
     <img src='img/logo9.png' style={{width: '4.5rem'}} />
     </>
-    ) 
+    )
 }
 
 function NavBrand(){
@@ -36,7 +36,8 @@ export default function Nav (props) {
         <Link to='/'><Logo /></Link>
       </li>
       <User {...props} key='user' />
-      </ul>      
+      <Navigation />
+      </ul>
     )
 
  {/*    <nav className='navbar navbar-expand-lg navbar-light'>
@@ -58,5 +59,5 @@ export default function Nav (props) {
           <User {...props} key='user' />
         </ul>
       </div>
-    </nav>*/} 
+    </nav>*/}
 }

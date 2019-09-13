@@ -26,12 +26,12 @@ function Search(){
   )
 }
 
-function Tab({currentTab, tabName, setTab, badge}){
+function Tab({currentView, tabName, setTab, badge}){
   function handleClick(e){
     e.preventDefault()
     setTab(tabName)
   }
-  const isActive = currentTab === tabName
+  const isActive = currentView === tabName
   return(
     <li className='nav-item' key={tabName}>
       <a
@@ -54,18 +54,6 @@ function getPendingTokens(state){
   return tokens
 }
 
-function getActiveTokens(state){
-  return Object.values(state.tokens || {}).sort( (a, b) => a.rank - b.rank )
-}
-
-function getMyStakedOrHeldTokens(state){
-  return Object.values(state.tokens || {}).filter(token => {
-    const hasBalance = get(token, 'balances.available', "0") !== "0"
-    const isStaking = get(token, 'myStake', "0") !== "0"
-    return hasBalance || isStaking
-  }).sort( (a, b) => a.rank - b.rank )
-}
-
 function Badge({ text, isActive }){
   if (text == null) return null
   return (
@@ -80,24 +68,24 @@ function Badge({ text, isActive }){
 
 export default function Discover () {
   const { state, query } = useStoreContext()
-  const [currentTab, setTab] = useState('All')
+  const currentView = query.getCurrentView()
   const [isEditing, setIsEditing] = useState({})
 
-  useEffect( ()=>{
+  useEffect(()=>{
     setIsEditing({})
-  },[currentTab])
+  },[currentView])
 
-  const tabMap = {
-    All: () => <All tokens={getActiveTokens(state)} myToken={query.getMyToken()} isAllocating={query.getIsAllocating()} isEditing={isEditing} setIsEditing={setIsEditing}/>,
-    'Holding': () => <All tokens={getMyStakedOrHeldTokens(state)} myToken={query.getMyToken()} isAllocating={query.getIsAllocating()} isEditing={isEditing} setIsEditing={setIsEditing}/>
+  const viewMap = {
+    All: () => <All tokens={query.getActiveTokensArray()} myToken={query.getMyToken()} isAllocating={query.getIsAllocating()} isEditing={isEditing} setIsEditing={setIsEditing}/>,
+    'Holding': () => <All tokens={query.getMyStakedOrHeldTokensArray()} myToken={query.getMyToken()} isAllocating={query.getIsAllocating()} isEditing={isEditing} setIsEditing={setIsEditing}/>,
   }
-  // badge={tabName === 'My Wallet' && `${toDecimals(state.controller.balances.used)}/${toDecimals(state.controller.balances.total)}`  }
-  const tabs = Object.keys(tabMap).map( tabName => <Tab currentTab={currentTab} tabName={tabName} setTab={setTab} key={tabName} /> )
+
+  const view = typeof viewMap[currentView] === 'function' ? viewMap[currentView]() : null
 
   return (
     <Row>
       <Col md='12'>
-        {currentTab ? tabMap[currentTab]() : null}
+        {view}
       </Col>
     </Row>
   )

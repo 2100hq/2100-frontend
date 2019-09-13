@@ -7,31 +7,16 @@ import './style.scss'
 
 export default function Sidebar (props) {
   const {query} = useStoreContext()
-  const [feed, setFeed] = useState('All')
-  const feeds = {
+  const currentView = query.getCurrentView()
+  const viewMap = {
     All: () => <PublicFeed />,
-    Holding: () => <MyFeed />
+    Holding: () => <MyFeed />,
   }
 
-  let nav = null
-
-  if (query.getIsSignedIn()){
-    nav = Object.entries(feeds).map( ([name, fn]) => {
-      const handleClick = (e)=>{
-        e.preventDefault()
-        setFeed(name)
-      }
-      return (
-        <li className="nav-item" key={name}>
-          <a className={`nav-link ${feed === name && 'active'}`} href="#" onClick={handleClick}>{name}</a>
-        </li>
-      )
-    })
-  }
-
+  const view = typeof viewMap[currentView] === 'function' ? viewMap[currentView]() : null
   return (
   	<div>
-	  	{feeds[feed]()}
+	  	{view}
   	</div>
     )
 }

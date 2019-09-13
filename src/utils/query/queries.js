@@ -22,7 +22,14 @@ const queries = {
   getIsLoading: state => get(state, 'network.loading'),
   getIsMyToken: (state, token) => (queries.getMyToken(state) || {}).id === token.id,
   getUserName: (state, userid) => get(state, ['owners', userid, 'name']),
-  getIsAllocating: state => get(state, 'intents.allocating', false)
+  getIsAllocating: state => get(state, 'intents.allocating', false),
+  getCurrentView: state => state.view,
+  getActiveTokensArray: state => Object.values(state.tokens || {}).sort( (a, b) => a.rank - b.rank ),
+  getMyStakedOrHeldTokensArray: state => Object.values(state.tokens || {}).filter(token => {
+      const hasBalance = get(token, 'balances.available', "0") !== "0"
+      const isStaking = get(token, 'myStake', "0") !== "0"
+      return hasBalance || isStaking
+    }).sort( (a, b) => a.rank - b.rank ),
 }
 
 export default queries

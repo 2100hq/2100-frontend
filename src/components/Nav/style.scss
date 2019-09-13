@@ -3,9 +3,12 @@
 
 .vertical-nav{
 	font-size: 1.1rem;
-	font-weight: bold;
 }
 
 .our-brand{
 	text-align: center;
+}
+
+.nav-link.active {
+  font-weight: bold;
 }

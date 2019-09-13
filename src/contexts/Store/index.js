@@ -52,7 +52,16 @@ export default function StoreProvider ({ children }) {
   // state in the StoreProvider is private
   // public state is a combination of private state and selectors.
   // effects in StoreProvider can only access private state
-  const [privState, dispatch] = useReducer(reducer, { ...initialState, config, auth: { token: localStorage.getItem('token')} })
+  const [privState, dispatch] = useReducer(reducer, {
+    ...initialState,
+    config,
+    auth: { token: localStorage.getItem('token')},
+    view: config.defaultView
+  })
+
+  useEffect( () => {
+    console.log(new Date().toISOString(), 'LATEST BLOCK', get(privState, 'public.latestBlock.number'))
+  }, [get(privState, 'public.latestBlock.number')])
 
   // hook up socket changes to dispatcher/reducer
   useEffect(() => {
