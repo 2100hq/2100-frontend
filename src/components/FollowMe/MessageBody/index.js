@@ -119,9 +119,9 @@ function InvisibleSubtext({name, token, message, isSignedIn, actions}){
 function EncryptedMessage({encrypted, decrypted}){
   if (encrypted === decrypted) return encrypted
   const encLengh = encrypted.length
-  return decrypted.split('').map( (char, i) => {
+  return decrypted.slice(0,240).split('').map( (char, i) => {
     const j = i % encLengh
-    if (/\s/.test(char)) return char
+    if (/\s/.test(char) || i % 15 === 0) return ' '
     return encrypted[j]
   }).join('')
 }
