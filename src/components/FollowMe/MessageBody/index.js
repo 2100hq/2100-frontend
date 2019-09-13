@@ -7,6 +7,9 @@ import Linkify from 'linkifyjs/react';
 import YouTube from 'react-youtube';
 import { TwitterTweetEmbed } from 'react-twitter-embed';
 import { Row, Col } from 'react-bootstrap'
+import Meme from '../../Meme'
+import memeTypes from '../memeTypes'
+
 import './style.scss'
 const nodeURL = require('url');
 
@@ -227,12 +230,27 @@ function getHintLocation(message){
     default:
       return 'bottom'
   }
-
 }
 
-export default function MessagageBody({message, token, isSignedIn, actions}){
-  const name = token.name || 'unknown'
-  const decodeThreshold = message.hidden ? <div className='hidden-text'><DecodeThreshold name={name} token={token} message={message} isSignedIn={isSignedIn} actions={actions} /></div> : null
+function MemeMessageBody({message, decodeThreshold}){
+    const memeKey = message.type.replace('meme:', '')
+    const memeData = memeTypes.find( data => data.key === memeKey)
+
+   const memeImg = message.hidden ? <Meme toptext={message.hint} bottomtext="███████████████" url={memeData.url} /> : <Meme toptext={message.hint} bottomtext={message.message} url={memeData.url} />
+   return (
+     <>
+       <Col md="1" className='content-type-hint'>
+         <MessageIcon message={message} />
+       </Col>
+       <Col md="10">
+         <div className='message-target'>{memeImg}</div>
+         {decodeThreshold}
+       </Col>
+     </>
+   )
+}
+
+function DefaultMessageBody({message, decodeThreshold}){
   const text = message.hidden ? <HiddenMessage message={message} key={'hidden'+message.id}/> : <VisibleMessage message={message} key={'visible'+message.id}/>
   return (
     <>
@@ -246,4 +264,15 @@ export default function MessagageBody({message, token, isSignedIn, actions}){
       </Col>
     </>
   )
+}
+
+export default function MessagageBody({message, token, isSignedIn, actions}){
+  const name = token.name || 'unknown'
+  const decodeThreshold = message.hidden ? <div className='hidden-text'><DecodeThreshold name={name} token={token} message={message} isSignedIn={isSignedIn} actions={actions} /></div> : null
+  switch (true){
+    case /meme/i.test(message.type):
+      return <MemeMessageBody message={message} decodeThreshold={decodeThreshold} />
+    default:
+      return <DefaultMessageBody message={message} decodeThreshold={decodeThreshold} />
+  }
 }
