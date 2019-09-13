@@ -22,7 +22,7 @@ export default function Allocator ({ token, className, onComplete=()=>{}, onClic
     ? get(state, `private.myCommands.${commandId}`, { done: false })
     : { done: false }
 
-  const myStake = toDecimals(token.myStake || 0)
+  const myStake = useMemo( () => toDecimals(token.myStake || 0), [token.myStake] )
 
   const [sliderVal, setSliderVal] = useState(myStake)
   const [remaining, setRemaining] = useState(available)
