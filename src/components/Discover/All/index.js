@@ -69,14 +69,9 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
   // don't show the edit button if any token anywhere is allocating
   const editButton = !isAllocating ? <i class="text-muted far fa-edit" onClick={()=>setIsEditing({tokenid: token.id})}></i> : null
 
-  function handleHover(e){
-    if (!isEditing || isAllocatingToken) return
-
-    setIsEditing({})
-  }
 
   return (
-    <div className={"row asset-row align-items-center"+selected}  onMouseLeave={handleHover}>
+    <div className={"row asset-row align-items-center"+selected}>
       <div className="col-md-1" style={{textAlign: 'center'}}>
         <Crown token={token}/>
         <span className={'rank rank'+token.rank}>{token.rank}</span>
@@ -88,7 +83,7 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
           </Link>
       </div>
       <div className="col-md-4">
-          {isEditing && <Allocator token={token} className='allocator' />}
+          {isEditing && <Allocator token={token} onComplete={()=>setIsEditing({})} onClickOutside={()=>setIsEditing({})} className='allocator' />}
           {!isEditing && <div className="my-stake">{myStake} {editButton}</div>}
           {!isEditing && <div className='small'>{ <span><CountUp balance={earning} decimals={6} /></span> } per block</div> }
       </div>

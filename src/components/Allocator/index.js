@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useRef, useMemo } from 'react'
 import { BigNumber, toDecimals, fromDecimals, convertToTwoDecimals } from '../../utils'
 import { get } from 'lodash'
 import { useStoreContext } from '../../contexts/Store'
@@ -7,11 +7,13 @@ import Slider from '@material-ui/core/Slider';
 import './style.scss'
 
 
-export default function Allocator ({ token, className }) {
+export default function Allocator ({ token, className, onComplete=()=>{}, onClickOutside=()=>{} }) {
+  const node = useRef()
   const { state, query, dispatch, actions } = useStoreContext()
   const isSignedIn = query.getIsSignedIn()
-  const isDisabled = get(state, 'intents.allocating')
-
+  const isAllocating = query.getIsAllocating()
+  const isDisabled = isAllocating
+  const isAllocatingToken = isAllocating && isAllocating.tokenid === token.id
   const total = toDecimals(state.controller.balances.total)
   const available = toDecimals(state.controller.balances.available)
 
@@ -56,15 +58,29 @@ export default function Allocator ({ token, className }) {
     if (!myCommand.done) return
     dispatch(actions.update('intents.allocating', false))
     setCommandId(null)
+    onComplete()
   }, [myCommand, commandId])
+
+  // detect clicks outside of this node; needs to re-bind when allocating happens
+  useEffect(() => {
+    function handleDocumentClick (e) {
+     if (node.current.contains(e.target)) return
+     if (isAllocatingToken) return // in the process of allocating this token
+     onClickOutside()
+    }
+
+    document.addEventListener("mousedown", handleDocumentClick);
+
+    return () => {
+      document.removeEventListener("mousedown", handleDocumentClick);
+    }
+  }, [isAllocatingToken])
 
 
   function handleChange(e, val){
-    // if(/bieb/.test(token.name)) console.log('handleChange',val)
     const newVal = val //e.target.value
     const oldVal = myStake
     const diff = BigNumber(newVal).minus(oldVal)
-    console.log(newVal, oldVal, diff.gt(available))
     if (diff.gt(available)) return
 
     setSliderVal(newVal)
@@ -95,7 +111,7 @@ export default function Allocator ({ token, className }) {
         /> {sliderVal}
   */
   return (
-    <div className={className}>
+    <div className={className} ref={node}>
       <Slider
          min={0}
          max={Number(total)}
