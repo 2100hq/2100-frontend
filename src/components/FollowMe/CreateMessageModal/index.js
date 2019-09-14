@@ -48,7 +48,7 @@ export default function CreateMessageModal () {
       {!showHesitate && (
         <Modal.Header closeButton />
       )}
-      <div style={{display: showHesitate ? 'none' : 'block'}}><MessageForm onSubmitted={onHide}/></div>
+      <div style={{display: showHesitate ? 'none' : 'block'}}><MessageForm replyid={replyid} onSubmitted={() => actions.setShowCreate(false)}/></div>
       {showHesitate && <Hesitate onCancel={()=>setShowHesitate(false)} onDiscard={()=>setClose(true)} /> }
     </Modal>
   )

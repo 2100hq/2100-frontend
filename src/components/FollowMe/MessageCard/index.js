@@ -33,7 +33,7 @@ function ago(past){
   return ms(elapsed)
 }
 
-export default function MessageCard({message, myToken, token, isSignedIn, actions, canCopyUrl=true, canLinkToProfile=true}){
+export default function MessageCard({message, myToken, token, isSignedIn, actions, canCopyUrl=true, canLinkToProfile=true, canComment=true, showFooter=true}){
   const [destroyCountDown, setDestroyCountDown] = useState(null)
   const [copied, setCopied] = useState(null)
 
@@ -86,7 +86,7 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
       <Row className='message-body'>
         <MessageBody {...{message, myToken, token, isSignedIn, actions, canLinkToProfile}} />
       </Row>
-      <Row  className='message-footer small'>
+      <Row className='message-footer small' style={{ display: showFooter ? 'auto' : 'none'}}>
         <Col md="1" />
         <Col>
           <hr />
@@ -96,7 +96,9 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
             onCopy={() => setCopied(true)}>
             <div className="small message-copy-url"><i className="fas fa-link"></i><span>{copied ? 'Copied!' : 'Copy link'}</span></div>
           </CopyToClipboard>
+
         )}
+        {!message.hidden && canComment && <div><a onClick={ ()=> actions.setShowCreate({replyid: message.id})}>Comment</a></div>}
         </Col>
       </Row>
     </div>

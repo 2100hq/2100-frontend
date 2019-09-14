@@ -9,7 +9,7 @@ import memeTypes from '../memeTypes'
 import percentile from '../../../utils/percentile'
 import {BigNumber, toDecimals, fromDecimals, weiDecimals} from '../../../utils'
 import HoldersProfiles from '../HoldersProfiles'
-
+import MessageCard from '../MessageCard'
 
 import './style.scss'
 
@@ -44,7 +44,7 @@ function Tab({currentTab, tabName, setTab}){
   )
 }
 
-export default function MessageForm({onSubmitted}){
+export default function MessageForm({onSubmitted, replyid}){
   const {query} = useStoreContext()
 
   let { api, isSignedIn, myToken, messages = {}, publicMessages = {}, followers = {}, actions } = useFollowMeContext()
@@ -192,6 +192,7 @@ export default function MessageForm({onSubmitted}){
   return (
       <div className='message-form card'>
         <div className='card-body'>
+          { replyid && <div style={{width: '50%'}}><MessageCard {...{message: messages[replyid], myToken, token: query.getToken(messages[replyid].tokenid), isSignedIn, actions, canCopyUrl:false, canLinkToProfile:false, canComment: false, showFooter: false}} /></div> }
           { <ul className='nav nav-tabs'>{tabs}</ul> }
           <Form>
             <Form.Group controlId="hint" className='form-group-hint'>
