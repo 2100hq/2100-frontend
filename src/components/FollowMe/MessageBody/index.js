@@ -167,6 +167,8 @@ function MessageIcon({message}){
       return <i className={'fab fa-youtube'} />
     case 'twitter':
       return <i className={'fab fa-twitter'} />
+    case 'meme:raptor':
+      return <i class="far fa-comment-alt"></i>
     default:
       return <i className={'fas fa-align-left'} />
   }

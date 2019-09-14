@@ -17,14 +17,16 @@
 .message{
   position: relative;
   padding: 2rem;
-  color: black;
   font-size: 1.1rem;
-  border-left: 1px solid #ccc;
   opacity: 0.8;
+  transition: opacity 0.2s linear;
+
     &:hover{
     opacity: 1;
   }
-  transition: opacity 0.2s linear;
+
+  color: black;
+  border-left: 2px solid #ccc;
 
 
   &.message-type-text{
@@ -56,6 +58,14 @@
 
     .content-type-hint{
       color: #5A0084;
+    }
+  }
+
+  &.message-type-meme{
+    border-left: 2px solid green;
+
+    .content-type-hint{
+      color: green;
     }
   }
 
