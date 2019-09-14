@@ -109,7 +109,7 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
         <div className="col-md-2">
           <div><CountUp balance={balance} /></div>
         </div>
-        <div className="col-md-1">
+        <div className="col-md-1" style={{textAlign: 'center'}}>
           <i class="text-muted far fa-edit" onClick={()=>!isAllocating && setIsEditing({tokenid: token.id})}></i>
         </div>
       </>
@@ -119,12 +119,16 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
     <div className={"row asset-row align-items-center"+selected+allocating+editing}>
       <div className="col-md-1" style={{textAlign: 'center'}}>
         <Crown token={token}/>
-        <span className={'rank rank'+token.rank}>{token.rank}</span>
+        <span className={'rank rank'+token.rank}>{token.rank}</span><br/>
+        <span className='small'><CountUp balance={totalStakes} decimals={2} /></span> 
       </div>
-      <div className="col-md-5">
+      <div className='col-md-2' style={{textAlign: 'center'}}>
+          <ProfileImage token={token} /><br/>
+      </div>
+      <div className="col-md-3" style={{position: 'relative',left: '-1rem'}}>
           <Link to={`/$${token.name}`}>
-            <ProfileImage token={token} />
-            <span style={{fontWeight: 'bold'}} to={`/$${token.name}`}>${token.name}</span> <span className='small'><CountUp balance={totalStakes} decimals={2} /></span>
+            <span style={{fontWeight: 'bold'}} to={`/$${token.name}`}>${token.name}</span>
+
           </Link>
       </div>
       {columns}
@@ -152,7 +156,7 @@ function All({tokens = [], location, myToken, isAllocating, isEditing, setIsEdit
     />
   ))
   return (
-    <div className="asset-table">
+    <div className="asset-table container">
       <div className="row heading-row text-muted">
         <div className="col-md-1">#</div>
         <div className="col-md-5">User</div>

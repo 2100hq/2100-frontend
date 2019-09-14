@@ -84,10 +84,8 @@ export default function Discover () {
   const view = typeof viewMap[currentView] === 'function' ? viewMap[currentView]() : null
 
   return (
-    <Row>
-      <Col md='12'>
+    <>
         {view}
-      </Col>
-    </Row>
+    </>
   )
 }
