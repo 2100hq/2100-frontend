@@ -55,7 +55,8 @@ function InitialState(followMeUrl){
     api: {
       public:API(followMeUrl,'public'),
       private:API(followMeUrl,'private'),
-    }
+    },
+    showCreate: false
   }
 }
 
@@ -205,7 +206,8 @@ export default function FollowMeProvider ({ children }) {
       getMessage: GetMessage(fmstate),
       decodeMessage: DecodeMessage(fmstate),
       getTokenFeed: GetTokenFeed(fmstate),
-      destroy: Destroy(fmstate)
+      destroy: Destroy(fmstate),
+      setShowCreate: show => update('showCreate', show)
     }
     window.fmstate = fmstate
     const messages = { ...fmstate.publicMessages, ...fmstate.privateMessages, ...fmstate.decodedMessages, ...fmstate.sentMessages }

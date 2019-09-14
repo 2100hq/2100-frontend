@@ -1,16 +1,13 @@
 import React, {useState} from 'react'
 import {Button} from 'react-bootstrap'
-import { useStoreContext } from '../../../contexts/Store'
-import CreateMessageModal from '../CreateMessageModal'
+import { useFollowMeContext } from '../../../contexts/FollowMe'
 import './style.scss'
 
 export default function CreateMessageButton(props){
-  const [show, setShow] = useState(false)
-
+  const { actions } = useFollowMeContext()
   return (
     <>
-    <CreateMessageModal show={show} onHide={()=>setShow(false)} />
-    <div className='compose-button' {...props} onClick={()=>setShow(true)}><i class="fas fa-pen"></i></div>
+    <div className='compose-button' {...props} onClick={()=>actions.setShowCreate(true)}><i class="fas fa-pen"></i></div>
     </>
   )
 }
