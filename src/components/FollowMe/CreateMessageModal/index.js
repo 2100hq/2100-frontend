@@ -22,21 +22,24 @@ function Hesitate({onCancel, onDiscard}){
   )
 }
 
-export default function CreateMessageModal ({show,onHide}) {
-  const { state, actions } = useFollowMeContext()
+export default function CreateMessageModal () {
+  const { showCreate, actions } = useFollowMeContext()
+
   const [showHesitate, setShowHesitate] = useState(false)
   const [close, setClose] = useState(false)
 
   useEffect( () => {
     if (!close) return
-    onHide()
+    actions.setShowCreate(false)
     setClose(false)
     setShowHesitate(false)
   }, [close])
 
+  const {replyid} = showCreate
+
   return (
     <Modal
-      show={show}
+      show={Boolean(showCreate)}
       onHide={() => setShowHesitate(true)}
       size='lg'
       aria-labelledby='contained-modal-title-vcenter'
@@ -45,7 +48,7 @@ export default function CreateMessageModal ({show,onHide}) {
       {!showHesitate && (
         <Modal.Header closeButton />
       )}
-      <div style={{display: showHesitate ? 'none' : 'block'}}><MessageForm onSubmitted={onHide}/></div>
+      <div style={{display: showHesitate ? 'none' : 'block'}}><MessageForm replyid={replyid} onSubmitted={() => actions.setShowCreate(false)}/></div>
       {showHesitate && <Hesitate onCancel={()=>setShowHesitate(false)} onDiscard={()=>setClose(true)} /> }
     </Modal>
   )

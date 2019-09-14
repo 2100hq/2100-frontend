@@ -15,6 +15,8 @@ import BrowserClasses from './components/BrowserClasses'
 import {Row, Col, Card} from 'react-bootstrap'
 import Sidebar from './components/Sidebar'
 import CreateMessageButton from './components/FollowMe/CreateMessageButton'
+import CreateMessageModal from './components/FollowMe/CreateMessageModal'
+
 import Discover from './components/Discover'
 import { extractUsernameAndMessageIdFromLocation,extractMessageIdFromUsernameRoute } from './utils'
 
@@ -36,7 +38,7 @@ class App extends Component {
                   {/*<Route path='/wallet' exact component={Wallet} />*/}
                   <Route path='/manage' exact component={Manage} />
                   <Route path='/admin' exact component={Admin} />
-                  
+
                   <Row className='main'>
                     <Col md='6' className='discover'>
                       <Discover />
@@ -64,6 +66,7 @@ class App extends Component {
             </Row>
             <Row>
               <Col md='12'>
+                <CreateMessageModal />
                 <Alerts />
                 <ErrorModal />
               </Col>
