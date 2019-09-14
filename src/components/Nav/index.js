@@ -14,7 +14,7 @@ function ProtectedNavItem ({state, children}) {
 function Logo(){
   return(
     <>
-    <img src='img/logo9.png' style={{width: '4.5rem'}} />
+    <img src='img/2100-logo.png' style={{width: '8rem', padding: '2rem 0'}} />
     </>
     )
 }
