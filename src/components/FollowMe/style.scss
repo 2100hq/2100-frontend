@@ -28,36 +28,61 @@
   color: black;
   border-left: 1px solid #ccc;
 
+  .content-type-hint{
+    font-size: 1.2rem;
+    color: #aaa;
+  }
 
   &.message-type-text{
-    border-left: 1px solid $twentyoneprimary;
+    $color: $twentyoneprimary;
+    border-left: 1px solid $color;
+
+    .pretend-encryption{
+      background-color: $color;
+    }
 
     .content-type-hint{
-      color: $twentyoneprimary;
+      color: $color;
     }
   }
 
+
   &.message-type-youtube{
-    border-left: 1px solid #FF0000;
+    $color: #FF0000;
+    border-left: 1px solid $color;
+
+    .pretend-encryption{
+      background-color: $color;
+    }
 
     .content-type-hint{
-      color: #FF0000;
+      color: $color;
     }
   }
 
   &.message-type-twitter{
-    border-left: 1px solid #1da1f2;
+    $color: #1da1f2;
+    border-left: 1px solid $color;
+
+     .pretend-encryption{
+      background-color: $color;
+    }
 
     .content-type-hint{
-      color: #1da1f2;
+      color: $color;
     }
   }
 
   &.message-type-image{
-    border-left: 1px solid #5A0084;
+    $color: $twentyonesecondary;
+    border-left: 1px solid $color;
+
+     .pretend-encryption{
+      background-color: $color;
+    }
 
     .content-type-hint{
-      color: #5A0084;
+      color: $color;
     }
   }
 
@@ -65,7 +90,7 @@
     border-left: 1px solid green;
 
     .content-type-hint{
-      color: green;
+  
     }
   }
 
