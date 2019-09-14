@@ -68,7 +68,7 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
 
 
   return (
-    <div className={`message ${destroyCountDown != null && 'message-destroy-countdown'} message-type-${message.type}`} key={message.id}>
+    <div className={`message ${destroyCountDown == null ? '' : 'message-destroy-countdown'} message-type-${message.type.replace(/:.*/,'')}`} key={message.id}>
       {destroyIcon}
       <Row  className='message-header text-muted'>
         <Col md='1'>
