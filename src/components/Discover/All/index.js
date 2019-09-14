@@ -32,13 +32,15 @@ function Crown({token}){
   }
 }
 
-function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIsEditing}) {
+function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIsEditing, index}) {
   const prevTotalStakeRef = useRef(token.totalStakes)
+  const prevIndexRef = useRef(index)
   const [stakeArrowDirection, setStakeArrowDirection]=useState(null)
-
+  if (prevIndexRef.current != index) console.log(token.name, prevIndexRef.current, index)
   // only calculate earning when necessary
   const [earning, setEarning] = useState('0.000000')
   const [earningZero, setEarningZero] = useState(true)
+  const [indexChanged, setIndexChanged] = useState(false)
   useEffect(()=> {
     let newEarning = null
 
@@ -69,6 +71,16 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
     return () => clearTimeout(id)
   }, [token.totalStakes])
 
+  useEffect( () => {
+    if (/trump/.test(token.name)) console.log('prevIndexRef.current === index', prevIndexRef.current,index)
+    if (prevIndexRef.current === index) return
+    setIndexChanged(index > prevIndexRef.current ? 'up' : 'down')
+    prevIndexRef.current=index
+
+    const id = setTimeout(setIndexChanged, 250, false)
+    return () => clearTimeout(id)
+  }, [index])
+
 
   const isAllocatingToken = isAllocating && isAllocating.tokenid === token.id
   const myStake = useMemo( ()=>Number(toDecimals(token.myStake)), [token.myStake])
@@ -82,6 +94,7 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
   const selected = currentUsername === token.name ? ' selected' : ''
   const allocating = isAllocating ? ' allocating' : ''
   const editing = isEditing ? ' editing' : ''
+  const changed = indexChanged ? ` index-changed-${indexChanged}` : ''
 
   let columns = null
 
@@ -116,11 +129,11 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
     )
   }
   return (
-    <div className={"row asset-row align-items-center"+selected+allocating+editing}>
+    <div className={"row asset-row align-items-center"+selected+allocating+editing+changed}>
       <div className="col-md-1" style={{textAlign: 'center'}}>
         <Crown token={token}/>
         <span className={'rank rank'+token.rank}>{token.rank}</span><br/>
-        <span className='small'><CountUp balance={totalStakes} decimals={2} /></span> 
+        <span className='small'><CountUp balance={totalStakes} decimals={2} /></span>
       </div>
       <div className='col-md-2' style={{textAlign: 'center'}}>
           <ProfileImage token={token} /><br/>
@@ -136,13 +149,23 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
   )
 }
 
+function idHash(tokens){
+  return tokens.map(token => token.id).join('')
+}
+
 function All({tokens = [], location, myToken, isAllocating, isEditing, setIsEditing}){
   const [fixedTokens, setFixedTokens] = useState(tokens)
+  const tokensIds = idHash(tokens)
 
   useEffect( () => {
-    if (fixedTokens.length === tokens.length) return
-    setFixedTokens(tokens)
-  },[tokens.length])
+    const fixedTokenIds = idHash(fixedTokens)
+    if (fixedTokenIds === tokensIds) return
+    if (!fixedTokens || fixedTokens.length === 0) return setFixedTokens(tokens)
+      console.log({isAllocating, isEditing}, isAllocating || !isEditing.tokenid)
+    if (isAllocating.tokenid || isEditing.tokenid) return // dont swap if we're in the middle of something
+    const id = setTimeout(setFixedTokens,2000,tokens)
+    return () => clearTimeout(id)
+  },[tokensIds, isEditing, isAllocating])
   const {username} = extractUsernameAndMessageIdFromLocation(location)
   const rows = Object.values(fixedTokens).map((token, i) => (
     <Row
@@ -153,6 +176,7 @@ function All({tokens = [], location, myToken, isAllocating, isEditing, setIsEdit
       isAllocating={isAllocating}
       isEditing={isEditing}
       setIsEditing={setIsEditing}
+      index={i}
     />
   ))
   return (

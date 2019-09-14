@@ -24,6 +24,12 @@
     padding: 0.5rem 0;
     border-bottom: 1px dotted #eee;
     color: #444;
+    &.index-changed-up{
+      background-color: lighten(orange,20%);
+    }
+    &.index-changed-down{
+      background-color: lighten(orange,20%);
+    }
     .fa-edit {
       display: none;
       cursor: pointer;
