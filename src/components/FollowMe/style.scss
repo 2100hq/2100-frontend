@@ -26,7 +26,7 @@
   }
 
   color: black;
-  border-left: 1px solid #ccc;
+  border-left: 1px solid #eee;
 
   .content-type-hint{
     font-size: 1.2rem;
@@ -35,7 +35,7 @@
 
   &.message-type-text{
     $color: $twentyoneprimary;
-    border-left: 1px solid $color;
+    border-right: 5px solid $color;
 
     .pretend-encryption{
       background-color: $color;
@@ -48,7 +48,7 @@
 
   &.message-type-youtube{
     $color: #FF0000;
-    border-left: 1px solid $color;
+    border-right: 5px solid $color;
 
     .pretend-encryption{
       background-color: $color;
@@ -60,7 +60,7 @@
 
   &.message-type-twitter{
     $color: #1da1f2;
-    border-left: 1px solid $color;
+    border-right: 5px solid $color;
 
      .pretend-encryption{
       background-color: $color;
@@ -72,7 +72,7 @@
 
   &.message-type-image{
     $color: $twentyonesecondary;
-    border-left: 1px solid $color;
+    border-right: 5px solid $color;
 
      .pretend-encryption{
       background-color: $color;
@@ -84,7 +84,7 @@
 
   &.message-type-meme{
     $color: green;
-    border-left: 1px solid $color;
+    border-right: 5px solid $color;
 
      .pretend-encryption{
       background-color: $color;
