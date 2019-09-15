@@ -41,7 +41,6 @@ export default function CreateMessageModal () {
     <Modal
       show={Boolean(showCreate)}
       onHide={() => setShowHesitate(true)}
-      size='lg'
       aria-labelledby='contained-modal-title-vcenter'
       centered
     >
