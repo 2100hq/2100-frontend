@@ -42,7 +42,6 @@
     }
 
     .content-type-hint{
-      color: $color;
     }
   }
 
@@ -56,7 +55,6 @@
     }
 
     .content-type-hint{
-      color: $color;
     }
   }
 
@@ -69,7 +67,6 @@
     }
 
     .content-type-hint{
-      color: $color;
     }
   }
 
@@ -82,15 +79,18 @@
     }
 
     .content-type-hint{
-      color: $color;
     }
   }
 
   &.message-type-meme{
-    border-left: 1px solid green;
+    $color: green;
+    border-left: 1px solid $color;
+
+     .pretend-encryption{
+      background-color: $color;
+    }
 
     .content-type-hint{
-  
     }
   }
 
@@ -156,8 +156,8 @@
 }
 
 .message-header .profile-image{
-  width: 2.5rem;
-  height: 2.5rem;
+  width: 2.75rem;
+  height: 2.75rem;
   margin-right: 0.5rem;
 }
 

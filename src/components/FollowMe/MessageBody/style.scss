@@ -25,14 +25,17 @@
 
 	img, iframe, video{
 		max-width: 100%;
-		border-radius: 0.75rem;
+		max-height: 400px;
+		object-fit: contain;
+
+		border-radius: 0.5rem;
 	}
 
 	.hidden-message-block{
 		// width: 20rem;
 		padding: 0 ;
 		background-color: fff;
-		border-radius: 1.5rem;
+		border-radius: 0.5rem;
 
 		.pretend-encryption{
 			// font-size: 1rem;
@@ -40,7 +43,7 @@
 			font-weight: bold;
 			background-color: rgba(0,0,0,0.04);
 			padding: 2rem;
-			border-radius: 1.5rem;
+			border-radius: 0.5rem;
 			letter-spacing: 0.2rem;
 		}
 

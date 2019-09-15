@@ -244,7 +244,7 @@ function MemeMessageBody({message, decodeThreshold}){
        <Col md="1" className='content-type-hint'>
          <MessageIcon message={message} />
        </Col>
-       <Col md="10">
+       <Col md="9 ml-2">
          <div className='message-target'>{memeImg}</div>
          {decodeThreshold}
        </Col>
@@ -259,7 +259,7 @@ function DefaultMessageBody({message, decodeThreshold}){
       <Col md="1" className='content-type-hint'>
         <MessageIcon message={message} />
       </Col>
-      <Col md="10">
+      <Col md="9 ml-2">
         <div className='message-target'>{text}</div>
         {decodeThreshold}
         {message.hint && <div className='message-hint'>hint: {message.hint}</div>}
