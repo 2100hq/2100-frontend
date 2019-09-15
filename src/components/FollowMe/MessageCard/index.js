@@ -75,7 +75,7 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
           <ProfileImage token={token} />
         </Col>
         <Col md='9 ml-2'>
-          <span className='token-name large'>
+          <span className='token-name'>
             { canLinkToProfile ? <Link to={`/$${token.name}`}>{token.name}</Link> : token.name }
             <span className='message-time text-muted'>
               { canLinkToProfile ? <Link to={messageUrl}>{ago(message.created)}</Link> : ago(message.created) }
