@@ -238,7 +238,7 @@ function MemeMessageBody({message, decodeThreshold}){
     const memeKey = message.type.replace('meme:', '')
     const memeData = memeTypes.find( data => data.key === memeKey)
 
-   const memeImg = message.hidden ? <Meme toptext={message.hint} bottomtext="███████████████" url={memeData.url} /> : <Meme toptext={message.hint} bottomtext={message.message} url={memeData.url} />
+   const memeImg = message.hidden ? <Meme toptext={message.hint} bottomtext="9A4C86B3A80C" url={memeData.url} /> : <Meme toptext={message.hint} bottomtext={message.message} url={memeData.url} />
    return (
      <>
        <Col md="1" className='content-type-hint'>
