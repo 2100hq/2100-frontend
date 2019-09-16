@@ -13,6 +13,19 @@
 	left: 0.5rem;
 }
 
+.decode-button{
+	font-weight: bold;
+	color: white;
+	background-color: $twentyonesecondary;
+	padding: 0 0.5rem;
+	border-radius: 0.5rem;
+	&:hover{
+		color: white;
+		background-color: lighten($twentyonesecondary,10%);
+		text-decoration: none;
+	}
+}
+
 .message-body{
 	padding: 0.5rem 0;
 

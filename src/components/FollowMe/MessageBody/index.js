@@ -114,7 +114,7 @@ function DecodeThreshold({name, token, message, isSignedIn, actions}){
 
   if (decoding) return <span><i class="fas fa-exclamation"></i> decoding...</span>
 
-  if (diff.lte(0)) return <span><i class="fas fa-exclamation"></i> you have enough <span className='token-name'>{name}</span> to <a href="#" onClick={handleClick}>decode</a></span>
+  if (diff.lte(0)) return <span><i class="fas fa-exclamation"></i> you have enough <span className='token-name'>{name}</span> to <a className='decode-button' href="#" onClick={handleClick}>decode</a></span>
 
   if (!isStaking) return <span><i className='fas fa-lock' /> hold {toDecimals(message.threshold,3,0)} <span className='token-name'>{name} to see</span></span>
 }
