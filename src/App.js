@@ -15,7 +15,7 @@ import BrowserClasses from './components/BrowserClasses'
 import {Row, Col, Card} from 'react-bootstrap'
 import Sidebar from './components/Sidebar'
 import CreateMessageButton from './components/FollowMe/CreateMessageButton'
-import CreateMessageModal from './components/FollowMe/CreateMessageModal'
+import CreateMessageFixed from './components/FollowMe/CreateMessageFixed'
 
 import Discover from './components/Discover'
 import { extractUsernameAndMessageIdFromLocation,extractMessageIdFromUsernameRoute } from './utils'
@@ -64,13 +64,9 @@ class App extends Component {
                 </Switch>
               </Col>
             </Row>
-            <Row>
-              <Col md='12'>
-                <CreateMessageModal />
-                <Alerts />
-                <ErrorModal />
-              </Col>
-            </Row>
+            <CreateMessageFixed />
+            <Alerts />
+            <ErrorModal />
           </div>
         </BrowserClasses>
       </Router>

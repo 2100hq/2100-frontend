@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { Form, Button } from 'react-bootstrap'
+import { Form, Button, Row, Col, Container } from 'react-bootstrap'
 import {useFollowMeContext} from '../../../contexts/FollowMe'
 import {useStoreContext} from '../../../contexts/Store'
 
@@ -190,40 +190,41 @@ export default function MessageForm({onSubmitted, replyid}){
   }
 
   return (
-      <div className='message-form card'>
-        <div className='card-body'>
-          { replyid && <div style={{width: '50%'}}><MessageCard {...{message: messages[replyid], myToken, token: query.getToken(messages[replyid].tokenid), isSignedIn, actions, canCopyUrl:false, canLinkToProfile:false, canComment: false, showFooter: false}} /></div> }
-          { <ul className='nav nav-tabs'>{tabs}</ul> }
-          <Form>
-            <Form.Group controlId="hint" className='form-group-hint'>
-              <Form.Control as="input" value={hint || ''} onChange={changeData} disabled={isDisabled ? 'disabled' : null} maxlength={75} placeholder={publicHint}/>
-              <Form.Label className='small'>
-                  <i className='fas fa-eye' /> Everyone
-              </Form.Label>
-              {/*<Form.Label className='char-count'>
-                  {(hint || '').length}/{maxlength}
-              </Form.Label>*/}
-            </Form.Group>
-            <Form.Group controlId="message">
-              {currentTab ? tabMap[hasToken ? currentTab : 'Link']() : null}
-              <Form.Label className='small'>
-                <i className='fas fa-eye' /> {footerText}
-              </Form.Label>
-            </Form.Group>
-            { currentTab === 'Meme' && <MemeSelect memeTypes={memeTypes} memeType={memeType} onChange={setMemeType} />}
-            { currentTab === 'Meme' && <Meme toptext={hint} bottomtext={message} url={memeTypes[memeType].url}/>}
-            <div className='clearfix'>
-              <div className='float-left'>
-                <div className="small">{ hasToken && tokenRequirement }</div>
+        <>
+            { replyid && <div style={{width: '50%'}}><MessageCard {...{message: messages[replyid], myToken, token: query.getToken(messages[replyid].tokenid), isSignedIn, actions, canCopyUrl:false, canLinkToProfile:false, canComment: false, showFooter: false}} /></div> }
+            { <ul className='nav nav-tabs'>{tabs}</ul> }
+
+            <Form>
+              <Form.Group controlId="hint" className='form-group-hint'>
+
+                <Form.Control as="input" value={hint || ''} onChange={changeData} disabled={isDisabled ? 'disabled' : null} maxlength={75} placeholder={publicHint}/>
+                <Form.Label className='small'>
+                    <i className='fas fa-eye' /> Everyone
+                </Form.Label>
+              </Form.Group>
+
+              <Form.Group controlId="message">
+                {currentTab ? tabMap[hasToken ? currentTab : 'Link']() : null}
+                <Form.Label className='small'>
+                  <i className='fas fa-eye' /> {footerText}
+                </Form.Label>
+              </Form.Group>
+
+              { currentTab === 'Meme' && <MemeSelect memeTypes={memeTypes} memeType={memeType} onChange={setMemeType} />}
+              { currentTab === 'Meme' && <Meme toptext={hint} bottomtext={message} url={memeTypes[memeType].url}/>}
+
+
+              <div className='clearfix send-ui'>
+                <div className='float-left'>
+                  <div className="small">{ hasToken && tokenRequirement }</div>
+                </div>
+                <div className='float-right'>
+                  <Button variant="primary" disabled={isDisabled || isEmpty(message) ? 'disabled' : null}  onClick={handleSend}>
+                    { submitting ? 'Sending' : 'Send' }
+                  </Button>
+                </div>
               </div>
-              <div className='float-right'>
-                <Button variant="primary" disabled={isDisabled || isEmpty(message) ? 'disabled' : null}  onClick={handleSend}>
-                  { submitting ? 'Sending' : 'Send' }
-                </Button>
-              </div>
-            </div>
-          </Form>
-      </div>
-    </div>
+            </Form>
+      </>
   )
 }
