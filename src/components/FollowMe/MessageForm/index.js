@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from 'react'
-import { Form, Button, Row, Col, Container } from 'react-bootstrap'
+import { Form, Button, Row, Col, Container, InputGroup } from 'react-bootstrap'
 import {useFollowMeContext} from '../../../contexts/FollowMe'
 import {useStoreContext} from '../../../contexts/Store'
+import { Link } from 'react-router-dom'
 
 import Dots from '../../Dots'
 import Meme from '../../Meme'
@@ -13,6 +14,8 @@ import MessageCard from '../MessageCard'
 
 import './style.scss'
 
+const giftHintText = "I am gifting"
+const giftRdedeemText = "To redeem"
 
 function isEmpty(message){
   if (!message) return true
@@ -42,6 +45,20 @@ function Tab({currentTab, tabName, setTab}){
       </a>
     </li>
   )
+}
+
+function Prepend({type, isHint = true}){
+  switch (type){
+    case 'Gift':
+      const text = isHint ? giftHintText : giftRdedeemText
+      return (
+        <InputGroup.Prepend>
+          <InputGroup.Text>{text}</InputGroup.Text>
+        </InputGroup.Prepend>
+      )
+    default:
+      return null
+  }
 }
 
 export default function MessageForm({onSubmitted, replyid}){
@@ -82,7 +99,10 @@ export default function MessageForm({onSubmitted, replyid}){
     if (isEmpty(message)) return
     setSubmitting(true)
     const type = /meme/i.test(currentTab) ? `meme:${memeTypes[memeType].key}` : currentTab.toLowerCase()
-    const resp = await actions.sendMessage(message, hint, threshold.toString(), type)
+    const _hint = /gift/i.test(currentTab) ? `${giftHintText} ${hint}` : hint
+    const _message = /gift/i.test(currentTab) ? `${giftRdedeemText} ${message}` : message
+
+    const resp = await actions.sendMessage(_message, _hint, threshold.toString(), type)
     setSubmitting(false)
     if (resp) {
       setData({})
@@ -124,36 +144,49 @@ export default function MessageForm({onSubmitted, replyid}){
   )
 
   function PrivatePlaceHolder(type = 'Post'){
-    if (!hasToken) return 'Create your token to send messages'
     switch(type){
       case 'Post':
         return 'Decodable Text'
+      case 'Image':
+        return 'Link to image'
+      case 'Video':
+        return 'Link to video'
       case 'Link':
         return 'Decodable Url'
       case 'Meme':
         return 'Bottom Text'
+      case 'Gift':
+        return 'DM me with the message I HODL YOU'
     }
   }
 
   function PublicPlaceHolder(type = 'Post'){
-    if (!hasToken) return ''
     switch(type){
       case 'Meme':
         return 'Top Text'
+      case 'Gift':
+        return 'a free T-shirt'
       default:
         return 'Public Hint'
     }
   }
 
-  const tabMap = {
-    Post: (type='Post') => <Form.Control as="textarea" rows="6" value={message || ''} onChange={changeData} disabled={isDisabled ? 'disabled' : null} placeholder={PrivatePlaceHolder(type)}/>,
-    Link: (type='Link') => <Form.Control as="input" value={message || ''} onChange={changeData} disabled={isDisabled ? 'disabled' : null} placeholder={PrivatePlaceHolder(type)}/>,
-    Meme: (type='Meme') => <Form.Control as="input" value={message || ''} onChange={changeData} disabled={isDisabled ? 'disabled' : null} placeholder={PrivatePlaceHolder(type)}/>
+  function PrivateControlType(type = 'Post'){
+    switch(type){
+      case 'Post':
+        return 'textarea'
+      default:
+        return 'input'
+    }
   }
 
-  const [currentTab, setTab] = useState(Object.keys(tabMap)[2])
+  const tabNames = [
+    'Post', 'Image', 'Video', 'Link', 'Meme', 'Gift'
+  ]
 
-  const tabs = Object.keys(tabMap).map( tabName => <Tab currentTab={currentTab} tabName={tabName} setTab={setTab} key={tabName} /> )
+  const [currentTab, setTab] = useState(tabNames[2])
+
+  const tabs = tabNames.map( tabName => <Tab currentTab={currentTab} tabName={tabName} setTab={setTab} key={tabName} /> )
 
   let footerText = null
 
@@ -204,11 +237,13 @@ export default function MessageForm({onSubmitted, replyid}){
             { <ul className='nav nav-pills mt-3 mb-3'>{tabs}</ul> }
 
             <Form>
-
               <Form.Group controlId="hint" className='form-group-hint'>
                 <Row>
                   <Col>
-                    <Form.Control as="input" value={hint || ''} onChange={changeData} disabled={isDisabled ? 'disabled' : null} maxlength={75} placeholder={publicHint}/>
+                    <InputGroup>
+                      <Prepend type={currentTab} isHint={true} />
+                      <Form.Control as="input" value={hint || ''} onChange={changeData} disabled={isDisabled ? 'disabled' : null} maxlength={75} placeholder={publicHint}/>
+                    </InputGroup>
                     <Form.Label className='small'>
                         <i className='fas fa-eye' /> Everyone
                     </Form.Label>
@@ -219,7 +254,10 @@ export default function MessageForm({onSubmitted, replyid}){
               <Form.Group controlId="message">
                 <Row>
                   <Col>
-                    {currentTab ? tabMap[hasToken ? currentTab : 'Link']() : null}
+                    <InputGroup>
+                      <Prepend type={currentTab} isHint={false} />
+                      <Form.Control as={PrivateControlType(currentTab)} rows="6" value={message || ''} onChange={changeData} disabled={isDisabled ? 'disabled' : null} placeholder={PrivatePlaceHolder(currentTab)}/>
+                    </InputGroup>
                     <Form.Label className='small'>
                       <i className='fas fa-eye' /> {footerText}
                     </Form.Label>
@@ -231,7 +269,7 @@ export default function MessageForm({onSubmitted, replyid}){
 
               <Row className='align-items-center mt-3 mb-3'>
                 <Col md='10'>
-                  { hasToken && tokenRequirement }
+                  { hasToken ? tokenRequirement : <Link className="create-token-message" to={ isSignedIn ? "/manage" : '/' }><i class="fas fa-bolt"></i> {isSignedIn ? 'Create your token to' : 'Sign in to'} send messages</Link> }
                 </Col>
                 <Col md='2'>
                   <Button variant="primary" disabled={isDisabled || isEmpty(message) ? 'disabled' : null} type="submit" onSubmit={handleSend} onClick={handleSend}>
