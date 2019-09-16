@@ -44,10 +44,7 @@ class App extends Component {
                       <Discover />
                     </Col>
                     <Col md='6' className='followme'>
-                        <div className='create-messages-button-fixed'>
                           <CreateMessageButton />
-                        </div>
-
                         {/* follow me */}
                         <Route exact path='/' component={Sidebar} />
                         <Route exact path='/:username([$].*)' render = {
