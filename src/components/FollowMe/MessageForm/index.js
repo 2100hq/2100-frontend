@@ -118,7 +118,7 @@ export default function MessageForm({onSubmitted, replyid}){
   }, [threshold, followers])
 
   const tokenRequirement = (
-    <div style={{marginTop: '1rem'}}>
+    <div>
       <ThresholdInput defaultThreshold={toDecimals(threshold,15)} onChange={handleSetThreshold} /> ${myTokenName} required to decode
     </div>
   )
@@ -192,38 +192,45 @@ export default function MessageForm({onSubmitted, replyid}){
   return (
         <>
             { replyid && <div style={{width: '50%'}}><MessageCard {...{message: messages[replyid], myToken, token: query.getToken(messages[replyid].tokenid), isSignedIn, actions, canCopyUrl:false, canLinkToProfile:false, canComment: false, showFooter: false}} /></div> }
-            { <ul className='nav nav-tabs'>{tabs}</ul> }
+            { <ul className='nav nav-pills mt-3 mb-3'>{tabs}</ul> }
 
             <Form>
-              <Form.Group controlId="hint" className='form-group-hint'>
 
-                <Form.Control as="input" value={hint || ''} onChange={changeData} disabled={isDisabled ? 'disabled' : null} maxlength={75} placeholder={publicHint}/>
-                <Form.Label className='small'>
-                    <i className='fas fa-eye' /> Everyone
-                </Form.Label>
+              <Form.Group controlId="hint" className='form-group-hint'>
+                <Row>
+                  <Col>
+                    <Form.Control as="input" value={hint || ''} onChange={changeData} disabled={isDisabled ? 'disabled' : null} maxlength={75} placeholder={publicHint}/>
+                    <Form.Label className='small'>
+                        <i className='fas fa-eye' /> Everyone
+                    </Form.Label>
+                  </Col>
+                </Row>
               </Form.Group>
 
               <Form.Group controlId="message">
-                {currentTab ? tabMap[hasToken ? currentTab : 'Link']() : null}
-                <Form.Label className='small'>
-                  <i className='fas fa-eye' /> {footerText}
-                </Form.Label>
+                <Row>
+                  <Col>
+                    {currentTab ? tabMap[hasToken ? currentTab : 'Link']() : null}
+                    <Form.Label className='small'>
+                      <i className='fas fa-eye' /> {footerText}
+                    </Form.Label>
+                  </Col>
+                </Row>
               </Form.Group>
 
               { currentTab === 'Meme' && <MemeSelect memeTypes={memeTypes} memeType={memeType} onChange={setMemeType} />}
               { currentTab === 'Meme' && <Meme toptext={hint} bottomtext={message} url={memeTypes[memeType].url}/>}
 
-
-              <div className='clearfix send-ui'>
-                <div className='float-left'>
-                  <div className="small">{ hasToken && tokenRequirement }</div>
-                </div>
-                <div className='float-right'>
-                  <Button variant="primary" disabled={isDisabled || isEmpty(message) ? 'disabled' : null}  onClick={handleSend}>
-                    { submitting ? 'Sending' : 'Send' }
-                  </Button>
-                </div>
-              </div>
+                <Row className='align-items-center mt-3 mb-3'>
+                  <Col md='10'>
+                    { hasToken && tokenRequirement }
+                  </Col>
+                  <Col md='2'>
+                    <Button variant="primary" disabled={isDisabled || isEmpty(message) ? 'disabled' : null}  onClick={handleSend}>
+                      { submitting ? 'Sending' : 'Send' }
+                    </Button>
+                  </Col>
+                </Row>
             </Form>
       </>
   )

@@ -1,19 +1,32 @@
+@import "../../../Variables";
+
 .fixed-message-form {
   position: absolute;
   bottom: 0;
   right: 0;
   margin-right: 1rem;
-  width: 33%;
-  height: 50%;
+  width: 50%;
+  max-width: 550px;
+  min-width: 350px;
+  min-height: 500px;
+  padding: 0 0 2rem 0;
   overflow-y: scroll;
-  border: 1px solid #aaa;
   z-index: 2;
   background: white;
+  border-radius: 0.5rem 0.5rem 0 0;
+  box-shadow: -0px -0px 20px 0px rgba(0,0,0,0.1);
+
   & .send-ui {
   }
 }
 
+.compose-header{
+  background-color: $twentyoneprimary;
+  color:white;
+}
+
 .close {
+  color: white !important;
   position: absolute;
   top: 0;
   right: 0;
