@@ -174,8 +174,6 @@ export default function MessageForm({onSubmitted, replyid}){
       e.preventDefault()
       onChange(e.target.value)
     }
-    console.log();
-    console.log(memeType);
 
     const options = memeTypes.map( (data,i)=>{
 
@@ -189,9 +187,20 @@ export default function MessageForm({onSubmitted, replyid}){
     )
   }
 
+
+  function MemePreview({currentTab, memeTypes, memeType, setMemeType, hint, message}){
+    if (currentTab !== 'Meme') return null
+    return [
+      <MemeSelect memeTypes={memeTypes} memeType={memeType} onChange={setMemeType} key='meme-select'/>,
+      <Meme toptext={hint} bottomtext={message} url={memeTypes[memeType].url} key='meme-image'/>
+    ]
+  }
+
   return (
         <>
             { replyid && <div style={{width: '50%'}}><MessageCard {...{message: messages[replyid], myToken, token: query.getToken(messages[replyid].tokenid), isSignedIn, actions, canCopyUrl:false, canLinkToProfile:false, canComment: false, showFooter: false}} /></div> }
+
+
             { <ul className='nav nav-pills mt-3 mb-3'>{tabs}</ul> }
 
             <Form>
@@ -218,19 +227,18 @@ export default function MessageForm({onSubmitted, replyid}){
                 </Row>
               </Form.Group>
 
-              { currentTab === 'Meme' && <MemeSelect memeTypes={memeTypes} memeType={memeType} onChange={setMemeType} />}
-              { currentTab === 'Meme' && <Meme toptext={hint} bottomtext={message} url={memeTypes[memeType].url}/>}
+              <MemePreview {...{currentTab, memeTypes, memeType, setMemeType, hint, message}} />
 
-                <Row className='align-items-center mt-3 mb-3'>
-                  <Col md='10'>
-                    { hasToken && tokenRequirement }
-                  </Col>
-                  <Col md='2'>
-                    <Button variant="primary" disabled={isDisabled || isEmpty(message) ? 'disabled' : null}  onClick={handleSend}>
-                      { submitting ? 'Sending' : 'Send' }
-                    </Button>
-                  </Col>
-                </Row>
+              <Row className='align-items-center mt-3 mb-3'>
+                <Col md='10'>
+                  { hasToken && tokenRequirement }
+                </Col>
+                <Col md='2'>
+                  <Button variant="primary" disabled={isDisabled || isEmpty(message) ? 'disabled' : null} type="submit" onSubmit={handleSend} onClick={handleSend}>
+                    { submitting ? 'Sending' : 'Send' }
+                  </Button>
+                </Col>
+              </Row>
             </Form>
       </>
   )
