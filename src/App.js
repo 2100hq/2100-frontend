@@ -6,6 +6,7 @@ import Portfolio from './components/Portfolio'
 import Profile from './components/Profile'
 import Onboarding from './components/Onboarding'
 import Nav from './components/Nav'
+import Breakpoints from './components/Breakpoints'
 // import Wallet from './components/Wallet'
 import Alerts from './components/Alerts'
 import ErrorModal from './components/ErrorModal'
@@ -27,6 +28,7 @@ class App extends Component {
     return (
       <Router>
         <BrowserClasses>
+          {/*<Breakpoints />*/}
           <div className='container-fluid'>
             <Row>
               <Col md='2' className='nav-column'>

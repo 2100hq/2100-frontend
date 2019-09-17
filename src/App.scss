@@ -4,13 +4,12 @@
 //then override bootstrap variables
 $theme-colors: (
 	"primary": $twentyoneprimary
-	);
+);
 
 //then import Bootstrap
 @import "node_modules/bootstrap/scss/bootstrap";
 
 //then app wide styles
-
 
 @font-face {
 	font-family: "Redacted";
