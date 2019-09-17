@@ -70,23 +70,15 @@ function MemeSelect({memeTypes, memeType, onChange=()=>{}}){
   const options = memeTypes.map( (data,i)=>{
 
 
-    return <option value={i} selected={i === memeType}>{memeTypes[i].name}</option>
+    return <option value={i}>{data.emoji} {data.name}</option>
   })
   return (
-    <select defaultValue={memeType} onChange={handleChange}>
+    <select className="form-control" value={memeType} onChange={handleChange}>
       {options}
     </select>
   )
 }
 
-
-function MemePreview({currentTab, memeTypes, memeType, setMemeType, hint, message}){
-  if (currentTab !== 'Meme') return null
-  return [
-    <MemeSelect memeTypes={memeTypes} memeType={memeType} onChange={setMemeType} key='meme-select'/>,
-    <Meme toptext={hint} bottomtext={message} url={memeTypes[memeType].url} key='meme-image'/>
-  ]
-}
 
 export default function MessageForm({onSubmitted, replyid}){
   const {query} = useStoreContext()
@@ -211,7 +203,7 @@ export default function MessageForm({onSubmitted, replyid}){
     'Post', 'Image', 'Video', 'Link', 'Meme', 'Gift'
   ]
 
-  const [currentTab, setTab] = useState(tabNames[2])
+  const [currentTab, setTab] = useState(tabNames[0])
 
   const tabs = tabNames.map( tabName => <Tab currentTab={currentTab} tabName={tabName} setTab={setTab} key={tabName} /> )
 
@@ -235,6 +227,7 @@ export default function MessageForm({onSubmitted, replyid}){
 
             <ul className='nav nav-pills mt-3 mb-5'>{tabs}</ul>
 
+            { currentTab === 'Meme' && <MemeSelect memeTypes={memeTypes} memeType={memeType} onChange={setMemeType} key='meme-select'/>}
 
             <Form>
               <Form.Group controlId="hint" className='form-group-hint'>
@@ -265,7 +258,7 @@ export default function MessageForm({onSubmitted, replyid}){
                 </Row>
               </Form.Group>
 
-              <MemePreview {...{currentTab, memeTypes, memeType, setMemeType, hint, message}} />
+              { currentTab === "Meme" && <Meme toptext={hint} bottomtext={message} url={memeTypes[memeType].url} key='meme-image'/>}
 
               <Row className='align-items-center mt-4 mb-3'>
                 <Col md='10'>
