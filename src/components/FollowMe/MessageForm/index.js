@@ -61,6 +61,33 @@ function Prepend({type, isHint = true}){
   }
 }
 
+function MemeSelect({memeTypes, memeType, onChange=()=>{}}){
+  function handleChange(e){
+    e.preventDefault()
+    onChange(e.target.value)
+  }
+
+  const options = memeTypes.map( (data,i)=>{
+
+
+    return <option value={i} selected={i === memeType}>{memeTypes[i].name}</option>
+  })
+  return (
+    <select defaultValue={memeType} onChange={handleChange}>
+      {options}
+    </select>
+  )
+}
+
+
+function MemePreview({currentTab, memeTypes, memeType, setMemeType, hint, message}){
+  if (currentTab !== 'Meme') return null
+  return [
+    <MemeSelect memeTypes={memeTypes} memeType={memeType} onChange={setMemeType} key='meme-select'/>,
+    <Meme toptext={hint} bottomtext={message} url={memeTypes[memeType].url} key='meme-image'/>
+  ]
+}
+
 export default function MessageForm({onSubmitted, replyid}){
   const {query} = useStoreContext()
 
@@ -201,33 +228,6 @@ export default function MessageForm({onSubmitted, replyid}){
   const publicHint = PublicPlaceHolder(currentTab)
 
   const [memeType, setMemeType] = useState(0)
-
-  const MemeSelect = function ({memeTypes, memeType, onChange=()=>{}}){
-    function handleChange(e){
-      e.preventDefault()
-      onChange(e.target.value)
-    }
-
-    const options = memeTypes.map( (data,i)=>{
-
-
-      return <option value={i} selected={i === memeType}>{memeTypes[i].name}</option>
-    })
-    return (
-      <select defaultValue={memeType} onChange={handleChange}>
-        {options}
-      </select>
-    )
-  }
-
-
-  function MemePreview({currentTab, memeTypes, memeType, setMemeType, hint, message}){
-    if (currentTab !== 'Meme') return null
-    return [
-      <MemeSelect memeTypes={memeTypes} memeType={memeType} onChange={setMemeType} key='meme-select'/>,
-      <Meme toptext={hint} bottomtext={message} url={memeTypes[memeType].url} key='meme-image'/>
-    ]
-  }
 
   return (
         <>
