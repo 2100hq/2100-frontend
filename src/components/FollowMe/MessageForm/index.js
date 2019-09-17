@@ -8,7 +8,7 @@ import ms from 'ms'
 import Dots from '../../Dots'
 import Meme from '../../Meme'
 import memeTypes from '../memeTypes'
-import percentile from '../../../utils/percentile'
+import getPercentile from '../../../utils/percentile'
 import {BigNumber, toDecimals, fromDecimals, weiDecimals} from '../../../utils'
 import HoldersProfiles from '../HoldersProfiles'
 import MessageCard from '../MessageCard'
@@ -23,7 +23,56 @@ function isEmpty(message){
   return message.replace(/\s+/, '') === ''
 }
 
-const percentiles = [0, 5, 25, 50, 95]
+const contentLevels = [
+  {level: 0,  name: 'Mediocre', holderType: 'New holder'},
+  {level: 5, name: 'Regular', holderType: 'Minnow'},
+  {level: 25, name: 'Premium', holderType: 'Normie'},
+  {level: 50, name: 'Exclusive', holderType: 'Whale'},
+  {level: 99, name: 'Ultra Exclusive', holderType: 'Bearwhale'}
+]
+
+function ContentLevelSelect({ levels=[], current=0, onChange=()=>{}}){
+  function handleChange(e){
+    e.preventDefault()
+    onChange(e.target.value)
+  }
+
+  const options = levels.map( (data, i) =>{
+    return <option value={i}>{data.name}</option>
+  })
+  return (
+    <select className="form-control content-level-select" value={current} onChange={handleChange}>
+      {options}
+    </select>
+  )
+
+}
+
+function calcTimeToSee({levels=[], current=0, amounts=[]}){
+  amounts.sort(function (a, b) { return BigNumber(a).minus(BigNumber(b)).gt(0) ? 1 : -1 })
+  levels.forEach( data => {
+    let amount = BigNumber(1)
+    if (data.level !== 0){
+      amount = getPercentile(amounts, data.level, true)
+    }
+    data.amount = amount
+  })
+  const threshold = levels[current].amount
+
+  const blockReward = BigNumber("0.00021").times(weiDecimals)
+  const blockTime = 15000
+  const minBlock = 1
+  console.log('--------')
+  console.log('>',levels[current].name, levels[current].level)
+  levels.forEach( data => {
+    let blocksToSee = BigNumber(threshold).minus(data.amount).div(blockReward)
+    blocksToSee = threshold.eq(data.amount) ? BigNumber(0) : blocksToSee
+    blocksToSee = blocksToSee.eq(0) && current === 0 ? BigNumber(1) : blocksToSee.lt(0) ? BigNumber(0) : blocksToSee
+    const timeToSee = Math.ceil(blocksToSee.times(blockTime).toNumber())
+    data.timeToSee = timeToSee === 0 ? "instant" : ms(timeToSee)
+  })
+  return levels
+}
 
 function ThresholdInput({defaultThreshold, onChange = ()=>{}}){
   return <input type='number' step="0.01" min="0" className="threshold-input" defaultValue={defaultThreshold} onChange={ (e) => onChange(e.target.value)} />
@@ -74,7 +123,7 @@ function MemeSelect({memeTypes, memeType, onChange=()=>{}}){
     return <option value={i}>{data.emoji} {data.name}</option>
   })
   return (
-    <select className="form-control" value={memeType} onChange={handleChange}>
+    <select className="form-control meme-type-select" value={memeType} onChange={handleChange}>
       {options}
     </select>
   )
@@ -93,8 +142,10 @@ export default function MessageForm({onSubmitted, replyid}){
   const [data, setData] = useState({})
   const { message, hint } = data
   const [error, setError] = useState()
-  const [level, setLevel] = useState(0)
-  const [threshold, setThreshold] = useState(fromDecimals("0.00021"))
+  const [contentLevel, setContentLevel] = useState(0)
+
+  // const [threshold, setThreshold] = useState(fromDecimals("0.00021"))
+  const [threshold, setThreshold] = useState("1")
   const [recipientCount, setRecipientCount] = useState(0)
   const [recipients, setRecipients] = useState([])
 
@@ -129,10 +180,6 @@ export default function MessageForm({onSubmitted, replyid}){
     }
   }
 
-  function handleSetLevel(i){
-    setLevel(Number(i))
-  }
-
   function handleSetThreshold(val){
     let newThresh = BigNumber(val).times(weiDecimals)
     if (newThresh.eq(0)){
@@ -141,43 +188,58 @@ export default function MessageForm({onSubmitted, replyid}){
     setThreshold(newThresh.toString())
   }
 
-  useEffect( () => {
-    const holdings = Object.entries(followers)
-    let count = hasFollowers ? holdings.length : 0
-    let recipients = []
-    let holdingSum = BigNumber(0)
-    if (threshold != null){
-      recipients = holdings.filter( ([address, amount]) => {
-        holdingSum = holdingSum.plus(amount)
-        return BigNumber(amount).gte(threshold)
-      }).map( ([address]) => address )
-      count = recipients.length
-    }
-    setRecipients(recipients)
-    setRecipientCount(count)
+  // useEffect( () => {
+  //   const holdings = Object.entries(followers)
+  //   let count = hasFollowers ? holdings.length : 0
+  //   let recipients = []
+  //   let holdingSum = BigNumber(0)
+  //   if (threshold != null){
+  //     recipients = holdings.filter( ([address, amount]) => {
+  //       holdingSum = holdingSum.plus(amount)
+  //       return BigNumber(amount).gte(threshold)
+  //     }).map( ([address]) => address )
+  //     count = recipients.length
+  //   }
+  //   setRecipients(recipients)
+  //   setRecipientCount(count)
 
-  }, [threshold, followers])
+  // }, [threshold, followers])
 
 
-  const timeToDecode = useMemo( ()=> {
-    const sortedAmounts = Object.values(followers).filter( amount => BigNumber(amount).lt(threshold) ).sort(function (a, b) { return BigNumber(a).minus(BigNumber(b)).gt(0) ? 1 : -1 })
-    const medianIndex =  Math.floor(sortedAmounts.length/2)
-    const median = sortedAmounts[medianIndex] || "0"
-    const blockReward = BigNumber("0.00021").times(weiDecimals)
-    const blockTime = 15000
-    const minBlock = 1
-    let blocksToSee = BigNumber(threshold).minus(median).div(blockReward)
-    blocksToSee = blocksToSee.lt(minBlock) ? BigNumber(minBlock) : blocksToSee
-    const timeToSee = Math.ceil(blocksToSee.times(blockTime).toNumber())
-    const convertedTime = ms(timeToSee || blockTime).replace(/m$/,' min.').replace(/s$/,' sec.')
-    return `${convertedTime} for most to decode`
+  // const timeToDecode = useMemo( ()=> {
+  //   const sortedAmounts = Object.values(followers).filter( amount => BigNumber(amount).lt(threshold) ).sort(function (a, b) { return BigNumber(a).minus(BigNumber(b)).gt(0) ? 1 : -1 })
+  //   const medianIndex =  Math.floor(sortedAmounts.length/2)
+  //   const median = sortedAmounts[medianIndex] || "0"
+  //   const blockReward = BigNumber("0.00021").times(weiDecimals)
+  //   const blockTime = 15000
+  //   const minBlock = 1
+  //   let blocksToSee = BigNumber(threshold).minus(median).div(blockReward)
+  //   blocksToSee = blocksToSee.lt(minBlock) ? BigNumber(minBlock) : blocksToSee
+  //   const timeToSee = Math.ceil(blocksToSee.times(blockTime).toNumber())
+  //   const convertedTime = ms(timeToSee || blockTime).replace(/m$/,' min.').replace(/s$/,' sec.')
+  //   return `${convertedTime} for most to decode`
 
-  }, [Object.values(followers).join(''), threshold])
+  // }, [Object.values(followers).join(''), threshold])
+
+  // const tokenRequirement = (
+  //   <div>
+  //     <ThresholdInput defaultThreshold={toDecimals(threshold,15)} onChange={handleSetThreshold} /> ${myTokenName} required
+  //     <div className="small text-muted">{timeToDecode}</div>
+  //   </div>
+  // )
+
+
+  useEffect(()=>{
+    calcTimeToSee({levels:contentLevels,current:contentLevel,amounts:Object.values(followers)})
+    setThreshold(contentLevels[contentLevel].amount || "1")
+  }, [contentLevel])
 
   const tokenRequirement = (
     <div>
-      <ThresholdInput defaultThreshold={toDecimals(threshold,15)} onChange={handleSetThreshold} /> ${myTokenName} required
-      <div className="small text-muted">{timeToDecode}</div>
+      <ContentLevelSelect levels={contentLevels} current={contentLevel} onChange={setContentLevel}/>
+      <ul>
+        {contentLevels.map( data => <li>{data.holderType}: {data.timeToSee || "Calculating"}</li>)}
+      </ul>
     </div>
   )
 
@@ -228,13 +290,13 @@ export default function MessageForm({onSubmitted, replyid}){
 
   let footerText = null
 
-  if (hasToken && hasFollowers && recipientCount === 0){
-     footerText = 'Future holders'
-  } else if (hasToken) {
-    footerText = <HoldersProfiles holders={recipients} prefix="Visible to " suffix=" right now"/>
-  } else {
-    footerText = '0 holders'
-  }
+  // if (hasToken && hasFollowers && recipientCount === 0){
+  //    footerText = 'Future holders'
+  // } else if (hasToken) {
+  //   footerText = <HoldersProfiles holders={recipients} prefix="Visible to " suffix=" right now"/>
+  // } else {
+  //   footerText = '0 holders'
+  // }
 
   const publicHint = PublicPlaceHolder(currentTab)
 
@@ -270,9 +332,9 @@ export default function MessageForm({onSubmitted, replyid}){
                       <Prepend type={currentTab} isHint={false} />
                       <Form.Control as={PrivateControlType(currentTab)} rows="6" value={message || ''} onChange={changeData} disabled={isDisabled ? 'disabled' : null} placeholder={PrivatePlaceHolder(currentTab)}/>
                     </InputGroup>
-                    <Form.Label className='small'>
+                    {/*<Form.Label className='small'>
                       <i className='fas fa-eye' /> {footerText}
-                    </Form.Label>
+                    </Form.Label>*/}
                   </Col>
                 </Row>
               </Form.Group>
