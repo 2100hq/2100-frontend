@@ -25,11 +25,11 @@ function isEmpty(message){
 }
 
 const contentLevels = [
-  {level: 0,  name: 'Mediocre', holderType: 'New holder'},
-  {level: 5, name: 'Regular', holderType: 'Minnow'},
-  {level: 50, name: 'Premium', holderType: 'Normie'},
-  {level: 75, name: 'Exclusive', holderType: 'Whale'},
-  {level: 95, name: 'Ultra Exclusive', holderType: 'Bearwhale'}
+  {level: 0,  name: 'Mediocre', holderType: '😊 Newb'},
+  {level: 5, name: 'Regular', holderType: '🐟 Minnow'},
+  {level: 50, name: 'Premium', holderType: '🦈 Shark'},
+  {level: 75, name: 'Exclusive', holderType: '🐋 Whale'},
+  {level: 95, name: 'Ultra Exclusive', holderType: '🦄 Unicorn'}
 ]
 
 function ContentLevelSelect({ levels=[], current=0, onChange=()=>{}}){
@@ -66,7 +66,7 @@ function calcTimeToSee({levels=[], current=0, amounts=[], threshold}){
     blocksToSee = threshold.eq(data.amount) ? BigNumber(0) : blocksToSee
     blocksToSee = blocksToSee.eq(0) && current === 0 ? BigNumber(1) : blocksToSee.lt(0) ? BigNumber(0) : blocksToSee
     const timeToSee = Math.ceil(blocksToSee.times(blockTime).toNumber())
-    data.timeToSee = timeToSee === 0 ? "instant" : ms(timeToSee)
+    data.timeToSee = timeToSee === 0 ? "now" : ms(timeToSee)
   })
   return levels
 }
@@ -239,8 +239,13 @@ export default function MessageForm({onSubmitted, replyid}){
 
   const tokenRequirement = (
     <Container>
-      <Row className='align-items-center'>
-        <Col md="8">
+      <Row>
+        <Col md="7 small">
+          <ThresholdInput defaultThreshold={thresholdNumber} onChange={handleSetThreshold} /> ${myTokenName} required
+        </Col>
+      </Row>
+      <Row>
+        <Col md="7">
           <Slider
              min={0.00021}
              max={sliderMax}
@@ -249,16 +254,11 @@ export default function MessageForm({onSubmitted, replyid}){
              onChange={(e, val) => handleSetThreshold(val)}
             />
         </Col>
-        <Col md="4 small">
-          <ThresholdInput defaultThreshold={thresholdNumber} onChange={handleSetThreshold} /> ${myTokenName} required
-        </Col>
-      </Row>
-      <Row>
-        <Col md="6 small">
+        <Col md="5 small">
           <ul className='holders-coda'>
             {contentLevels.map( data => {
               return (
-                <li style={{cursor: 'pointer'}} onClick={()=> { setThreshold(data.amount) }} >{data.holderType}: {data.timeToSee || "Calculating"}</li>
+                <li style={{cursor: 'pointer'}} onClick={()=> { setThreshold(data.amount) }} >{data.holderType}: <span style={{fontWeight: 'bold'}}>{data.timeToSee || "Calculating"}</span></li>
               )
             })}
           </ul>
