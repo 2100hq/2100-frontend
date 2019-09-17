@@ -1,33 +1,18 @@
-.message-form.card{
+.message-form{
   font-size: 1.2rem;
   textarea{
   }
   .threshold-input {
-    // color: #6c757d;
     border: 0;
-    // border-bottom:0.1px solid #ccc;
     width: 5.25em;
     padding-left: 0.25em;
   }
   .nav {
     margin-bottom: 1rem;
   }
-  .form-group-hint {
-    // label {
-    //   display: inline;
-    // }
-    // input {
-    //   display: inline;
-    //   margin-left: 1em;
-    //   width: 30em;
-    //   border-radius: 0;
-    //   padding-bottom: 0;
-    //   border-bottom: 1px solid #ccc;
-    //   outline: none;
-    // }
-    .char-count {
-      margin-left: 0.5em;
-    }
+
+  select {
+    margin-bottom: 1rem;
   }
 }
 
