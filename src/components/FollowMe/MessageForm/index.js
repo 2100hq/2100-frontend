@@ -1,8 +1,9 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState, useEffect, useMemo} from 'react'
 import { Form, Button, Row, Col, Container, InputGroup } from 'react-bootstrap'
 import {useFollowMeContext} from '../../../contexts/FollowMe'
 import {useStoreContext} from '../../../contexts/Store'
 import { Link } from 'react-router-dom'
+import ms from 'ms'
 
 import Dots from '../../Dots'
 import Meme from '../../Meme'
@@ -79,7 +80,6 @@ function MemeSelect({memeTypes, memeType, onChange=()=>{}}){
   )
 }
 
-
 export default function MessageForm({onSubmitted, replyid}){
   const {query} = useStoreContext()
 
@@ -145,8 +145,10 @@ export default function MessageForm({onSubmitted, replyid}){
     const holdings = Object.entries(followers)
     let count = hasFollowers ? holdings.length : 0
     let recipients = []
+    let holdingSum = BigNumber(0)
     if (threshold != null){
       recipients = holdings.filter( ([address, amount]) => {
+        holdingSum = holdingSum.plus(amount)
         return BigNumber(amount).gte(threshold)
       }).map( ([address]) => address )
       count = recipients.length
@@ -156,9 +158,26 @@ export default function MessageForm({onSubmitted, replyid}){
 
   }, [threshold, followers])
 
+
+  const timeToDecode = useMemo( ()=> {
+    const sortedAmounts = Object.values(followers).filter( amount => BigNumber(amount).lt(threshold) ).sort(function (a, b) { return BigNumber(a).minus(BigNumber(b)).gt(0) ? 1 : -1 })
+    const medianIndex =  Math.floor(sortedAmounts.length/2)
+    const median = sortedAmounts[medianIndex] || "0"
+    const blockReward = BigNumber("0.00021").times(weiDecimals)
+    const blockTime = 15000
+    const minBlock = 1
+    let blocksToSee = BigNumber(threshold).minus(median).div(blockReward)
+    blocksToSee = blocksToSee.lt(minBlock) ? BigNumber(minBlock) : blocksToSee
+    const timeToSee = Math.ceil(blocksToSee.times(blockTime).toNumber())
+    const convertedTime = ms(timeToSee || blockTime).replace(/m$/,' min.').replace(/s$/,' sec.')
+    return `${convertedTime} for most to decode`
+
+  }, [Object.values(followers).join(''), threshold])
+
   const tokenRequirement = (
     <div>
-      <ThresholdInput defaultThreshold={toDecimals(threshold,15)} onChange={handleSetThreshold} /> ${myTokenName} required to decode
+      <ThresholdInput defaultThreshold={toDecimals(threshold,15)} onChange={handleSetThreshold} /> ${myTokenName} required
+      <div className="small text-muted">{timeToDecode}</div>
     </div>
   )
 
@@ -212,7 +231,7 @@ export default function MessageForm({onSubmitted, replyid}){
   if (hasToken && hasFollowers && recipientCount === 0){
      footerText = 'Future holders'
   } else if (hasToken) {
-    footerText = <HoldersProfiles holders={recipients} prefix="Visible to " />
+    footerText = <HoldersProfiles holders={recipients} prefix="Visible to " suffix=" right now"/>
   } else {
     footerText = '0 holders'
   }

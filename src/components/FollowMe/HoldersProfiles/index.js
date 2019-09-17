@@ -22,7 +22,7 @@ function Faces({addresses=[], count=3}){
     }
   }), data => data.name)
 
-  return data.splice(0, count).map(Face)
+  return data.splice(0, count).map( props => <Face key={props.name+props.address} {...props} />)
 }
 
 function NoHolders({prefix,noholderstext,suffix}){
