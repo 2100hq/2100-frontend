@@ -256,6 +256,7 @@ export default function MessageForm({onSubmitted, replyid}){
         </Col>
         <Col md="5 small">
           <ul className='holders-coda'>
+            <div style={{marginBottom: '0.5rem'}}>Time to decode:</div>
             {contentLevels.map( data => {
               return (
                 <li style={{cursor: 'pointer'}} onClick={()=> { setThreshold(data.amount) }} >{data.holderType}: <span style={{fontWeight: 'bold'}}>{data.timeToSee || "Calculating"}</span></li>
