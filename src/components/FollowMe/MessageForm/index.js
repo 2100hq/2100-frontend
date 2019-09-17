@@ -3,6 +3,7 @@ import { Form, Button, Row, Col, Container, InputGroup } from 'react-bootstrap'
 import {useFollowMeContext} from '../../../contexts/FollowMe'
 import {useStoreContext} from '../../../contexts/Store'
 import { Link } from 'react-router-dom'
+import Slider from '@material-ui/core/Slider'
 import ms from 'ms'
 
 import Dots from '../../Dots'
@@ -26,9 +27,9 @@ function isEmpty(message){
 const contentLevels = [
   {level: 0,  name: 'Mediocre', holderType: 'New holder'},
   {level: 5, name: 'Regular', holderType: 'Minnow'},
-  {level: 25, name: 'Premium', holderType: 'Normie'},
-  {level: 50, name: 'Exclusive', holderType: 'Whale'},
-  {level: 99, name: 'Ultra Exclusive', holderType: 'Bearwhale'}
+  {level: 50, name: 'Premium', holderType: 'Normie'},
+  {level: 75, name: 'Exclusive', holderType: 'Whale'},
+  {level: 95, name: 'Ultra Exclusive', holderType: 'Bearwhale'}
 ]
 
 function ContentLevelSelect({ levels=[], current=0, onChange=()=>{}}){
@@ -48,8 +49,14 @@ function ContentLevelSelect({ levels=[], current=0, onChange=()=>{}}){
 
 }
 
-function calcTimeToSee({levels=[], current=0, amounts=[]}){
+function calcTimeToSee({levels=[], current=0, amounts=[], threshold}){
   amounts.sort(function (a, b) { return BigNumber(a).minus(BigNumber(b)).gt(0) ? 1 : -1 })
+  console.log('--------------')
+  console.log(amounts.length)
+  amounts.forEach( amount => {
+    console.log(toDecimals(amount))
+  })
+  console.log('--------------')
   levels.forEach( data => {
     let amount = BigNumber(1)
     if (data.level !== 0){
@@ -57,14 +64,15 @@ function calcTimeToSee({levels=[], current=0, amounts=[]}){
     }
     data.amount = amount
   })
-  const threshold = levels[current].amount
-
+  // const threshold = levels[current].amount
+  threshold = BigNumber(threshold)
   const blockReward = BigNumber("0.00021").times(weiDecimals)
   const blockTime = 15000
   const minBlock = 1
   console.log('--------')
   console.log('>',levels[current].name, levels[current].level)
   levels.forEach( data => {
+    console.log(data.holderType, data.level, toDecimals(data.amount))
     let blocksToSee = BigNumber(threshold).minus(data.amount).div(blockReward)
     blocksToSee = threshold.eq(data.amount) ? BigNumber(0) : blocksToSee
     blocksToSee = blocksToSee.eq(0) && current === 0 ? BigNumber(1) : blocksToSee.lt(0) ? BigNumber(0) : blocksToSee
@@ -75,7 +83,7 @@ function calcTimeToSee({levels=[], current=0, amounts=[]}){
 }
 
 function ThresholdInput({defaultThreshold, onChange = ()=>{}}){
-  return <input type='number' step="0.01" min="0" className="threshold-input" defaultValue={defaultThreshold} onChange={ (e) => onChange(e.target.value)} />
+  return <input type='number' step="0.01" min="0" className="threshold-input" value={defaultThreshold} onChange={ (e) => onChange(e.target.value)} />
 }
 
 function Tab({currentTab, tabName, setTab}){
@@ -137,6 +145,7 @@ export default function MessageForm({onSubmitted, replyid}){
   const myTokenName=query.getTokenName(myToken)
 
   const followerCount = Object.keys(followers).length
+  const sliderMax =  getPercentile(Object.values(followers), contentLevels[3].level)
   const [submitting, setSubmitting] = useState(false)
 
   const [data, setData] = useState({})
@@ -144,8 +153,8 @@ export default function MessageForm({onSubmitted, replyid}){
   const [error, setError] = useState()
   const [contentLevel, setContentLevel] = useState(0)
 
-  // const [threshold, setThreshold] = useState(fromDecimals("0.00021"))
-  const [threshold, setThreshold] = useState("1")
+  const [threshold, setThreshold] = useState(fromDecimals("0.00021"))
+  // const [threshold, setThreshold] = useState("1")
   const [recipientCount, setRecipientCount] = useState(0)
   const [recipients, setRecipients] = useState([])
 
@@ -230,17 +239,38 @@ export default function MessageForm({onSubmitted, replyid}){
 
 
   useEffect(()=>{
-    calcTimeToSee({levels:contentLevels,current:contentLevel,amounts:Object.values(followers)})
-    setThreshold(contentLevels[contentLevel].amount || "1")
-  }, [contentLevel])
+    calcTimeToSee({levels:contentLevels,current:contentLevel,amounts:Object.values(followers), threshold})
+    // setThreshold(contentLevels[contentLevel].amount || "1")
+  }, [threshold])
 
   const tokenRequirement = (
-    <div>
-      <ContentLevelSelect levels={contentLevels} current={contentLevel} onChange={setContentLevel}/>
-      <ul>
-        {contentLevels.map( data => <li>{data.holderType}: {data.timeToSee || "Calculating"}</li>)}
-      </ul>
-    </div>
+    <Container>
+      <Row>
+        <Col md="9">
+          <Slider
+             min={0.00021}
+             max={Number(toDecimals(sliderMax,15))}
+             step={0.00021}
+             value={Number(toDecimals(threshold,15))}
+             onChange={(e, val) => handleSetThreshold(val)}
+            />
+        </Col>
+        <Col md="3">
+          <ThresholdInput defaultThreshold={toDecimals(threshold,15)} onChange={handleSetThreshold} /> ${myTokenName} required
+        </Col>
+      </Row>
+      <Row>
+        <Col>
+          <ul>
+            {contentLevels.map( data => {
+              return (
+                <li style={{cursor: 'pointer'}} onClick={()=> { setThreshold(data.amount) }} >{data.holderType}: {data.timeToSee || "Calculating"}</li>
+              )
+            })}
+          </ul>
+        </Col>
+      </Row>
+    </Container>
   )
 
   function PrivatePlaceHolder(type = 'Post'){
@@ -345,6 +375,8 @@ export default function MessageForm({onSubmitted, replyid}){
                 <Col md='10'>
                   { hasToken ? tokenRequirement : <Link className="create-token-message" to={ isSignedIn ? "/manage" : '/' }><i class="fas fa-bolt"></i> {isSignedIn ? 'Create your token to' : 'Sign in to'} send messages</Link> }
                 </Col>
+              </Row>
+              <Row>
                 <Col md='2'>
                   <Button variant="primary" disabled={isDisabled || isEmpty(message) ? 'disabled' : null} type="submit" onSubmit={handleSend} onClick={handleSend}>
                     { submitting ? 'Sending' : 'Send' }
