@@ -50,13 +50,6 @@ function ContentLevelSelect({ levels=[], current=0, onChange=()=>{}}){
 }
 
 function calcTimeToSee({levels=[], current=0, amounts=[], threshold}){
-  amounts.sort(function (a, b) { return BigNumber(a).minus(BigNumber(b)).gt(0) ? 1 : -1 })
-  console.log('--------------')
-  console.log(amounts.length)
-  amounts.forEach( amount => {
-    console.log(toDecimals(amount))
-  })
-  console.log('--------------')
   levels.forEach( data => {
     let amount = BigNumber(1)
     if (data.level !== 0){
@@ -64,15 +57,11 @@ function calcTimeToSee({levels=[], current=0, amounts=[], threshold}){
     }
     data.amount = amount
   })
-  // const threshold = levels[current].amount
   threshold = BigNumber(threshold)
   const blockReward = BigNumber("0.00021").times(weiDecimals)
   const blockTime = 15000
   const minBlock = 1
-  console.log('--------')
-  console.log('>',levels[current].name, levels[current].level)
   levels.forEach( data => {
-    console.log(data.holderType, data.level, toDecimals(data.amount))
     let blocksToSee = BigNumber(threshold).minus(data.amount).div(blockReward)
     blocksToSee = threshold.eq(data.amount) ? BigNumber(0) : blocksToSee
     blocksToSee = blocksToSee.eq(0) && current === 0 ? BigNumber(1) : blocksToSee.lt(0) ? BigNumber(0) : blocksToSee
@@ -143,9 +132,14 @@ export default function MessageForm({onSubmitted, replyid}){
   let { api, isSignedIn, myToken, messages = {}, publicMessages = {}, followers = {}, actions } = useFollowMeContext()
 
   const myTokenName=query.getTokenName(myToken)
+  let holderAmounts =  Object.values(followers)
 
-  const followerCount = Object.keys(followers).length
-  const sliderMax =  getPercentile(Object.values(followers), contentLevels[3].level)
+  const followerHash = holderAmounts.join('')
+
+  // sort amounts
+  holderAmounts = useMemo(() =>holderAmounts.sort(function (a, b) { return BigNumber(a).minus(BigNumber(b)).gt(0) ? 1 : -1 }), [followerHash])
+  const followerCount = holderAmounts.length
+  const sliderMax = useMemo(() => Number(toDecimals(getPercentile(holderAmounts, contentLevels[3].level))), [followerHash])
   const [submitting, setSubmitting] = useState(false)
 
   const [data, setData] = useState({})
@@ -153,8 +147,8 @@ export default function MessageForm({onSubmitted, replyid}){
   const [error, setError] = useState()
   const [contentLevel, setContentLevel] = useState(0)
 
-  const [threshold, setThreshold] = useState(fromDecimals("0.00021"))
-  // const [threshold, setThreshold] = useState("1")
+  const [threshold, setThreshold] = useState(useMemo(() => fromDecimals("0.00021"), []))
+
   const [recipientCount, setRecipientCount] = useState(0)
   const [recipients, setRecipients] = useState([])
 
@@ -162,7 +156,6 @@ export default function MessageForm({onSubmitted, replyid}){
   const hasFollowers = myToken && followerCount > 0
 
   const isDisabled = !hasToken || submitting
-
 
 
   function changeData(e){
@@ -239,9 +232,10 @@ export default function MessageForm({onSubmitted, replyid}){
 
 
   useEffect(()=>{
-    calcTimeToSee({levels:contentLevels,current:contentLevel,amounts:Object.values(followers), threshold})
-    // setThreshold(contentLevels[contentLevel].amount || "1")
+    calcTimeToSee({levels:contentLevels,current:contentLevel,amounts:holderAmounts, threshold})
   }, [threshold])
+
+  const thresholdNumber = useMemo( ()=> Number(toDecimals(threshold,15)), [threshold])
 
   const tokenRequirement = (
     <Container>
@@ -249,17 +243,14 @@ export default function MessageForm({onSubmitted, replyid}){
         <Col md="8">
           <Slider
              min={0.00021}
-             max={Number(toDecimals(sliderMax,15))}
+             max={sliderMax}
              step={0.00021}
-             value={Number(toDecimals(threshold,15))}
+             value={thresholdNumber}
              onChange={(e, val) => handleSetThreshold(val)}
             />
         </Col>
         <Col md="4 small">
-          <Row>
-            <Col md="12"><ThresholdInput defaultThreshold={toDecimals(threshold,15)} onChange={handleSetThreshold} /><span>${myTokenName} required</span>
-            </Col>
-          </Row>
+          <ThresholdInput defaultThreshold={thresholdNumber} onChange={handleSetThreshold} /> ${myTokenName} required
         </Col>
       </Row>
       <Row>
