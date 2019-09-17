@@ -3,6 +3,7 @@ import { utils } from 'ethers'
 import { get } from 'lodash'
 import Selectors from './selectors'
 import _BigNumber from 'bignumber.js'
+import ms from 'ms'
 _BigNumber.config({ EXPONENTIAL_AT: 1e+9, DECIMAL_PLACES: 18})
 
 const oneDecimalRegExp = /\.\d{1,1}$/
@@ -122,3 +123,9 @@ export function extractMessageIdFromUsernameRoute (match){
 export function extractUsernameAndMessageIdFromLocation(location = window.location){
   return extractMessageIdFromUsernameRoute(matchPath(location.pathname, usernameRoute))
 }
+
+export const blockTime = 15000
+
+export const oneblockReward = weiDecimals.times("0.00021")
+
+export const daiAPRperBlock = BigNumber(0.1).div(ms('1y')).times(blockTime)
