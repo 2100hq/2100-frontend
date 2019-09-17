@@ -117,11 +117,11 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
   } else {
     columns = (
       <>
-        <div className="col-md-1 small">
-            <span>{myStake === 0 ? '-' : myStake}</span>
-        </div>
         <div className="col-md-2 small text-center">
           ${ token.totalStakes !== "0" ? <CountUp balance={marketCap(token.totalStakes)} decimals={2} /> : "0.00" }
+        </div>
+        <div className="col-md-1 small">
+            <span>{myStake === 0 ? '-' : myStake}</span>
         </div>
         <div className="col-md-2 text-center font-weight-bold">
           <div><CountUp balance={balance} /></div>
@@ -189,8 +189,8 @@ function All({tokens = [], location, myToken, isAllocating, isEditing, setIsEdit
       <div className="row heading-row text-muted">
         <div className="col-md-1">#</div>
         <div className="col-md-5 small">User</div>
-        <div className="col-md-1 small">Stake</div>
         <div className="col-md-2 small">Market Cap</div>
+        <div className="col-md-1 small">Stake</div>
         <div className="col-md-2 small">My Balance</div>
       </div>
       {rows}

@@ -238,23 +238,8 @@ export default function MessageForm({onSubmitted, replyid}){
   const thresholdNumber = useMemo( ()=> Number(toDecimals(threshold,15)), [threshold])
 
   const tokenRequirement = (
-    <Container>
       <Row>
-        <Col md="7 small">
-          <ThresholdInput defaultThreshold={thresholdNumber} onChange={handleSetThreshold} /> ${myTokenName} required
-        </Col>
-      </Row>
-      <Row>
-        <Col md="7">
-          <Slider
-             min={0.00021}
-             max={sliderMax}
-             step={0.00021}
-             value={thresholdNumber}
-             onChange={(e, val) => handleSetThreshold(val)}
-            />
-        </Col>
-        <Col md="5 small">
+        <Col>
           <ul className='holders-coda'>
             <div style={{marginBottom: '0.5rem'}}>Time to decode:</div>
             {contentLevels.map( data => {
@@ -265,7 +250,6 @@ export default function MessageForm({onSubmitted, replyid}){
           </ul>
         </Col>
       </Row>
-    </Container>
   )
 
   function PrivatePlaceHolder(type = 'Post'){
@@ -357,9 +341,24 @@ export default function MessageForm({onSubmitted, replyid}){
                       <Prepend type={currentTab} isHint={false} />
                       <Form.Control as={PrivateControlType(currentTab)} rows="6" value={message || ''} onChange={changeData} disabled={isDisabled ? 'disabled' : null} placeholder={PrivatePlaceHolder(currentTab)}/>
                     </InputGroup>
-                    {/*<Form.Label className='small'>
-                      <i className='fas fa-eye' /> {footerText}
-                    </Form.Label>*/}
+                    <Form.Label className='small'>
+                      <Row>
+                        <Col>
+                          <i className='fas fa-eye' /> {footerText} <ThresholdInput defaultThreshold={thresholdNumber} onChange={handleSetThreshold} /> ${myTokenName} required
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col>
+                          <Slider
+                             min={0.00021}
+                             max={sliderMax}
+                             step={0.00021}
+                             value={thresholdNumber}
+                             onChange={(e, val) => handleSetThreshold(val)}
+                            />
+                        </Col>
+                      </Row>
+                    </Form.Label>
                   </Col>
                 </Row>
               </Form.Group>
