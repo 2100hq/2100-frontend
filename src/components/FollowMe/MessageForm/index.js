@@ -230,11 +230,11 @@ export default function MessageForm({onSubmitted, replyid}){
   const [memeType, setMemeType] = useState(0)
 
   return (
-        <>
+        <div  className="message-form">
             { replyid && <div style={{width: '50%'}}><MessageCard {...{message: messages[replyid], myToken, token: query.getToken(messages[replyid].tokenid), isSignedIn, actions, canCopyUrl:false, canLinkToProfile:false, canComment: false, showFooter: false}} /></div> }
 
+            <ul className='nav nav-pills mt-3 mb-5'>{tabs}</ul>
 
-            { <ul className='nav nav-pills mt-3 mb-3'>{tabs}</ul> }
 
             <Form>
               <Form.Group controlId="hint" className='form-group-hint'>
@@ -267,7 +267,7 @@ export default function MessageForm({onSubmitted, replyid}){
 
               <MemePreview {...{currentTab, memeTypes, memeType, setMemeType, hint, message}} />
 
-              <Row className='align-items-center mt-3 mb-3'>
+              <Row className='align-items-center mt-4 mb-3'>
                 <Col md='10'>
                   { hasToken ? tokenRequirement : <Link className="create-token-message" to={ isSignedIn ? "/manage" : '/' }><i class="fas fa-bolt"></i> {isSignedIn ? 'Create your token to' : 'Sign in to'} send messages</Link> }
                 </Col>
@@ -278,6 +278,6 @@ export default function MessageForm({onSubmitted, replyid}){
                 </Col>
               </Row>
             </Form>
-      </>
+      </div>
   )
 }
