@@ -245,8 +245,8 @@ export default function MessageForm({onSubmitted, replyid}){
 
   const tokenRequirement = (
     <Container>
-      <Row>
-        <Col md="9">
+      <Row className='align-items-center'>
+        <Col md="8">
           <Slider
              min={0.00021}
              max={Number(toDecimals(sliderMax,15))}
@@ -255,13 +255,16 @@ export default function MessageForm({onSubmitted, replyid}){
              onChange={(e, val) => handleSetThreshold(val)}
             />
         </Col>
-        <Col md="3">
-          <ThresholdInput defaultThreshold={toDecimals(threshold,15)} onChange={handleSetThreshold} /> ${myTokenName} required
+        <Col md="4 small">
+          <Row>
+            <Col md="12"><ThresholdInput defaultThreshold={toDecimals(threshold,15)} onChange={handleSetThreshold} /><span>${myTokenName} required</span>
+            </Col>
+          </Row>
         </Col>
       </Row>
       <Row>
-        <Col>
-          <ul>
+        <Col md="6 small">
+          <ul className='holders-coda'>
             {contentLevels.map( data => {
               return (
                 <li style={{cursor: 'pointer'}} onClick={()=> { setThreshold(data.amount) }} >{data.holderType}: {data.timeToSee || "Calculating"}</li>
@@ -372,12 +375,12 @@ export default function MessageForm({onSubmitted, replyid}){
               { currentTab === "Meme" && <Meme toptext={hint} bottomtext={message} url={memeTypes[memeType].url} key='meme-image'/>}
 
               <Row className='align-items-center mt-4 mb-3'>
-                <Col md='10'>
+                <Col md='12'>
                   { hasToken ? tokenRequirement : <Link className="create-token-message" to={ isSignedIn ? "/manage" : '/' }><i class="fas fa-bolt"></i> {isSignedIn ? 'Create your token to' : 'Sign in to'} send messages</Link> }
                 </Col>
               </Row>
               <Row>
-                <Col md='2'>
+                <Col md='12'>
                   <Button variant="primary" disabled={isDisabled || isEmpty(message) ? 'disabled' : null} type="submit" onSubmit={handleSend} onClick={handleSend}>
                     { submitting ? 'Sending' : 'Send' }
                   </Button>
