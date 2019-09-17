@@ -1,6 +1,6 @@
 import React, { useState,useEffect, useRef, useMemo } from 'react'
 import { useStoreContext } from '../../../contexts/Store'
-import { toDecimals, BigNumber, weiDecimals, extractUsernameAndMessageIdFromLocation } from '../../../utils'
+import { toDecimals, BigNumber, weiDecimals, extractUsernameAndMessageIdFromLocation, oneblockReward, daiAPRperBlock } from '../../../utils'
 import Allocator from '../../Allocator'
 import ProfileImage from '../../ProfileImage'
 import { useCountUp } from 'react-countup'
@@ -9,7 +9,6 @@ import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
 import { Spinner } from 'react-bootstrap'
 import './style.scss'
-
 function CountUp ({balance, decimals = 5}) {
   const { countUp, update } = useCountUp({
     start: 0,
@@ -32,6 +31,11 @@ function Crown({token}){
   }
 }
 
+
+function marketCap(totalStakes){
+  return daiAPRperBlock.times(toDecimals(totalStakes)).times("10000000").toString()
+}
+
 function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIsEditing, index}) {
   const prevTotalStakeRef = useRef(token.totalStakes)
   const prevIndexRef = useRef(index)
@@ -41,23 +45,23 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
   const [earning, setEarning] = useState('0.000000')
   const [earningZero, setEarningZero] = useState(true)
   const [indexChanged, setIndexChanged] = useState(false)
-  useEffect(()=> {
-    let newEarning = null
+  // useEffect(()=> {
+  //   let newEarning = null
 
-    if (BigNumber(token.myStake).gt(0)){
-      newEarning = BigNumber(token.myStake).div(token.totalStakes).times('0.000189')
-    }
+  //   if (BigNumber(token.myStake).gt(0)){
+  //     newEarning = BigNumber(token.myStake).div(token.totalStakes).times('0.000189')
+  //   }
 
-    // owners reward
-    if (myToken && token.id === myToken.id){
-      if (newEarning == null) newEarning = BigNumber(0)
-      newEarning = newEarning.plus('0.000021')
-    }
+  //   // owners reward
+  //   if (myToken && token.id === myToken.id){
+  //     if (newEarning == null) newEarning = BigNumber(0)
+  //     newEarning = newEarning.plus('0.000021')
+  //   }
 
-    newEarning = newEarning == null ? '0.000000' : newEarning.dp(6,1).toString()
-    setEarning(newEarning)
-    setEarningZero(BigNumber(newEarning).eq(0))
-  },[token.myStake,token.totalStakes,(myToken&&myToken.id)])
+  //   newEarning = newEarning == null ? '0.000000' : newEarning.dp(6,1).toString()
+  //   setEarning(newEarning)
+  //   setEarningZero(BigNumber(newEarning).eq(0))
+  // },[token.myStake,token.totalStakes,(myToken&&myToken.id)])
 
 
   // const stakers = Object.values(token.stakes || {}).filter( stake => BigNumber(stake).gt(0) ).length
@@ -117,7 +121,7 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
             <span>{myStake === 0 ? '-' : myStake}</span>
         </div>
         <div className="col-md-2 small text-center">
-          { !earningZero ? <CountUp balance={earning} decimals={6} /> : '-' }
+          ${ token.totalStakes !== "0" ? <CountUp balance={marketCap(token.totalStakes)} decimals={2} /> : "0.00" }
         </div>
         <div className="col-md-2 text-center font-weight-bold">
           <div><CountUp balance={balance} /></div>
@@ -128,6 +132,7 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
       </>
     )
   }
+
   return (
     <div className={"row asset-row align-items-center"+selected+allocating+editing+changed}>
       <div className="col-md-1" style={{textAlign: 'center'}}>
@@ -185,7 +190,7 @@ function All({tokens = [], location, myToken, isAllocating, isEditing, setIsEdit
         <div className="col-md-1">#</div>
         <div className="col-md-5 small">User</div>
         <div className="col-md-1 small">Stake</div>
-        <div className="col-md-2 small">Earning Per Block</div>
+        <div className="col-md-2 small">Market Cap</div>
         <div className="col-md-2 small">My Balance</div>
       </div>
       {rows}
