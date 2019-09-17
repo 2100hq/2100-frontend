@@ -105,12 +105,12 @@ function DecodeThreshold({name, token, message, isSignedIn, actions}){
   if (isStaking && diff.gt(0)){
     const divisor = BigNumber(token.myStake).div(token.totalStakes).times(0.9).times(0.00021).times(weiDecimals)
     const blocks = diff.div(divisor).dp(0,0).toNumber()
-    timeToDecode = (<span>({ms(blocks*15000)} to go)</span>)
+    timeToDecode = (<span>({ms(blocks*15000)})</span>)
   }
 
 
 
-  if (diff.gt(0) && isStaking) return <span><i class="fas fa-asterisk"></i> getting {toDecimals(diff, 3, 0)} <span className='token-name'>{name}</span> {timeToDecode}</span>
+  if (diff.gt(0) && isStaking) return <span><i class="fas fa-asterisk"></i> {toDecimals(diff, 3, 0)} <span className='token-name'>{name} to go</span> {timeToDecode}</span>
 
   if (decoding) return <span><i class="fas fa-exclamation"></i> decoding...</span>
 
