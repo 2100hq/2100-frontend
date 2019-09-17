@@ -5,68 +5,60 @@
 
   font-size: 1rem;
 
-  .profile-image{
-  	width: 2.75rem;
-  	height: 2.75rem;
-  	border-radius: 50%;
-    margin: 0 1rem;
-  }
-
   span.rank{
    font-weight: bold;
    font-size: 1.2rem;
+ }
+
+ .heading-row{
+
+ }
+ .asset-row{
+  padding: 0.4rem 0;
+  border-left: 1px solid #eee;
+  border-bottom: 1px dotted #eee;
+  color: #444;
+  &.index-changed-up{
+    background-color: lighten(orange,20%);
+  }
+  &.index-changed-down{
+    background-color: lighten(orange,20%);
+  }
+  .fa-edit {
+    display: none;
+    cursor: pointer;
+  }
+  .close-allocator {
+    cursor: pointer;
   }
 
-  .heading-row{
 
-  }
-  .asset-row{
-    padding: 0.4rem 0;
-    border-left: 1px solid #eee;
-    border-bottom: 1px dotted #eee;
-    color: #444;
-    &.index-changed-up{
-      background-color: lighten(orange,20%);
-    }
-    &.index-changed-down{
-      background-color: lighten(orange,20%);
-    }
-    .fa-edit {
-      display: none;
-      cursor: pointer;
-    }
-    .close-allocator {
-      cursor: pointer;
-    }
+  &.allocating {
     .my-stake {
-      display: block;
-    }
-    &.allocating {
-      .my-stake {
-        cursor: default;
-      }
-      &:hover{
-        .fa-edit {
-          display: none;
-        }
-      }
+      cursor: default;
     }
     &:hover{
-      background-color: rgba(0,0,0,0.01);
-      color: #000;
-
       .fa-edit {
-        display: inline-block
+        display: none;
       }
-
-    }
-
-    &.selected{
-      background-color: rgba(0,0,0,0.02);
-      color: #000;
-
     }
   }
+  &:hover{
+    background-color: rgba(0,0,0,0.01);
+    color: #000;
+
+    .fa-edit {
+      display: inline-block
+    }
+
+  }
+
+  &.selected{
+    background-color: rgba(0,0,0,0.02);
+    color: #000;
+
+  }
+}
 }
 
 .stake-arrow {

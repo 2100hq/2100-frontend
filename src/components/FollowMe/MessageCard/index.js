@@ -70,7 +70,7 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
   return (
     <div className={`message ${destroyCountDown == null ? '' : 'message-destroy-countdown'} message-type-${message.type.replace(/:.*/,'')}`} key={message.id}>
       {destroyIcon}
-      <Row  className='message-header text-muted'>
+      <Row className='message-header text-muted align-items-center'>
         <Col md='1'>
           <ProfileImage token={token} />
         </Col>
@@ -88,8 +88,7 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
       </Row>
       <Row className='message-footer small' style={{ display: showFooter ? 'auto' : 'none'}}>
         <Col md="1" />
-        <Col>
-          <hr />
+        <Col className='mt-3 mb-3'>
           <HoldersProfiles prefix='' suffix=' can decode' noholderstext="Be the first to see" holders={message.recipients || message.recipientcount} noholders/>
         {canCopyUrl && (
           <CopyToClipboard text={window.location.origin + messageUrl}
@@ -98,7 +97,7 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
           </CopyToClipboard>
 
         )}
-        {!message.hidden && canComment && <div><a onClick={ ()=> actions.setShowCreate({replyid: message.id})}>Comment</a></div>}
+        {/*{!message.hidden && canComment && <div><a onClick={ ()=> actions.setShowCreate({replyid: message.id})}>Comment</a></div>}*/}
         </Col>
       </Row>
     </div>

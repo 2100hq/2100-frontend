@@ -113,13 +113,13 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
   } else {
     columns = (
       <>
-        <div className="col-md-1">
-            <div className="my-stake">{myStake === 0 ? '-' : myStake}</div>
+        <div className="col-md-1 small">
+            <span>{myStake === 0 ? '-' : myStake}</span>
         </div>
-        <div className="col-md-2">
+        <div className="col-md-2 small text-center">
           { !earningZero ? <CountUp balance={earning} decimals={6} /> : '-' }
         </div>
-        <div className="col-md-2">
+        <div className="col-md-2 text-center font-weight-bold">
           <div><CountUp balance={balance} /></div>
         </div>
         <div className="col-md-1" style={{textAlign: 'center'}}>
@@ -136,9 +136,9 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
         <span className='small'><CountUp balance={totalStakes} decimals={2} /></span>
       </div>
       <div className='col-md-2' style={{textAlign: 'center'}}>
-          <ProfileImage token={token} /><br/>
+          <ProfileImage className={myStake === 0 ? 'profile-image' : 'profile-image pulse'} token={token} /><br/>
       </div>
-      <div className="col-md-3" style={{position: 'relative',left: '-1rem'}}>
+      <div className="col-md-3">
           <Link to={`/$${token.name}`}>
             <span style={{fontWeight: 'bold'}} to={`/$${token.name}`}>${token.name}</span>
 
@@ -183,10 +183,10 @@ function All({tokens = [], location, myToken, isAllocating, isEditing, setIsEdit
     <div className="asset-table container">
       <div className="row heading-row text-muted">
         <div className="col-md-1">#</div>
-        <div className="col-md-5">User</div>
-        <div className="col-md-1">Stake</div>
-        <div className="col-md-2">Earning</div>
-        <div className="col-md-2">Balance</div>
+        <div className="col-md-5 small">User</div>
+        <div className="col-md-1 small">Stake</div>
+        <div className="col-md-2 small">Earning Per Block</div>
+        <div className="col-md-2 small">My Balance</div>
       </div>
       {rows}
     </div>
