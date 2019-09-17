@@ -8,11 +8,11 @@ import { BN, toDecimals } from '../../../utils'
 import { get } from 'lodash'
 function Balances ({ state }) {
   if (!state.private || !state.private.me) return null
-  const { total } = state.controller.balances
+  const { used, total } = state.controller.balances
   return (
     <div className='nav-link slide-left'>
     {/* wallet no more <Link className='nav-link slide-left' to='/wallet'>*/}
-      <img className='dai-logo' src='../img/dai.png' /> {toDecimals(total)}
+      <img className='dai-logo' src='../img/dai.png' /> {toDecimals(used)} / {toDecimals(total)}
     {/*</Link>*/}
     </div>
   )
@@ -95,7 +95,7 @@ function SignedIn () {
 function GetMetamask(){
   return(
   <a href='https://metamask.io/' className='nav-link active'>
-    <img className='wallet-logo' src='./img/metamask.png' style={{width: '1.5rem', marginRight: '0.5rem'}} /> 
+    <img className='wallet-logo' src='./img/metamask.png' style={{width: '1.5rem', marginRight: '0.5rem'}} />
   Get Metamask
   </a>
   )
