@@ -3,7 +3,8 @@ import { useStoreContext } from '../../contexts/Store'
 import { useFollowMeContext } from '../../contexts/FollowMe'
 import MessageCard from './MessageCard'
 
-export default function SingleMessage({messageid, token}){
+export default function SingleMessage(props){
+  const {messageid, token} = props
   const { query } = useStoreContext()
   const { myToken, actions, isSignedIn, messages } = useFollowMeContext()
   const [message, setMessage] = useState()
@@ -22,5 +23,5 @@ export default function SingleMessage({messageid, token}){
 
   if (!message) return null
 
-  return <MessageCard token={token} myToken={myToken} actions={actions} message={message} isSignedIn={isSignedIn}/>
+  return <MessageCard token={token} myToken={myToken} actions={actions} message={message} isSignedIn={isSignedIn} {...props}/>
 }

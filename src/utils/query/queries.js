@@ -12,7 +12,7 @@ const queries = {
        return get(state,`public.tokens.active.${tokenid}`) || get(`public.tokens.pending.${tokenid}`) || {}
      }
     // if it's not an address treat it as a username
-    return get(state, `tokens.${tokenid}`, {})
+    return get(state, `tokens.${tokenid.replace(/^\$/, '')}`, {})
   },
   getTokenName: (state, tokenid) => get(queries.getToken(state,tokenid), 'name'),
   getUserMyName: state => get(state,'private.username'),

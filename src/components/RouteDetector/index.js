@@ -2,32 +2,7 @@ import React from 'react'
 import { withRouter, matchPath } from 'react-router'
 import { useMediaQuery } from 'react-responsive'
 
-const routeConfigs = {
-  'profile': {
-    exact: true,
-    path: '/:username([$]{1,1}[a-zA-Z0-9_]+)'
-  },
-  'message': {
-    exact: true,
-    path: '/:username([$]{1,1}[a-zA-Z0-9_]+)/:messageid'
-  },
-  'wallet': {
-    exact: true,
-    path: '/wallet'
-  },
-  'manage': {
-    exact: true,
-    path: '/manage'
-  },
-  'admin': {
-    exact: true,
-    path: '/admin'
-  },
-  'main': {
-    exact: true,
-    path: '/'
-  }
-}
+import {routeConfigs} from '../../utils'
 
 function RouteDetector({children, location = {pathname: '/'}, setPageName, setParams}){
 

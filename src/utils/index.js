@@ -129,3 +129,30 @@ export const blockTime = 15000
 export const oneblockReward = weiDecimals.times("0.00021")
 
 export const daiAPRperBlock = BigNumber(0.1).div(ms('1y')).times(blockTime)
+
+export const routeConfigs = {
+  'profile': {
+    exact: true,
+    path: '/:username([$]{1,1}[a-zA-Z0-9_]+)'
+  },
+  'message': {
+    exact: true,
+    path: '/:username([$]{1,1}[a-zA-Z0-9_]+)/:messageid'
+  },
+  'wallet': {
+    exact: true,
+    path: '/wallet'
+  },
+  'manage': {
+    exact: true,
+    path: '/manage'
+  },
+  'admin': {
+    exact: true,
+    path: '/admin'
+  },
+  'main': {
+    exact: true,
+    path: '/'
+  }
+}

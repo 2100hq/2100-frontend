@@ -2,6 +2,7 @@ import React, { useMemo } from 'react'
 import { compact } from 'lodash'
 import { useStoreContext } from '../../contexts/Store'
 import { Nav } from 'react-bootstrap'
+import history from '../../utils/history'
 
 function Tab({current, name, set}){
   function handleClick(e){
@@ -21,7 +22,10 @@ export default function Navigation(){
   const isSignedIn = query.getIsSignedIn()
   const currentView = query.getCurrentView()
 
-  const setView = view => dispatch(actions.update('view', view))
+  const setView = view => {
+    dispatch(actions.update('view', view))
+    history.push('/')
+  }
 
   // Some views are only for signed in users
   const allowedViews = useMemo(()=>{
