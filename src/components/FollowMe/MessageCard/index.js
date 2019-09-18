@@ -66,9 +66,12 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
 
   const messageUrl = `/$${token.name}/${message.shortid || message.id}`
 
+  const classNames = ['message', `message-type-${message.type.replace(/:.*/,'')}`]
+  if (destroyCountDown != null) classNames.push('message-destroy-countdown')
+  if (message.hidden) classNames.push('message-hidden')
 
   return (
-    <div className={`message ${destroyCountDown == null ? '' : 'message-destroy-countdown'} message-type-${message.type.replace(/:.*/,'')}`} key={message.id}>
+    <div className={classNames.join(' ')} key={message.id}>
       {destroyIcon}
       <Row className='message-header text-muted align-items-center'>
         <Col md='1'>
