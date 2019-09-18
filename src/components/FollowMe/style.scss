@@ -21,7 +21,69 @@
   border-bottom: 1px solid #eee;
   overflow: hidden;
 
-    &:hover{
+
+    .message-hint{
+      font-size: 1.1rem;
+      font-weight: bold;
+      letter-spacing: -0.02rem;
+      font-weight: bold;
+      letter-spacing: 0;
+      margin-bottom: 1rem;
+      margin-top:0.25rem;
+    }
+
+  &.message-hidden{
+
+    background-color: rgba(0,0,0,0.03);
+
+
+
+    .decode-instruction{
+      font-size: 0.9rem;
+      border-radius: 1rem;
+      margin-top: 1rem;
+    }
+
+    .encrypted-text{
+     font-family: Redacted;
+     color: #ddd;
+     margin: 0.5rem 0;
+     font-size: 1rem;
+     width: 75%;
+    }
+
+    &.message-type-text, &.message-type-link{
+      $color: #28357f;
+      border-right: 5px solid $color;
+      .message-hint{
+      }
+    }
+
+    &.message-type-youtube{
+      $color: #FF0000;
+      border-right: 5px solid $color;
+
+    }
+
+    &.message-type-twitter{
+      $color: #1da1f2;
+      border-right: 5px solid $color;
+
+    }
+
+    &.message-type-image{
+      $color: $twentyonesecondary;
+      border-right: 5px solid $color;
+
+    }
+
+    &.message-type-meme{
+      $color: green;
+      border-right: 5px solid $color;
+    }    
+  }
+
+  &:hover{
     opacity: 1;
   }
 
@@ -33,66 +95,7 @@
     color: #aaa;
   }
 
-  &.message-type-text, &.message-type-link{
-    $color: #28357f;
-    border-right: 5px solid $color;
 
-    .pretend-encryption{
-      background-color: $color;
-    }
-
-    .content-type-hint{
-    }
-  }
-
-
-  &.message-type-youtube{
-    $color: #FF0000;
-    border-right: 5px solid $color;
-
-    .pretend-encryption{
-      background-color: $color;
-    }
-
-    .content-type-hint{
-    }
-  }
-
-  &.message-type-twitter{
-    $color: #1da1f2;
-    border-right: 5px solid $color;
-
-     .pretend-encryption{
-      background-color: $color;
-    }
-
-    .content-type-hint{
-    }
-  }
-
-  &.message-type-image{
-    $color: $twentyonesecondary;
-    border-right: 5px solid $color;
-
-     .pretend-encryption{
-      background-color: $color;
-    }
-
-    .content-type-hint{
-    }
-  }
-
-  &.message-type-meme{
-    $color: green;
-    border-right: 5px solid $color;
-
-     .pretend-encryption{
-      background-color: $color;
-    }
-
-    .content-type-hint{
-    }
-  }
 
   .token-name{
     color: black;

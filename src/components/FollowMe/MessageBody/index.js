@@ -84,7 +84,7 @@ function DecodeThreshold({name, token, message, isSignedIn, actions}){
   */
   const [decoding, setDecoding] = useState(false)
 
-  if (!isSignedIn) return <span><i className='fas fa-lock' /> hold <span style={{fontWeight: 'bold'}}>{toDecimals(message.threshold,3,0)} ${name} </span>to decode</span>
+  if (!isSignedIn) return <div className='decode-instruction'><i className={'fas fa-lock'} /> hold <span style={{fontWeight: 'bold'}}>{toDecimals(message.threshold,3,0)} ${name} </span>to decode</div>
 
   const available = get(token, 'balances.available', "0")
   const diff = BigNumber(message.threshold).minus(available)
@@ -148,8 +148,8 @@ function HiddenMessage({message}){
   return(
     <div className='hidden-message-block'>
       <div className='pretend-encryption'>
-        <div className='message-hint'>{message.hint}</div>
-        <div className='encrypted-text'><EncryptedMessage {...{encrypted, decrypted}} /></div>
+        <div className='message-hint'> {message.hint} </div>
+          <div className='encrypted-text'><EncryptedMessage {...{encrypted, decrypted}} /></div>
       </div>
     </div>
   )
