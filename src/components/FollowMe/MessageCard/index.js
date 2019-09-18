@@ -73,12 +73,12 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
   return (
     <div className={classNames.join(' ')} key={message.id}>
       {destroyIcon}
-      <Row className='message-header text-muted align-items-center'>
+      <Row className='message-header text-muted align-items-center mb-2'>
         <Col md='1'>
           <ProfileImage token={token} />
         </Col>
         <Col md='9 ml-2'>
-          <span className='token-name'>
+          <span>
             { canLinkToProfile ? <Link to={`/$${token.name}`}>{token.name}</Link> : token.name }
             <span className='message-time text-muted'>
               { canLinkToProfile ? <Link to={messageUrl}>{ago(message.created)}</Link> : ago(message.created) }
@@ -89,7 +89,7 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
       <Row className='message-body'>
         <MessageBody {...{message, myToken, token, isSignedIn, actions, canLinkToProfile}} />
       </Row>
-      <Row className='message-footer small' style={{ display: showFooter ? 'auto' : 'none'}}>
+      <Row className='message-footer small mt-2' style={{ display: showFooter ? 'auto' : 'none'}}>
         <Col md="1" />
         <Col className='mt-3 mb-3'>
           <HoldersProfiles prefix='' suffix=' decoded' noholderstext="Be the first to decode" holders={message.recipients || message.recipientcount} noholders/>
