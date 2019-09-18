@@ -144,7 +144,7 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
       </div>
       <div className="col-md-3">
           <Link to={`/$${token.name}`}>
-            <span to={`/$${token.name}`}>${token.name}</span>
+            <span style={{fontWeight: 'bold'}} to={`/$${token.name}`}>${token.name}</span>
 
           </Link>
       </div>
