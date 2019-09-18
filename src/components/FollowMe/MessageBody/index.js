@@ -259,9 +259,9 @@ function DefaultMessageBody({message, decodeThreshold}){
         <MessageIcon message={message} />
       </Col>
       <Col md="9 ml-2">
+        {message.hint && !message.hidden && <div className='message-hint'><Linkify>{message.hint}</Linkify></div>}
         <div className='message-target'>{messageComponent}</div>
         {decodeThreshold}
-        {message.hint && !message.hidden && <div className='message-hint'>hint: <Linkify>{message.hint}</Linkify></div>}
       </Col>
     </>
   )
