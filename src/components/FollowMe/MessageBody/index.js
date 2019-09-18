@@ -156,7 +156,7 @@ function HiddenMessage({message}){
 }
 
 function MessageIcon({message}){
-  switch(message.type) {
+  switch(message.type.replace(/:.*/,'')) {
     case 'image':
       return <i className={'fas fa-image'} />
     case 'imgur':
@@ -167,8 +167,10 @@ function MessageIcon({message}){
       return <i className={'fab fa-youtube'} />
     case 'twitter':
       return <i className={'fab fa-twitter'} />
-    case 'meme:raptor':
+    case 'meme':
       return <i class="far fa-comment-alt"></i>
+    case 'link':
+      return <i class="fas fa-link"></i>
     default:
       return <i className={'fas fa-align-left'} />
   }

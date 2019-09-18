@@ -4,7 +4,7 @@
 
 /* message compose styles */
 .modal-backdrop{
-  
+
   background-color: #ddd !important;
   &.show{
     opacity: 0.7 !important;
@@ -33,7 +33,7 @@
     color: #aaa;
   }
 
-  &.message-type-text{
+  &.message-type-text, &.message-type-link{
     $color: #28357f;
     border-right: 5px solid $color;
 
