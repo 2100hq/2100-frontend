@@ -1,5 +1,9 @@
 @import "../../../Variables";
 
+.message-form .form-group{
+  margin-bottom: 0;
+}
+
 .fixed-message-form {
   position: absolute;
   bottom: 0;
@@ -8,7 +12,6 @@
   width: 50%;
   max-width: 550px;
   min-width: 350px;
-  min-height: 500px;
   padding: 0 0 2rem 0;
   overflow-y: scroll;
   z-index: 2;

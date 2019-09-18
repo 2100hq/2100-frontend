@@ -43,7 +43,7 @@ export default function CreateMessageModal () {
     <div className='fixed-message-form'>
       <div style={{position: 'relative'}}>
         <Container>
-          <Row className='compose-header'>
+          <Row className='compose-header small'>
             <Col>
               <h5 className="mt-3 mb-3">Compose</h5>
               <i class="fas fa-times-circle close" onClick={ () =>  actions.setShowCreate(false)}/>

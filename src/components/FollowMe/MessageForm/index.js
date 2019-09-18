@@ -25,7 +25,7 @@ function isEmpty(message){
 }
 
 const contentLevels = [
-  {level: 0,  name: 'Mediocre', holderType: '😊 Newb'},
+  {level: 0,  name: 'Mediocre', holderType: 'New Holder'},
   {level: 5, name: 'Regular', holderType: '🐟 Minnow'},
   {level: 50, name: 'Premium', holderType: '🦈 Shark'},
   {level: 75, name: 'Exclusive', holderType: '🐋 Whale'},
@@ -240,8 +240,8 @@ export default function MessageForm({onSubmitted, replyid}){
   const tokenRequirement = (
       <Row>
         <Col>
-          <ul className='holders-coda'>
-            <div style={{marginBottom: '0.5rem'}}>Time to decode:</div>
+          <ul className='holders-coda small'>
+            <div style={{marginBottom: '0.5rem'}}>Approximate Time to decode:</div>
             {contentLevels.map( data => {
               return (
                 <li style={{cursor: 'pointer'}} onClick={()=> { setThreshold(data.amount) }} >{data.holderType}: <span style={{fontWeight: 'bold'}}>{data.timeToSee || "Calculating"}</span></li>
@@ -315,7 +315,7 @@ export default function MessageForm({onSubmitted, replyid}){
         <div  className="message-form">
             { replyid && <div style={{width: '50%'}}><MessageCard {...{message: messages[replyid], myToken, token: query.getToken(messages[replyid].tokenid), isSignedIn, actions, canCopyUrl:false, canLinkToProfile:false, canComment: false, showFooter: false}} /></div> }
 
-            <ul className='nav nav-pills mt-3 mb-5'>{tabs}</ul>
+            <ul className='nav nav-pills mt-2'>{tabs}</ul>
 
             { currentTab === 'Meme' && <MemeSelect memeTypes={memeTypes} memeType={memeType} onChange={setMemeType} key='meme-select'/>}
 
@@ -365,18 +365,14 @@ export default function MessageForm({onSubmitted, replyid}){
 
               { currentTab === "Meme" && <Meme toptext={hint} bottomtext={message} url={memeTypes[memeType].url} key='meme-image'/>}
 
-              <Row className='align-items-center mt-4 mb-3'>
+              <Row className=''>
                 <Col md='12'>
                   { hasToken ? tokenRequirement : <Link className="create-token-message" to={ isSignedIn ? "/manage" : '/' }><i class="fas fa-bolt"></i> {isSignedIn ? 'Create your token to' : 'Sign in to'} send messages</Link> }
                 </Col>
               </Row>
-              <Row>
-                <Col md='12'>
-                  <Button variant="primary" disabled={isDisabled || isEmpty(message) ? 'disabled' : null} type="submit" onSubmit={handleSend} onClick={handleSend}>
-                    { submitting ? 'Sending' : 'Send' }
-                  </Button>
-                </Col>
-              </Row>
+              <Button className='compose-submit-button' variant="primary" disabled={isDisabled || isEmpty(message) ? 'disabled' : null} type="submit" onSubmit={handleSend} onClick={handleSend}>
+                { submitting ? 'Sending' : 'Send' }
+              </Button>
             </Form>
       </div>
   )
