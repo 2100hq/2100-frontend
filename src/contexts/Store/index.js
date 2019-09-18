@@ -33,7 +33,7 @@ export const StoreContextConsumer = StoreContext.Consumer
 
 function socketUpdate (channel, dispatch) {
   return events => {
-    console.log(new Date().toISOString(), '*SOCKET UPDATE >', channel, events)
+    // console.log(new Date().toISOString(), '*SOCKET UPDATE >', channel, events)
     events = events
       .filter( event => !/reward/i.test(event[1].type) )
       .map( event => {
@@ -59,9 +59,9 @@ export default function StoreProvider ({ children }) {
     view: config.defaultView
   })
 
-  useEffect( () => {
-    console.log(new Date().toISOString(), 'LATEST BLOCK', get(privState, 'public.latestBlock.number'))
-  }, [get(privState, 'public.latestBlock.number')])
+  // useEffect( () => {
+  //   console.log(new Date().toISOString(), 'LATEST BLOCK', get(privState, 'public.latestBlock.number'))
+  // }, [get(privState, 'public.latestBlock.number')])
 
   // hook up socket changes to dispatcher/reducer
   useEffect(() => {
