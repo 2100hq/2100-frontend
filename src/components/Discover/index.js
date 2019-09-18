@@ -76,12 +76,11 @@ export default function Discover () {
   },[currentView])
 
   const viewMap = {
-    All: () => <All tokens={query.getActiveTokensArray()} myToken={query.getMyToken()} isAllocating={query.getIsAllocating()} isEditing={isEditing} setIsEditing={setIsEditing}/>,
-    'Holding': () => <All tokens={query.getMyStakedOrHeldTokensArray()} myToken={query.getMyToken()} isAllocating={query.getIsAllocating()} isEditing={isEditing} setIsEditing={setIsEditing}/>,
-    'Top Ten': () => <All tokens={query.getTopTenTokensArray()} myToken={query.getMyToken()} isAllocating={query.getIsAllocating()} isEditing={isEditing} setIsEditing={setIsEditing}/>
+    New: () => <All key='New' tokens={query.getActiveTokensArray()} myToken={query.getMyToken()} isAllocating={query.getIsAllocating()} isEditing={isEditing} setIsEditing={setIsEditing}/>,
+    'Following': () => <All key='Following' tokens={query.getMyStakedOrHeldTokensArray()} myToken={query.getMyToken()} isAllocating={query.getIsAllocating()} isEditing={isEditing} setIsEditing={setIsEditing}/>
   }
 
-  const view = typeof viewMap[currentView] === 'function' ? viewMap[currentView]() : null
+  const view = typeof viewMap[currentView] === 'function' ? viewMap[currentView]() : viewMap.New()
 
   return (
     <>

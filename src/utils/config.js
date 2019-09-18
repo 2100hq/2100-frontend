@@ -39,8 +39,8 @@ const stakeLevels = Number(process.env.REACT_APP_STAKE_LEVELS || 2)
 const followMeUrl = process.env.REACT_APP_FOLLOWME_URL
 const followMePoll = Number(process.env.REACT_APP_FOLLOWME_POLL || 2000)
 
-const views = ['All', 'Top Ten', 'Holding']
-const defaultView = 'Top Ten'
+const views = ['Cheap', 'New', 'Following']
+const defaultView = 'Cheap'
 
 export default {
   networkName: networkNames[networkId.toString()],
