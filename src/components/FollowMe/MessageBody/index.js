@@ -129,7 +129,7 @@ function EncryptedMessage({encrypted, decrypted}){
   }).join('')
 }
 
-function DecryptedMessage({decrypted}){
+function DecryptMessage({children}){
    let delay = 750
    const [step, setStep] = useState(1)
    const gifs = ['https://media.giphy.com/media/wcjtdRkYDK0sU/giphy.gif', 'https://media.giphy.com/media/VGuAZNdkPUpEY/giphy.gif']
@@ -140,7 +140,7 @@ function DecryptedMessage({decrypted}){
      return
    },[step])
    if (step === 1) return <img className='decoding' src={gifs[gifIndex]} />
-   return decrypted
+   return children
 }
 
 function HiddenMessage({message}){
@@ -201,51 +201,48 @@ function VisibleMessageVideo({message}){
 }
 
 function VisibleMessage({message}){
-  let decrypted = null
+  let messageComponent = null
   switch(message.type) {
     case 'image':
-      decrypted = <VisibleMessageImage message={message} />
+      messageComponent = <VisibleMessageImage message={message} />
       break
     case 'youtube':
-      decrypted = <VisibleMessageYoutube message={message} />
+      messageComponent = <VisibleMessageYoutube message={message} />
       break
     case 'twitter':
-      decrypted = <VisibleMessageTwitter message={message} />
+      messageComponent = <VisibleMessageTwitter message={message} />
       break
     case 'video':
-      decrypted = <VisibleMessageVideo message={message} />
+      messageComponent = <VisibleMessageVideo message={message} />
       break
     case 'imgur':
-      decrypted = <VisibleMessageVideo message={message} />
+      messageComponent = <VisibleMessageVideo message={message} />
       break
     default:
-      decrypted = <Linkify>{message.message}</Linkify>
+      messageComponent = <Linkify>{message.message}</Linkify>
       break
   }
-  return <DecryptedMessage {...{decrypted}} />
-}
-
-function getHintLocation(message){
-  switch(message.type) {
-    case 'text':
-      return (message.length || message.message.length) > 200 ? 'top' : 'bottom'
-    default:
-      return 'bottom'
-  }
+  if (!message.decoded) return messageComponent
+  return <DecryptMessage>{messageComponent}</DecryptMessage>
 }
 
 function MemeMessageBody({message, decodeThreshold}){
     const memeKey = message.type.replace('meme:', '')
     const memeData = memeTypes.find( data => data.key === memeKey)
-
-   const memeImg = message.hidden ? <Meme toptext={message.hint} bottomtext={message.id.replace(/-/g,'').toUpperCase().split('')} url={memeData.url} /> : <Meme toptext={message.hint} bottomtext={message.message} url={memeData.url} />
+    let messageComponent = null
+    if (message.hidden){
+      messageComponent = <Meme toptext={message.hint} bottomtext={message.id.replace(/-/g,'').toUpperCase().split('')} url={memeData.url} />
+    } else {
+      messageComponent = <Meme toptext={message.hint} bottomtext={message.message} url={memeData.url} />
+      if (message.decoded) messageComponent = <DecryptMessage>{messageComponent}</DecryptMessage>
+    }
    return (
      <>
        <Col md="1" className='content-type-hint'>
          <MessageIcon message={message} />
        </Col>
        <Col md="9 ml-2">
-         <div className='message-target'>{memeImg}</div>
+         <div className='message-target'>{messageComponent}</div>
          {decodeThreshold}
        </Col>
      </>
@@ -253,16 +250,16 @@ function MemeMessageBody({message, decodeThreshold}){
 }
 
 function DefaultMessageBody({message, decodeThreshold}){
-  const text = message.hidden ? <HiddenMessage message={message} key={'hidden'+message.id}/> : <VisibleMessage message={message} key={'visible'+message.id}/>
+  const messageComponent = message.hidden ? <HiddenMessage message={message} key={'hidden'+message.id}/> : <VisibleMessage message={message} key={'visible'+message.id}/>
   return (
     <>
       <Col md="1" className='content-type-hint'>
         <MessageIcon message={message} />
       </Col>
       <Col md="9 ml-2">
-        <div className='message-target'>{text}</div>
+        <div className='message-target'>{messageComponent}</div>
         {decodeThreshold}
-        {message.hint && <div className='message-hint'>hint: {message.hint}</div>}
+        {message.hint && <div className='message-hint'>hint: <Linkify>{message.hint}</Linkify></div>}
       </Col>
     </>
   )
