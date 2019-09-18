@@ -4,7 +4,6 @@ import { useStoreContext } from '../../contexts/Store'
 import { toDecimals } from '../../utils'
 import User from './User'
 import './style.scss'
-import Navigation from './Navigation'
 
 function ProtectedNavItem ({state, children}) {
   if (!state.private.isSignedIn) return null
@@ -36,7 +35,6 @@ export default function Nav (props) {
         <Link to='/'><Logo /></Link>
       </li>
       <User {...props} key='user' />
-      <Navigation />
       </ul>
     )
 

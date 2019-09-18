@@ -2,7 +2,9 @@ import React, {useState} from 'react'
 import {useStoreContext} from '../../contexts/Store'
 import PublicFeed from '../FollowMe/PublicFeed'
 import MyFeed from '../FollowMe/MyFeed'
-import CheapFeed from '../FollowMe/CheapFeed'
+import ThresholdFeed from '../FollowMe/ThresholdFeed'
+import Navigation from '../Nav/Navigation'
+
 import './style.scss'
 
 
@@ -12,12 +14,14 @@ export default function Sidebar (props) {
   const viewMap = {
     New: () => <PublicFeed />,
     Following: () => <MyFeed />,
-    Cheap: () => <CheapFeed />
+    Cheap: () => <ThresholdFeed maxThreshold="0.00021" />,
+    Premium: () => <ThresholdFeed minThreshold="0.5" />
   }
 
   const view = typeof viewMap[currentView] === 'function' ? viewMap[currentView]() : null
   return (
   	<div>
+      <Navigation />
 	  	{view}
   	</div>
     )

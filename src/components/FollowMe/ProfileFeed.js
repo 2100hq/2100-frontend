@@ -5,6 +5,7 @@ import FollowMe from './'
 
 function filterByToken(messages, token){
   const tokenMessages = Object.values(messages).filter( message => message.tokenid === token.id )
+
   if (tokenMessages.length === 0) return {}
   return tokenMessages.reduce( (obj, message) => {
     obj[message.id] = message

@@ -13,14 +13,14 @@ function filterByTokens(messages, tokens = []){
   }, {})
 }
 
-const cheap = fromDecimals("0.00021")
-
-export default function CheapFeed(){
+export default function ThresholdFeed({maxThreshold="2100", minThreshold="0"}){
   const {query} = useStoreContext()
   let { messages } = useFollowMeContext()
-  let cheapMessages = Object.values(messages).filter( message => cheap.gte(message.threshold) )
+  maxThreshold = useMemo(()=>fromDecimals(maxThreshold), [maxThreshold])
+  minThreshold = useMemo(()=>fromDecimals(minThreshold), [minThreshold])
+  messages = Object.values(messages).filter( message => maxThreshold.gte(message.threshold) && minThreshold.lte(message.threshold) )
 
   return (
-      <FollowMe messages={cheapMessages} showForm={false} className='cheap-feed'/>
+      <FollowMe messages={messages} showForm={false} className='threshold-feed'/>
   )
 }
