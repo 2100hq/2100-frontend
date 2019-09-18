@@ -130,16 +130,15 @@ function EncryptedMessage({encrypted, decrypted}){
 }
 
 function DecryptMessage({children}){
-   let delay = 750
-   const [step, setStep] = useState(1)
-   const gifs = ['https://media.giphy.com/media/wcjtdRkYDK0sU/giphy.gif', 'https://media.giphy.com/media/VGuAZNdkPUpEY/giphy.gif']
+   let delay = 1000
+   const [reveal, setReveal] = useState(false)
+   const gifs = ['https://media.giphy.com/media/wcjtdRkYDK0sU/giphy.gif', 'https://media.giphy.com/media/VGuAZNdkPUpEY/giphy.gif', 'https://media.giphy.com/media/l3q2LuW8lGMfSMKlO/200w_d.gif', 'https://media.giphy.com/media/4T1NFafropdQOrBYw6/200w_d.gif', 'https://media.giphy.com/media/olN2N0iROsYow/giphy-downsized.gif']
    const [gifIndex] = useState(Math.floor(Math.random()*gifs.length))
    useEffect( () => {
-     if (step >= 2) return
-     setTimeout(setStep,delay,step+1)
+     setTimeout(setReveal,delay, true)
      return
-   },[step])
-   if (step === 1) return <img className='decoding' src={gifs[gifIndex]} />
+   },[])
+   if (!reveal) return <img className='decoding' src={gifs[gifIndex]} />
    return children
 }
 
