@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { BrowserRouter as Router, Route, Switch } from 'react-router-dom'
+import { Router, Route, Switch } from 'react-router-dom'
 
 import Main from './components/Main'
 import Portfolio from './components/Portfolio'
@@ -20,19 +20,20 @@ import CreateMessageFixed from './components/FollowMe/CreateMessageFixed'
 
 import Discover from './components/Discover'
 import { extractUsernameAndMessageIdFromLocation,extractMessageIdFromUsernameRoute } from './utils'
+import history from './utils/history'
 
 import './App.scss'
 
 class App extends Component {
   render () {
     return (
-      <Router>
+      <Router history={history}>
         <BrowserClasses>
           {/*<Breakpoints />*/}
           <div className='container-fluid'>
             <Row>
               <Col md='2' className='nav-column'>
-                <Route path='' component={Nav} />
+                <Nav />
               </Col>
               <Col md='10'>
                 <Switch>
@@ -48,25 +49,31 @@ class App extends Component {
                     <Col md='6' className='followme'>
                           <CreateMessageButton />
                         {/* follow me */}
-                        <Route exact path='/' component={Sidebar} />
-                        <Route exact path='/:username([$].*)' render = {
-                          props => {
-                            let {match} = props
-                            const {username, messageid} = extractMessageIdFromUsernameRoute(match)
-                            match = {...match, params: {...match.params, username, messageid }}
-                            props = {...props, match}
-                            return <Profile {...props} />
-                          }
-                        } />
+                        <Switch>
+                          <Route exact path='/:username([$].*)' render = {
+                            props => {
+                              let {match} = props
+                              const {username, messageid} = extractMessageIdFromUsernameRoute(match)
+                              match = {...match, params: {...match.params, username, messageid }}
+                              props = {...props, match}
+                              return <Profile {...props} />
+                            }
+                          } />
+                          <Route component={Sidebar} />
+                        </Switch>
                     </Col>
                   </Row>
                 </Switch>
               </Col>
             </Row>
-            <CreateMessageFixed />
-            <Alerts />
-            <ErrorModal />
+            <Route exact path='/:username([$]{1,1}[a-zA-Z0-9_]+)/:messageid' render= {
+              props => {
+              }
+            } />
           </div>
+          <CreateMessageFixed />
+          <Alerts />
+          <ErrorModal />
         </BrowserClasses>
       </Router>
     )
