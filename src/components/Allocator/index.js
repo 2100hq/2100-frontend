@@ -118,8 +118,6 @@ export default function Allocator ({ token, className='', onComplete=()=>{}, onC
     })
   }
   const color = remaining < 1.00 ? remaining < 0.05 ? 'low' : 'medium' : 'high'
-  console.log();
-  console.log({color});
 
   return (
     <div className={`${className} ${color}`} ref={node}>
