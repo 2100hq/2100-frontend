@@ -120,10 +120,10 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
         <div className="col-md-2 small text-center">
           ${ token.totalStakes !== "0" ? <CountUp balance={marketCap(token.totalStakes)} decimals={2} /> : "0.00" }
         </div>
-        <div className="col-md-1 small">
+        <div className="col-md-1 small text-center">
             <span>{myStake === 0 ? '-' : myStake}</span>
         </div>
-        <div className="col-md-2 text-center">
+        <div className="col-md-2 small text-center">
           <div><CountUp balance={balance} /></div>
         </div>
         <div className="col-md-1" style={{textAlign: 'center'}}>
@@ -138,7 +138,6 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
       <div className="col-md-1" style={{textAlign: 'center'}}>
         <Crown token={token}/>
         <span className={'rank rank'+token.rank}>{token.rank}</span><br/>
-        <span className='small'><CountUp balance={totalStakes} decimals={2} /></span>
       </div>
       <div className='col-md-2' style={{textAlign: 'center'}}>
           <ProfileImage className={myStake === 0 ? 'profile-image' : 'profile-image pulse'} token={token} /><br/>
@@ -188,10 +187,10 @@ function All({tokens = [], location, myToken, isAllocating, isEditing, setIsEdit
     <div className="asset-table container">
       <div className="row heading-row text-muted">
         <div className="col-md-1">#</div>
-        <div className="col-md-5 small">User</div>
-        <div className="col-md-2 small">Market Cap</div>
-        <div className="col-md-1 small">Stake</div>
-        <div className="col-md-2 small">My Balance</div>
+        <div className="col-md-5 small"></div>
+        <div className="col-md-2 text-center small">Market Cap</div>
+        <div className="col-md-1 text-center small">My Stake</div>
+        <div className="col-md-2 text-center small">My Balance</div>
       </div>
       {rows}
     </div>
