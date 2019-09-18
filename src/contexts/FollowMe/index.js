@@ -166,6 +166,7 @@ export default function FollowMeProvider ({ children }) {
   function DecodeMessage(fmstate){
     return async (id) => {
       const message = await GetMessage(fmstate)(id)
+      message.decoded = true
       if (message) update(`decodedMessages.${message.id}`, message)
       return message
     }
