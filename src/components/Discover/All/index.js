@@ -123,7 +123,7 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
         <div className="col-md-1 small">
             <span>{myStake === 0 ? '-' : myStake}</span>
         </div>
-        <div className="col-md-2 text-center font-weight-bold">
+        <div className="col-md-2 text-center">
           <div><CountUp balance={balance} /></div>
         </div>
         <div className="col-md-1" style={{textAlign: 'center'}}>
@@ -145,7 +145,7 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
       </div>
       <div className="col-md-3">
           <Link to={`/$${token.name}`}>
-            <span style={{fontWeight: 'bold'}} to={`/$${token.name}`}>${token.name}</span>
+            <span to={`/$${token.name}`}>${token.name}</span>
 
           </Link>
       </div>
