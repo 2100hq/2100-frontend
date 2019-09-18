@@ -89,7 +89,7 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
       <Row className='message-footer small' style={{ display: showFooter ? 'auto' : 'none'}}>
         <Col md="1" />
         <Col className='mt-3 mb-3'>
-          <HoldersProfiles prefix='' suffix=' have seen' noholderstext="Be the first to see" holders={message.recipients || message.recipientcount} noholders/>
+          <HoldersProfiles prefix='' suffix='decoded' noholderstext="Be the first to decode" holders={message.recipients || message.recipientcount} noholders/>
         {canCopyUrl && (
           <CopyToClipboard text={window.location.origin + messageUrl}
             onCopy={() => setCopied(true)}>
