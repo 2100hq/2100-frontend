@@ -80,6 +80,10 @@
     &.message-type-meme{
       $color: green;
       border-right: 5px solid $color;
+    }
+    &.message-type-gift{
+      $color: lightblue;
+      border-right: 5px solid $color;
     }    
   }
 
