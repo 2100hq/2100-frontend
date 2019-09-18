@@ -1,5 +1,6 @@
 import React, { Component } from 'react'
 import { Router, Route, Switch } from 'react-router-dom'
+import { matchPath } from 'react-router'
 
 import Main from './components/Main'
 import Portfolio from './components/Portfolio'
@@ -17,10 +18,12 @@ import {Row, Col, Card} from 'react-bootstrap'
 import Sidebar from './components/Sidebar'
 import CreateMessageButton from './components/FollowMe/CreateMessageButton'
 import CreateMessageFixed from './components/FollowMe/CreateMessageFixed'
+import FollowMeMessageModal from './components/FollowMe/MessageModal'
 
 import Discover from './components/Discover'
-import { extractUsernameAndMessageIdFromLocation,extractMessageIdFromUsernameRoute } from './utils'
 import history from './utils/history'
+
+import { routeConfigs } from './utils'
 
 import './App.scss'
 
@@ -52,9 +55,9 @@ class App extends Component {
                         <Switch>
                           <Route exact path='/:username([$].*)' render = {
                             props => {
+                              const isMessageMatch = matchPath(props.location.pathname, routeConfigs.message)
                               let {match} = props
-                              const {username, messageid} = extractMessageIdFromUsernameRoute(match)
-                              match = {...match, params: {...match.params, username, messageid }}
+                              if (isMessageMatch) match = isMessageMatch
                               props = {...props, match}
                               return <Profile {...props} />
                             }
@@ -67,8 +70,7 @@ class App extends Component {
               </Col>
             </Row>
             <Route exact path='/:username([$]{1,1}[a-zA-Z0-9_]+)/:messageid' render= {
-              props => {
-              }
+              props => <FollowMeMessageModal {...props} />
             } />
           </div>
           <CreateMessageFixed />
