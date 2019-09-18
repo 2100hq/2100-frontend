@@ -142,10 +142,9 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
       <div className='col-md-2' style={{textAlign: 'center'}}>
           <ProfileImage className={myStake === 0 ? 'profile-image' : 'profile-image pulse'} token={token} /><br/>
       </div>
-      <div className="col-md-3">
+      <div className="col-md-3" style={{overflow: 'hidden'}}>
           <Link to={`/$${token.name}`}>
             <span style={{fontWeight: 'bold'}} to={`/$${token.name}`}>${token.name}</span>
-
           </Link>
       </div>
       {columns}
