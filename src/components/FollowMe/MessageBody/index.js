@@ -147,8 +147,9 @@ function HiddenMessage({message}){
   let decrypted = !message.message ? encrypted : message.message // if hidden message text sent by server is null or ''
   return(
     <div className='hidden-message-block'>
-        <div className='pretend-encryption'>
-        <EncryptedMessage {...{encrypted, decrypted}} />
+      <div className='pretend-encryption'>
+        <div className='message-hint'>{message.hint}</div>
+        <div className='encrypted-text'><EncryptedMessage {...{encrypted, decrypted}} /></div>
       </div>
     </div>
   )
@@ -260,7 +261,7 @@ function DefaultMessageBody({message, decodeThreshold}){
       <Col md="9 ml-2">
         <div className='message-target'>{messageComponent}</div>
         {decodeThreshold}
-        {message.hint && <div className='message-hint'>hint: <Linkify>{message.hint}</Linkify></div>}
+        {message.hint && !message.hidden && <div className='message-hint'>hint: <Linkify>{message.hint}</Linkify></div>}
       </Col>
     </>
   )
