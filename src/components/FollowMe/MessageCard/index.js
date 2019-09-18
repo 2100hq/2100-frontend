@@ -70,6 +70,36 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
   if (destroyCountDown != null) classNames.push('message-destroy-countdown')
   if (message.hidden) classNames.push('message-hidden')
 
+  function decodeTweetText(){
+    return "🔑 Decode in @2100hq"
+    // if (!message.recipientcount){
+    //   return "🔑 Be the first to decode in @2100hq"
+    // } else {
+    //   return `🔑 ${message.recipientcount} other${message.recipientcount > 0 ? 's' : ''} has decoded in @2100hq`
+    // }
+  }
+
+  function postTweet(){
+    const encrypted = message.id.replace(/-/g,'').toUpperCase()
+    const text = []
+    if (message.hint) {
+      text.push(`🗨️ ${message.hint}`)
+    } else {
+      text.push(decodeTweetText())
+    }
+    text.push(`🔒 ${encrypted}`)
+
+    if (message.hint){
+      text.push(`\n${decodeTweetText()}`)
+    }
+    text.push(window.location.origin + messageUrl)
+
+    window.open(
+      `https://twitter.com/intent/tweet?text=${encodeURIComponent(text.join("\n"))}`,
+      null,
+      'width=500,height=400',
+    )
+  }
   return (
     <div className={classNames.join(' ')} key={message.id}>
       {destroyIcon}
@@ -93,13 +123,15 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
         <Col md="1" />
         <Col className='mt-3 mb-3'>
           <HoldersProfiles prefix='' suffix=' decoded' noholderstext="Be the first to decode" holders={message.recipients || message.recipientcount} noholders/>
-        {canCopyUrl && (
+          <div className="small message-copy-url" onClick={postTweet}><i class="fas fa-external-link-alt"></i><span>Share</span></div>
+        {/*canCopyUrl && (
           <CopyToClipboard text={window.location.origin + messageUrl}
             onCopy={() => setCopied(true)}>
             <div className="small message-copy-url"><i className="fas fa-link"></i><span>{copied ? 'Copied!' : 'Copy link'}</span></div>
           </CopyToClipboard>
 
-        )}
+        )*/}
+
         {/*{!message.hidden && canComment && <div><a onClick={ ()=> actions.setShowCreate({replyid: message.id})}>Comment</a></div>}*/}
         </Col>
       </Row>
