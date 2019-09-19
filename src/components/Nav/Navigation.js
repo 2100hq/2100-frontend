@@ -27,6 +27,8 @@ function getViewName(viewType){
       return <span><i class="fas fa-bell"></i> New</span>
     case 'Following':
       return <span><i class="fas fa-user"></i> Following</span>
+    case 'Gifts':
+      return <span><i class="fas fa-gift"></i> Gifts</span>
     default:
       return viewType
   }

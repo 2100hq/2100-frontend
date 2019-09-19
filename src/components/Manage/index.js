@@ -52,9 +52,7 @@ function StepTwo({gotoStep, publicAddress,tweetType}){
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [commandId, setCommandId] = useState()
   const [verifiedName, setVerifiedName] = useState(false)
-  const myCommand = commandId
-    ? get(state, `private.myCommands.${commandId}`)
-    : { done: false }
+  const myCommand = get(state, `private.myCommands.${commandId}`, {id: '', done: false })
 
   useEffect(() => {
     if (commandId == null) {
@@ -65,7 +63,7 @@ function StepTwo({gotoStep, publicAddress,tweetType}){
     setCommandId(null)
     setVerifiedName(myCommand.name)
     setIsSubmitting(false)
-  }, [myCommand, commandId])
+  }, [myCommand.done, commandId])
 
 
   const isDisabled = !/^https:\/\/twitter\.com\/\w+\/status\/\d+/i.test(link || '') || isSubmitting

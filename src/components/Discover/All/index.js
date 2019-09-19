@@ -1,6 +1,7 @@
 import React, { useState,useEffect, useRef, useMemo } from 'react'
 import { useStoreContext } from '../../../contexts/Store'
 import { toDecimals, BigNumber, weiDecimals, extractUsernameAndMessageIdFromLocation, oneblockReward, daiAPRperBlock } from '../../../utils'
+import history from '../../../utils/history'
 import Allocator from '../../Allocator'
 import ProfileImage from '../../ProfileImage'
 import { useCountUp } from 'react-countup'
@@ -127,14 +128,16 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
           <div><CountUp balance={balance} /></div>
         </div>
         <div className="col-md-1" style={{textAlign: 'center'}}>
-          <i class="text-muted far fa-edit" onClick={()=>!isAllocating && setIsEditing({tokenid: token.id})}></i>
+          <i class="text-muted far fa-edit"></i>
         </div>
       </>
     )
   }
 
   return (
-    <div className={"row asset-row align-items-center"+selected+allocating+editing+changed}>
+    <div className={"row asset-row align-items-center"+selected+allocating+editing+changed} onClick={()=>{
+      !isEditing && !isAllocating && setIsEditing({tokenid: token.id})
+    }}>
       <div className="col-md-1" style={{textAlign: 'center'}}>
         <Crown token={token}/>
         <span className={'rank rank'+token.rank}>{token.rank}</span><br/>
@@ -143,9 +146,13 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
           <ProfileImage className={Number(myStake) === 0 ? 'profile-image' : 'profile-image pulse'} token={token} /><br/>
       </div>
       <div className="col-md-3" style={{overflow: 'hidden'}}>
-          <Link to={`/$${token.name}`}>
-            <span style={{fontWeight: 'bold'}} to={`/$${token.name}`}>${token.name}</span>
-          </Link>
+          <a href="#" onClick={(e) => {
+            e.preventDefault()
+            e.stopPropagation()
+            history.push(`/$${token.name}`)
+          }}>
+            <span style={{fontWeight: 'bold'}}>${token.name}</span>
+          </a>
       </div>
       {columns}
     </div>
@@ -164,7 +171,6 @@ function All({tokens = [], location, myToken, isAllocating, isEditing, setIsEdit
     const fixedTokenIds = idHash(fixedTokens)
     if (fixedTokenIds === tokensIds) return
     if (!fixedTokens || fixedTokens.length === 0) return setFixedTokens(tokens)
-      console.log({isAllocating, isEditing}, isAllocating || !isEditing.tokenid)
     if (isAllocating.tokenid || isEditing.tokenid) return // dont swap if we're in the middle of something
     const id = setTimeout(setFixedTokens,2000,tokens)
     return () => clearTimeout(id)

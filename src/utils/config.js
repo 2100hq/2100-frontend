@@ -39,7 +39,7 @@ const stakeLevels = Number(process.env.REACT_APP_STAKE_LEVELS || 2)
 const followMeUrl = process.env.REACT_APP_FOLLOWME_URL
 const followMePoll = Number(process.env.REACT_APP_FOLLOWME_POLL || 2000)
 
-const views = ['New', 'Following', 'Cheap', 'Premium']
+const views = ['New', 'Following', 'Cheap', 'Premium', 'Gifts']
 const defaultView = 'New'
 
 export default {
