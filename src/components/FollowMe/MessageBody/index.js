@@ -149,7 +149,7 @@ function HiddenMessage({message}){
     <div className='hidden-message-block'>
       <div className='pretend-encryption'>
         <div className='message-hint'>{message.hint}</div>
-        <div className='encrypted-text'><EncryptedMessage {...{encrypted, decrypted}} /></div>
+        <div>{message.type === 'gift' ? 'To Redeem: ':''}<span className='encrypted-text'><EncryptedMessage {...{encrypted, decrypted}} /></span></div>
       </div>
     </div>
   )
