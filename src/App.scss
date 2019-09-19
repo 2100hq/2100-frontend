@@ -43,8 +43,8 @@ body{
 	padding: 1rem 0;
 	height: 100vh;
 	overflow-y: scroll;
-	::-webkit-scrollbar { 
-		display: none; 
+	::-webkit-scrollbar {
+		display: none;
 	}
 
 }
@@ -56,10 +56,9 @@ body{
 
 	.create-messages-button-fixed{
 		position: fixed;
-		bottom: 0;
-		right: 0;
+		bottom: 4rem;
+		right: 4rem;
 		z-index: 999;
-		padding: 4rem;
 
 		.compose-button{
 			font-size: 1.4rem;
