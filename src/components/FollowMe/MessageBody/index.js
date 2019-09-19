@@ -172,6 +172,8 @@ function MessageIcon({message}){
       return <i className={'fab fa-youtube'} />
     case 'twitter':
       return <i className={'fab fa-twitter'} />
+    case 'gift':
+      return <i className={'fas fa-gift'} />
     case 'meme':
       return <i class="far fa-comment-alt"></i>
     case 'link':
