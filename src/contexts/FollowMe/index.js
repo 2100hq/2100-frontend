@@ -211,7 +211,7 @@ export default function FollowMeProvider ({ children }) {
       setShowCreate: show => update('showCreate', show)
     }
     window.fmstate = fmstate
-    const messages = { ...fmstate.publicMessages, ...fmstate.privateMessages, ...fmstate.decodedMessages, ...fmstate.sentMessages }
+    const messages = { ...fmstate.publicMessages, ...fmstate.decodedMessages, ...fmstate.sentMessages, ...fmstate.privateMessages }
     return { ...fmstate, messages, actions }
   }, [fmstate])
 
