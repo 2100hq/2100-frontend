@@ -148,7 +148,7 @@ function HiddenMessage({message}){
   return(
     <div className='hidden-message-block'>
       <div className='pretend-encryption'>
-        <div className='message-hint'>{message.hint}</div>
+        <div className='message-hint'><Linkify>{message.hint}</Linkify></div>
         <div>{message.type === 'gift' ? 'To Redeem: ':''}<span className='encrypted-text'><EncryptedMessage {...{encrypted, decrypted}} /></span></div>
       </div>
     </div>
