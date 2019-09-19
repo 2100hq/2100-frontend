@@ -71,7 +71,7 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
   if (message.hidden) classNames.push('message-hidden')
 
   function decodeTweetText(){
-    return "🔑 Decode in @2100hq"
+    return `🔑 ${actionWordFuture} in @2100hq`
     // if (!message.recipientcount){
     //   return "🔑 Be the first to decode in @2100hq"
     // } else {
@@ -100,6 +100,9 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
       'width=500,height=400',
     )
   }
+  const actionWordPast = message.type === 'gift' ? 'redeemed' : 'decoded'
+  const actionWordFuture = message.type === 'gift' ? 'redeem' : 'decode'
+
   return (
     <div className={classNames.join(' ')} key={message.id}>
       {destroyIcon}
@@ -122,7 +125,7 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
       <Row className='message-footer small mt-2' style={{ display: showFooter ? 'auto' : 'none'}}>
         <Col md="1" />
         <Col className='mt-3 mb-3'>
-          <HoldersProfiles prefix='' suffix={<span> decoded</span>} noholderstext={ myToken ? "No one has decoded" : "Be the first to decode" } holders={message.recipients || message.recipientcount} />
+          <HoldersProfiles prefix='' suffix={<span> {actionWordPast}</span>} noholderstext={ myToken ? `No one has ${actionWordPast}` : `Be the first to ${actionWordFuture}` } holders={message.recipients || message.recipientcount} />
             <HoldersProfiles prefix='' suffix=' competing' noholderstext="No one" holders={Object.keys(token.stakes).filter(amount => amount !== 0 && amount !== "0")} />
 
           <div className="small message-copy-url" onClick={postTweet}><i class="fas fa-external-link-alt"></i><span>Share</span></div>
