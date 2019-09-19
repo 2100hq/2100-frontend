@@ -25,6 +25,11 @@
 }
 
 // span needs less margin if only 2 profile images
+.holder-icon-1 + span{
+  margin-left: 0.3rem;
+}
+
+// span needs less margin if only 2 profile images
 .holder-icon-2 + span{
   margin-left: 0.4rem;
 }
