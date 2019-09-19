@@ -325,7 +325,7 @@ export default function MessageForm({onSubmitted, replyid}){
                   <Col>
                     <InputGroup>
                       <Prepend type={currentTab} isHint={true} />
-                      <Form.Control as="input" value={hint || ''} onChange={changeData} disabled={isDisabled ? 'disabled' : null} maxlength={75} placeholder={publicHint}/>
+                      <Form.Control as="input" value={hint || ''} onChange={changeData} disabled={isDisabled ? 'disabled' : null} maxlength={120} placeholder={publicHint}/>
                     </InputGroup>
                     <Form.Label className='small'>
                         <i className='fas fa-eye' /> Everyone
