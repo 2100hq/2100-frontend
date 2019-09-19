@@ -238,7 +238,7 @@ function MemeMessageBody({message, decodeThreshold}){
     const memeData = memeTypes.find( data => data.key === memeKey) || {url: "https://sitechecker.pro/wp-content/uploads/2017/12/404.png"}
     let messageComponent = null
     if (message.hidden){
-      messageComponent = <Meme toptext={message.hint} bottomtext={message.id.replace(/-/g,'').toUpperCase().split('')} url={memeData.url} />
+      messageComponent = <Meme toptext={message.hint} bottomtext={message.id.replace(/-/g,'').toUpperCase().slice(0,20)} url={memeData.url} />
     } else {
       messageComponent = <Meme toptext={message.hint} bottomtext={message.message} url={memeData.url} />
       if (message.decoded) messageComponent = <DecryptMessage>{messageComponent}</DecryptMessage>
