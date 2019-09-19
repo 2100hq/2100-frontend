@@ -108,7 +108,7 @@ function DecodeThreshold({name, token, message, isSignedIn, actions}){
     timeToDecode = (<span>({ms(blocks*15000*5)})</span>)
   } else {
     const total = BigNumber("10").times(weiDecimals)
-    const divisor = total.div(BigNumber(token.totalStakes).plus(total)).times(0.9).times(0.00021).times(5).times(weiDecimals)
+    const divisor = total.div(BigNumber(token.totalStakes||"1").plus(total)).times(0.9).times(0.00021).times(5).times(weiDecimals)
     const blocks = diff.div(divisor).dp(0,0).toNumber()
     timeToDecode = (<span>({ms(blocks*15000*5)})</span>)
   }

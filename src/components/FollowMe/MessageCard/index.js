@@ -126,7 +126,7 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
         <Col md="1" />
         <Col className='mt-3 mb-3'>
           <HoldersProfiles prefix='' suffix={<span> {actionWordPast}</span>} noholderstext={ myToken ? `No one has ${actionWordPast}` : `Be the first to ${actionWordFuture}` } holders={message.recipients || message.recipientcount} />
-            <HoldersProfiles prefix='' suffix=' competing' noholderstext="No one" holders={Object.keys(token.stakes).filter(amount => amount !== 0 && amount !== "0")} />
+            <HoldersProfiles prefix='' suffix=' competing' noholderstext="No one" holders={Object.keys(token.stakes||{}).filter(amount => amount !== 0 && amount !== "0")} />
 
           <div className="small message-copy-url" onClick={postTweet}><i class="fas fa-external-link-alt"></i><span>Share</span></div>
         {/*canCopyUrl && (
