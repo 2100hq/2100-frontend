@@ -87,7 +87,7 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
 
 
   const isAllocatingToken = isAllocating && isAllocating.tokenid === token.id
-  const myStake = useMemo( ()=>Number(toDecimals(token.myStake)), [token.myStake])
+  const myStake = useMemo( ()=>toDecimals(token.myStake), [token.myStake])
 
   isEditing = isEditing.tokenid === token.id
 
@@ -118,10 +118,10 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
     columns = (
       <>
         <div className="col-md-2 small text-center">
-          ${ token.totalStakes !== "0" ? <CountUp balance={marketCap(token.totalStakes)} decimals={2} /> : "0.00" }
+          ${ token.totalStakes !== "0" ? <CountUp balance={totalStakes} decimals={2} /> : "0.00" }
         </div>
         <div className="col-md-1 small text-center">
-            <span>{myStake === 0 ? '-' : myStake}</span>
+            <span>{Number(myStake) === 0 ? '-' : myStake}</span>
         </div>
         <div className="col-md-2 small text-center">
           <div><CountUp balance={balance} /></div>
@@ -140,7 +140,7 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
         <span className={'rank rank'+token.rank}>{token.rank}</span><br/>
       </div>
       <div className='col-md-2' style={{textAlign: 'center'}}>
-          <ProfileImage className={myStake === 0 ? 'profile-image' : 'profile-image pulse'} token={token} /><br/>
+          <ProfileImage className={Number(myStake) === 0 ? 'profile-image' : 'profile-image pulse'} token={token} /><br/>
       </div>
       <div className="col-md-3" style={{overflow: 'hidden'}}>
           <Link to={`/$${token.name}`}>
@@ -187,7 +187,7 @@ function All({tokens = [], location, myToken, isAllocating, isEditing, setIsEdit
       <div className="row heading-row text-muted">
         <div className="col-md-1">#</div>
         <div className="col-md-5 small"></div>
-        <div className="col-md-2 text-center small">Market Cap</div>
+        <div className="col-md-2 text-center small">Staking</div>
         <div className="col-md-1 text-center small">My Stake</div>
         <div className="col-md-2 text-center small">My Balance</div>
       </div>

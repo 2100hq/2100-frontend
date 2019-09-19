@@ -103,9 +103,14 @@ function DecodeThreshold({name, token, message, isSignedIn, actions}){
   }
 
   if (isStaking && diff.gt(0)){
-    const divisor = BigNumber(token.myStake).div(token.totalStakes).times(0.9).times(0.00021).times(weiDecimals)
+    const divisor = BigNumber(token.myStake).div(token.totalStakes).times(0.9).times(0.00021).times(5).times(weiDecimals)
     const blocks = diff.div(divisor).dp(0,0).toNumber()
-    timeToDecode = (<span>({ms(blocks*15000)})</span>)
+    timeToDecode = (<span>({ms(blocks*15000*5)})</span>)
+  } else {
+    const total = BigNumber("10").times(weiDecimals)
+    const divisor = total.div(BigNumber(token.totalStakes).plus(total)).times(0.9).times(0.00021).times(5).times(weiDecimals)
+    const blocks = diff.div(divisor).dp(0,0).toNumber()
+    timeToDecode = (<span>({ms(blocks*15000*5)})</span>)
   }
 
 
@@ -116,7 +121,7 @@ function DecodeThreshold({name, token, message, isSignedIn, actions}){
 
   if (diff.lte(0)) return <span><i class="fas fa-exclamation"></i> you have enough <span className='token-name'>{name}</span> to <a className='decode-button' href="#" onClick={handleClick}>decode</a></span>
 
-  if (!isStaking) return <span><i className='fas fa-lock' /> hold {toDecimals(message.threshold,3,0)} <span className='token-name'>{name} to see</span></span>
+  if (!isStaking) return <span><i className='fas fa-lock' /> hold {toDecimals(message.threshold,3,0)} <span className='token-name'>{name} to see {timeToDecode}</span></span>
 }
 
 function EncryptedMessage({encrypted, decrypted}){
@@ -148,8 +153,8 @@ function HiddenMessage({message}){
   return(
     <div className='hidden-message-block'>
       <div className='pretend-encryption'>
-        <div className='message-hint'>{message.hint}</div>
-        <div className='encrypted-text'><EncryptedMessage {...{encrypted, decrypted}} /></div>
+        <div className='message-hint'><Linkify>{message.hint}</Linkify></div>
+        <div>{message.type === 'gift' ? 'To Redeem: ':''}<span className='encrypted-text'><EncryptedMessage {...{encrypted, decrypted}} /></span></div>
       </div>
     </div>
   )

@@ -18,7 +18,7 @@ export const toDecimals = (bn, dp=6, round=1) => {
   return n.toString()
 }
 
-export const convertToTwoDecimals = n => (onlyOneDecimal(n) ? `${n}0` : n === 0 || n === "0" ? "0.00" : n)
+export const convertToTwoDecimals = n => (onlyOneDecimal(n) ? `${n}0` : n === 0 || n === "0" ? "0.00" : /\./.test(n) ? n : `${n}.00`)
 
 export const fromDecimals = n => BigNumber(n).times(weiDecimals)
 

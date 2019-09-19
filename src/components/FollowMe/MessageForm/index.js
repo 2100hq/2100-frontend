@@ -33,6 +33,7 @@ const contentLevels = [
 ]
 
 function ContentLevelSelect({ levels=[], current=0, onChange=()=>{}}){
+
   function handleChange(e){
     e.preventDefault()
     onChange(e.target.value)
@@ -62,6 +63,7 @@ function calcTimeToSee({levels=[], current=0, amounts=[], threshold}){
   const blockTime = 15000
   const minBlock = 1
   levels.forEach( data => {
+    if (isNaN(threshold)) return data.timeToSee = 'n/a'
     let blocksToSee = BigNumber(threshold).minus(data.amount).div(blockReward)
     blocksToSee = threshold.eq(data.amount) ? BigNumber(0) : blocksToSee
     blocksToSee = blocksToSee.eq(0) && current === 0 ? BigNumber(1) : blocksToSee.lt(0) ? BigNumber(0) : blocksToSee
@@ -168,7 +170,7 @@ export default function MessageForm({onSubmitted, replyid}){
 
   async function handleSend(e){
     e.preventDefault()
-    if (isEmpty(message)) return
+    if (isEmpty(message) || isNaN(threshold)) return
     setSubmitting(true)
     const type = /meme/i.test(currentTab) ? `meme:${memeTypes[memeType].key}` : currentTab.toLowerCase()
     const _hint = /gift/i.test(currentTab) ? `${giftHintText} ${hint}` : hint
@@ -187,6 +189,7 @@ export default function MessageForm({onSubmitted, replyid}){
     if (newThresh.eq(0)){
       newThresh = "1"
     }
+
     setThreshold(newThresh.toString())
   }
 
@@ -325,7 +328,7 @@ export default function MessageForm({onSubmitted, replyid}){
                   <Col>
                     <InputGroup>
                       <Prepend type={currentTab} isHint={true} />
-                      <Form.Control as="input" value={hint || ''} onChange={changeData} disabled={isDisabled ? 'disabled' : null} maxlength={75} placeholder={publicHint}/>
+                      <Form.Control as="input" value={hint || ''} onChange={changeData} disabled={isDisabled ? 'disabled' : null} maxlength={120} placeholder={publicHint}/>
                     </InputGroup>
                     <Form.Label className='small'>
                         <i className='fas fa-eye' /> Everyone
@@ -370,7 +373,7 @@ export default function MessageForm({onSubmitted, replyid}){
                   { hasToken ? tokenRequirement : <Link className="create-token-message" to={ isSignedIn ? "/manage" : '/' }><i class="fas fa-bolt"></i> {isSignedIn ? 'Create your token to' : 'Sign in to'} send messages</Link> }
                 </Col>
               </Row>
-              <Button className='compose-submit-button' variant="primary" disabled={isDisabled || isEmpty(message) ? 'disabled' : null} type="submit" onSubmit={handleSend} onClick={handleSend}>
+              <Button className='compose-submit-button' variant="primary" disabled={isDisabled || isEmpty(message) || isNaN(threshold) || threshold == null? 'disabled' : null} type="submit" onSubmit={handleSend} onClick={handleSend}>
                 { submitting ? 'Sending' : 'Send' }
               </Button>
             </Form>

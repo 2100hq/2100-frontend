@@ -122,7 +122,9 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
       <Row className='message-footer small mt-2' style={{ display: showFooter ? 'auto' : 'none'}}>
         <Col md="1" />
         <Col className='mt-3 mb-3'>
-          <HoldersProfiles prefix='' suffix=' decoded' noholderstext="Be the first to decode" holders={message.recipients || message.recipientcount} noholders/>
+          <HoldersProfiles prefix='' suffix={<span> decoded</span>} noholderstext={ myToken ? "No one has decoded" : "Be the first to decode" } holders={message.recipients || message.recipientcount} />
+            <HoldersProfiles prefix='' suffix=' competing' noholderstext="No one" holders={Object.keys(token.stakes).filter(amount => amount !== 0 && amount !== "0")} />
+
           <div className="small message-copy-url" onClick={postTweet}><i class="fas fa-external-link-alt"></i><span>Share</span></div>
         {/*canCopyUrl && (
           <CopyToClipboard text={window.location.origin + messageUrl}
