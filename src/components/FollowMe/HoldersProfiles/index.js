@@ -5,9 +5,9 @@ import Jazzicon, { jsNumberForAddress } from 'react-jazzicon'
 import {sortBy} from 'lodash'
 import './style.scss'
 
-function Face({name, address}){
-  if (name) return <ProfileImage token={name}/>
-  return <div className='jazzicon'><Jazzicon diameter={25} seed={jsNumberForAddress(address)} /></div>
+function Face({name, address,index}){
+  if (name) return <ProfileImage token={name} className={'holder-icon holder-icon-'+index}/>
+  return <div className={'jazzicon holder-icon holder-icon-'+index}><Jazzicon diameter={25} seed={jsNumberForAddress(address)} /></div>
 }
 
 function Faces({addresses=[], count=3}){
@@ -22,7 +22,7 @@ function Faces({addresses=[], count=3}){
     }
   }), data => data.name)
 
-  return data.splice(0, count).map( props => <Face key={props.name+props.address} {...props} />)
+  return data.splice(0, count).map( (props,index) => <Face key={props.name+props.address} {...props} index={index+1} />)
 }
 
 function NoHolders({prefix,noholderstext,suffix}){
@@ -41,9 +41,9 @@ function CountHolders({prefix,count,suffix=' holders'}){
   )
 }
 
-export default function HoldersProfiles({holders, prefix, suffix, noholderstext, facesCount=3}) {
+export default function HoldersProfiles({holders, prefix, suffix, noholderstext, facesCount=3, className=''}) {
 
-  noholderstext = noholderstext || <>{prefix}no one{suffix}</>
+  noholderstext = <div className={'holders-profiles no-holders '+className}>{noholderstext || <>{prefix}no one{suffix}</>}</div>
 
   if (holders == null) return noholderstext
 
@@ -61,11 +61,11 @@ export default function HoldersProfiles({holders, prefix, suffix, noholderstext,
   }
 
   return(
-      <div className='holders-profiles'>
+      <div className={'holders-profiles has-holders '+className}>
         {prefix}
         <Faces addresses={holders} count={facesCount} />
-        {andMore}
-        {suffix}
+        <span>{andMore}</span>
+        <span>{suffix}</span>
       </div>
   )
 }
