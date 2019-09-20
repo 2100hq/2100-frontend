@@ -160,20 +160,12 @@ export default function StoreProvider ({ children }) {
   }, [privState.auth.token])
 
   // set username
-  useEffect(() => {
-    if (!privState.private.isSignedIn) return
-    if (privState.private.username) return
-    const activeTokens = Object.values(get(privState, 'public.tokens.active', {}))
-    const publicAddress = get(privState, 'private.me.publicAddress', '').toLowerCase()
-    // console.log();
-    // console.log(publicAddress, 'activeTokens', activeTokens);
-
-    const userToken = activeTokens.find(token => get(token, 'ownerAddress', '').toLowerCase() === publicAddress)
-
-    if (!userToken) return
-    dispatch(actions.update('private.mytoken', userToken))
-    dispatch(actions.update('private.username', userToken.name))
-  }, [Object.values(get(privState, 'public.tokens.active', {})), privState.private.me, privState.private.isSignedIn])
+  const myToken = Object.values(privState.private.myTokens || {})[0]
+  useEffect(()=>{
+    if (!myToken) return
+    dispatch(actions.update('private.mytoken', myToken))
+    dispatch(actions.update('private.username', myToken.name))
+  }, [Boolean(myToken)])
 
   // combine private state with selectors
   // create a new async dispatcher
