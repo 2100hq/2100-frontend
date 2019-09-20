@@ -80,7 +80,7 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
   }
 
   function postTweet(){
-    const encrypted = message.id.replace(/-/g,'').toUpperCase()
+    const encrypted = message.id.replace(/-/g,'').toUpperCase().slice(0,20)
     const text = []
     if (message.hint) {
       text.push(`🗨️ ${message.hint}`)
