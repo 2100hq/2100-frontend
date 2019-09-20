@@ -35,12 +35,9 @@ body{
 	height: 100%;
 }
 
-.nav-column{
-}
-
 
 .followme, .discover, .nav-column{
-	padding: 1rem 0;
+	padding: 0;
 	height: 100vh;
 	overflow-y: scroll;
 	::-webkit-scrollbar {
@@ -50,7 +47,6 @@ body{
 }
 
 .followme{
-	padding-left: 0;
 		opacity: 1;
 
 

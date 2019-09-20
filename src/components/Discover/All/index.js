@@ -190,12 +190,12 @@ function All({tokens = [], location, myToken, isAllocating, isEditing, setIsEdit
   ))
   return (
     <div className="asset-table container">
-      <div className="row heading-row text-muted">
+      <div style={{backgroundColor: 'white', borderLeft: '1px solid #eee', borderBottom: '1px solid #eee'}} className="row small text-muted sticky-top pt-1 pb-1">
         <div className="col-md-1">#</div>
-        <div className="col-md-5 small"></div>
-        <div className="col-md-2 text-center small">Staking</div>
-        <div className="col-md-1 text-center small">My Stake</div>
-        <div className="col-md-2 text-center small">My Balance</div>
+        <div className="col-md-5">Asset</div>
+        <div className="col-md-2">Total</div>
+        <div className="col-md-1">Me</div>
+        <div className="col-md-2">Balance</div>
       </div>
       {rows}
     </div>

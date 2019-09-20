@@ -20,15 +20,15 @@ function Tab({current, name, set}){
 function getViewName(viewType){
   switch(viewType){
     case 'Cheap':
-      return <span><i class="fas fa-shopping-cart"></i> Low-Cost</span>
+      return <span>Low Cost</span>
     case 'Premium':
-      return <span><i class="fas fa-money-bill-alt"></i> Premium</span>
+      return <span>Premium</span>
     case 'New':
-      return <span><i class="fas fa-bell"></i> New</span>
+      return <span>New</span>
     case 'Following':
-      return <span><i class="fas fa-user"></i> Following</span>
+      return <span>Following</span>
     case 'Gifts':
-      return <span><i class="fas fa-gift"></i> Gifts</span>
+      return <span>Gifts</span>
     default:
       return viewType
   }
@@ -58,10 +58,8 @@ export default function Navigation(){
   const tabs = allowedViews.map( viewType => <Nav.Link eventKey={viewType}>{getViewName(viewType)}</Nav.Link> )
 
   return (
-    <div  style={{marginBottom: '2rem'}}>
-      <Nav activeKey={currentView} defaultActiveKey={currentView} variant="pills" onSelect={setView}>
-        {tabs}
-      </Nav>
-    </div>
+    <Nav className='pt-3 pb-3 pl-3' style={{borderBottom: '1px solid #eee', borderLeft: '1px solid #eee'}} activeKey={currentView} defaultActiveKey={currentView} variant="pills" onSelect={setView}>
+      {tabs}
+    </Nav>
   )
 }
