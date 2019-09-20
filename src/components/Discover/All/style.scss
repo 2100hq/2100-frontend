@@ -1,6 +1,11 @@
 //import variables
 @import "../../../Variables";
 
+
+.MuiSlider-valueLabel{
+  z-index: 999999 !important;
+}
+
 .asset-table{
 
   font-size: 1rem;
