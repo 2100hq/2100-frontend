@@ -61,6 +61,7 @@ function StepTwo({gotoStep, publicAddress,tweetType}){
     if (!myCommand.done) return
 
     setCommandId(null)
+    setTimeout(dispatch,400,actions.claimFakeDai())
     setVerifiedName(myCommand.name)
     setIsSubmitting(false)
   }, [myCommand.done, commandId])
