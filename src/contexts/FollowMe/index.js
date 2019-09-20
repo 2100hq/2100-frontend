@@ -61,12 +61,12 @@ function InitialState(followMeUrl){
 }
 
 export default function FollowMeProvider ({ children }) {
-  const { state:appstate, actions } = useStoreContext()
+  const { state:appstate, actions, query } = useStoreContext()
   const {followMeUrl, followMePoll} = appstate.config
   const ethAddress = appstate.web3.account
-
+  const myToken = query.getMyToken()
   const [fmstate, dispatch] = useReducer(reducer, InitialState(followMeUrl))
-  const { api,isSignedIn, myToken, threshold } = fmstate
+  const { api,isSignedIn, threshold } = fmstate
   const isSignedIn2100 = appstate.private.isSignedIn
   const authToken2100 = appstate.auth.token
   const update = (path, ...args) => dispatch(actions.update(path, ...args))
@@ -83,7 +83,7 @@ export default function FollowMeProvider ({ children }) {
 
   async function updatePublicInbox(){
     let resp = await api.public.call('feed')
-     update('publicMessages', keyBy(resp, 'id'))
+    update('publicMessages', keyBy(resp, 'id'))
   }
 
   async function updateFollowers(tokenid){
@@ -95,11 +95,7 @@ export default function FollowMeProvider ({ children }) {
     // logged in and know address
     if (!isSignedIn && isSignedIn2100 && authToken2100){
       api.private.setToken(authToken2100)
-      const asyncs = [api.private.call('me'),api.private.call('myTokens')]
-      Promise.all(asyncs).then( async ([me, tokens]) => {
-        if (tokens.length > 0){
-          update('myToken', tokens[0])
-        }
+      api.private.call('me').then( async (me) => {
         update('threshold', me.defaultThreshold)
         update('isSignedIn', true)
       })
@@ -139,10 +135,10 @@ export default function FollowMeProvider ({ children }) {
 
   function SendMessage(fmstate){
     return async (message, hint, threshold, type) => {
-      if (!fmstate.myToken) return null
+      if (!myToken) return null
       console.log('sendMessage', {message, hint, threshold})
       try {
-        message = await fmstate.api.private.call('sendMessage', fmstate.myToken.id, message, hint, threshold, type)
+        message = await fmstate.api.private.call('sendMessage', myToken.id, message, hint, threshold, type)
         update(`sentMessages.${message.id}`, message)
         return message
       } catch(e){
@@ -212,7 +208,7 @@ export default function FollowMeProvider ({ children }) {
     }
     window.fmstate = fmstate
     const messages = { ...fmstate.publicMessages, ...fmstate.decodedMessages, ...fmstate.sentMessages, ...fmstate.privateMessages }
-    return { ...fmstate, messages, actions }
+    return { ...fmstate, myToken, messages, actions }
   }, [fmstate])
 
   return (
