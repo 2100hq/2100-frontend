@@ -1,4 +1,4 @@
-import React, { Component } from 'react'
+import React, { useRef } from 'react'
 import { Router, Route, Switch } from 'react-router-dom'
 import { matchPath } from 'react-router'
 
@@ -27,59 +27,59 @@ import { routeConfigs } from './utils'
 
 import './App.scss'
 
-class App extends Component {
-  render () {
-    return (
-      <Router history={history}>
-        <BrowserClasses>
-          {/*<Breakpoints />*/}
-          <div className='container-fluid'>
-            <Row>
-              <Col md='2' className='nav-column'>
-                <Nav />
-              </Col>
-              <Col md='10'>
-                <Switch>
-                  <Route path='/portfolio' exact component={Portfolio} />
-                  {/*<Route path='/wallet' exact component={Wallet} />*/}
-                  <Route path='/manage' exact component={Manage} />
-                  <Route path='/admin' exact component={Admin} />
+function App(){
+  const node = useRef()
+  const onChangePage = () => node.current.scrollTop = 0
+  return (
+    <Router history={history}>
+      <BrowserClasses>
+        {/*<Breakpoints />*/}
+        <div className='container-fluid'>
+          <Row>
+            <Col md='2' className='nav-column'>
+              <Nav />
+            </Col>
+            <Col md='10'>
+              <Switch>
+                <Route path='/portfolio' exact component={Portfolio} />
+                {/*<Route path='/wallet' exact component={Wallet} />*/}
+                <Route path='/manage' exact component={Manage} />
+                <Route path='/admin' exact component={Admin} />
 
-                  <Row className='main'>
-                    <Col md='6' className='discover'>
-                      <Discover />
-                    </Col>
-                    <Col md='6' className='followme'>
-                          <CreateMessageButton />
-                        {/* follow me */}
-                        <Switch>
-                          <Route exact path='/:username([$].*)' render = {
-                            props => {
-                              const isMessageMatch = matchPath(props.location.pathname, routeConfigs.message)
-                              let {match} = props
-                              if (isMessageMatch) match = isMessageMatch
-                              props = {...props, match}
-                              return <Profile {...props} />
-                            }
-                          } />
-                          <Route component={Sidebar} />
-                        </Switch>
-                    </Col>
-                  </Row>
-                </Switch>
-              </Col>
-            </Row>
-            <Route exact path='/:username([$]{1,1}[a-zA-Z0-9_]+)/:messageid' render= {
-              props => <FollowMeMessageModal {...props} />
-            } />
-          </div>
-          <CreateMessageFixed />
-          <Alerts />
-          <ErrorModal />
-        </BrowserClasses>
-      </Router>
-    )
-  }
+                <Row className='main'>
+                  <Col md='6' className='discover'>
+                    <Discover />
+                  </Col>
+                  <Col md='6' className='followme' ref={node}>
+                        <CreateMessageButton />
+                      {/* follow me */}
+                      <Switch>
+                        <Route exact path='/:username([$].*)' render = {
+                          props => {
+                            const isMessageMatch = matchPath(props.location.pathname, routeConfigs.message)
+                            let {match} = props
+                            if (isMessageMatch) match = isMessageMatch
+                            props = {...props, match}
+                            return <Profile {...props} />
+                          }
+                        } />
+                        <Route render={ props => <Sidebar onChangePage={onChangePage} {...props} /> } />
+                      </Switch>
+                  </Col>
+                </Row>
+              </Switch>
+            </Col>
+          </Row>
+          <Route exact path='/:username([$]{1,1}[a-zA-Z0-9_]+)/:messageid' render= {
+            props => <FollowMeMessageModal {...props} />
+          } />
+        </div>
+        <CreateMessageFixed />
+        <Alerts />
+        <ErrorModal />
+      </BrowserClasses>
+    </Router>
+  )
 }
 
 export default App

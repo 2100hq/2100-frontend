@@ -140,14 +140,15 @@
 
 .follow-me-feed{
   .pagination {
-    margin-top: 1rem;
+    margin-top: 0.5rem;
+    // margin-bottom: 0.5rem;
     &.no-pages {
       display: none;
     }
   }
 
   .prev, .next {
-    padding: 0.5rem;
+    padding: 1rem;
 
     &.disabled{
       cursor: default;
