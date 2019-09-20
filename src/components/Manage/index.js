@@ -88,7 +88,8 @@ function StepTwo({gotoStep, publicAddress,tweetType}){
   return (
     <div className='verify'>
     <h5>Link your username</h5>
-    <p>Paste a link to your tweet.</p>
+    <p>Visit your <a href="https://twitter.com/" style={{textDecoration:'underline'}} target="_blank">Twitter feed</a> and copy the link to your tweet.</p>
+    <p>Paste it here</p>
     <Form.Control as="input" plaintext inline placeholder="https://twitter.com/me/status/123" onChange={handleInput}/>
     <Button onClick={handleSubmit} disabled={isDisabled}>Submit{isSubmitting && 'ting'}</Button>
     <div>
