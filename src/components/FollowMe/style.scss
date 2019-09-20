@@ -21,7 +21,6 @@
   border-bottom: 1px solid #eee;
   overflow: hidden;
 
-
     .message-hint{
       font-size: 1.1rem;
       font-weight: bold;
@@ -84,7 +83,7 @@
     &.message-type-gift{
       $color: lightblue;
       border-right: 5px solid $color;
-    }    
+    }
   }
 
   &:hover{
@@ -135,6 +134,25 @@
     .message-copy-url{
       opacity: 0.75;
       display: inline-block;
+    }
+  }
+}
+
+.follow-me-feed{
+  .pagination {
+    margin-top: 1rem;
+    &.no-pages {
+      display: none;
+    }
+  }
+
+  .prev, .next {
+    padding: 0.5rem;
+
+    &.disabled{
+      cursor: default;
+      opacity: 0.5;
+      text-decoration: none;
     }
   }
 }

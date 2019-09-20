@@ -42,6 +42,8 @@ const followMePoll = Number(process.env.REACT_APP_FOLLOWME_POLL || 2000)
 const views = ['New', 'Following', 'Cheap', 'Premium', 'Gifts']
 const defaultView = 'New'
 
+const followMePerPage = Number(process.env.REACT_APP_FOLLOW_ME_PER_PAGE  || 10)
+
 export default {
   networkName: networkNames[networkId.toString()],
   networkId,
@@ -50,6 +52,7 @@ export default {
   contracts,
   followMeUrl,
   followMePoll,
+  followMePerPage,
   views,
   defaultView
 }
