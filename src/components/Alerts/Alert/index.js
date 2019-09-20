@@ -21,12 +21,12 @@ export default function Alert ({ command, index, total }) {
   let status
   let value = toDecimals(command.value)
 
-  if (/pendingDeposit/.test(command.type)) {
+  if (/deposit/.test(command.type)) {
     action = 'deposit'
   }
-  if (/withdrawPrimary/.test(command.type)) {
-    action = 'withdrawal'
-  }
+  // if (/withdrawPrimary/.test(command.type)) {
+  //   action = 'withdrawal'
+  // }
   if (command.done) {
     status = 'complete'
   } else {
