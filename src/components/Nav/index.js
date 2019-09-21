@@ -31,10 +31,10 @@ export default function Nav (props) {
   const { state, query } = useStoreContext()
   return (
       <ul class="nav flex-column vertical-nav ml-5">
-      <li class="nav-item our-brand">
-        <Link to='/'><Logo /></Link>
-      </li>
-      <User {...props} key='user' />
+        <li class="nav-item our-brand">
+          <Link to='/'><Logo /></Link>
+        </li>
+        <User {...props} key='user' />
       </ul>
     )
 

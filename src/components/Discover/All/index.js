@@ -106,10 +106,10 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
   if (isEditing){
     columns = (
       <>
-        <div className="col-md-5">
+        <div className="col-5">
           <Allocator token={token} onComplete={()=>setIsEditing({})} onClickOutside={()=>setIsEditing({})} className='allocator' />
         </div>
-        <div className="col-md-1">
+        <div className="col-1">
         { isAllocatingToken ? <Spinner animation="grow" /> : <i className="text-muted fas fa-times-circle close-allocator" onClick={()=>!isAllocating && setIsEditing({})}></i>
         }
         </div>
@@ -118,16 +118,16 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
   } else {
     columns = (
       <>
-        <div className="col-md-2 small text-center">
+        <div className="col-2 small text-center">
           ${ token.totalStakes !== "0" ? <CountUp balance={totalStakes} decimals={2} /> : "0.00" }
         </div>
-        <div className="col-md-1 small text-center">
+        <div className="col-1 small text-center">
             <span>{Number(myStake) === 0 ? '-' : myStake}</span>
         </div>
-        <div className="col-md-2 small text-center">
+        <div className="col-2 small text-center">
           <div><CountUp balance={balance} /></div>
         </div>
-        <div className="col-md-1" style={{textAlign: 'center'}}>
+        <div className="col-1" style={{textAlign: 'center'}}>
           <i class="text-muted far fa-edit"></i>
         </div>
       </>
@@ -138,14 +138,14 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
     <div className={"row asset-row align-items-center"+selected+allocating+editing+changed} onClick={()=>{
       !isEditing && !isAllocating && setIsEditing({tokenid: token.id})
     }}>
-      <div className="col-md-1" style={{textAlign: 'center'}}>
+      <div className="col-1" style={{textAlign: 'center'}}>
         <Crown token={token}/>
         <span className={'rank rank'+token.rank}>{token.rank}</span><br/>
       </div>
-      <div className='col-md-2' style={{textAlign: 'center'}}>
+      <div className='col-2' style={{textAlign: 'center'}}>
           <ProfileImage className={Number(myStake) === 0 ? 'profile-image' : 'profile-image pulse'} token={token} /><br/>
       </div>
-      <div className="col-md-3" style={{overflow: 'hidden'}}>
+      <div className="col-3" style={{overflow: 'hidden'}}>
           <a href="#" onClick={(e) => {
             e.preventDefault()
             e.stopPropagation()
@@ -191,11 +191,11 @@ function All({tokens = [], location, myToken, isAllocating, isEditing, setIsEdit
   return (
     <div className="asset-table container">
       <div style={{backgroundColor: 'white', borderLeft: '1px solid #eee', borderBottom: '1px solid #eee'}} className="row small text-muted sticky-top pt-1 pb-1">
-        <div className="col-md-1">#</div>
-        <div className="col-md-5">Asset</div>
-        <div className="col-md-2">Total</div>
-        <div className="col-md-1">Me</div>
-        <div className="col-md-2">Balance</div>
+        <div className="col-1">#</div>
+        <div className="col-5">Asset</div>
+        <div className="col-2">Total</div>
+        <div className="col-1">Me</div>
+        <div className="col-2">Balance</div>
       </div>
       {rows}
     </div>

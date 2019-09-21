@@ -9,8 +9,12 @@ $theme-colors: (
 //then import Bootstrap
 @import "node_modules/bootstrap/scss/bootstrap";
 
-//then app wide styles
+//then breakpoint bootstrap libs
+@import "node_modules/bootstrap/scss/_functions.scss";
+@import "node_modules/bootstrap/scss/_variables.scss";
+@import "node_modules/bootstrap/scss/mixins/_breakpoints.scss";
 
+//then app wide styles
 @font-face {
 	font-family: "Redacted";
 	src: url("/fonts/redacted-regular.eot");
@@ -37,12 +41,15 @@ body{
 
 
 .followme, .discover, .nav-column{
+
+@include media-breakpoint-up(md) { 
 	padding: 0;
 	height: 100vh;
 	overflow-y: scroll;
 	::-webkit-scrollbar {
 		display: none;
 	}
+}
 
 }
 
