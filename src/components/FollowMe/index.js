@@ -1,4 +1,4 @@
-import React, {useState} from 'react'
+import React, {useState,useEffect} from 'react'
 import {useFollowMeContext} from '../../contexts/FollowMe'
 import {useStoreContext} from '../../contexts/Store'
 import {sortBy, chunk} from 'lodash'
@@ -6,7 +6,9 @@ import MessageCard from './MessageCard'
 import {Pagination} from 'react-bootstrap'
 import './style.scss'
 
-export default function FollowMeFeed({messages={}, showForm, className, styles, startPage=0}){
+
+export default function FollowMeFeed({messages={}, showForm, className, styles, startPage=0, onChangePage = () => {}}){
+
   const {query, state} = useStoreContext()
   const perPage = state.config.followMePerPage
 
@@ -29,14 +31,18 @@ export default function FollowMeFeed({messages={}, showForm, className, styles, 
   const prev = e => {
     e.preventDefault()
     if (prevDisabled) return
-    setPage(page-1)
+    setTimeout(setPage, 250, page-1)
   }
 
   const next = e => {
     e.preventDefault()
     if (nextDisabled) return
-    setPage(page+1)
+    setTimeout(setPage, 250, page+1)
   }
+
+  useEffect(() => {
+    onChangePage()
+  }, [page])
 
   return (
     <div className={'follow-me-feed '+className} styles={styles}>
