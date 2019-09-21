@@ -11,18 +11,36 @@
 .breakpoints{
 	width: 100%;
 	height: 50px;
+	color: white;
+	font-weight: bold;
+	text-align: center;
+	line-height: 50px;
+	font-size: 1.2rem;
+
 
 	@include media-breakpoint-up(sm) { 
 		background-color: red;
+		&::after {
+		  content: "sm-and-up";
+		}
 	}
 	@include media-breakpoint-up(md) { 
 		background-color: orange;
+		&::after {
+		  content: "md-and-up";
+		}
 	}
 	@include media-breakpoint-up(lg) { 
 		background-color: green;
+		&::after {
+		  content: "lg-and-up";
+		}
 	}
 	@include media-breakpoint-up(xl) { 
 		background-color: blue;
+		&::after {
+		  content: "xl-and-up";
+		}
 	}
 
 }
