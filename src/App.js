@@ -2,39 +2,56 @@ import React, { useRef } from 'react'
 import { Router, Route, Switch } from 'react-router-dom'
 import { matchPath } from 'react-router'
 
-import Main from './components/Main'
-import Portfolio from './components/Portfolio'
-import Profile from './components/Profile'
-import Onboarding from './components/Onboarding'
-import Nav from './components/Nav'
-import Breakpoints from './components/Breakpoints'
+import { Global, css } from "@emotion/core";
+
+// import Breakpoints from './components/Breakpoints'
+// import Main from './components/Main'
+// import Onboarding from './components/Onboarding'
 // import Wallet from './components/Wallet'
-import Alerts from './components/Alerts'
-import ErrorModal from './components/ErrorModal'
-import Manage from './components/Manage'
+import { Row, Col, Card } from 'react-bootstrap'
+import { useTheme } from "./components/ThemeProvider";
 import Admin from './components/Admin'
+import Alerts from './components/Alerts'
 import BrowserClasses from './components/BrowserClasses'
-import {Row, Col, Card} from 'react-bootstrap'
-import Sidebar from './components/Sidebar'
+import Countdown from './components/Countdown'
 import CreateMessageButton from './components/FollowMe/CreateMessageButton'
 import CreateMessageFixed from './components/FollowMe/CreateMessageFixed'
-import FollowMeMessageModal from './components/FollowMe/MessageModal'
-
 import Discover from './components/Discover'
-import history from './utils/history'
+import ErrorModal from './components/ErrorModal'
+import FollowMeMessageModal from './components/FollowMe/MessageModal'
+import Manage from './components/Manage'
+import Nav from './components/Nav'
+import Portfolio from './components/Portfolio'
+import Profile from './components/Profile'
+import Sidebar from './components/Sidebar'
 
+import history from './utils/history'
 import { routeConfigs } from './utils'
 
 import './App.scss'
 
-function App(){
+// Enable or disable countdown page as entrypoint.
+const countdown = true
+
+function App() {
   const node = useRef()
   const onChangePage = () => node.current.scrollTop = 0
+
+  // themeState: { dark: boolean } determines the current theme setting.
+  const themeState = useTheme();
+
   return (
     <Router history={history}>
+    <Global
+      styles={css`
+        // Ensure there is no flash of unstyled background.
+        html, body {
+          background-color: ${themeState.dark ? `#161617` : `#F8F8F9`} !important;
+        }
+      `}
+    />
       <BrowserClasses>
-        {/*<Breakpoints />*/}
-        <div className='container-fluid'>
+        {countdown ? <Countdown /> : <><div className='container-fluid'>
           <Row>
             <Col md='2' className='nav-column'>
               <Nav />
@@ -51,32 +68,32 @@ function App(){
                     <Discover />
                   </Col>
                   <Col md='6' className='followme' ref={node}>
-                        <CreateMessageButton />
-                      {/* follow me */}
-                      <Switch>
-                        <Route exact path='/:username([$].*)' render = {
-                          props => {
-                            const isMessageMatch = matchPath(props.location.pathname, routeConfigs.message)
-                            let {match} = props
-                            if (isMessageMatch) match = isMessageMatch
-                            props = {...props, match}
-                            return <Profile {...props} />
-                          }
-                        } />
-                        <Route render={ props => <Sidebar onChangePage={onChangePage} {...props} /> } />
-                      </Switch>
+                    <CreateMessageButton />
+                    {/* follow me */}
+                    <Switch>
+                      <Route exact path='/:username([$].*)' render={
+                        props => {
+                          const isMessageMatch = matchPath(props.location.pathname, routeConfigs.message)
+                          let { match } = props
+                          if (isMessageMatch) match = isMessageMatch
+                          props = { ...props, match }
+                          return <Profile {...props} />
+                        }
+                      } />
+                      <Route render={props => <Sidebar onChangePage={onChangePage} {...props} />} />
+                    </Switch>
                   </Col>
                 </Row>
               </Switch>
             </Col>
           </Row>
-          <Route exact path='/:username([$]{1,1}[a-zA-Z0-9_]+)/:messageid' render= {
+          <Route exact path='/:username([$]{1,1}[a-zA-Z0-9_]+)/:messageid' render={
             props => <FollowMeMessageModal {...props} />
           } />
         </div>
-        <CreateMessageFixed />
-        <Alerts />
-        <ErrorModal />
+          <CreateMessageFixed />
+          <Alerts />
+          <ErrorModal /></>}
       </BrowserClasses>
     </Router>
   )
