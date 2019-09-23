@@ -51,7 +51,6 @@ const Countdown = () => {
     background-position: right center;
     background-repeat: no-repeat;
     background-size: 60% 60%;
-    background: ${props => props.theme.background};
     display: flex;
     flex-flow: row wrap;
     height: 100%;
