@@ -54,9 +54,9 @@ export default function HoldersProfiles({holders, prefix, suffix, noholderstext,
 
   if (holdersCount === 0) return noholderstext
 
-  const andMore = holdersCount > facesCount ? `and ${holdersCount-facesCount} more` : null
+  const andMore = holdersCount > facesCount ? `+${holdersCount-facesCount}` : null
 
-  if (!suffix){
+  if (suffix==null){
     suffix = holdersCount > facesCount ? ` holder${holdersCount-facesCount>1?'s':''}` : ' only'
   }
 
