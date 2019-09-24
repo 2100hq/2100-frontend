@@ -122,13 +122,13 @@ function DecodeThreshold({name, token, message, isSignedIn, actions}){
 
 
 
-  if (diff.gt(0) && isStaking) return <span><StatusDot className='orange'/> {toDecimals(diff, 3, 0)} <span className='token-name'>{name} to go</span> {timeToDecode}</span>
+  if (diff.gt(0) && isStaking) return <span> {toDecimals(diff, 3, 0)} <span className='token-name'>{name} to go</span> {timeToDecode}</span>
 
   if (decoding) return <span><i class="fas fa-exclamation"></i> decoding...</span>
 
-  if (diff.lte(0)) return <span><StatusDot className='green'/>you have enough <span className='token-name'>{name}</span> to <a className='decode-button badge badge-success' href="#" onClick={handleClick}>decode</a></span>
+  if (diff.lte(0)) return <span>you have enough <span className='token-name'>{name}</span> to <a className='decode-button badge badge-success' href="#" onClick={handleClick}>decode</a></span>
 
-  if (!isStaking) return <span><StatusDot className='red'/> hold <span className='font-weight-bold'><span className='amount-underline'>{toDecimals(message.threshold,3,0)}</span> {name}</span> to see {timeToDecode}</span>
+  if (!isStaking) return <span>hold <span className='font-weight-bold'><span className='amount-underline'>{toDecimals(message.threshold,3,0)}</span> {name}</span> to see {timeToDecode}</span>
 }
 
 function EncryptedMessage({encrypted, decrypted}){
@@ -386,6 +386,11 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
           </Row>
           <Row className='no-gutters message-body'>
             <Col>
+              <div className='fake-hidden-message'>
+                <div className='rectangle r1'></div>
+                <div className='rectangle r2'></div>
+                <div className='rectangle r3'></div>
+              </div>
               {decodeThreshold}
             </Col>
           </Row>

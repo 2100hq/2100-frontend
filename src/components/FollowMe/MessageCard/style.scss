@@ -2,6 +2,7 @@
 
 .message-card{
 	position: relative;
+	overflow: hidden;
 	background-color: rgba(0,0,0,0.04);
 	margin: 0.5rem;
 	padding: 1rem;
@@ -29,8 +30,36 @@
 	}
 
 	.message-body{
-		.hidden-text{
+
+		.fake-hidden-message{
 			margin: 0.5rem 0;
+			.rectangle{
+				display: inline-block;
+				height: 15px;
+				margin-right: 10px;
+				background: repeating-linear-gradient(
+					-55deg,
+					rgba(0,0,0,0.1),
+					rgba(0,0,0,0.1) 10px,
+					rgba(0,0,0,0.05) 10px,
+					rgba(0,0,0,0.05) 20px
+					);
+				border-radius: 2px;
+				&.r1{
+					width: 100px;
+				}
+
+				&.r2{
+					width: 100px;
+				}
+
+				&.r3{
+					width: 100px;
+				}
+			}
+
+		}
+		.hidden-text{
 		}
 	}
 
@@ -58,12 +87,12 @@
 		}
 	}
 
-  &:hover {
-    .message-copy-url{
-      opacity: 0.75;
-      display: inline-block;
-    }
-  }
+	&:hover {
+		.message-copy-url{
+			opacity: 0.75;
+			display: inline-block;
+		}
+	}
 
 }
 
