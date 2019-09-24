@@ -2,7 +2,7 @@
 
 .message-card{
 	position: relative;
-	background-color: rgba(0,0,0,0.05);
+	background-color: rgba(0,0,0,0.04);
 	margin: 0.5rem;
 	padding: 0.5rem;
 	border-radius: 0.2rem;
@@ -16,6 +16,10 @@
 		img{
 			width: 80%;
 		}
+	}
+
+	.amount-underline{
+		text-decoration: underline;
 	}
 
 

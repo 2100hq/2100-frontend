@@ -91,7 +91,7 @@ function DecodeThreshold({name, token, message, isSignedIn, actions}){
   */
   const [decoding, setDecoding] = useState(false)
 
-  if (!isSignedIn) return <span><i className='fas fa-lock' /> hold <span style={{fontWeight: 'bold'}}>{toDecimals(message.threshold,3,0)} ${name} </span>to decode</span>
+  if (!isSignedIn) return <span>hold <span className='font-weight-bold'><span className='asset-underline'>{toDecimals(message.threshold,3,0)}</span> ${name} </span>to decode</span>
 
   const available = get(token, 'balances.available', "0")
   const diff = BigNumber(message.threshold).minus(available)
@@ -128,7 +128,7 @@ function DecodeThreshold({name, token, message, isSignedIn, actions}){
 
   if (diff.lte(0)) return <span>you have enough<span className='token-name'>{name}</span> to <a className='decode-button badge badge-success' href="#" onClick={handleClick}>decode</a></span>
 
-  if (!isStaking) return <span><i className='fas fa-lock' /> hold {toDecimals(message.threshold,3,0)} <span className='token-name'>{name} to see {timeToDecode}</span></span>
+  if (!isStaking) return <span>hold <span className='font-weight-bold'><span className='amount-underline'>{toDecimals(message.threshold,3,0)}</span> {name}</span> to see {timeToDecode}</span>
 }
 
 function EncryptedMessage({encrypted, decrypted}){
