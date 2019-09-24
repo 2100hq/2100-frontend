@@ -2,13 +2,14 @@
 
 .message-card{
 	position: relative;
-	background-color: #eee;
-	border: 1px solid #eee;
+	background-color: rgba(0,0,0,0.05);
 	margin: 0.5rem;
 	padding: 0.5rem;
+	border-radius: 0.2rem;
 
 	&.message-hidden{
 		background-color: #fff;
+		border: 1px solid #ddd;
 	}
 
 	.profile-image{
@@ -26,7 +27,8 @@
 	}
 
 	.message-body{
-		.decode-threshold{
+		.hidden-text{
+			margin: 0.5rem 0;
 		}
 	}
 

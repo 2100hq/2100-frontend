@@ -126,7 +126,7 @@ function DecodeThreshold({name, token, message, isSignedIn, actions}){
 
   if (decoding) return <span><i class="fas fa-exclamation"></i> decoding...</span>
 
-  if (diff.lte(0)) return <div className='decode-threshold'>you have enough<span className='token-name'>{name}</span> to <a className='decode-button badge badge-success' href="#" onClick={handleClick}>decode</a></div>
+  if (diff.lte(0)) return <span>you have enough<span className='token-name'>{name}</span> to <a className='decode-button badge badge-success' href="#" onClick={handleClick}>decode</a></span>
 
   if (!isStaking) return <span><i className='fas fa-lock' /> hold {toDecimals(message.threshold,3,0)} <span className='token-name'>{name} to see {timeToDecode}</span></span>
 }
@@ -366,10 +366,10 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
   return (
     <div className={classNames.join(' ') + ' clearfix'} key={message.id}>
       {destroyIcon}
-        <div className='profile-image' style={{width: '10%', float: 'left'}}>
+        <div className='profile-image' style={{width: '10%', float: 'right'}}>
           <ProfileImage token={token} />
         </div>
-        <div className='message-content' style={{width: '90%', float: 'right'}}>
+        <div className='message-content' style={{width: '90%', float: 'left'}}>
           <Row className='no-gutters message-header'>
             <Col>
           {/* <span>
@@ -390,7 +390,7 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
           <Row className='no-gutters message-footer' style={{ display: showFooter ? 'auto' : 'none'}}>
             <Col>
               <HoldersProfiles prefix='' suffix={<span> {actionWordPast}</span>} noholderstext={ myToken ? `No one has ${actionWordPast}` : `Be the first to ${actionWordFuture}` } holders={message.recipients || message.recipientcount} />
-                <HoldersProfiles prefix='' suffix=' decoding' noholderstext="No one is decoding" holders={Object.entries(token.stakes||{}).filter(([address]) => !(message.recipients||[]).includes(address)).filter(([address,amount]) => amount !== 0 && amount !== "0").map(([address])=>address)} />
+              <HoldersProfiles prefix='' suffix=' decoding' noholderstext="No one is decoding" holders={Object.entries(token.stakes||{}).filter(([address]) => !(message.recipients||[]).includes(address)).filter(([address,amount]) => amount !== 0 && amount !== "0").map(([address])=>address)} />
 
               <div className="small message-copy-url" onClick={postTweet}><i class="fas fa-external-link-alt"></i><span>Share</span></div>
 
