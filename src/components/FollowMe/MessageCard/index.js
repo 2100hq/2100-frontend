@@ -389,14 +389,15 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
           </Row>
           <Row className='no-gutters message-footer' style={{ display: showFooter ? 'auto' : 'none'}}>
             <Col>
-              <HoldersProfiles prefix='' suffix={<span> {actionWordPast}</span>} noholderstext={ myToken ? `No one has ${actionWordPast}` : `Be the first to ${actionWordFuture}` } holders={message.recipients || message.recipientcount} />
-              <HoldersProfiles prefix='' suffix=' decoding' noholderstext="No one is decoding" holders={Object.entries(token.stakes||{}).filter(([address]) => !(message.recipients||[]).includes(address)).filter(([address,amount]) => amount !== 0 && amount !== "0").map(([address])=>address)} />
+            <HoldersProfiles prefix='' suffix='' noholderstext=" " holders={Object.entries(token.stakes||{}).filter(([address]) => !(message.recipients||[]).includes(address)).filter(([address,amount]) => amount !== 0 && amount !== "0").map(([address])=>address)} />
+
+              <HoldersProfiles prefix='' suffix='' noholderstext=' ' holders={message.recipients || message.recipientcount} />
 
               <div className="small message-copy-url" onClick={postTweet}><i class="fas fa-external-link-alt"></i><span>Share</span></div>
 
               <CommentBubble message={message} canComment={canComment} onClick={()=> actions.setShowCreate({parentid: message.id})}/>
             </Col>
-          </Row>          
+          </Row>
         </div>
     </div>
    )
