@@ -265,33 +265,6 @@ function MemeMessageBody({message, decodeThreshold}){
    )
 }
 
-function DefaultMessageBody({message, decodeThreshold}){
-  const messageComponent = message.hidden ? <HiddenMessage message={message} key={'hidden'+message.id}/> : <VisibleMessage message={message} key={'visible'+message.id}/>
-  return (
-    <>
-      <Col md="1" className='content-type-hint'>
-        <MessageIcon message={message} />
-      </Col>
-      <Col md="9 ml-2">
-        {message.hint && !message.hidden && <div className='message-hint'><Linkify>{message.hint}</Linkify></div>}
-        <div className='message-target'>{messageComponent}</div>
-        {decodeThreshold}
-      </Col>
-    </>
-  )
-}
-
-function MessageBody({message, token, isSignedIn, actions}){
-  const name = token.name || 'unknown'
-  const decodeThreshold = message.hidden ? <div className='hidden-text'><DecodeThreshold name={name} token={token} message={message} isSignedIn={isSignedIn} actions={actions} /></div> : null
-  switch (true){
-    case /meme/i.test(message.type):
-      return <MemeMessageBody message={message} decodeThreshold={decodeThreshold} />
-    default:
-      return <DefaultMessageBody message={message} decodeThreshold={decodeThreshold} />
-  }
-}
-
 function CommentBubble({message, canComment, onClick=()=>{}}){
   if (message.parentid) return null // can't comment on a comment
 
@@ -386,6 +359,10 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
   const actionWordPast = message.type === 'gift' ? 'redeemed' : 'decoded'
   const actionWordFuture = message.type === 'gift' ? 'redeem' : 'decode'
 
+  const messageComponent = message.hidden ? <HiddenMessage message={message} key={'hidden'+message.id}/> : <VisibleMessage message={message} key={'visible'+message.id}/>
+
+  const decodeThreshold = message.hidden ? <div className='hidden-text'><DecodeThreshold name={token.name} token={token} message={message} isSignedIn={isSignedIn} actions={actions} /></div> : null
+
   return (
     <div className={classNames.join(' ')} key={message.id}>
       {destroyIcon}
@@ -403,7 +380,14 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
         </Col>
       </Row>
       <Row className='no-gutters message-body'>
-        <MessageBody {...{message, myToken, token, isSignedIn, actions, canLinkToProfile}} />
+        <Col md="1" className='content-type-hint'>
+          <MessageIcon message={message} />
+        </Col>
+        <Col md="9 ml-2">
+          {message.hint && !message.hidden && <div className='message-hint'><Linkify>{message.hint}</Linkify></div>}
+          <div className='message-target'>{messageComponent}</div>
+          {decodeThreshold}
+        </Col>
       </Row>
       <Row className='no-gutters message-footer' style={{ display: showFooter ? 'auto' : 'none'}}>
         <Col md="1" />
