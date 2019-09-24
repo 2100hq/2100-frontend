@@ -388,11 +388,11 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
           <Row className='no-gutters message-footer' style={{ display: showFooter ? 'auto' : 'none'}}>
             <Col>
             <span className='badge badge-pill badge-light'>
-            <HoldersProfiles prefix='' suffix='' noholderstext=" " holders={Object.entries(token.stakes||{}).filter(([address]) => !(message.recipients||[]).includes(address)).filter(([address,amount]) => amount !== 0 && amount !== "0").map(([address])=>address)} />
+            <HoldersProfiles prefix='' suffix='' noholderstext="0 " holders={Object.entries(token.stakes||{}).filter(([address]) => !(message.recipients||[]).includes(address)).filter(([address,amount]) => amount !== 0 && amount !== "0").map(([address])=>address)} />
               <i class="fas fa-running"></i>
             </span>
             <span className='badge badge-pill badge-light'>
-              <HoldersProfiles prefix='' suffix='' noholderstext=' ' holders={message.recipients || message.recipientcount} />
+              <HoldersProfiles prefix='' suffix='' noholderstext='0 ' holders={message.recipients || message.recipientcount} />
               <i class="fas fa-flag-checkered"></i>
             </span>
               <div className="small message-copy-url" onClick={postTweet}><i class="fas fa-external-link-alt"></i><span>Share</span></div>

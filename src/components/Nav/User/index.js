@@ -95,7 +95,7 @@ function SignedIn () {
 function GetMetamask(){
   return(
   <a href='https://metamask.io/' className='nav-link active'>
-    <img className='wallet-logo' src='./img/metamask.png' style={{width: '1.5rem', marginRight: '0.5rem'}} />
+    <img className='wallet-logo' src='/img/metamask.png' style={{width: '1.5rem', marginRight: '0.5rem'}} />
   Get Metamask
   </a>
   )
@@ -109,7 +109,7 @@ function NotSigningIn ({ onClick }) {
   return (
     <li className='nav-item'>
       <a href='#' className='nav-link' onClick={handleClick} style={{fontWeight: 'bold'}}>
-        <img className='wallet-logo' src='./img/metamask.png' style={{width: '1.5rem', marginRight: '0.5rem'}} />
+        <img className='wallet-logo' src='/img/metamask.png' style={{width: '1.5rem', marginRight: '0.5rem'}} />
         Sign In
       </a>
     </li>
