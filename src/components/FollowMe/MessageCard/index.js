@@ -160,7 +160,6 @@ function HiddenMessage({message}){
   return(
     <div className='hidden-message-block'>
       <div className='pretend-encryption'>
-        <div className='message-hint'><Linkify>{message.hint}</Linkify></div>
         <div>{message.type === 'gift' ? 'To Redeem: ':''}<span className='encrypted-text'><EncryptedMessage {...{encrypted, decrypted}} /></span></div>
       </div>
     </div>
@@ -384,7 +383,7 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
           <MessageIcon message={message} />
         </Col>
         <Col md="9 ml-2">
-          {message.hint && !message.hidden && <div className='message-hint'><Linkify>{message.hint}</Linkify></div>}
+          {message.hint && <div className='message-hint'><Linkify>{message.hint}</Linkify></div>}
           <div className='message-target'>{messageComponent}</div>
           {decodeThreshold}
         </Col>
