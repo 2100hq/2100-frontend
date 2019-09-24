@@ -126,7 +126,7 @@ function DecodeThreshold({name, token, message, isSignedIn, actions}){
 
   if (decoding) return <span><i class="fas fa-exclamation"></i> decoding...</span>
 
-  if (diff.lte(0)) return <span><i class="fas fa-exclamation"></i> you have enough <span className='token-name'>{name}</span> to <a className='decode-button' href="#" onClick={handleClick}>decode</a></span>
+  if (diff.lte(0)) return <div className='decode-threshold'>you have enough<span className='token-name'>{name}</span> to <a className='decode-button badge badge-success' href="#" onClick={handleClick}>decode</a></div>
 
   if (!isStaking) return <span><i className='fas fa-lock' /> hold {toDecimals(message.threshold,3,0)} <span className='token-name'>{name} to see {timeToDecode}</span></span>
 }
@@ -364,44 +364,40 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
   const decodeThreshold = message.hidden ? <div className='hidden-text'><DecodeThreshold name={token.name} token={token} message={message} isSignedIn={isSignedIn} actions={actions} /></div> : null
 
   return (
-    <div className={classNames.join(' ')} key={message.id}>
+    <div className={classNames.join(' ') + ' clearfix'} key={message.id}>
       {destroyIcon}
-      <Row className='no-gutters message-header text-muted'>
-        <Col md='1'>
+        <div className='profile-image' style={{width: '10%', float: 'left'}}>
           <ProfileImage token={token} />
-        </Col>
-        <Col md='9 ml-2'>
-{/*          <span>
-            { canLinkToProfile ? <Link to={`/$${token.name}`}>${token.name}</Link> : token.name }
-            <span className='message-time text-muted'>
-              { canLinkToProfile ? <Link to={messageUrl}>{ago(message.created)}</Link> : ago(message.created) }
-            </span>
-          </span>*/}
+        </div>
+        <div className='message-content' style={{width: '90%', float: 'right'}}>
+          <Row className='no-gutters message-header'>
+            <Col>
+          {/* <span>
+                { canLinkToProfile ? <Link to={`/$${token.name}`}>${token.name}</Link> : token.name }
+                <span className='message-time text-muted'>
+                  { canLinkToProfile ? <Link to={messageUrl}>{ago(message.created)}</Link> : ago(message.created) }
+                </span>
+              </span>*/}
+              {message.hint && <div className='message-hint'><Linkify>{message.hint}</Linkify></div>}
+              <div className='message-target'>{messageComponent}</div>
+            </Col>
+          </Row>
+          <Row className='no-gutters message-body'>
+            <Col>
+              {decodeThreshold}
+            </Col>
+          </Row>
+          <Row className='no-gutters message-footer' style={{ display: showFooter ? 'auto' : 'none'}}>
+            <Col>
+              <HoldersProfiles prefix='' suffix={<span> {actionWordPast}</span>} noholderstext={ myToken ? `No one has ${actionWordPast}` : `Be the first to ${actionWordFuture}` } holders={message.recipients || message.recipientcount} />
+                <HoldersProfiles prefix='' suffix=' decoding' noholderstext="No one is decoding" holders={Object.entries(token.stakes||{}).filter(([address]) => !(message.recipients||[]).includes(address)).filter(([address,amount]) => amount !== 0 && amount !== "0").map(([address])=>address)} />
 
-          {message.hint && <div className='message-hint'><Linkify>{message.hint}</Linkify></div>}
-          <div className='message-target'>{messageComponent}</div>
-          {decodeThreshold}
-        </Col>
-      </Row>
-      <Row className='no-gutters message-body'>
-        <Col md="1" className='content-type-hint'>
-          <MessageIcon message={message} />
-        </Col>
-        <Col md="9 ml-2">
+              <div className="small message-copy-url" onClick={postTweet}><i class="fas fa-external-link-alt"></i><span>Share</span></div>
 
-        </Col>
-      </Row>
-      <Row className='no-gutters message-footer' style={{ display: showFooter ? 'auto' : 'none'}}>
-        <Col md="1" />
-        <Col>
-          <HoldersProfiles prefix='' suffix={<span> {actionWordPast}</span>} noholderstext={ myToken ? `No one has ${actionWordPast}` : `Be the first to ${actionWordFuture}` } holders={message.recipients || message.recipientcount} />
-            <HoldersProfiles prefix='' suffix=' decoding' noholderstext="No one is decoding" holders={Object.entries(token.stakes||{}).filter(([address]) => !(message.recipients||[]).includes(address)).filter(([address,amount]) => amount !== 0 && amount !== "0").map(([address])=>address)} />
-
-          <div className="small message-copy-url" onClick={postTweet}><i class="fas fa-external-link-alt"></i><span>Share</span></div>
-
-          <CommentBubble message={message} canComment={canComment} onClick={()=> actions.setShowCreate({parentid: message.id})}/>
-        </Col>
-      </Row>
+              <CommentBubble message={message} canComment={canComment} onClick={()=> actions.setShowCreate({parentid: message.id})}/>
+            </Col>
+          </Row>          
+        </div>
     </div>
    )
 }
