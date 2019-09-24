@@ -36,10 +36,10 @@ function App(){
         {/*<Breakpoints />*/}
         <div className='container-fluid'>
           <Row className='no-gutters'>
-            <Col md='2' className='nav-column'>
+            <Col md='1' className='nav-column'>
               <Nav />
             </Col>
-            <Col md='10'>
+            <Col md='11'>
               <Switch>
                 <Route path='/portfolio' exact component={Portfolio} />
                 {/*<Route path='/wallet' exact component={Wallet} />*/}

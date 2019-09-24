@@ -1,0 +1,20 @@
+.status-dot{
+  height: 8px;
+  width: 8px;
+  background-color: #aaa;
+  border-radius: 50%;
+  display: inline-block;
+  margin-right: 0.5rem;
+
+  &.green{
+  	background-color: green;
+  }
+
+  &.orange{
+  	background-color: orange;
+  }
+
+  &.red{
+  	background-color: red;
+  }
+}

@@ -46,11 +46,9 @@
 
 
 .message-copy-url{
+  position: absolute;
+  bottom: 0;
+  right: 0;
   cursor: pointer;
-  float: right;
   opacity: 0;
-  display: inline-block;
-  i {
-    margin-right: 0.5em;
-  }
 }

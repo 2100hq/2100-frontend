@@ -4,8 +4,7 @@
 	position: relative;
 	background-color: rgba(0,0,0,0.04);
 	margin: 0.5rem;
-	padding: 0.5rem;
-	border-radius: 0.2rem;
+	padding: 1rem;
 
 	&.message-hidden{
 		background-color: #fff;
@@ -22,11 +21,10 @@
 		text-decoration: underline;
 	}
 
-
 	.message-header{
 		.message-hint{
 			font-weight: 800;
-			font-size: 1.1rem;
+			font-size: 1rem;
 		}
 	}
 
@@ -59,6 +57,13 @@
 			display: block;
 		}
 	}
+
+  &:hover {
+    .message-copy-url{
+      opacity: 0.75;
+      display: inline-block;
+    }
+  }
 
 }
 

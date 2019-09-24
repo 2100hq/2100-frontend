@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 import ms from 'ms'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
 import ProfileImage from '../../ProfileImage'
-
+import StatusDot from '../StatusDot'
 import HoldersProfiles from '../HoldersProfiles'
 import {Row, Col} from 'react-bootstrap'
 import * as linkify from 'linkifyjs';
@@ -122,13 +122,13 @@ function DecodeThreshold({name, token, message, isSignedIn, actions}){
 
 
 
-  if (diff.gt(0) && isStaking) return <span><i class="fas fa-asterisk"></i> {toDecimals(diff, 3, 0)} <span className='token-name'>{name} to go</span> {timeToDecode}</span>
+  if (diff.gt(0) && isStaking) return <span><StatusDot className='orange'/> {toDecimals(diff, 3, 0)} <span className='token-name'>{name} to go</span> {timeToDecode}</span>
 
   if (decoding) return <span><i class="fas fa-exclamation"></i> decoding...</span>
 
-  if (diff.lte(0)) return <span>you have enough<span className='token-name'>{name}</span> to <a className='decode-button badge badge-success' href="#" onClick={handleClick}>decode</a></span>
+  if (diff.lte(0)) return <span><StatusDot className='green'/>you have enough <span className='token-name'>{name}</span> to <a className='decode-button badge badge-success' href="#" onClick={handleClick}>decode</a></span>
 
-  if (!isStaking) return <span>hold <span className='font-weight-bold'><span className='amount-underline'>{toDecimals(message.threshold,3,0)}</span> {name}</span> to see {timeToDecode}</span>
+  if (!isStaking) return <span><StatusDot className='red'/> hold <span className='font-weight-bold'><span className='amount-underline'>{toDecimals(message.threshold,3,0)}</span> {name}</span> to see {timeToDecode}</span>
 }
 
 function EncryptedMessage({encrypted, decrypted}){
@@ -366,6 +366,10 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
       {destroyIcon}
         <div className='profile-image' style={{width: '10%', float: 'right'}}>
           <ProfileImage token={token} />
+          <div className="small message-copy-url" onClick={postTweet}>
+            <i class="fas fa-external-link-alt"></i>
+            <span>Share</span>
+          </div>
         </div>
         <div className='message-content' style={{width: '90%', float: 'left'}}>
           <Row className='no-gutters message-header'>
@@ -386,7 +390,7 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
             </Col>
           </Row>
           <Row className='no-gutters message-footer' style={{ display: showFooter ? 'auto' : 'none'}}>
-            <Col>
+            <Col md='6'>
             <span className='badge badge-pill badge-light'>
             <HoldersProfiles prefix='' suffix='' noholderstext="0 " holders={Object.entries(token.stakes||{}).filter(([address]) => !(message.recipients||[]).includes(address)).filter(([address,amount]) => amount !== 0 && amount !== "0").map(([address])=>address)} />
               <i class="fas fa-running"></i>
@@ -395,7 +399,6 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
               <HoldersProfiles prefix='' suffix='' noholderstext='0 ' holders={message.recipients || message.recipientcount} />
               <i class="fas fa-flag-checkered"></i>
             </span>
-              <div className="small message-copy-url" onClick={postTweet}><i class="fas fa-external-link-alt"></i><span>Share</span></div>
               <CommentBubble message={message} canComment={canComment} onClick={()=> actions.setShowCreate({parentid: message.id})}/>
             </Col>
           </Row>
