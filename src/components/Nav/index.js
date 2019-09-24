@@ -5,6 +5,8 @@ import { toDecimals } from '../../utils'
 import User from './User'
 import './style.scss'
 
+const isDev = !/alpha/.test(window.location.href)
+
 function ProtectedNavItem ({state, children}) {
   if (!state.private.isSignedIn) return null
     return children
@@ -14,6 +16,7 @@ function Logo(){
   return(
     <>
     <img src='/img/2100-logo.png' style={{width: '8rem', padding: '2rem 0'}} />
+    {isDev && "@Dev"}
     </>
     )
 }
