@@ -1,5 +1,6 @@
 {
   "projects": {
-    "default": "project-1762930058573427917"
+    "dev": "dev-2100",
+    "prod": "project-1762930058573427917"
   }
 }
