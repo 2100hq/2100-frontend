@@ -276,9 +276,7 @@ function CommentBubble({message, canComment, onClick=()=>{}}){
     onClick()
   }
   return (
-    <div className='message-comment-bubble'>
-      <a href="#" onClick={handleClick}><i class="far fa-comment"></i> {message.childCount || 0}</a>
-    </div>
+      <a className='badge badge-light' href="#" onClick={handleClick}><i class="far fa-comment"></i> {message.childCount || 0}</a>
   )
 }
 
@@ -389,12 +387,15 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
           </Row>
           <Row className='no-gutters message-footer' style={{ display: showFooter ? 'auto' : 'none'}}>
             <Col>
+            <span className='badge badge-pill badge-light'>
             <HoldersProfiles prefix='' suffix='' noholderstext=" " holders={Object.entries(token.stakes||{}).filter(([address]) => !(message.recipients||[]).includes(address)).filter(([address,amount]) => amount !== 0 && amount !== "0").map(([address])=>address)} />
-
+              <i class="fas fa-running"></i>
+            </span>
+            <span className='badge badge-pill badge-light'>
               <HoldersProfiles prefix='' suffix='' noholderstext=' ' holders={message.recipients || message.recipientcount} />
-
+              <i class="fas fa-flag-checkered"></i>
+            </span>
               <div className="small message-copy-url" onClick={postTweet}><i class="fas fa-external-link-alt"></i><span>Share</span></div>
-
               <CommentBubble message={message} canComment={canComment} onClick={()=> actions.setShowCreate({parentid: message.id})}/>
             </Col>
           </Row>
