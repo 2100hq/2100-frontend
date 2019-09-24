@@ -155,6 +155,7 @@ function DecryptMessage({children}){
 }
 
 function HiddenMessage({message}){
+  return null
   const encrypted = message.id.replace(/-/g,'').toUpperCase().split('')
   let decrypted = !message.message ? encrypted : message.message // if hidden message text sent by server is null or ''
   return(
@@ -365,17 +366,21 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
   return (
     <div className={classNames.join(' ')} key={message.id}>
       {destroyIcon}
-      <Row className='no-gutters message-header text-muted align-items-center mb-2'>
+      <Row className='no-gutters message-header text-muted'>
         <Col md='1'>
           <ProfileImage token={token} />
         </Col>
         <Col md='9 ml-2'>
-          <span>
+{/*          <span>
             { canLinkToProfile ? <Link to={`/$${token.name}`}>${token.name}</Link> : token.name }
             <span className='message-time text-muted'>
               { canLinkToProfile ? <Link to={messageUrl}>{ago(message.created)}</Link> : ago(message.created) }
             </span>
-          </span>
+          </span>*/}
+
+          {message.hint && <div className='message-hint'><Linkify>{message.hint}</Linkify></div>}
+          <div className='message-target'>{messageComponent}</div>
+          {decodeThreshold}
         </Col>
       </Row>
       <Row className='no-gutters message-body'>
@@ -383,9 +388,7 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
           <MessageIcon message={message} />
         </Col>
         <Col md="9 ml-2">
-          {message.hint && <div className='message-hint'><Linkify>{message.hint}</Linkify></div>}
-          <div className='message-target'>{messageComponent}</div>
-          {decodeThreshold}
+
         </Col>
       </Row>
       <Row className='no-gutters message-footer' style={{ display: showFooter ? 'auto' : 'none'}}>
