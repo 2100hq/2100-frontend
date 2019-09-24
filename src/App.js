@@ -35,7 +35,7 @@ function App(){
       <BrowserClasses>
         {/*<Breakpoints />*/}
         <div className='container-fluid'>
-          <Row>
+          <Row className='no-gutters'>
             <Col md='2' className='nav-column'>
               <Nav />
             </Col>
@@ -46,7 +46,7 @@ function App(){
                 <Route path='/manage' exact component={Manage} />
                 <Route path='/admin' exact component={Admin} />
 
-                <Row className='main'>
+                <Row className='no-gutters main'>
                   <Col md='6' className='discover'>
                     <Discover />
                   </Col>

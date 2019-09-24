@@ -10,7 +10,7 @@ import MessageBody from '../MessageBody'
 import HoldersProfiles from '../HoldersProfiles'
 import {Row, Col} from 'react-bootstrap'
 
-
+import './style.scss'
 
 // function VisibleSubtext({name, message, myToken}){
 //   let count = message.recipientcount
@@ -83,7 +83,7 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
 
   const messageUrl = `/$${token.name}/${message.shortid || message.id}`
 
-  const classNames = ['message', `message-type-${message.type.replace(/:.*/,'')}`]
+  const classNames = ['message-card', `message-type-${message.type.replace(/:.*/,'')}`]
   if (destroyCountDown != null) classNames.push('message-destroy-countdown')
   if (message.hidden) classNames.push('message-hidden')
 
@@ -123,7 +123,7 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
   return (
     <div className={classNames.join(' ')} key={message.id}>
       {destroyIcon}
-      <Row className='message-header text-muted align-items-center mb-2'>
+      <Row className='no-gutters message-header text-muted align-items-center mb-2'>
         <Col md='1'>
           <ProfileImage token={token} />
         </Col>
@@ -136,12 +136,12 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
           </span>
         </Col>
       </Row>
-      <Row className='message-body'>
+      <Row className='no-gutters message-body'>
         <MessageBody {...{message, myToken, token, isSignedIn, actions, canLinkToProfile}} />
       </Row>
-      <Row className='message-footer small mt-2' style={{ display: showFooter ? 'auto' : 'none'}}>
+      <Row className='no-gutters message-footer' style={{ display: showFooter ? 'auto' : 'none'}}>
         <Col md="1" />
-        <Col className='mt-3 mb-3'>
+        <Col>
           <HoldersProfiles prefix='' suffix={<span> {actionWordPast}</span>} noholderstext={ myToken ? `No one has ${actionWordPast}` : `Be the first to ${actionWordFuture}` } holders={message.recipients || message.recipientcount} />
             <HoldersProfiles prefix='' suffix=' decoding' noholderstext="No one is decoding" holders={Object.entries(token.stakes||{}).filter(([address]) => !(message.recipients||[]).includes(address)).filter(([address,amount]) => amount !== 0 && amount !== "0").map(([address])=>address)} />
 

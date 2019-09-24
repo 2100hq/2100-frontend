@@ -10,7 +10,6 @@ import { Row, Col } from 'react-bootstrap'
 import Meme from '../../Meme'
 import memeTypes from '../memeTypes'
 
-import './style.scss'
 const nodeURL = require('url');
 
 function CharReveal({encrypted,decrypted,length,reveal}){
