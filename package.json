@@ -42,12 +42,14 @@
     "docker:build": "npm run docker:build:image && docker-compose run --rm yarn-lock",
     "build:docker": "node --expose-gc --max-old-space-size=32276 scripts/build.js",
     "build": "react-scripts build",
+    "build:dev": "env-cmd -f .env.development npm run build",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "standard": "standard --verbose --fix",
     "prettier": "prettier-standard '**/*.js' --ignore-path=./scripts",
     "standardize": "npm run prettier && npm run standard --fix",
-    "deploy": "git pull && yarn install && npm run build && firebase deploy"
+    "deploy:prod": "git pull && yarn install && npm run build && firebase deploy -P prod",
+    "deploy:dev": "git pull && yarn install && npm run build:dev && firebase deploy -P dev"
   },
   "eslintConfig": {
     "extends": "react-app"
@@ -65,6 +67,7 @@
     ]
   },
   "devDependencies": {
+    "env-cmd": "^10.0.1",
     "prettier-standard": "^8.0.0",
     "standard": "^11.0.0"
   },
