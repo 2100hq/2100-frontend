@@ -36,7 +36,7 @@ export default function CreateMessageModal () {
     setShowHesitate(false)
   }, [close])
 
-  const {replyid} = showCreate
+  const {parentid} = showCreate
   const show= Boolean(showCreate)
   if (!show) return null
   return (
@@ -51,7 +51,7 @@ export default function CreateMessageModal () {
           </Row>
           <Row>
             <Col>
-                <MessageForm replyid={replyid} onSubmitted={() => actions.setShowCreate(false)}/>
+                <MessageForm parentid={parentid} onSubmitted={() => actions.setShowCreate(false)}/>
             </Col>
           </Row>
         </Container>

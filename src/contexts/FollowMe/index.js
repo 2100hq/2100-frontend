@@ -134,12 +134,21 @@ export default function FollowMeProvider ({ children }) {
   }, [isSignedIn, myToken, isSignedIn2100])
 
   function SendMessage(fmstate){
-    return async (message, hint, threshold, type) => {
+    return async ({message, hint, threshold, type, parentid}) => {
       if (!myToken) return null
-      console.log('sendMessage', {message, hint, threshold})
+
       try {
-        message = await fmstate.api.private.call('sendMessage', myToken.id, message, hint, threshold, type)
-        update(`sentMessages.${message.id}`, message)
+        message = await fmstate.api.private.call('sendMessage', {tokenid: myToken.id, message, hint, threshold, type, parentid})
+        if (!parentid) return update(`sentMessages.${message.id}`, message) // this isn't a comment
+
+        const locations = ['privateMessages', 'sentMessages', 'publicMessages', 'decodedMessages', 'tokenFeedMessages']
+
+        locations.forEach(location => {
+          const localMessage = get(fmstate, [location,parentid])
+          if (!localMessage) return
+          update(`${location}.${parentid}.childCount`, (localMessage.childCount || 0) + 1)
+        })
+
         return message
       } catch(e){
         return null
@@ -152,7 +161,9 @@ export default function FollowMeProvider ({ children }) {
     return async (id) => {
       const channel = fmstate.isSignedIn ? 'private' : 'public'
       try {
-        return await fmstate.api[channel].call('getMessage', id)
+        const message = await fmstate.api[channel].call('getMessage', id)
+        return message
+
       } catch(e){
         return null
       }

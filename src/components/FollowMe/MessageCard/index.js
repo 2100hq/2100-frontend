@@ -26,6 +26,23 @@ import {Row, Col} from 'react-bootstrap'
 // }
 
 
+function CommentBubble({message, canComment, onClick=()=>{}}){
+  if (message.parentid) return null // can't comment on a comment
+
+  function handleClick(e){
+    e.preventDefault();
+    e.stopPropagation()
+    if (message.hidden) return alert("Can't reply until you decode")
+    if (!canComment) return
+    onClick()
+  }
+  return (
+    <div className='message-comment-bubble'>
+      <a href="#" onClick={handleClick}><i class="far fa-comment"></i> {message.childCount || 0}</a>
+    </div>
+  )
+}
+
 function ago(past){
   let elapsed = Date.now()-past
   elapsed = Math.floor(elapsed/1000)*1000
@@ -33,7 +50,7 @@ function ago(past){
   return ms(elapsed)
 }
 
-export default function MessageCard({message, myToken, token, isSignedIn, actions, canCopyUrl=true, canLinkToProfile=true, canComment=true, showFooter=true}){
+export default function MessageCard({message, myToken, token, isSignedIn, actions, canCopyUrl=true, canLinkToProfile=true, canComment=true, showFooter=true, canDestroy=true}){
   const [destroyCountDown, setDestroyCountDown] = useState(null)
   const [copied, setCopied] = useState(null)
 
@@ -51,7 +68,7 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
   }, [destroyCountDown])
 
   let destroyIcon = null
-  if (myToken && message.tokenid === myToken.id){
+  if (myToken && message.tokenid === myToken.id && canDestroy){
     destroyIcon = (
       <a href="#" onClick={destroyMessage} className='message-delete'>
         { destroyCountDown == null ? <i className="fas fa-times"></i> : destroyCountDown <= 0 ? <i className="fas fa-circle destroying"></i> : <span>{destroyCountDown} <span className='small text-muted'>(cancel)</span></span> }
@@ -129,15 +146,8 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
             <HoldersProfiles prefix='' suffix=' decoding' noholderstext="No one is decoding" holders={Object.entries(token.stakes||{}).filter(([address]) => !(message.recipients||[]).includes(address)).filter(([address,amount]) => amount !== 0 && amount !== "0").map(([address])=>address)} />
 
           <div className="small message-copy-url" onClick={postTweet}><i class="fas fa-external-link-alt"></i><span>Share</span></div>
-        {/*canCopyUrl && (
-          <CopyToClipboard text={window.location.origin + messageUrl}
-            onCopy={() => setCopied(true)}>
-            <div className="small message-copy-url"><i className="fas fa-link"></i><span>{copied ? 'Copied!' : 'Copy link'}</span></div>
-          </CopyToClipboard>
 
-        )*/}
-
-        {/*{!message.hidden && canComment && <div><a onClick={ ()=> actions.setShowCreate({replyid: message.id})}>Comment</a></div>}*/}
+          <CommentBubble message={message} canComment={canComment} onClick={()=> actions.setShowCreate({parentid: message.id})}/>
         </Col>
       </Row>
     </div>

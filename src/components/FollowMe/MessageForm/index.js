@@ -128,7 +128,7 @@ function MemeSelect({memeTypes, memeType, onChange=()=>{}}){
   )
 }
 
-export default function MessageForm({onSubmitted, replyid}){
+export default function MessageForm({onSubmitted, parentid}){
   const {query} = useStoreContext()
 
   let { api, isSignedIn, myToken, messages = {}, publicMessages = {}, followers = {}, actions } = useFollowMeContext()
@@ -176,7 +176,7 @@ export default function MessageForm({onSubmitted, replyid}){
     const _hint = /gift/i.test(currentTab) ? `${giftHintText} ${hint}` : hint
     const _message = /gift/i.test(currentTab) ? `${giftRdedeemText} ${message}` : message
 
-    const resp = await actions.sendMessage(_message, _hint, threshold.toString(), type)
+    const resp = await actions.sendMessage({message:_message, hint: _hint, threshold:threshold.toString(), type, parentid})
     setSubmitting(false)
     if (resp) {
       setData({})
@@ -316,7 +316,7 @@ export default function MessageForm({onSubmitted, replyid}){
 
   return (
         <div  className="message-form">
-            { replyid && <div style={{width: '50%'}}><MessageCard {...{message: messages[replyid], myToken, token: query.getToken(messages[replyid].tokenid), isSignedIn, actions, canCopyUrl:false, canLinkToProfile:false, canComment: false, showFooter: false}} /></div> }
+            { parentid && <div style={{width: '50%'}}><MessageCard {...{message: messages[parentid], myToken, token: query.getToken(messages[parentid].tokenid), isSignedIn, actions, canCopyUrl:false, canLinkToProfile:false, canComment: false, showFooter: false, canDestroy:false}} /></div> }
 
             <ul className='nav nav-pills mt-2'>{tabs}</ul>
 
