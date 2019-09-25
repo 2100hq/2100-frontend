@@ -2,6 +2,7 @@ import React, { useState,useEffect, useRef, useMemo } from 'react'
 import { useStoreContext } from '../../../contexts/Store'
 import { toDecimals, BigNumber, weiDecimals, extractUsernameAndMessageIdFromLocation, oneblockReward, daiAPRperBlock } from '../../../utils'
 import history from '../../../utils/history'
+import useDebounce from '../../../utils/hooks/useDebounce'
 import Allocator from '../../Allocator'
 import ProfileImage from '../../ProfileImage'
 import { useCountUp } from 'react-countup'
@@ -37,15 +38,14 @@ function marketCap(totalStakes){
   return daiAPRperBlock.times(toDecimals(totalStakes)).times("10000000").toString()
 }
 
-function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIsEditing, index}) {
+function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIsEditing, index, delayRankChange = true}) {
   const prevTotalStakeRef = useRef(token.totalStakes)
-  const prevIndexRef = useRef(index)
+  const prevIndexRef = useRef(token.rank)
   const [stakeArrowDirection, setStakeArrowDirection]=useState(null)
-  if (prevIndexRef.current != index) console.log(token.name, prevIndexRef.current, index)
   // only calculate earning when necessary
   const [earning, setEarning] = useState('0.000000')
   const [earningZero, setEarningZero] = useState(true)
-  const [indexChanged, setIndexChanged] = useState(false)
+  const [rankChanged, setRankChanged] = useState(false)
   // useEffect(()=> {
   //   let newEarning = null
 
@@ -77,14 +77,26 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
   }, [token.totalStakes])
 
   useEffect( () => {
-    if (/trump/.test(token.name)) console.log('prevIndexRef.current === index', prevIndexRef.current,index)
-    if (prevIndexRef.current === index) return
-    setIndexChanged(index > prevIndexRef.current ? 'up' : 'down')
-    prevIndexRef.current=index
+    if (prevIndexRef.current === token.rank) return
 
-    const id = setTimeout(setIndexChanged, 250, false)
-    return () => clearTimeout(id)
-  }, [index])
+    const change = token.rank > prevIndexRef.current ? 'up' : 'down'
+
+    prevIndexRef.current=token.rank
+
+    if (!delayRankChange) return
+
+    let ids = []
+
+    const id1 = setTimeout(()=>{
+      setRankChanged(change)
+      const id2 = setTimeout(setRankChanged, 250, false)
+      ids.push(id2)
+    }, 2000)
+
+    ids.push(id1)
+
+    return () => ids.map(clearTimeout)
+  }, [token.rank])
 
 
   const isAllocatingToken = isAllocating && isAllocating.tokenid === token.id
@@ -95,17 +107,16 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
   const balance = useMemo(() => toDecimals(token.balances.available,5), [token.balances.available])
   const totalStakes = useMemo( ()=>toDecimals(token.totalStakes), [token.totalStakes])
 
-
   const selected = currentUsername === token.name ? ' selected' : ''
   const allocating = isAllocating ? ' allocating' : ''
   const editing = isEditing ? ' editing' : ''
-  const changed = indexChanged ? ` index-changed-${indexChanged}` : ''
+  const changed = rankChanged ? ` rank-changed-${rankChanged}` : ''
 
   let columns = null
 
   if (isEditing){
     columns = (
-      <>
+      <React.Fragment>
         <div className="col-5">
           <Allocator token={token} onComplete={()=>setIsEditing({})} onClickOutside={()=>setIsEditing({})} className='allocator' />
         </div>
@@ -113,11 +124,11 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
         { isAllocatingToken ? <Spinner animation="grow" /> : <i className="text-muted fas fa-times-circle close-allocator" onClick={()=>!isAllocating && setIsEditing({})}></i>
         }
         </div>
-      </>
+      </React.Fragment>
     )
   } else {
     columns = (
-      <>
+      <React.Fragment>
         <div className="col-2 small text-center">
           ${ token.totalStakes !== "0" ? <CountUp balance={totalStakes} decimals={2} /> : "0.00" }
         </div>
@@ -130,7 +141,7 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
         <div className="col-1" style={{textAlign: 'center'}}>
           <i class="text-muted far fa-edit"></i>
         </div>
-      </>
+      </React.Fragment>
     )
   }
 
@@ -166,6 +177,11 @@ function idHash(tokens){
 function All({tokens = [], location, myToken, isAllocating, isEditing, setIsEditing}){
   const [fixedTokens, setFixedTokens] = useState(tokens)
   const tokensIds = idHash(tokens)
+  let [rawAssetSearch, _setAssetSearch] = useState('')
+  const setAssetSearch = e => _setAssetSearch(e.target.value)
+  const assetSearch = useDebounce(rawAssetSearch, 250)
+  const isSearching = Boolean(assetSearch)
+  const searchRegExp = useMemo(() => new RegExp(assetSearch || '', 'i'),[assetSearch])
 
   useEffect( () => {
     const fixedTokenIds = idHash(fixedTokens)
@@ -175,8 +191,15 @@ function All({tokens = [], location, myToken, isAllocating, isEditing, setIsEdit
     const id = setTimeout(setFixedTokens,2000,tokens)
     return () => clearTimeout(id)
   },[tokensIds, isEditing, isAllocating])
+
   const {username} = extractUsernameAndMessageIdFromLocation(location)
-  const rows = Object.values(fixedTokens).map((token, i) => (
+
+  const filteredTokens = useMemo(() => {
+    if (!isSearching) return Object.values(fixedTokens)
+    return Object.values(fixedTokens).filter( token => searchRegExp.test(token.name.replace(/_+/g, '')))
+  }, [fixedTokens, assetSearch])
+
+  let rows = filteredTokens.map((token, i) => (
     <Row
       token={token}
       myToken={myToken}
@@ -186,13 +209,25 @@ function All({tokens = [], location, myToken, isAllocating, isEditing, setIsEdit
       isEditing={isEditing}
       setIsEditing={setIsEditing}
       index={i}
+      delayRankChange={!isSearching}
     />
   ))
+
+  // empty rows; either still loading tokens or no match found in search
+  if (rows.length === 0){
+    rows = <div className="row" style={{marginTop: '1rem'}}><div className="col-1" style={{textAlign: 'center'}}></div><div className="col">{isSearching ? `No match for "${assetSearch}"` : 'Loading...'}</div></div>
+  }
+
   return (
     <div className="asset-table container">
       <div style={{backgroundColor: 'white', borderLeft: '1px solid #eee', borderBottom: '1px solid #eee'}} className="row small text-muted sticky-top pt-1 pb-1">
         <div className="col-1">#</div>
-        <div className="col-5">Asset</div>
+        <div className="col-5">
+          Asset
+          <div  className='asset-search'>
+            <i class="fas fa-search" /><input type='text' value={rawAssetSearch} onChange={setAssetSearch}/>
+          </div>
+        </div>
         <div className="col-2">Total</div>
         <div className="col-1">Me</div>
         <div className="col-2">Balance</div>
