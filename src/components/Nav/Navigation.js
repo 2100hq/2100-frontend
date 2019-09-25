@@ -58,7 +58,7 @@ export default function Navigation(){
   const tabs = allowedViews.map( viewType => <Nav.Link eventKey={viewType}>{getViewName(viewType)}</Nav.Link> )
 
   return (
-    <Nav className='pt-3 pb-3 pl-3' style={{borderBottom: '1px solid #eee', borderLeft: '1px solid #eee'}} activeKey={currentView} defaultActiveKey={currentView} variant="pills" onSelect={setView}>
+    <Nav className='fm-nav small' activeKey={currentView} defaultActiveKey={currentView} onSelect={setView}>
       {tabs}
     </Nav>
   )

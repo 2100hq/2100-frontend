@@ -229,14 +229,10 @@ function All({tokens = [], location, myToken, isAllocating, isEditing, setIsEdit
 
   return (
     <div className="asset-table">
-      <div style={{backgroundColor: 'white', borderLeft: '1px solid #eee', borderBottom: '1px solid #eee'}} className="row no-gutters small text-muted sticky-top pt-1 pb-1">
+      <div className="row table-header no-gutters text-center small align-items-center">
         <div className="col-1">#</div>
-        <div className="col-1">Photo</div>
-        <div className="col-3">
-          Asset
-          <div  className='asset-search'>
-            <i class="fas fa-search" /><input type='text' value={rawAssetSearch} onChange={setAssetSearch}/>
-          </div>
+        <div className="col-4 asset-search">
+          <i class="fas fa-search" /><input type='text' value={rawAssetSearch} onChange={setAssetSearch}/>
         </div>
         <div className="col-1">Total</div>
         <div className="col-1">Me</div>

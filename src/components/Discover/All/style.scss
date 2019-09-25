@@ -8,6 +8,10 @@
 
 .asset-table{
 
+  .table-header{
+    height: 2.5rem;
+  }
+
   font-size: 0.9rem;
 
   span.rank{
@@ -15,21 +19,29 @@
  }
 
  .asset-search{
-    position: relative;
-    display: inline-block;
-    width: 85%;
-    i {
-      position: relative;
-      left: 1.25rem;
-    }
-    input {
-      padding-left: 1.5rem;
-      border: 0;
-      width: 90%;
-    }
- }
+  position: relative;
 
- .asset-row{
+  i {
+    position: absolute;
+    left: 5px;
+    line-height: 25px;
+    font-size: 0.7rem;
+    color: #999;
+  }
+  
+  input {
+    border: 0;
+    display: block;
+    padding: 3px;
+    padding-left: 20px;
+    font-size: 12px;
+    width: 80%;
+    border-radius: 5px;
+    border: 1px solid #eee;
+  }
+}
+
+.asset-row{
   padding: 0.4rem 0;
   cursor: pointer;
   color: #444;
