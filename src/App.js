@@ -18,7 +18,6 @@ import {Row, Col, Card} from 'react-bootstrap'
 import Sidebar from './components/Sidebar'
 import CreateMessageButton from './components/FollowMe/CreateMessageButton'
 import CreateMessageFixed from './components/FollowMe/CreateMessageFixed'
-import FollowMeMessageModal from './components/FollowMe/MessageModal'
 
 import Discover from './components/Discover'
 import history from './utils/history'
@@ -70,9 +69,6 @@ function App(){
               </Switch>
             </Col>
           </Row>
-          <Route exact path='/:username([$]{1,1}[a-zA-Z0-9_]+)/:messageid' render= {
-            props => <FollowMeMessageModal {...props} />
-          } />
         </div>
         <CreateMessageFixed />
         <Alerts />
