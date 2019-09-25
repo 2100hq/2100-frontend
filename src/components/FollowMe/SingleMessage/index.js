@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import useInputState from '../../../utils/hooks/useInputState'
+import clickHandler from '../../../utils/clickHandler'
 import { useStoreContext } from '../../../contexts/Store'
 import { useFollowMeContext } from '../../../contexts/FollowMe'
 import MessageCard from '../MessageCard'
@@ -11,7 +12,41 @@ import ms from 'ms'
 
 import './style.scss'
 
-function Comment({comment, username}){
+function Destroy({comment, onDestroying=()=>{}, onDestroyed=()=>{}}){
+  const {actions, isSignedIn} = useFollowMeContext()
+  const {query} = useStoreContext()
+  const [destroyCountDown, setDestroyCountDown] = useState(null)
+
+  useEffect( ()=>{
+    onDestroying(destroyCountDown!=null)
+    if (destroyCountDown == null) return
+    const id = destroyCountDown > 0 ? setTimeout(setDestroyCountDown, 1000, destroyCountDown-1) : setTimeout( () => actions.destroy(comment).then( resp => {
+      if (resp){
+        onDestroyed()
+      }
+      setDestroyCountDown(null)
+    }), 1000)
+    return () => clearTimeout(id)
+  }, [destroyCountDown])
+
+  if (comment.hidden) return null // can't delete if hidden
+
+  if (comment.userid.toLowerCase() !== query.getUserAddress().toLowerCase() || !isSignedIn) return null
+
+  function destroyMessage(){
+    if (destroyCountDown == null) return setDestroyCountDown(3)
+    setDestroyCountDown(null)
+  }
+
+  return (
+    <a href="#" onClick={clickHandler(destroyMessage)} className='message-delete'>
+      { destroyCountDown == null ? <i className="fas fa-times"></i> : destroyCountDown <= 0 ? <i className="fas fa-circle destroying"></i> : <span>{destroyCountDown} <span className='small text-muted'>(cancel)</span></span> }
+    </a>
+  )
+}
+
+function Comment({comment, username, onDestroyed}){
+  const [isDestroying, setIsDestroying] = useState(false)
   const face = username ? <ProfileImage token={username} /> : <Jazzicon diameter={25} seed={jsNumberForAddress(comment.userid)} />
   let message = comment.message
   if (comment.hidden){
@@ -23,13 +58,18 @@ function Comment({comment, username}){
        </div>
     )
   }
+
+  const classNames = ["comment"]
+  if (isDestroying) classNames.push('message-destroy-countdown')
+
   return (
-    <Container>
+    <Container className={classNames.join(' ')}>
       <Row>
         <Col xs="1">
           {face}
         </Col>
-        <Col className="comment">
+        <Col>
+          <Destroy comment={comment} onDestroying={setIsDestroying} onDestroyed={onDestroyed}/>
           {message}
           <div className="small text-muted">{ms(Date.now()-comment.created)} ago</div>
         </Col>
@@ -73,7 +113,7 @@ function CommentForm({message, onSubmitted}){
   )
 }
 
-function Comments({message, query}){
+function Comments({message, query, onDestroyed}){
   let comments = []
 
   if (message.children){
@@ -82,7 +122,7 @@ function Comments({message, query}){
       return (
         <Row>
           <Col>
-            <Comment comment={comment} username={username} />
+            <Comment comment={comment} username={username} onDestroyed={onDestroyed} />
           </Col>
         </Row>
       )
@@ -138,7 +178,7 @@ export default function SingleMessage(props){
           <MessageCard token={token} myToken={myToken} actions={actions} message={message} isSignedIn={isSignedIn} {...props}/>
         </Col>
       </Row>
-      <Comments message={message} query={query} />
+      <Comments message={message} query={query} onDestroyed={getMessage}/>
       <CommentForm  message={message} onSubmitted={getMessage}/>
     </Container>
   )

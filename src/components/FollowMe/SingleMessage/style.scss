@@ -5,4 +5,22 @@
       height: 10px;
       background: black;
     }
+    .message-delete{
+      display: none;
+      position: absolute;
+      top: 0;
+      right: 0;
+      opacity: 0.75;
+      &:hover{
+        text-decoration: none;
+      }
+    }
+    &.message-destroy-countdown, &:hover {
+      .destroying {
+        color: red;
+      }
+      .message-delete{
+        display: block;
+      }
+    }
 }
