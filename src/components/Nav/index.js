@@ -41,34 +41,18 @@ export default function Nav (props) {
         <ul class="nav flex-column vertical-nav">
           <User {...props} key='user' />
         </ul>
-        <div>
-          <div>Block 1234</div>
-          <div>Block 1234</div>
-          <div>Block 1234</div>
-          <div>Block 1234</div>
-          <div>Block 1234</div>
-          <div>Block 1234</div>
-          <div>Block 1234</div>
-          <div>Block 1234</div>
-          <div>Block 1234</div>
-          <div>Block 1234</div>
-          <div>Block 1234</div>
-          <div>Block 1234</div>
-          <div>Block 1234</div>
-          <div>Block 1234</div>
-          <div>Block 1234</div>
-          <div>Block 1234</div>
-          <div>Block 1234</div>
-          <div>Block 1234</div>
-          <div>Block 1234</div>
-          <div>Block 1234</div>
-          <div>Block 1234</div>
-          <div>Block 1234</div>
-          <div>Block 1234</div>
-          <div>Block 1234</div>
-          <div>Block 1234</div>
-        </div>
       </div>
+      <Row className='minting-event no-gutters'>
+        <Col md='12'>
+          <h4 className=''>You just earned</h4>
+          <ul>
+            <li>$benjmnr (5% of pool)</li>
+            <li>$brttb (3% of pool) </li>
+            <li>$brttb (3% of pool) </li>
+          </ul>
+          <h5>based on block 1234</h5>
+        </Col>
+      </Row>
     </>
     )
 
