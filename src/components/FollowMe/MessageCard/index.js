@@ -2,6 +2,7 @@ import React, {useState, useEffect } from 'react'
 import {useStoreContext} from '../../../contexts/Store'
 import {get, shuffle} from 'lodash'
 import { BigNumber, toDecimals, weiDecimals } from '../../../utils'
+import history from '../../../utils/history'
 import { Link } from 'react-router-dom'
 import ms from 'ms'
 import { CopyToClipboard } from 'react-copy-to-clipboard'
@@ -15,6 +16,7 @@ import YouTube from 'react-youtube';
 import { TwitterTweetEmbed } from 'react-twitter-embed';
 import Meme from '../../Meme'
 import memeTypes from '../memeTypes'
+import clickHandler from '../../../utils/clickHandler'
 
 import './style.scss'
 
@@ -104,11 +106,6 @@ function DecodeThreshold({name, token, message, isSignedIn, actions}){
     setDecoding(false)
   }
 
-  function handleClick(e){
-    e.preventDefault()
-    decodeMessage(message.id)
-  }
-
   if (isStaking && diff.gt(0)){
     const divisor = BigNumber(token.myStake).div(token.totalStakes).times(0.9).times(0.00021).times(5).times(weiDecimals)
     const blocks = diff.div(divisor).dp(0,0).toNumber()
@@ -126,7 +123,7 @@ function DecodeThreshold({name, token, message, isSignedIn, actions}){
 
   if (decoding) return <span><i class="fas fa-exclamation"></i> decoding...</span>
 
-  if (diff.lte(0)) return <span>you have enough <span className='token-name'>{name}</span> to <a className='decode-button badge badge-success' href="#" onClick={handleClick}>decode</a></span>
+  if (diff.lte(0)) return <span>you have enough <span className='token-name'>{name}</span> to <a className='decode-button badge badge-success' href="#" onClick={clickHandler(decodeMessage, message.id)}>decode</a></span>
 
   if (!isStaking) return <span>hold <span className='font-weight-bold'><span className='amount-underline'>{toDecimals(message.threshold,3,0)}</span> {name}</span> to see {timeToDecode}</span>
 }
@@ -250,7 +247,7 @@ function MemeMessageBody({message, decodeThreshold}){
       if (message.decoded) messageComponent = <DecryptMessage>{messageComponent}</DecryptMessage>
     }
    return (
-     <>
+     <React.Fragment>
        <Col md="1" className='content-type-hint'>
          <MessageIcon message={message} />
        </Col>
@@ -258,22 +255,14 @@ function MemeMessageBody({message, decodeThreshold}){
          <div className='message-target'>{messageComponent}</div>
          {decodeThreshold}
        </Col>
-     </>
+     </React.Fragment>
    )
 }
 
 function CommentBubble({message, canComment, onClick=()=>{}}){
   if (message.parentid) return null // can't comment on a comment
-
-  function handleClick(e){
-    e.preventDefault();
-    e.stopPropagation()
-    if (message.hidden) return alert("Can't reply until you decode")
-    if (!canComment) return
-    onClick()
-  }
   return (
-      <a className='badge badge-light' href="#" onClick={handleClick}><i class="far fa-comment"></i> {message.childCount || 0}</a>
+      <a className='badge badge-light' href="#" onClick={onClick}><i class="far fa-comment"></i> {message.childCount || 0}</a>
   )
 }
 
@@ -284,13 +273,19 @@ function ago(past){
   return ms(elapsed)
 }
 
-export default function MessageCard({message, myToken, token, isSignedIn, actions, canCopyUrl=true, canLinkToProfile=true, canComment=true, showFooter=true, canDestroy=true}){
+export default function MessageCard({message, myToken, token, isSignedIn, actions, canCopyUrl=true, canLinkToProfile=true, canComment=true, showFooter=true, canDestroy=true, onClickComment, onClickMessageCard}){
   const [destroyCountDown, setDestroyCountDown] = useState(null)
   const [copied, setCopied] = useState(null)
 
+  if (!onClickComment){
+    onClickComment = clickHandler(() => history.push(`/$${token.name}/${message.id}`))
+  }
 
-  function destroyMessage(e){
-    e.preventDefault()
+  if (!onClickMessageCard){
+    onClickMessageCard = onClickComment
+  }
+
+  function destroyMessage(){
     if (destroyCountDown == null) return setDestroyCountDown(3)
     setDestroyCountDown(null)
   }
@@ -304,7 +299,7 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
   let destroyIcon = null
   if (myToken && message.tokenid === myToken.id && canDestroy){
     destroyIcon = (
-      <a href="#" onClick={destroyMessage} className='message-delete'>
+      <a href="#" onClick={clickHandler(destroyMessage)} className='message-delete'>
         { destroyCountDown == null ? <i className="fas fa-times"></i> : destroyCountDown <= 0 ? <i className="fas fa-circle destroying"></i> : <span>{destroyCountDown} <span className='small text-muted'>(cancel)</span></span> }
       </a>
     )
@@ -316,10 +311,6 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
   }, [copied])
 
   const messageUrl = `/$${token.name}/${message.shortid || message.id}`
-
-  const classNames = ['message-card', `message-type-${message.type.replace(/:.*/,'')}`]
-  if (destroyCountDown != null) classNames.push('message-destroy-countdown')
-  if (message.hidden) classNames.push('message-hidden')
 
   function decodeTweetText(){
     return `🔑 ${actionWordFuture} in @2100hq`
@@ -358,12 +349,16 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
 
   const decodeThreshold = message.hidden ? <div className='hidden-text'><DecodeThreshold name={token.name} token={token} message={message} isSignedIn={isSignedIn} actions={actions} /></div> : null
 
+  const classNames = ['message-card', `message-type-${message.type.replace(/:.*/,'')}`]
+  if (destroyCountDown != null) classNames.push('message-destroy-countdown')
+  if (message.hidden) classNames.push('message-hidden')
+
   return (
-    <div className={classNames.join(' ') + ' clearfix'} key={message.id}>
+    <div className={classNames.join(' ') + ' clearfix'} key={message.id} onClick={onClickMessageCard}>
       {destroyIcon}
         <div style={{width: '10%', float: 'right'}}>
-          <ProfileImage token={token} />
-          <div className="small message-copy-url" onClick={postTweet}>
+          <a href='#' onClick={clickHandler(()=>history.push(`/$${token.name}`))}><ProfileImage token={token} /></a>
+          <div className="small message-copy-url" onClick={clickHandler(postTweet)}>
             <i class="fas fa-external-link-alt"></i>
             <span>Share</span>
           </div>
@@ -394,7 +389,7 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
             <span className='badge badge-pill badge-light'>
               <HoldersProfiles prefix='' suffix='decoded' noholderstext='0 ' holders={message.recipients || message.recipientcount} />
             </span>
-              <CommentBubble message={message} canComment={canComment} onClick={()=> actions.setShowCreate({parentid: message.id})}/>
+              <CommentBubble message={message} canComment={canComment} onClick={onClickComment}/>
             </Col>
           </Row>
         </div>
