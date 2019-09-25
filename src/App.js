@@ -17,8 +17,8 @@ import BrowserClasses from './components/BrowserClasses'
 import {Row, Col, Card} from 'react-bootstrap'
 import Sidebar from './components/Sidebar'
 import CreateMessageButton from './components/FollowMe/CreateMessageButton'
-import FollowMeSingleMessage from './components/FollowMe/SingleMessage'
 import CreateMessageFixed from './components/FollowMe/CreateMessageFixed'
+import FollowMeMessageModal from './components/FollowMe/MessageModal'
 
 import Discover from './components/Discover'
 import history from './utils/history'
@@ -54,8 +54,15 @@ function App(){
                         <CreateMessageButton />
                       {/* follow me */}
                       <Switch>
-                        <Route exact path='/:username([$]{1,1}[a-zA-Z0-9_]+)/:messageid' component={FollowMeSingleMessage} />
-                        <Route exact path='/:username([$]{1,1}[a-zA-Z0-9_]+)' component={Profile} />
+                        <Route exact path='/:username([$].*)' render = {
+                          props => {
+                            const isMessageMatch = matchPath(props.location.pathname, routeConfigs.message)
+                            let {match} = props
+                            if (isMessageMatch) match = isMessageMatch
+                            props = {...props, match}
+                            return <Profile {...props} />
+                          }
+                        } />
                         <Route render={ props => <Sidebar onChangePage={onChangePage} {...props} /> } />
                       </Switch>
                   </Col>
@@ -63,6 +70,9 @@ function App(){
               </Switch>
             </Col>
           </Row>
+          <Route exact path='/:username([$]{1,1}[a-zA-Z0-9_]+)/:messageid' render= {
+            props => <FollowMeMessageModal {...props} />
+          } />
         </div>
         <CreateMessageFixed />
         <Alerts />

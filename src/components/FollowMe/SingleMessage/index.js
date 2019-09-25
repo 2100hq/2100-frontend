@@ -143,13 +143,11 @@ function Comments({message, query, onDestroyed}){
 }
 
 export default function SingleMessage(props){
-  const { match } = props
-  const {messageid, username} = match.params
+  const {messageid, token} = props
   const { query, state } = useStoreContext()
   const { myToken, actions, isSignedIn, messages } = useFollowMeContext()
   const [message, setComment] = useState()
   const [loading, setLoading] = useState(true)
-  const token = query.getToken(username)
   function getMessage(){
     actions.getMessage(messageid).then( result => {
       if (!result) return // error message?
@@ -170,6 +168,8 @@ export default function SingleMessage(props){
   }, [])
 
   if (!message) return null
+  console.log();
+  console.log(message);
 
   return(
     <Container>
