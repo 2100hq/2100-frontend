@@ -5,12 +5,27 @@ $message-margin: 0.3rem;
 .message-card{
 	position: relative;
 	overflow: hidden;
-  	margin: 3px;
-  	margin-left: 0px;
-  	border-radius: 3px;
+	margin: 3px;
+	margin-left: 0px;
+	border-radius: 3px;
 	padding: 1rem;
-	background-color: #fff;
 	cursor: pointer;
+	border: 1px solid #ddd;
+
+	.message-time{
+		font-size: 0.7rem;
+	}
+
+	&.message-hidden{
+		background-color: white;
+	}
+
+	&:not(.message-hidden){
+		background-color: transparent;
+		.message-body{
+			padding: 1rem;
+		}
+	}
 
 	.amount-underline{
 		text-decoration: underline;
@@ -82,12 +97,28 @@ $message-margin: 0.3rem;
 		}
 	}
 
-	&:hover {
+	&:hover{
 		.message-copy-url{
-			opacity: 0.75;
-			display: inline-block;
+			position: absolute;
+			color: #bbb;
+			bottom: 1rem;
+			right: 1rem;
+			opacity: 1;
+			transition: opacity 0.1s linear;
+
+			&:hover{
+				color: #666;
+				i{
+					color: #1da1f2;
+				}
+			transition: opacity 0.1s linear;
+			}
 		}
+
 	}
+
+
+
 
 }
 
@@ -97,7 +128,6 @@ $message-margin: 0.3rem;
 //   padding: 1rem 2rem 0.5rem 1.5rem;
 //   font-size: 1.1rem;
 //   opacity: 0.8;
-//   transition: opacity 0.2s linear;
 //   border-bottom: 1px solid #eee;
 //   overflow: hidden;
 

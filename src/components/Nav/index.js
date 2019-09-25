@@ -4,6 +4,7 @@ import { useStoreContext } from '../../contexts/Store'
 import { toDecimals } from '../../utils'
 import User from './User'
 import {Row, Col, Card} from 'react-bootstrap'
+import ProfileImage from '../ProfileImage'
 import './style.scss'
 
 const isDev = !/alpha/.test(window.location.href)
@@ -42,17 +43,70 @@ export default function Nav (props) {
           <User {...props} key='user' />
         </ul>
       </div>
-      <Row className='minting-event no-gutters'>
-        <Col md='12'>
-          <h4 className=''>You just earned</h4>
-          <ul>
-            <li>$benjmnr (5% of pool)</li>
-            <li>$brttb (3% of pool) </li>
-            <li>$brttb (3% of pool) </li>
-          </ul>
-          <h5>based on block 1234</h5>
+      <hr/>
+      <Row className='personal-data-feed no-gutters justify-content-center small'>
+        <Col md='10'>
+          <h6>#8619387</h6>
+          <span class="badge badge-pill badge-light"><ProfileImage token='benjmnr'/> 0.00004 $benjmnr</span>
+          <span class="badge badge-pill badge-light"><ProfileImage token='brttb'/> 0.00004 $benjmnr</span>
+          <span class="badge badge-pill badge-light"><ProfileImage token='mikedemarais'/> 0.00004 $mikedemarais</span>
         </Col>
       </Row>
+      <hr/>
+      <Row className='personal-data-feed no-gutters justify-content-center small'>
+        <Col md='10'>
+          <h6>#8619388</h6>
+          <span class="badge badge-pill badge-light"><ProfileImage token='benjmnr'/> 0.00004 $benjmnr</span>
+          <span class="badge badge-pill badge-light"><ProfileImage token='brttb'/> 0.00004 $benjmnr</span>
+          <span class="badge badge-pill badge-light"><ProfileImage token='mikedemarais'/> 0.00004 $mikedemarais</span>
+        </Col>
+      </Row>
+      <hr/>
+      <Row className='personal-data-feed no-gutters justify-content-center small'>
+        <Col md='10'>
+          <h6>#8619389</h6>
+          <span class="badge badge-pill badge-light"><ProfileImage token='benjmnr'/> 0.00004 $benjmnr</span>
+          <span class="badge badge-pill badge-light"><ProfileImage token='brttb'/> 0.00004 $benjmnr</span>
+          <span class="badge badge-pill badge-light"><ProfileImage token='mikedemarais'/> 0.00004 $mikedemarais</span>
+        </Col>
+      </Row>
+      <hr/>
+      <Row className='personal-data-feed no-gutters justify-content-center small'>
+        <Col md='10'>
+          <h6>#8619389</h6>
+          <span class="badge badge-pill badge-light"><ProfileImage token='benjmnr'/> 0.00004 $benjmnr</span>
+          <span class="badge badge-pill badge-light"><ProfileImage token='brttb'/> 0.00004 $benjmnr</span>
+          <span class="badge badge-pill badge-light"><ProfileImage token='mikedemarais'/> 0.00004 $mikedemarais</span>
+        </Col>
+      </Row>
+      <hr/>
+      <Row className='personal-data-feed no-gutters justify-content-center small'>
+        <Col md='10'>
+          <h6>#8619389</h6>
+          <span class="badge badge-pill badge-light"><ProfileImage token='benjmnr'/> 0.00004 $benjmnr</span>
+          <span class="badge badge-pill badge-light"><ProfileImage token='brttb'/> 0.00004 $benjmnr</span>
+          <span class="badge badge-pill badge-light"><ProfileImage token='mikedemarais'/> 0.00004 $mikedemarais</span>
+        </Col>
+      </Row>
+      <hr/>
+      <Row className='personal-data-feed no-gutters justify-content-center small'>
+        <Col md='10'>
+          <h6>#8619389</h6>
+          <span class="badge badge-pill badge-light"><ProfileImage token='benjmnr'/> 0.00004 $benjmnr</span>
+          <span class="badge badge-pill badge-light"><ProfileImage token='brttb'/> 0.00004 $benjmnr</span>
+          <span class="badge badge-pill badge-light"><ProfileImage token='mikedemarais'/> 0.00004 $mikedemarais</span>
+        </Col>
+      </Row>
+      <hr/>
+      <Row className='personal-data-feed no-gutters justify-content-center small'>
+        <Col md='10'>
+          <h6>#8619389</h6>
+          <span class="badge badge-pill badge-light"><ProfileImage token='benjmnr'/> 0.00004 $benjmnr</span>
+          <span class="badge badge-pill badge-light"><ProfileImage token='brttb'/> 0.00004 $benjmnr</span>
+          <span class="badge badge-pill badge-light"><ProfileImage token='mikedemarais'/> 0.00004 $mikedemarais</span>
+        </Col>
+      </Row>
+      <hr/>
     </>
     )
 
