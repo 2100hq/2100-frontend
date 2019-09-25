@@ -21,7 +21,7 @@ $message-margin: 0.3rem;
 	}
 
 	&:not(.message-hidden){
-		background-color: transparent;
+		background-color: #F3F6F6;
 		.message-body{
 			padding: 1rem;
 		}

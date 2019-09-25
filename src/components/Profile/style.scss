@@ -1,19 +1,25 @@
 
 .profile{
-
+	margin-top: 3px;
 	.close-link{
+		color: #aaa;
 		position: absolute;
 		top: 0;
 		right: 0;
 		padding: 0.75rem 1rem;
+		&:hover{
+			color: #666;
+		}
 	}
 
 	.profile-header{
+		background-color: white;
 		font-weight: bold;
 		text-align: center;
-		padding: 2rem;
-		margin-top: -2rem;
-
+		padding: 2rem 0;
+		border: 1px solid #ddd;
+		border-radius: 3px;
+		margin-right: 3px;
 		.profile-image{
 			width: 8rem;
 			height: 8rem;
