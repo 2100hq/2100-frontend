@@ -135,14 +135,14 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
   }
 
   return (
-    <div className={"row asset-row align-items-center"+selected+allocating+editing+changed} onClick={()=>{
+    <div className={"row no-gutters asset-row align-items-center"+selected+allocating+editing+changed} onClick={()=>{
       !isEditing && !isAllocating && setIsEditing({tokenid: token.id})
     }}>
       <div className="col-1" style={{textAlign: 'center'}}>
         <Crown token={token}/>
         <span className={'rank rank'+token.rank}>{token.rank}</span><br/>
       </div>
-      <div className='col-2' style={{textAlign: 'center'}}>
+      <div className='col-1' style={{textAlign: 'center'}}>
           <ProfileImage className={Number(myStake) === 0 ? 'profile-image' : 'profile-image pulse'} token={token} /><br/>
       </div>
       <div className="col-3" style={{overflow: 'hidden'}}>
@@ -189,8 +189,8 @@ function All({tokens = [], location, myToken, isAllocating, isEditing, setIsEdit
     />
   ))
   return (
-    <div className="asset-table container">
-      <div style={{backgroundColor: 'white', borderLeft: '1px solid #eee', borderBottom: '1px solid #eee'}} className="row small text-muted sticky-top pt-1 pb-1">
+    <div className="asset-table">
+      <div style={{backgroundColor: 'white', borderLeft: '1px solid #eee', borderBottom: '1px solid #eee'}} className="row no-gutters small text-muted sticky-top pt-1 pb-1">
         <div className="col-1">#</div>
         <div className="col-5">Asset</div>
         <div className="col-2">Total</div>

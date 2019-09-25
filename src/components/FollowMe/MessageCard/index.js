@@ -91,7 +91,7 @@ function DecodeThreshold({name, token, message, isSignedIn, actions}){
   */
   const [decoding, setDecoding] = useState(false)
 
-  if (!isSignedIn) return <span>hold <span className='font-weight-bold'><span className='asset-underline'>{toDecimals(message.threshold,3,0)}</span> ${name} </span>to decode</span>
+  if (!isSignedIn) return <span>hold <span className='font-weight-bold'><span className='amount-underline'>{toDecimals(message.threshold,3,0)}</span> ${name} </span>to decode</span>
 
   const available = get(token, 'balances.available', "0")
   const diff = BigNumber(message.threshold).minus(available)
@@ -364,14 +364,14 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
   return (
     <div className={classNames.join(' ') + ' clearfix'} key={message.id}>
       {destroyIcon}
-        <div className='profile-image' style={{width: '10%', float: 'right'}}>
+        <div style={{width: '10%', float: 'left'}}>
           <ProfileImage token={token} />
           <div className="small message-copy-url" onClick={postTweet}>
             <i class="fas fa-external-link-alt"></i>
             <span>Share</span>
           </div>
         </div>
-        <div className='message-content' style={{width: '90%', float: 'left'}}>
+        <div className='message-content' style={{width: '90%', float: 'right'}}>
           <Row className='no-gutters message-header'>
             <Col>
           {/* <span>

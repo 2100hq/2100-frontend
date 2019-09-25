@@ -3,7 +3,7 @@ import { compact } from 'lodash'
 import { useStoreContext } from '../../contexts/Store'
 import { Nav } from 'react-bootstrap'
 import history from '../../utils/history'
-
+import './style.scss'
 function Tab({current, name, set}){
   function handleClick(e){
     e.preventDefault()

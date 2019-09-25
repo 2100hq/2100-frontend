@@ -62,9 +62,6 @@ function SignedIn () {
   const hasToken = query.getMyToken()
   return (
     [
-      <li className='nav-item' key='balances'>
-        <Balances state={state} />
-      </li>,
       <Dropdown as='li' className='nav-item' key='dropdown'>
         <Dropdown.Toggle as='a' className='nav-link in' href='#'>
           <AddressIcon username={query.getUserMyName()} useraddress={query.getUserAddress()} />
@@ -87,7 +84,10 @@ function SignedIn () {
             Sign Out
           </Link>
         </Dropdown.Menu>
-      </Dropdown>
+      </Dropdown>,
+      <li className='nav-item' key='balances'>
+        <Balances state={state} />
+      </li>
     ]
   )
 }

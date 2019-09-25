@@ -2,20 +2,14 @@
 @import "../../Variables";
 
 .vertical-nav{
-	font-size: 1.1rem;
+	font-size: 1rem;
 }
 
-.our-brand{
-}
-
-.nav-link{
-	// padding: 0.4rem 0 !important;
+.logo{
+	max-width: 6rem;
+	margin-top: 2rem;
 }
 
 .nav-link.active {
   font-weight: bold;
-}
-
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
-
 }
