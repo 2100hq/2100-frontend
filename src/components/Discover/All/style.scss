@@ -8,19 +8,20 @@
 
 .asset-table{
 
-  font-size: 1rem;
+  font-size: 0.9rem;
 
   span.rank{
-   font-weight: bold;
-   font-size: 1.2rem;
+   font-size: 1rem;
  }
 
  .asset-row{
   padding: 0.4rem 0;
-  border-left: 1px solid #eee;
-  border-bottom: 1px dotted #eee;
   cursor: pointer;
   color: #444;
+  background-color: white;
+  margin: 3px;
+  border-radius: 3px;
+
   &.editing{
     cursor: default;
   }
@@ -50,8 +51,6 @@
     }
   }
   &:hover{
-    background-color: rgba(0,0,0,0.01);
-    color: #000;
 
     .fa-edit {
       display: inline-block

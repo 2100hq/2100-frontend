@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom'
 import { useStoreContext } from '../../contexts/Store'
 import { toDecimals } from '../../utils'
 import User from './User'
+import {Row, Col, Card} from 'react-bootstrap'
 import './style.scss'
 
 const isDev = !/alpha/.test(window.location.href)
@@ -32,6 +33,7 @@ function NavBrand(){
 export default function Nav (props) {
   const { state, query } = useStoreContext()
   return (
+    <>
       <div style={{textAlign: 'center'}}>
         <div className='our-brand'>
           <Link to='/'><Logo /></Link>
@@ -39,7 +41,35 @@ export default function Nav (props) {
         <ul class="nav flex-column vertical-nav">
           <User {...props} key='user' />
         </ul>
+        <div>
+          <div>Block 1234</div>
+          <div>Block 1234</div>
+          <div>Block 1234</div>
+          <div>Block 1234</div>
+          <div>Block 1234</div>
+          <div>Block 1234</div>
+          <div>Block 1234</div>
+          <div>Block 1234</div>
+          <div>Block 1234</div>
+          <div>Block 1234</div>
+          <div>Block 1234</div>
+          <div>Block 1234</div>
+          <div>Block 1234</div>
+          <div>Block 1234</div>
+          <div>Block 1234</div>
+          <div>Block 1234</div>
+          <div>Block 1234</div>
+          <div>Block 1234</div>
+          <div>Block 1234</div>
+          <div>Block 1234</div>
+          <div>Block 1234</div>
+          <div>Block 1234</div>
+          <div>Block 1234</div>
+          <div>Block 1234</div>
+          <div>Block 1234</div>
+        </div>
       </div>
+    </>
     )
 
  {/*    <nav className='navbar navbar-expand-lg navbar-light'>

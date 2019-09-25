@@ -364,14 +364,14 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
   return (
     <div className={classNames.join(' ') + ' clearfix'} key={message.id}>
       {destroyIcon}
-        <div style={{width: '10%', float: 'left'}}>
+        <div style={{width: '10%', float: 'right'}}>
           <ProfileImage token={token} />
           <div className="small message-copy-url" onClick={postTweet}>
             <i class="fas fa-external-link-alt"></i>
             <span>Share</span>
           </div>
         </div>
-        <div className='message-content' style={{width: '90%', float: 'right'}}>
+        <div className='message-content' style={{width: '90%', float: 'left'}}>
           <Row className='no-gutters message-header'>
             <Col>
           {/* <span>
@@ -395,14 +395,12 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
             </Col>
           </Row>
           <Row className='no-gutters message-footer' style={{ display: showFooter ? 'auto' : 'none'}}>
-            <Col md='6'>
+            <Col md='12'>
             <span className='badge badge-pill badge-light'>
-            <HoldersProfiles prefix='' suffix='' noholderstext="0 " holders={Object.entries(token.stakes||{}).filter(([address]) => !(message.recipients||[]).includes(address)).filter(([address,amount]) => amount !== 0 && amount !== "0").map(([address])=>address)} />
-              <i class="fas fa-running"></i>
+            <HoldersProfiles prefix='' suffix='decoding' noholderstext="0 " holders={Object.entries(token.stakes||{}).filter(([address]) => !(message.recipients||[]).includes(address)).filter(([address,amount]) => amount !== 0 && amount !== "0").map(([address])=>address)} />
             </span>
             <span className='badge badge-pill badge-light'>
-              <HoldersProfiles prefix='' suffix='' noholderstext='0 ' holders={message.recipients || message.recipientcount} />
-              <i class="fas fa-flag-checkered"></i>
+              <HoldersProfiles prefix='' suffix='decoded' noholderstext='0 ' holders={message.recipients || message.recipientcount} />
             </span>
               <CommentBubble message={message} canComment={canComment} onClick={()=> actions.setShowCreate({parentid: message.id})}/>
             </Col>

@@ -54,7 +54,7 @@ export default function HoldersProfiles({holders, prefix, suffix, noholderstext,
 
   if (holdersCount === 0) return noholderstext
 
-  const andMore = holdersCount > facesCount ? <span className='badge badge-light'>+{holdersCount-facesCount}</span> : null
+  const andMore = holdersCount > facesCount ? <span> +{holdersCount-facesCount} </span> : null
 
   if (suffix==null){
     suffix = holdersCount > facesCount ? ` holder${holdersCount-facesCount>1?'s':''}` : ' only'

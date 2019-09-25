@@ -1,7 +1,8 @@
   .profile-image{
-    max-width: 2.5rem;
-    max-height: 2.5rem;
+    max-width: 80%;
+    max-height: 80%;
     border-radius: 50%;
+    border: 3px solid #eee;
 
   	&.pulse{
       border-radius: 50%;

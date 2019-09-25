@@ -118,13 +118,22 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
   } else {
     columns = (
       <>
-        <div className="col-2 small text-center">
+        <div className="col-1 small text-center">
           ${ token.totalStakes !== "0" ? <CountUp balance={totalStakes} decimals={2} /> : "0.00" }
         </div>
         <div className="col-1 small text-center">
             <span>{Number(myStake) === 0 ? '-' : myStake}</span>
         </div>
-        <div className="col-2 small text-center">
+        <div className="col-1 small text-center">
+            <span>{Number(myStake) === 0 ? '-' : myStake}</span>
+        </div>
+        <div className="col-1 small text-center">
+            <span>{Number(myStake) === 0 ? '-' : myStake}</span>
+        </div>
+        <div className="col-1 small text-center">
+            <span>{Number(myStake) === 0 ? '-' : myStake}</span>
+        </div>
+        <div className="col-1 small text-center">
           <div><CountUp balance={balance} /></div>
         </div>
         <div className="col-1" style={{textAlign: 'center'}}>
@@ -192,10 +201,14 @@ function All({tokens = [], location, myToken, isAllocating, isEditing, setIsEdit
     <div className="asset-table">
       <div style={{backgroundColor: 'white', borderLeft: '1px solid #eee', borderBottom: '1px solid #eee'}} className="row no-gutters small text-muted sticky-top pt-1 pb-1">
         <div className="col-1">#</div>
-        <div className="col-5">Asset</div>
-        <div className="col-2">Total</div>
+        <div className="col-1">Photo</div>
+        <div className="col-3">Asset</div>
+        <div className="col-1">Total</div>
         <div className="col-1">Me</div>
-        <div className="col-2">Balance</div>
+        <div className="col-1">New</div>
+        <div className="col-1">New</div>
+        <div className="col-1">New</div>
+        <div className="col-1">Balance</div>
       </div>
       {rows}
     </div>
