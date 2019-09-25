@@ -10,7 +10,11 @@ export default function SingleMessage(props){
   const [message, setMessage] = useState()
   const [loading, setLoading] = useState(true)
   function getMessage(){
-    actions.getMessage(messageid).then(setMessage)
+    actions.getMessage(messageid).then( result => {
+      if (!result) return // error message?
+      setMessage(result)
+      if (loading) setLoading(false)
+    })
   }
   useEffect(() => {
     getMessage()
@@ -18,12 +22,18 @@ export default function SingleMessage(props){
     return () => clearTimeout(id)
   },[isSignedIn, Boolean(showCreate) === false]) // when create window closes, fetch
 
+  // if message is cached, get it
+  useEffect( () => {
+    if (!messages[messageid] || !loading) return
+     setMessage(messages[messageid])
+  }, [])
+
   if (!message) return null
   let comments = null
   if (message.children){
     comments = message.children.map( comment => (
       <div className="message-comments">
-        <MessageCard token={token} myToken={myToken} actions={actions} message={comment} isSignedIn={isSignedIn} {...props} />
+        {message.message}
       </div>
       )
     )
