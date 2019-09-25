@@ -359,8 +359,7 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
         <div style={{width: '10%', float: 'right'}}>
           <a href='#' onClick={clickHandler(()=>history.push(`/$${token.name}`))}><ProfileImage token={token} /></a>
           <div className="small message-copy-url" onClick={clickHandler(postTweet)}>
-            <i class="fas fa-external-link-alt"></i>
-            <span>Share</span>
+            <i class="fab fa-twitter"></i><span> tweet</span>
           </div>
         </div>
         <div className='message-content' style={{width: '90%', float: 'left'}}>
