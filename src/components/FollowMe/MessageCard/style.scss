@@ -9,8 +9,19 @@ $message-margin: 0.3rem;
   	margin-left: 0px;
   	border-radius: 3px;
 	padding: 1rem;
-	background-color: #fff;
 	cursor: pointer;
+	border: 1px solid #ddd;
+
+	&.message-hidden{
+		background-color: white;
+	}
+
+	&:not(.message-hidden){
+		background-color: transparent;
+		.message-body{
+			padding: 1rem;
+		}
+	}
 
 	.amount-underline{
 		text-decoration: underline;
