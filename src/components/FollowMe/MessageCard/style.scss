@@ -12,6 +12,10 @@ $message-margin: 0.3rem;
 	cursor: pointer;
 	border: 1px solid #ddd;
 
+	.message-time{
+		font-size: 0.7rem;
+	}
+
 	&.message-hidden{
 		background-color: white;
 	}

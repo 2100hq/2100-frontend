@@ -125,7 +125,7 @@ function DecodeThreshold({name, token, message, isSignedIn, actions}){
 
   if (diff.lte(0)) return <span>you have enough <span className='token-name'>{name}</span> to <a className='decode-button badge badge-success' href="#" onClick={clickHandler(decodeMessage, message.id)}>decode</a></span>
 
-  if (!isStaking) return <span>hold <span className='font-weight-bold'><span className='amount-underline'>{toDecimals(message.threshold,3,0)}</span> {name}</span> to see {timeToDecode}</span>
+  if (!isStaking) return <span>hold <span className='font-weight-bold'><span className='amount-underline'>{toDecimals(message.threshold,3,0)}</span> ${name}</span> to see {timeToDecode}</span>
 }
 
 function EncryptedMessage({encrypted, decrypted}){
@@ -366,9 +366,7 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
         <div className='message-content' style={{width: '90%', float: 'left'}}>
           <Row className='no-gutters message-header'>
             <Col>
-                <span className='message-time text-muted'>
-                  { ago(message.created) + ` ago` }
-                </span>
+                <span className='message-time text-muted'>{ ago(message.created) + ` ago` }</span>
               {message.hint && <div className='message-hint'><Linkify>{message.hint}</Linkify></div>}
             </Col>
           </Row>
