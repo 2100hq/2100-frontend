@@ -134,9 +134,8 @@ export default function Profile (props) {
       </div>
     </div>
     <div className='profile-body'>
-      { messageid && isSignedIn ? <FollowMeSingleMessage messageid={messageid} token={token}/> : <FollowMeProfileFeed token={token} /> }
+      <FollowMeProfileFeed token={token} />
     </div>
-
   </div>
   )
   // return (
