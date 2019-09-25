@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react'
 import FollowMeProfileFeed from '../FollowMe/ProfileFeed'
-import FollowMeSingleMessage from '../FollowMe/SingleMessage'
 import { Route } from "react-router-dom";
 import Allocator from '../Allocator'
 import ProfileImage from '../ProfileImage'
