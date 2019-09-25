@@ -366,12 +366,9 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
         <div className='message-content' style={{width: '90%', float: 'left'}}>
           <Row className='no-gutters message-header'>
             <Col>
-          {/* <span>
-                { canLinkToProfile ? <Link to={`/$${token.name}`}>${token.name}</Link> : token.name }
                 <span className='message-time text-muted'>
-                  { canLinkToProfile ? <Link to={messageUrl}>{ago(message.created)}</Link> : ago(message.created) }
+                  { ago(message.created) + ` ago` }
                 </span>
-              </span>*/}
               {message.hint && <div className='message-hint'><Linkify>{message.hint}</Linkify></div>}
             </Col>
           </Row>
