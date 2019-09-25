@@ -12,7 +12,6 @@ import memeTypes from '../memeTypes'
 import getPercentile from '../../../utils/percentile'
 import {BigNumber, toDecimals, fromDecimals, weiDecimals} from '../../../utils'
 import HoldersProfiles from '../HoldersProfiles'
-import MessageCard from '../MessageCard'
 
 import './style.scss'
 
@@ -128,7 +127,7 @@ function MemeSelect({memeTypes, memeType, onChange=()=>{}}){
   )
 }
 
-export default function MessageForm({onSubmitted, parentid}){
+export default function MessageForm({onSubmitted}){
   const {query} = useStoreContext()
 
   let { api, isSignedIn, myToken, messages = {}, publicMessages = {}, followers = {}, actions } = useFollowMeContext()
@@ -176,7 +175,7 @@ export default function MessageForm({onSubmitted, parentid}){
     const _hint = /gift/i.test(currentTab) ? `${giftHintText} ${hint}` : hint
     const _message = /gift/i.test(currentTab) ? `${giftRdedeemText} ${message}` : message
 
-    const resp = await actions.sendMessage({message:_message, hint: _hint, threshold:threshold.toString(), type, parentid})
+    const resp = await actions.sendMessage({message:_message, hint: _hint, threshold:threshold.toString(), type})
     setSubmitting(false)
     if (resp) {
       setData({})
@@ -316,8 +315,6 @@ export default function MessageForm({onSubmitted, parentid}){
 
   return (
         <div  className="message-form">
-            { parentid && <div style={{width: '50%'}}><MessageCard {...{message: messages[parentid], myToken, token: query.getToken(messages[parentid].tokenid), isSignedIn, actions, canCopyUrl:false, canLinkToProfile:false, canComment: false, showFooter: false, canDestroy:false}} /></div> }
-
             <ul className='nav nav-pills mt-2'>{tabs}</ul>
 
             { currentTab === 'Meme' && <MemeSelect memeTypes={memeTypes} memeType={memeType} onChange={setMemeType} key='meme-select'/>}
