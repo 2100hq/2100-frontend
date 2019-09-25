@@ -155,14 +155,11 @@ function DecryptMessage({children}){
 }
 
 function HiddenMessage({message}){
-  return null
-  const encrypted = message.id.replace(/-/g,'').toUpperCase().split('')
-  let decrypted = !message.message ? encrypted : message.message // if hidden message text sent by server is null or ''
-  return(
-    <div className='hidden-message-block'>
-      <div className='pretend-encryption'>
-        <div>{message.type === 'gift' ? 'To Redeem: ':''}<span className='encrypted-text'><EncryptedMessage {...{encrypted, decrypted}} /></span></div>
-      </div>
+  return (
+    <div className='fake-hidden-message'>
+      <div className='rectangle r1'></div>
+      <div className='rectangle r2'></div>
+      <div className='rectangle r3'></div>
     </div>
   )
 }
@@ -381,16 +378,11 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
                 </span>
               </span>*/}
               {message.hint && <div className='message-hint'><Linkify>{message.hint}</Linkify></div>}
-              <div className='message-target'>{messageComponent}</div>
             </Col>
           </Row>
           <Row className='no-gutters message-body'>
             <Col>
-              <div className='fake-hidden-message'>
-                <div className='rectangle r1'></div>
-                <div className='rectangle r2'></div>
-                <div className='rectangle r3'></div>
-              </div>
+              {messageComponent}
               {decodeThreshold}
             </Col>
           </Row>
