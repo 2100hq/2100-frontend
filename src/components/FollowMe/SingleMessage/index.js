@@ -77,7 +77,7 @@ function Comments({message, query}){
   let comments = []
 
   if (message.children){
-    comments = message.children.sort( (a, b) => b.created - a.created).map( comment => {
+    comments = message.children.sort( (a, b) => a.created - b.created).map( comment => {
       const username = query.getUserName(comment.userid)
       return (
         <Row>
