@@ -356,8 +356,9 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
   return (
     <div className={classNames.join(' ') + ' clearfix'} key={message.id}>
       {destroyIcon}
-        <div style={{width: '10%', float: 'right'}}>
+        <div style={{width: '10%', float: 'right', textAlign: 'center'}}>
           <a href='#' onClick={clickHandler(()=>history.push(`/$${token.name}`))}><ProfileImage token={token} /></a>
+          <span className='message-time text-muted'>{ ago(message.created) + ` ago` }</span>
           <div className="small message-copy-url" onClick={clickHandler(postTweet)}>
             <i class="fab fa-twitter"></i><span> tweet</span>
           </div>
@@ -365,7 +366,6 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
         <div className='message-content' style={{width: '90%', float: 'left'}}>
           <Row className='no-gutters message-header'>
             <Col>
-                <span className='message-time text-muted'>{ ago(message.created) + ` ago` }</span>
               {message.hint && <div><span className='message-hint' onClick={onClickMessageCard}><Linkify>{message.hint}</Linkify></span></div>}
             </Col>
           </Row>

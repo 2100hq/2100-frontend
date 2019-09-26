@@ -1,15 +1,29 @@
 
 .profile{
 	background-color: white;
+	margin-right: 0.5rem;
+	margin-top: 0.5rem;
+	position: relative;
+	box-shadow: 5px -5px 0px 0px rgba(0,0,0,0.05);
+	border-radius: 3px;
+
 	.back-button{
 		color: #aaa;
+		font-size: 0.8rem;
 		position: absolute;
 		top: 0;
 		left: 0;
 		padding: 0.75rem 1rem;
-		&:hover{
-			color: #666;
+		i{
+			color: #aaa;
+			font-size: 1.1rem;
+			position: relative;
+			top: .2rem;
+			&:hover{
+				color: #999;
+			}			
 		}
+
 		z-index: 9999999;
 	}
 

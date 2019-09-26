@@ -9,7 +9,6 @@ $message-margin: 0.3rem;
 	margin-left: 0px;
 	border-radius: 3px;
 	padding: 1rem;
-	border: 1px solid #ddd;
 
 	.message-time{
 		font-size: 0.7rem;
@@ -22,7 +21,7 @@ $message-margin: 0.3rem;
 	&:not(.message-hidden){
 		background-color: #FFF;
 		.message-body{
-			padding: 1rem;
+			padding: 0.5rem;
 		}
 	}
 
@@ -104,8 +103,8 @@ $message-margin: 0.3rem;
 		.message-copy-url{
 			position: absolute;
 			color: #bbb;
-			bottom: 1rem;
-			right: 1rem;
+			bottom: 0.5rem;
+			right: 0.5rem;
 			opacity: 1;
 			transition: opacity 0.1s linear;
 
