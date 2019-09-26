@@ -139,17 +139,22 @@ export default function FollowMeProvider ({ children }) {
 
       try {
         message = await fmstate.api.private.call('sendMessage', {tokenid: myToken.id, message, hint, threshold, type, parentid})
-        if (!parentid) return update(`sentMessages.${message.id}`, message) // this isn't a comment
 
-        const locations = ['privateMessages', 'sentMessages', 'publicMessages', 'decodedMessages', 'tokenFeedMessages']
+        // if reply, update childCount on all known messages
+        if (parentid) {
+          const locations = ['privateMessages', 'sentMessages', 'publicMessages', 'decodedMessages', 'tokenFeedMessages']
 
-        locations.forEach(location => {
-          const localMessage = get(fmstate, [location,parentid])
-          if (!localMessage) return
-          update(`${location}.${parentid}.childCount`, (localMessage.childCount || 0) + 1)
-        })
+          locations.forEach(location => {
+            const localMessage = get(fmstate, [location,parentid])
+            if (!localMessage) return
+            update(`${location}.${parentid}.childCount`, (localMessage.childCount || 0) + 1)
+          })
+        } else {
+          update(`sentMessages.${message.id}`, message) // this isn't a comment
+        }
 
         return message
+
       } catch(e){
         return null
       }
