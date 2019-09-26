@@ -1,26 +1,53 @@
+.single-message{
+	background-color: white;
+
+	.message-card{
+		border: none;
+	}
+
+	.comment-form{
+		padding: 2rem;
+		background-color: #F3F6F6;
+	}
+
+}
+
 .comment {
-    margin: 1rem 0;
-    .fake-hidden-message {
-      width: 50%;
-      height: 10px;
-      background: black;
-    }
-    .message-delete{
-      display: none;
-      position: absolute;
-      top: 0;
-      right: 0;
-      opacity: 0.75;
-      &:hover{
-        text-decoration: none;
-      }
-    }
-    &.message-destroy-countdown, &:hover {
-      .destroying {
-        color: red;
-      }
-      .message-delete{
-        display: block;
-      }
-    }
+	margin: 0.5rem;
+	padding: 0.5rem;
+	position: relative;
+	border-radius: 5px;
+	border: 1px solid #fff;
+	transition: all 0.2s linear;
+
+	&:hover{
+		background-color: #F3F6F6;
+		border: 1px solid #eee;
+	}
+	.fake-hidden-message {
+		width: 50%;
+		height: 10px;
+		background: black;
+	}
+
+	.message-delete{
+		display: none;
+		position: absolute;
+		top: 1rem;
+		right: 1.5rem;
+		z-index: 999999;
+		opacity: 0.75;
+		&:hover{
+			text-decoration: none;
+		}
+	}
+
+	&.message-destroy-countdown, &:hover {
+		.destroying {
+			color: red;
+		}
+		.message-delete{
+			display: block;
+		}
+	}
 }

@@ -354,7 +354,7 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
   if (message.hidden) classNames.push('message-hidden')
 
   return (
-    <div className={classNames.join(' ') + ' clearfix'} key={message.id} onClick={onClickMessageCard}>
+    <div className={classNames.join(' ') + ' clearfix'} key={message.id}>
       {destroyIcon}
         <div style={{width: '10%', float: 'right'}}>
           <a href='#' onClick={clickHandler(()=>history.push(`/$${token.name}`))}><ProfileImage token={token} /></a>
@@ -366,7 +366,7 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
           <Row className='no-gutters message-header'>
             <Col>
                 <span className='message-time text-muted'>{ ago(message.created) + ` ago` }</span>
-              {message.hint && <div className='message-hint'><Linkify>{message.hint}</Linkify></div>}
+              {message.hint && <div><span className='message-hint' onClick={onClickMessageCard}><Linkify>{message.hint}</Linkify></span></div>}
             </Col>
           </Row>
           <Row className='no-gutters message-body'>

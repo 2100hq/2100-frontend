@@ -48,6 +48,7 @@ function Destroy({comment, onDestroying=()=>{}, onDestroyed=()=>{}}){
 function Comment({comment, username, onDestroyed}){
   const [isDestroying, setIsDestroying] = useState(false)
   const face = username ? <ProfileImage token={username} /> : <Jazzicon diameter={25} seed={jsNumberForAddress(comment.userid)} />
+  const name = username
   let message = comment.message
   if (comment.hidden){
     message = (
@@ -63,18 +64,21 @@ function Comment({comment, username, onDestroyed}){
   if (isDestroying) classNames.push('message-destroy-countdown')
 
   return (
-    <Container className={classNames.join(' ')}>
-      <Row>
-        <Col xs="1">
-          {face}
-        </Col>
+    <div className={classNames.join(' ')}>
+      <Destroy comment={comment} onDestroying={setIsDestroying} onDestroyed={onDestroyed}/>
+      <Row className='no-gutters align-items-center'>
+        <Col md='1'>{face}</Col>
         <Col>
-          <Destroy comment={comment} onDestroying={setIsDestroying} onDestroyed={onDestroyed}/>
+          ${name}
+        </Col>
+      </Row>
+      <Row className='no-gutters align-items-center'>
+        <Col md={{ span: 11, offset: 1 }}>
           {message}
           <div className="small text-muted">{ms(Date.now()-comment.created)} ago</div>
         </Col>
       </Row>
-    </Container>
+    </div>
   )
 }
 
@@ -98,18 +102,20 @@ function CommentForm({message, onSubmitted}){
   }
 
   return (
-    <Form onSubmit={handleSubmit}>
-     <Form.Group controlId="comment">
-        <Row>
-          <Col>
-            <InputGroup>
-              <Form.Control inline as="textarea" rows="1" value={comment || ''} onChange={setComment} disabled={isDisabled ? 'disabled' : null} placeholder={placeholder}/>
-              <Button onClick={handleSubmit} disabled={isDisabled || isEmpty(comment)}>Submit{isSubmitting && 'ting'}</Button>
-            </InputGroup>
-          </Col>
-        </Row>
-      </Form.Group>
-    </Form>
+    <Row className='comment-form'>
+      <Col md='12'>
+      <Form onSubmit={handleSubmit}>
+       <Form.Group controlId="comment">
+        <InputGroup>
+          <Form.Control inline as="textarea" rows="1" value={comment || ''} onChange={setComment} disabled={isDisabled ? 'disabled' : null} placeholder={placeholder}/>
+          <InputGroup.Append>
+          <Button onClick={handleSubmit} disabled={isDisabled || isEmpty(comment)}>Send{isSubmitting && 'ting'}</Button>
+          </InputGroup.Append>
+        </InputGroup>
+        </Form.Group>
+      </Form>
+      </Col>
+    </Row>
   )
 }
 
@@ -120,22 +126,14 @@ function Comments({message, query, onDestroyed}){
     comments = message.children.sort( (a, b) => a.created - b.created).map( comment => {
       const username = query.getUserName(comment.userid)
       return (
-        <Row>
-          <Col>
-            <Comment comment={comment} username={username} onDestroyed={onDestroyed} />
-          </Col>
-        </Row>
+        <Comment comment={comment} username={username} onDestroyed={onDestroyed} />
       )
     })
   }
 
   if (comments.length === 0){
     comments.push(
-      <Row>
-        <Col>
-          Be the first to comment
-        </Col>
-      </Row>
+      <div style={{padding: '2rem'}}>Be the first to comment</div>
     )
   }
 
@@ -172,14 +170,10 @@ export default function SingleMessage(props){
   console.log(message);
 
   return(
-    <Container>
-      <Row>
-        <Col>
-          <MessageCard token={token} myToken={myToken} actions={actions} message={message} isSignedIn={isSignedIn} {...props}/>
-        </Col>
-      </Row>
+    <div className='single-message'>
+      <MessageCard token={token} myToken={myToken} actions={actions} message={message} isSignedIn={isSignedIn} {...props}/>
       <Comments message={message} query={query} onDestroyed={getMessage}/>
-      <CommentForm  message={message} onSubmitted={getMessage}/>
-    </Container>
+      <CommentForm message={message} onSubmitted={getMessage}/>
+    </div>
   )
 }

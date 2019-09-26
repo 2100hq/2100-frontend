@@ -9,7 +9,6 @@ $message-margin: 0.3rem;
 	margin-left: 0px;
 	border-radius: 3px;
 	padding: 1rem;
-	cursor: pointer;
 	border: 1px solid #ddd;
 
 	.message-time{
@@ -17,11 +16,11 @@ $message-margin: 0.3rem;
 	}
 
 	&.message-hidden{
-		background-color: white;
+		background-color: #FFF;
 	}
 
 	&:not(.message-hidden){
-		background-color: #F3F6F6;
+		background-color: #FFF;
 		.message-body{
 			padding: 1rem;
 		}
@@ -35,6 +34,10 @@ $message-margin: 0.3rem;
 		.message-hint{
 			font-weight: 800;
 			font-size: 1rem;
+			cursor: pointer;
+			&:hover{
+				text-decoration: underline;
+			}
 		}
 	}
 
