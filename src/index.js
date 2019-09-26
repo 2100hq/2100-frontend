@@ -4,26 +4,29 @@ import './index.css'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
 
+import { ThemeProvider } from './components/ThemeProvider'
 import Web3Provider, { Connectors, Web3Consumer } from 'web3-react'
 import SocketProvider from './contexts/Socket'
 import StoreProvider from './contexts/Store'
 import FollowMeProvider from './contexts/FollowMe'
 
-const supportedNetworks = process.env.REACT_APP_NETWORK_ID === '*' ? undefined: [Number(process.env.REACT_APP_NETWORK_ID)]
+const supportedNetworks = process.env.REACT_APP_NETWORK_ID === '*' ? undefined : [Number(process.env.REACT_APP_NETWORK_ID)]
 const MetaMask = new Connectors.InjectedConnector({
   supportedNetworks
 })
 
 ReactDOM.render(
-  <Web3Provider connectors={{ MetaMask }} libraryName={'ethers.js'}>
-    <SocketProvider>
-      <StoreProvider>
-        <FollowMeProvider>
-          <App />
-        </FollowMeProvider>
-      </StoreProvider>
-    </SocketProvider>
-  </Web3Provider>,
+  <ThemeProvider>
+    <Web3Provider connectors={{ MetaMask }} libraryName={'ethers.js'}>
+      <SocketProvider>
+        <StoreProvider>
+          <FollowMeProvider>
+            <App />
+          </FollowMeProvider>
+        </StoreProvider>
+      </SocketProvider>
+    </Web3Provider>
+  </ThemeProvider>,
   document.getElementById('root')
 )
 
