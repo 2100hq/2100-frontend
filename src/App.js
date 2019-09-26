@@ -45,11 +45,7 @@ function App(){
                 {/*<Route path='/wallet' exact component={Wallet} />*/}
                 <Route path='/manage' exact component={Manage} />
                 <Route path='/admin' exact component={Admin} />
-
                 <Row className='no-gutters main'>
-                  <Col md='6' className='discover'>
-                    <Discover />
-                  </Col>
                   <Col md='6' className='followme' ref={node}>
                         <CreateMessageButton />
                       {/* follow me */}
@@ -58,6 +54,9 @@ function App(){
                         <Route exact path='/:username([$]{1,1}[a-zA-Z0-9_]+)' component={ProfilePage} />
                         <Route render={ props => <Sidebar onChangePage={onChangePage} {...props} /> } />
                       </Switch>
+                  </Col>
+                  <Col md='6' className='discover'>
+                    <Discover />
                   </Col>
                 </Row>
               </Switch>

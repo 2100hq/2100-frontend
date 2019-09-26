@@ -6,7 +6,7 @@ $message-margin: 0.3rem;
 	position: relative;
 	overflow: hidden;
 	margin: 3px;
-	margin-left: 0px;
+	margin-right: 0px;
 	border-radius: $twentyoneborderradius;
 	padding: 1rem;
 
@@ -15,11 +15,10 @@ $message-margin: 0.3rem;
 	}
 
 	&.message-hidden{
-		background-color: #FFF;
+		background-color: #fff;
 	}
 
 	&:not(.message-hidden){
-		background-color: #FFF;
 		.message-body{
 			padding: 0.5rem;
 		}
