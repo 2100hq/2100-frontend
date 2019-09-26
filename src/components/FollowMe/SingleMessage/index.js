@@ -108,7 +108,7 @@ function CommentForm({message, onSubmitted}){
          <Form.Group controlId="comment">
           <InputGroup>
             <Form.Control inline as="input" rows="1" value={comment || ''} onChange={setComment} disabled={isDisabled ? 'disabled' : null} placeholder={placeholder}/>
-            <div className='custom-submit' onClick={handleSubmit} disabled={isDisabled || isEmpty(comment)}><i class="fas fa-angle-double-up"></i>{isSubmitting && 'ting'}</div>
+            <div className='custom-submit' onClick={handleSubmit} disabled={isDisabled || isEmpty(comment)}><i class="fas fa-arrow-up"></i>{isSubmitting && 'ting'}</div>
           </InputGroup>
           </Form.Group>
         </Form>

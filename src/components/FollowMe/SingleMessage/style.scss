@@ -1,7 +1,8 @@
 .single-message{
-	background-color: #F3F6F6;
 	margin-bottom: 101px;
 	padding-bottom: 0.5rem;
+	background-color: #F3F6F6;
+	// background: url('/img/stripes-light.png') repeat;
 	.message-card{
 		border: none;
 	}
@@ -13,10 +14,11 @@
 		width: 41.6%;
 		background-color: #F3F6F6;
 		height: 100px;
-		border-top: 1px solid #eee;
+		border-top: 1px solid #ddd;
 
 		input{
 			border-radius: 50px !important;
+			line-height: 38px;
 		}
 
 		.custom-submit{
@@ -26,8 +28,12 @@
 			line-height: 38px;
 			text-align: center;
 			color: white;
-			background-color: blue;
 			border-radius: 50%;
+ 			background-color: #636fd0;
+ 			cursor: pointer;
+ 			&:hover{
+ 				background-color: darken(#636fd0,5%);
+ 			}
 		}
 	}
 
