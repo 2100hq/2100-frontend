@@ -14,16 +14,6 @@ $theme-colors: (
 @import "node_modules/bootstrap/scss/_variables.scss";
 @import "node_modules/bootstrap/scss/mixins/_breakpoints.scss";
 
-//then app wide styles
-@font-face {
-	font-family: "Redacted";
-	src: url("/fonts/redacted-regular.eot");
-	src: url("/fonts/redacted-regular.woff2") format("woff2"),
-	url("/fonts/redacted-regular.woff") format("woff"),
-	url("/fonts/redacted-regular.otf") format("opentype"),
-	url("/fonts/redacted-regular.svg#filename") format("svg");
-}
-
 html{
 	height: 100%;
 }
@@ -33,6 +23,10 @@ body{
 	font-size: 1rem;
 	font-family: 'Noto Serif JP', serif !important;
 	background-color: #F3F6F6;
+	::-webkit-scrollbar {
+		display: none;
+	}
+   	scrollbar-width: none
 }
 
 
@@ -48,9 +42,6 @@ body{
 	@include media-breakpoint-up(md) {
 		height: 100vh;
 		overflow-y: scroll;
-		::-webkit-scrollbar {
-			display: none;
-		}
 	}
 
 }
@@ -64,29 +55,31 @@ body{
 
 	.create-messages-button-fixed{
 		position: fixed;
-		bottom: 4rem;
-		right: 4rem;
-		z-index: 999;
+		bottom: 0px;
+		right: 0px;
+		z-index: 99999;
 
 		.compose-button{
 			font-size: 1.4rem;
 			display: flex;
 			justify-content: center;
 			align-items: center;
-			width: 4.5rem;
-			height: 4.5rem;
-			border-radius: 50%;
-			background-color: white;
-			color:$twentyoneprimary;
-			box-shadow: 3px 3px 3px 3px rgba(0,0,0,0.3);
+			width: 50px;
+			height: 50px;
+  			border-top-left-radius: 50%;			
+  			font-size: 18px;
+			background-color: $twentyoneprimary;
+			color: $twentyoneprimary;
+			color:white;
 			transition: opacity 0.2s linear;
-			border: 3px solid $twentyoneprimary;
 
 
 			&:hover{
 				cursor: pointer;
 				color: white;
-				background-color: $twentyoneprimary;
+				background-color: $twentyonesecondary;
+				width: 75px;
+				height: 75px;
 			}
 
 			transition: all 0.1s linear;

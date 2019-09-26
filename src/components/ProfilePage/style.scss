@@ -1,3 +1,5 @@
+@import "../../Variables";
+
 .profile{
 
 	.context-bar{
@@ -13,7 +15,7 @@
 			position: relative;
 			top: .2rem;
 			&:hover{
-				color: #999;
+				color: $twentyonesecondary;
 			}			
 		}
 

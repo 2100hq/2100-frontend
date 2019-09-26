@@ -1,3 +1,6 @@
+@import "../../../Variables";
+
+
 .single-message{
 	margin-bottom: 101px;
 	padding-bottom: 0.5rem;
@@ -29,7 +32,7 @@
 			text-align: center;
 			color: white;
 			border-radius: 50%;
- 			background-color: #636fd0;
+ 			background-color: $twentyoneprimary;
  			cursor: pointer;
  			&:hover{
  				background-color: darken(#636fd0,5%);

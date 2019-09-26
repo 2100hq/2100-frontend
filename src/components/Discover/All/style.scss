@@ -36,8 +36,8 @@
     padding-left: 20px;
     font-size: 12px;
     width: 80%;
-    border-radius: 5px;
-    border: 1px solid #eee;
+    border-radius: 25px;
+    border: 1px solid #ddd;
   }
 }
 
@@ -47,7 +47,7 @@
   color: #444;
   background-color: white;
   margin: 3px;
-  border-radius: 3px;
+  border-radius: $twentyoneborderradius;
 
   &.editing{
     cursor: default;

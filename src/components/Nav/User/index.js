@@ -12,7 +12,7 @@ function Balances ({ state }) {
   return (
     <div className='nav-link slide-left'>
     {/* wallet no more <Link className='nav-link slide-left' to='/wallet'>*/}
-      <img className='dai-logo' src='../img/dai.png' /> {toDecimals(used)} / {toDecimals(total)}
+      <span className='balance badge badge-light badge-pills'><img className='dai-logo' src='../img/dai.png' /> {toDecimals(used)} / {toDecimals(total)}</span>
     {/*</Link>*/}
     </div>
   )
