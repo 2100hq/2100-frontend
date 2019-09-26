@@ -1,5 +1,5 @@
 .single-message{
-	background-color: white;
+	background-color: #F3F6F6;
 
 	.message-card{
 		border: none;
@@ -13,21 +13,76 @@
 }
 
 .comment {
-	margin: 0.5rem;
-	padding: 0.5rem;
-	position: relative;
-	border-radius: 5px;
-	border: 1px solid #fff;
-	transition: all 0.2s linear;
+	margin: 1rem;
 
-	&:hover{
-		background-color: #F3F6F6;
-		border: 1px solid #eee;
+	.single-comment-profile{
+		margin: 0;
+		padding: 0;
 	}
-	.fake-hidden-message {
-		width: 50%;
-		height: 10px;
-		background: black;
+
+	.single-comment{
+		background-color: white;
+		padding: 0.5rem 1rem;
+		float: left;
+		position: relative;
+		border-radius: 1rem;
+
+		.username{
+			font-size: 0.8rem;
+			font-weight: bold;
+		}
+
+		.ago{
+			position: absolute;
+			bottom: 0.5rem;
+			right: 0.5rem;
+			font-size: 0.5rem;
+		}
+
+		.single-comment-body{
+			margin-bottom: 1rem;
+		}
+
+		&.speech-bubble {
+			position: relative;
+			background: #fff;
+			border-radius: .4em;
+		}
+
+		&.speech-bubble:after {
+			content: '';
+			position: absolute;
+			left: 0;
+			top: 50%;
+			width: 0;
+			height: 0;
+			border: 10px solid transparent;
+			border-right-color: #fff;
+			border-left: 0;
+			margin-top: -10px;
+			margin-left: -10px;
+		}
+	}
+
+	.fake-hidden-message{
+		.rectangle{
+			display: inline-block;
+			height: 15px;
+			margin-right: 10px;
+			background: repeating-linear-gradient(
+				-55deg,
+				rgba(0,0,0,0.1),
+				rgba(0,0,0,0.1) 10px,
+				rgba(0,0,0,0.05) 10px,
+				rgba(0,0,0,0.05) 20px
+				);
+			border-radius: 2px;
+			&.r1{
+				width: 10rem;
+			}
+
+		}
+
 	}
 
 	.message-delete{
