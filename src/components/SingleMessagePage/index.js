@@ -4,6 +4,7 @@ import FollowMeSingleMessage from '../FollowMe/SingleMessage'
 import { Link } from 'react-router-dom'
 import { useStoreContext } from '../../contexts/Store'
 import ProfileHeader from '../ProfileHeader'
+import ProfileImage from '../ProfileImage'
 import './style.scss'
 
 
@@ -45,13 +46,13 @@ export default function SingleMessagePage (props) {
 
   return (
     <div className='single-message-page'>
-      <span className='back-button'>
-        <Link to='/'><i class="fas fa-arrow-circle-left"></i></Link> Single Message
-      </span>
-      <ProfileHeader token={token} />
-      <div>
-        <FollowMeSingleMessage token={token} messageid={messageid} />
+      <div className='context-bar'>
+        <Link to='/'><i class="fas fa-arrow-circle-left"></i></Link> Viewing a single post
       </div>
+      <div className='mini-profile'>
+        <ProfileImage token={token}/>
+      </div>
+        <FollowMeSingleMessage token={token} messageid={messageid} />
     </div>
   )
 }

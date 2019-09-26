@@ -1,13 +1,13 @@
-
 .profile{
-	background-color: white;
+
 	margin-right: 0.5rem;
 	margin-top: 0.5rem;
 	position: relative;
 	box-shadow: 5px -5px 0px 0px rgba(0,0,0,0.05);
 	border-radius: 3px;
 
-	.back-button{
+	.context-bar{
+		border: 1px solid #eee;
 		color: #aaa;
 		font-size: 0.8rem;
 		position: absolute;
@@ -28,7 +28,6 @@
 	}
 
 	.profile-header{
-		background-color: white;
 		font-weight: bold;
 		text-align: center;
 		padding: 1rem 0;

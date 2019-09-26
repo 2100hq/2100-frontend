@@ -119,8 +119,8 @@ export default function Profile (props) {
   return (
     <div className='profile'>
       {isNewUser && <NewUserWelcome clearNewUser={clearNewUser}/>}
-      <span className='back-button'>
-        <Link to='/'><i class="fas fa-arrow-circle-left"></i></Link> Profile
+      <span className='context-bar'>
+        <Link to='/'><i class="fas fa-arrow-circle-left"></i></Link>
       </span>
       <ProfileHeader token={token} />
       <div className='profile-body'>
