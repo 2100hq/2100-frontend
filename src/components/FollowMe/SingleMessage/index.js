@@ -102,20 +102,18 @@ function CommentForm({message, onSubmitted}){
   }
 
   return (
-    <Row className='comment-form'>
-      <Col md='12'>
-      <Form onSubmit={handleSubmit}>
-       <Form.Group controlId="comment">
-        <InputGroup>
-          <Form.Control inline as="textarea" rows="1" value={comment || ''} onChange={setComment} disabled={isDisabled ? 'disabled' : null} placeholder={placeholder}/>
-          <InputGroup.Append>
-          <Button onClick={handleSubmit} disabled={isDisabled || isEmpty(comment)}>Send{isSubmitting && 'ting'}</Button>
-          </InputGroup.Append>
-        </InputGroup>
-        </Form.Group>
-      </Form>
-      </Col>
-    </Row>
+      <Row className='comment-form-area no-gutters justify-content-center align-items-center'>
+        <Col md='8'>
+        <Form onSubmit={handleSubmit}>
+         <Form.Group controlId="comment">
+          <InputGroup>
+            <Form.Control inline as="input" rows="1" value={comment || ''} onChange={setComment} disabled={isDisabled ? 'disabled' : null} placeholder={placeholder}/>
+            <div className='custom-submit' onClick={handleSubmit} disabled={isDisabled || isEmpty(comment)}><i class="fas fa-angle-double-up"></i>{isSubmitting && 'ting'}</div>
+          </InputGroup>
+          </Form.Group>
+        </Form>
+        </Col>
+      </Row>
   )
 }
 
