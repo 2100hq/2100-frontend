@@ -4,7 +4,8 @@ import { matchPath } from 'react-router'
 
 import Main from './components/Main'
 import Portfolio from './components/Portfolio'
-import Profile from './components/Profile'
+import ProfilePage from './components/ProfilePage'
+import SingleMessagePage from './components/SingleMessagePage'
 import Onboarding from './components/Onboarding'
 import Nav from './components/Nav'
 import Breakpoints from './components/Breakpoints'
@@ -53,15 +54,8 @@ function App(){
                         <CreateMessageButton />
                       {/* follow me */}
                       <Switch>
-                        <Route exact path='/:username([$].*)' render = {
-                          props => {
-                            const isMessageMatch = matchPath(props.location.pathname, routeConfigs.message)
-                            let {match} = props
-                            if (isMessageMatch) match = isMessageMatch
-                            props = {...props, match}
-                            return <Profile {...props} />
-                          }
-                        } />
+                        <Route exact path='/:username([$]{1,1}[a-zA-Z0-9_]+)/:messageid' component={SingleMessagePage} />
+                        <Route exact path='/:username([$]{1,1}[a-zA-Z0-9_]+)' component={ProfilePage} />
                         <Route render={ props => <Sidebar onChangePage={onChangePage} {...props} /> } />
                       </Switch>
                   </Col>
