@@ -9,10 +9,30 @@ $message-margin: 0.3rem;
 	margin-right: 0px;
 	padding: 1rem;
 
+	.decode-button {
+		background: #fff;
+		border: 1px solid #2AC88F;
+		color: #2AC88F;
+		transition: all 0.3s ease-in-out;
+		padding-top: 4px;
+		padding-bottom: 3px;
+		&:hover {
+			border-color: 1px solid #2AC88F;
+			background-color: #2AC88F;
+			color: #fff;
+		}
+	}
+
+	.comment-bubble {
+		background-color: #fff8db !important;
+	}
+
 	.message-time{
+		font-family: "Inter UI", sans-serif;
 		display: block;
-		padding-top: 5px;
-		font-size: 0.7rem;
+		font-weight: 300;
+		margin-top: 7px;
+		font-size: 0.6rem;
 	}
 
 	.fab .fa-twitter {
@@ -36,8 +56,9 @@ $message-margin: 0.3rem;
 
 	.message-header{
 		.message-hint{
+			font-family: "Noto Serif JP", serif;
 			font-weight: 700;
-			font-size: 1rem;
+			font-size: 1.2rem;
 			cursor: pointer;
 			&:hover{
 				text-decoration: underline;

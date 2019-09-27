@@ -14,6 +14,8 @@ $theme-colors: (
 @import "node_modules/bootstrap/scss/_variables.scss";
 @import "node_modules/bootstrap/scss/mixins/_breakpoints.scss";
 
+@import url('https://rsms.me/inter/inter.css');
+
 html{
 	height: 100%;
 }
@@ -34,7 +36,6 @@ hr {
 	height: 2px;
 	background-color: #F3F6F6;
 }
-
 
 .container-fluid{
 	height: 100%;
@@ -103,7 +104,18 @@ hr {
 
 }
 
+.enough-to-decode {
+	font-family: "Inter UI";
+	font-weight: 300;
+	font-size: 14px;
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: center;
+	justify-content: flex-start;
+}
+
 .badge {
+	font-family: "Inter UI", sans-serif;
 	font-weight: 500;
 	padding: 4px;
 	margin: 3px;
@@ -111,8 +123,22 @@ hr {
 	background: #f3f3f3;
 }
 
+.badge-pill {
+	min-height: 26px;
+	padding: 4px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-flow: row nowrap;
+}
+
+.far.fa-comment {
+	padding-left: 2px;
+	padding-right: 3px;
+}
+
 .font-weight-bold {
-	background: #7bffa72d
+	background: #b6ffce2d
 }
 
 .token-name{

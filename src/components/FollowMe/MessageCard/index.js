@@ -172,7 +172,9 @@ function DecodeThreshold({ name, token, message, isSignedIn, actions }) {
   if (diff.lte(0))
     return (
       <span>
-        you have enough <span className="token-name">{name}</span> to{" "}
+        <span>you have enough&nbsp;</span>
+        <span className="token-name">{name}</span>
+        <span>&nbsp;to&nbsp;</span>
         <a
           className="decode-button badge badge-success"
           href="#"
@@ -368,7 +370,7 @@ function MemeMessageBody({ message, decodeThreshold }) {
 function CommentBubble({ message, canComment, onClick = () => {} }) {
   if (message.parentid) return null; // can't comment on a comment
   return (
-    <a className="badge badge-light" href="#" onClick={onClick}>
+    <a className="badge badge-pill badge-light comment-bubble" href="#" onClick={onClick}>
       <i class="far fa-comment"></i> {message.childCount || 0}
     </a>
   );
@@ -496,7 +498,7 @@ export default function MessageCard({
   );
 
   const decodeThreshold = message.hidden ? (
-    <div className="hidden-text">
+    <div className="hidden-text enough-to-decode">
       <DecodeThreshold
         name={token.name}
         token={token}
@@ -562,7 +564,7 @@ export default function MessageCard({
             <span className="badge badge-pill badge-light">
               <HoldersProfiles
                 prefix=""
-                suffix="decoding"
+                suffix="staking"
                 noholderstext="0 "
                 holders={Object.entries(token.stakes || {})
                   .filter(
