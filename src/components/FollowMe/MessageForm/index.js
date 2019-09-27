@@ -148,7 +148,7 @@ export default function MessageForm({onSubmitted}){
   const [error, setError] = useState()
   const [contentLevel, setContentLevel] = useState(0)
 
-  const [threshold, setThreshold] = useState(useMemo(() => fromDecimals("0.00021"), []))
+  const [threshold, setThreshold] = useState(fromDecimals("0.00021"))
 
   const [recipientCount, setRecipientCount] = useState(0)
   const [recipients, setRecipients] = useState([])
