@@ -49,9 +49,6 @@ export default function SingleMessagePage (props) {
       <div className='context-bar'>
         <Link to='/'><i class="fas fa-arrow-circle-left"></i></Link> Viewing a single post
       </div>
-      <div className='mini-profile'>
-        <ProfileImage token={token}/>
-      </div>
         <FollowMeSingleMessage token={token} messageid={messageid} />
     </div>
   )
