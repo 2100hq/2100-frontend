@@ -2,11 +2,6 @@
     max-width: 55px;
     max-height: 55px;
     border-radius: 50%;
-    transition: transform 0.3s ease-in-out;
-
-    &:hover {
-      transform: translateY(-3px);
-    }
     
   	&.pulse{
       border-radius: 50%;
