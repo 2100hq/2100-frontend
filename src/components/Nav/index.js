@@ -5,8 +5,8 @@ import { toDecimals } from '../../utils'
 import User from './User'
 import {Row, Col, Card} from 'react-bootstrap'
 import ProfileImage from '../ProfileImage'
+import DataFeed from '../DataFeed'
 import './style.scss'
-
 const isDev = !/alpha/.test(window.location.href)
 
 function ProtectedNavItem ({state, children}) {
@@ -16,9 +16,9 @@ function ProtectedNavItem ({state, children}) {
 
 function Logo(){
   return(
-    <>
+    <React.Fragment>
     <img className='logo' src='/img/logo9.png' />
-    </>
+    </React.Fragment>
     )
 }
 
@@ -31,10 +31,10 @@ function NavBrand(){
   return <Link to='/' className='navbar-brand'>{query.getMyToken().name}</Link>
 }
 
+
 export default function Nav (props) {
-  const { state, query } = useStoreContext()
   return (
-    <>
+    <React.Fragment>
       <div style={{textAlign: 'center'}}>
         <div className='our-brand'>
           <Link to='/'><Logo /></Link>
@@ -44,30 +44,8 @@ export default function Nav (props) {
         </ul>
       </div>
       <hr/>
-      <Row className='no-gutters justify-content-center'>
-        <Col md='10'>
-        <div className='time-to-reward'>30s to next reward</div>
-        </Col>
-      </Row>
-      <hr/>
-      <Row className='user-data-feed no-gutters justify-content-center small'>
-        <Col md='10'>
-          <h6>Latest rewards</h6>
-          <Row className='asset-earnings no-gutters'>
-            <Col md='2'>
-              <ProfileImage token='fehrsam'/>
-            </Col>
-            <Col md='10' style={{paddingLeft: '0.5rem'}}>
-              <div><strong>$fehrsam</strong></div>
-              <div>you earned:</div>
-              <div>0.0003 $fehrsam (4th)</div>
-              <div>top staker: <br/> $brttb</div>
-            </Col>
-          </Row>
-          <hr/>
-        </Col>
-      </Row>
-    </>
+      <DataFeed />
+    </React.Fragment>
     )
 
  {/*    <nav className='navbar navbar-expand-lg navbar-light'>
