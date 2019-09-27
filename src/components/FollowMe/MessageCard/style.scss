@@ -21,11 +21,10 @@ $message-margin: 0.3rem;
 	}
 
 	&.message-hidden{
-		background-color: #FFF;
+		background-color: #fff;
 	}
 
 	&:not(.message-hidden){
-		background-color: #FFF;
 		.message-body{
 			padding: 0.5rem;
 		}
@@ -61,7 +60,7 @@ $message-margin: 0.3rem;
 					rgba(0,0,0,0.05) 10px,
 					rgba(0,0,0,0.05) 20px
 					);
-				border-radius: 2px;
+				border-radius: $twentyoneborderradius;
 				&.r1{
 					width: 100px;
 				}

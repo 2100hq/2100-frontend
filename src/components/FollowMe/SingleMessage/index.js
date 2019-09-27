@@ -54,8 +54,6 @@ function Comment({comment, username, onDestroyed}){
     message = (
        <div className='fake-hidden-message'>
          <div className='rectangle r1'></div>
-         <div className='rectangle r2'></div>
-         <div className='rectangle r3'></div>
        </div>
     )
   }
@@ -66,17 +64,19 @@ function Comment({comment, username, onDestroyed}){
   return (
     <div className={classNames.join(' ')}>
       <Destroy comment={comment} onDestroying={setIsDestroying} onDestroyed={onDestroyed}/>
-      <Row className='no-gutters align-items-center'>
-        <Col md='1'>{face}</Col>
-        <Col>
-          ${name}
-        </Col>
-      </Row>
-      <Row className='no-gutters align-items-center'>
-        <Col md={{ span: 11, offset: 1 }}>
-          {message}
-          <div className="small text-muted">{ms(Date.now()-comment.created)} ago</div>
-        </Col>
+      <Row className='align-items-center justify-content-center'>
+      <Col md='1' className='single-comment-profile'>
+        {face}
+      </Col>
+      <Col md='10' className='single-comment-row'>
+        <div className='single-comment speech-bubble'>
+          <div className='single-comment-header'>
+          <span className='username'>${name}</span>
+          </div>
+          <div className='single-comment-body'>{message}</div>
+          <span className='ago text-muted'>{ms(Date.now()-comment.created)}</span>
+        </div>
+      </Col>
       </Row>
     </div>
   )
@@ -102,20 +102,18 @@ function CommentForm({message, onSubmitted}){
   }
 
   return (
-    <Row className='comment-form'>
-      <Col md='12'>
-      <Form onSubmit={handleSubmit}>
-       <Form.Group controlId="comment">
-        <InputGroup>
-          <Form.Control inline as="textarea" rows="1" value={comment || ''} onChange={setComment} disabled={isDisabled ? 'disabled' : null} placeholder={placeholder}/>
-          <InputGroup.Append>
-          <Button onClick={handleSubmit} disabled={isDisabled || isEmpty(comment)}>Send{isSubmitting && 'ting'}</Button>
-          </InputGroup.Append>
-        </InputGroup>
-        </Form.Group>
-      </Form>
-      </Col>
-    </Row>
+      <Row className='comment-form-area no-gutters justify-content-center align-items-center'>
+        <Col md='8'>
+        <Form onSubmit={handleSubmit}>
+         <Form.Group controlId="comment">
+          <InputGroup>
+            <Form.Control inline as="input" rows="1" value={comment || ''} onChange={setComment} disabled={isDisabled ? 'disabled' : null} placeholder={placeholder}/>
+            <div className='custom-submit' onClick={handleSubmit} disabled={isDisabled || isEmpty(comment)}><i class="fas fa-arrow-up"></i>{isSubmitting && 'ting'}</div>
+          </InputGroup>
+          </Form.Group>
+        </Form>
+        </Col>
+      </Row>
   )
 }
 

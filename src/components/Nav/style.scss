@@ -6,8 +6,8 @@
 }
 
 .logo{
-	max-width: 5rem;
 	margin-top: 2rem;
+	max-width: 75px;
 }
 
 .nav-link.active {
@@ -54,5 +54,10 @@
 		list-style: none;
 		padding: 0;
 		margin: 0;
+	}
+
+	.asset-earnings{
+		font-size: 0.75rem;
+		margin: 0.25rem 0;
 	}
 }

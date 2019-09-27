@@ -41,8 +41,8 @@
     padding-left: 20px;
     font-size: 12px;
     width: 80%;
-    border-radius: 5px;
-    border: 1px solid #eee;
+    border-radius: 25px;
+    border: 1px solid #ddd;
   }
 }
 
@@ -52,6 +52,7 @@
   color: #444;
   background-color: white;
   margin: 2px;
+
 
   &.editing{
     cursor: default;
@@ -90,7 +91,7 @@
   }
 
   &.selected{
-    background-color: rgba(0,0,0,0.02);
+    background-color: #F3F6F6;
     color: #000;
 
   }

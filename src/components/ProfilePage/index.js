@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import FollowMeProfileFeed from '../FollowMe/ProfileFeed'
-import FollowMeSingleMessage from '../FollowMe/SingleMessage'
+
 import { Route } from "react-router-dom";
 import Allocator from '../Allocator'
 import ProfileImage from '../ProfileImage'
@@ -10,6 +10,7 @@ import { Redirect }  from 'react-router-dom'
 import { useStoreContext } from '../../contexts/Store'
 import { Button, Form, Col, Row, Card } from 'react-bootstrap'
 import Confetti from 'react-confetti'
+import ProfileHeader from '../ProfileHeader'
 import './style.scss'
 
 function NewUserWelcome({clearNewUser}){
@@ -116,45 +117,15 @@ export default function Profile (props) {
 
 
   return (
-  <div className='profile'>
-    {isNewUser && <NewUserWelcome clearNewUser={clearNewUser}/>}
-    <span className='back-button'>
-      <Link to='/'><i class="fas fa-arrow-circle-left"></i></Link> viewing a single post
-    </span>
-    <div className='profile-header align-items-center justify-content-center'>
-      <div className='col-auto'>
-          <ProfileImage token={token}/>
-          <div className='token-stakes'>
-            <img src='../img/dai.png' style={{ width: '16px','vertical-align': 'baseline' }} /> {toDecimals(token.totalStakes)} staking
-          </div>
-          <div className='token-name'>
-            {token.name}
-          </div>
-          <div className='token-url small text-muted'>
-            <a href={`https://twitter.com/${token.name}`}>{`twitter.com/${token.name}`}</a>
-          </div>
+    <div className='profile'>
+      {isNewUser && <NewUserWelcome clearNewUser={clearNewUser}/>}
+      <span className='context-bar'>
+        <Link to='/'><i class="fas fa-arrow-circle-left"></i></Link>
+      </span>
+      <ProfileHeader token={token} />
+      <div className='profile-body'>
+        <FollowMeProfileFeed token={token} />
       </div>
     </div>
-    <div className='profile-body'>
-      { messageid ? <FollowMeSingleMessage messageid={messageid} token={token}/> : <FollowMeProfileFeed token={token} /> }
-    </div>
-
-  </div>
   )
-  // return (
-  //   <div className='row justify-content-center'>
-  //   	<div className='col-md-6'>
-  //   		<div style={{marginTop:'2rem'}} className={`profile ${!hasDescription && 'no-description'}`}>
-		// 			<h1><span className='token-name'>{token.name}</span></h1>
-		// 			<Description description={description} isMyToken={isMyToken} token={token}/>
-		// 			{isSignedIn && <Allocator token={token}/> }
-		// 			<div>
-  //       <img src='../img/dai.png' style={{ width: '14px','vertical-align': 'baseline' }} /> <span className='text-muted'>{stakeText}</span>
-		// 			</div>
-		// 			<hr/>
-  //         { messageid ? <FollowMeSingleMessage messageid={messageid} token={token}/> : <FollowMeProfileFeed token={token} />}
-  //   		</div>
-  //   	</div>
-  //   </div>
-  // )
 }
