@@ -141,14 +141,14 @@ export default function FollowMeProvider ({ children }) {
   }, [socket.network.loading])
 
   function socketUpdate(channel, dispatch){
-    console.log(channel)
+    // console.log(channel)
     return events => {
       events = events.map( event => {
         event[0].unshift(channel)
         return event
       })
-      console.log();
-      console.log(events);
+      // console.log();
+      // console.log(events);
 
       dispatch(actions.batchUpdate(events))
     }

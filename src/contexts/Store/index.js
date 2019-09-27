@@ -44,6 +44,19 @@ function socketUpdate (channel, dispatch) {
   }
 }
 
+function updateStates (dispatch){
+  return events => {
+    events.forEach( event => {
+      const path = event[0]
+      const data = event[1]
+      if (path.length === 0) {
+        const {earned: {latest: earned}} = data
+        delete earned['2100']
+      }
+    })
+  }
+}
+
 let dispatcher
 
 export default function StoreProvider ({ children }) {
@@ -58,7 +71,6 @@ export default function StoreProvider ({ children }) {
     auth: { token: localStorage.getItem('token')},
     view: config.defaultView
   })
-
   // useEffect( () => {
   //   console.log(new Date().toISOString(), 'LATEST BLOCK', get(privState, 'public.latestBlock.number'))
   // }, [get(privState, 'public.latestBlock.number')])
@@ -70,6 +82,8 @@ export default function StoreProvider ({ children }) {
     socket.listen('public', socketUpdate('public', dispatch))
     socket.listen('auth', socketUpdate('auth', dispatch))
     socket.listen('admin', socketUpdate('admin', dispatch))
+    socket.listen('stats', socketUpdate('stats', dispatch))
+    socket.auth('joinStats')
   }, [socket.network.loading])
 
   // add network info to private state
