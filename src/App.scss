@@ -35,6 +35,12 @@ body{
 	background-color: #F3F6F6;
 }
 
+hr {
+	border: none;
+	height: 2px;
+	background-color: #F3F6F6;
+}
+
 
 .container-fluid{
 	height: 100%;
@@ -78,9 +84,8 @@ body{
 			border-radius: 50%;
 			background-color: white;
 			color:$twentyoneprimary;
-			box-shadow: 3px 3px 3px 3px rgba(0,0,0,0.3);
+			box-shadow: 3px 3px 20px 15px rgba(0,0,0,0.05);
 			transition: opacity 0.2s linear;
-			border: 3px solid $twentyoneprimary;
 
 
 			&:hover{
@@ -102,6 +107,18 @@ body{
 
 	// transition: opacity 0.2s linear;
 
+}
+
+.badge {
+	font-weight: 500;
+	padding: 4px;
+	margin: 3px;
+	border-radius: 3px;
+	background: #f3f3f3;
+}
+
+.font-weight-bold {
+	background: #7bffa72d
 }
 
 .token-name{

@@ -1,66 +1,74 @@
-import React, {useState, useEffect } from 'react'
-import {useStoreContext} from '../../../contexts/Store'
-import {get, shuffle} from 'lodash'
-import { BigNumber, toDecimals, weiDecimals } from '../../../utils'
-import history from '../../../utils/history'
-import { Link } from 'react-router-dom'
-import ms from 'ms'
-import { CopyToClipboard } from 'react-copy-to-clipboard'
-import ProfileImage from '../../ProfileImage'
-import StatusDot from '../StatusDot'
-import HoldersProfiles from '../HoldersProfiles'
-import {Row, Col} from 'react-bootstrap'
-import * as linkify from 'linkifyjs';
-import Linkify from 'linkifyjs/react';
-import YouTube from 'react-youtube';
-import { TwitterTweetEmbed } from 'react-twitter-embed';
-import Meme from '../../Meme'
-import memeTypes from '../memeTypes'
-import clickHandler from '../../../utils/clickHandler'
+import React, { useState, useEffect } from "react";
+import { useStoreContext } from "../../../contexts/Store";
+import { get, shuffle } from "lodash";
+import { BigNumber, toDecimals, weiDecimals } from "../../../utils";
+import history from "../../../utils/history";
+import { Link } from "react-router-dom";
+import ms from "ms";
+import { CopyToClipboard } from "react-copy-to-clipboard";
+import ProfileImage from "../../ProfileImage";
+import StatusDot from "../StatusDot";
+import HoldersProfiles from "../HoldersProfiles";
+import { Row, Col } from "react-bootstrap";
+import * as linkify from "linkifyjs";
+import Linkify from "linkifyjs/react";
+import YouTube from "react-youtube";
+import { TwitterTweetEmbed } from "react-twitter-embed";
+import Meme from "../../Meme";
+import memeTypes from "../memeTypes";
+import clickHandler from "../../../utils/clickHandler";
 
-import './style.scss'
+import "./style.scss";
 
-const nodeURL = require('url');
+const nodeURL = require("url");
 
-function CharReveal({encrypted,decrypted,length,reveal}){
+function CharReveal({ encrypted, decrypted, length, reveal }) {
+  const [step, setStep] = useState(-1);
 
-  const [step, setStep] = useState(-1)
-
-  const [shuffled] = useState(
-    shuffle([...Array(length).keys()])
-  )
-  const [randStart] = useState(Math.floor(Math.random()*100))
-  if (decrypted === 'priv2') console.log(step, length, shuffled,shuffled.length)
-  useEffect( () => {
-    if (decrypted === 'priv2') console.log('effect')
-    if (!reveal) return
-    if (step >= shuffled.length) return
+  const [shuffled] = useState(shuffle([...Array(length).keys()]));
+  const [randStart] = useState(Math.floor(Math.random() * 100));
+  if (decrypted === "priv2")
+    console.log(step, length, shuffled, shuffled.length);
+  useEffect(() => {
+    if (decrypted === "priv2") console.log("effect");
+    if (!reveal) return;
+    if (step >= shuffled.length) return;
     if (step === -1) {
-      setTimeout(setStep,randStart,step+1)
-      return
+      setTimeout(setStep, randStart, step + 1);
+      return;
     }
-    setTimeout(setStep,10,step+1)
-    return
-  },[reveal, step])
-// if (decrypted !== 'priv2') return null
-  const encLength = encrypted.length
-  const message = []
+    setTimeout(setStep, 10, step + 1);
+    return;
+  }, [reveal, step]);
+  // if (decrypted !== 'priv2') return null
+  const encLength = encrypted.length;
+  const message = [];
 
-  return decrypted.split('').map( (char, i) => {
-    const j = i % encLength
-    console.log(char, i)
-    if (/\s/.test(char)){
-      console.log('found space')
-      return char
-    }
-    console.log('current step',step)
-    if (step === -1) return encrypted[j]
-    for (let s = 0; s < step+1; s++){
-      console.log(shuffled[s] === i,shuffled,s,shuffled[s],i,decrypted[i])
-      if (shuffled[s] === i) return decrypted[i]
-    }
-    return encrypted[j]
-  }).join('')
+  return decrypted
+    .split("")
+    .map((char, i) => {
+      const j = i % encLength;
+      console.log(char, i);
+      if (/\s/.test(char)) {
+        console.log("found space");
+        return char;
+      }
+      console.log("current step", step);
+      if (step === -1) return encrypted[j];
+      for (let s = 0; s < step + 1; s++) {
+        console.log(
+          shuffled[s] === i,
+          shuffled,
+          s,
+          shuffled[s],
+          i,
+          decrypted[i]
+        );
+        if (shuffled[s] === i) return decrypted[i];
+      }
+      return encrypted[j];
+    })
+    .join("");
   //
 
   // const [intervalId, setIntervalId] = useState()
@@ -84,236 +92,367 @@ function CharReveal({encrypted,decrypted,length,reveal}){
   // )
 }
 
-function DecodeThreshold({name, token, message, isSignedIn, actions}){
+function DecodeThreshold({ name, token, message, isSignedIn, actions }) {
   /* 4 states
    - Not signed in
    - Signed in, not staking
    - Signed in, staking (not able to decode)
    - Signed in, able to decode
   */
-  const [decoding, setDecoding] = useState(false)
+  const [decoding, setDecoding] = useState(false);
 
-  if (!isSignedIn) return <span>hold <span className='font-weight-bold'><span className='amount-underline'>{toDecimals(message.threshold,3,0)}</span> ${name} </span>to decode</span>
+  if (!isSignedIn)
+    return (
+      <span>
+        hold{" "}
+        <span className="font-weight-bold">
+          <span className="amount-underline">
+            {toDecimals(message.threshold, 3, 0)}
+          </span>{" "}
+          ${name}{" "}
+        </span>
+        to decode
+      </span>
+    );
 
-  const available = get(token, 'balances.available', "0")
-  const diff = BigNumber(message.threshold).minus(available)
-  const isStaking = BigNumber(token.myStake).gt(0)
-  let timeToDecode = null
+  const available = get(token, "balances.available", "0");
+  const diff = BigNumber(message.threshold).minus(available);
+  const isStaking = BigNumber(token.myStake).gt(0);
+  let timeToDecode = null;
 
-  async function decodeMessage(id){
-    setDecoding(true)
-    const resp = await actions.decodeMessage(id)
-    setDecoding(false)
+  async function decodeMessage(id) {
+    setDecoding(true);
+    const resp = await actions.decodeMessage(id);
+    setDecoding(false);
   }
 
-  if (isStaking && diff.gt(0)){
-    const divisor = BigNumber(token.myStake).div(token.totalStakes).times(0.9).times(0.00021).times(5).times(weiDecimals)
-    const blocks = diff.div(divisor).dp(0,0).toNumber()
-    timeToDecode = (<span>({ms(blocks*15000*5)})</span>)
+  if (isStaking && diff.gt(0)) {
+    const divisor = BigNumber(token.myStake)
+      .div(token.totalStakes)
+      .times(0.9)
+      .times(0.00021)
+      .times(5)
+      .times(weiDecimals);
+    const blocks = diff
+      .div(divisor)
+      .dp(0, 0)
+      .toNumber();
+    timeToDecode = <span>({ms(blocks * 15000 * 5)})</span>;
   } else {
-    const total = BigNumber("10").times(weiDecimals)
-    const divisor = total.div(BigNumber(token.totalStakes||"1").plus(total)).times(0.9).times(0.00021).times(5).times(weiDecimals)
-    const blocks = diff.div(divisor).dp(0,0).toNumber()
-    timeToDecode = (<span>({ms(blocks*15000*5)})</span>)
+    const total = BigNumber("10").times(weiDecimals);
+    const divisor = total
+      .div(BigNumber(token.totalStakes || "1").plus(total))
+      .times(0.9)
+      .times(0.00021)
+      .times(5)
+      .times(weiDecimals);
+    const blocks = diff
+      .div(divisor)
+      .dp(0, 0)
+      .toNumber();
+    timeToDecode = <span>({ms(blocks * 15000 * 5)})</span>;
   }
 
+  if (diff.gt(0) && isStaking)
+    return (
+      <span>
+        {" "}
+        {toDecimals(diff, 3, 0)}{" "}
+        <span className="token-name">{name} to go</span> {timeToDecode}
+      </span>
+    );
 
+  if (decoding)
+    return (
+      <span>
+        <i class="fas fa-exclamation"></i> decoding...
+      </span>
+    );
 
-  if (diff.gt(0) && isStaking) return <span> {toDecimals(diff, 3, 0)} <span className='token-name'>{name} to go</span> {timeToDecode}</span>
+  if (diff.lte(0))
+    return (
+      <span>
+        you have enough <span className="token-name">{name}</span> to{" "}
+        <a
+          className="decode-button badge badge-success"
+          href="#"
+          onClick={clickHandler(decodeMessage, message.id)}
+        >
+          decode
+        </a>
+      </span>
+    );
 
-  if (decoding) return <span><i class="fas fa-exclamation"></i> decoding...</span>
-
-  if (diff.lte(0)) return <span>you have enough <span className='token-name'>{name}</span> to <a className='decode-button badge badge-success' href="#" onClick={clickHandler(decodeMessage, message.id)}>decode</a></span>
-
-  if (!isStaking) return <span>hold <span className='font-weight-bold'><span className='amount-underline'>{toDecimals(message.threshold,3,0)}</span> ${name}</span> to see {timeToDecode}</span>
+  if (!isStaking)
+    return (
+      <span>
+        hold{" "}
+        <span className="font-weight-bold">
+          <span className="amount-underline">
+            {toDecimals(message.threshold, 3, 0)}
+          </span>{" "}
+          ${name}
+        </span>{" "}
+        to see {timeToDecode}
+      </span>
+    );
 }
 
-function EncryptedMessage({encrypted, decrypted}){
-  if (encrypted === decrypted) return encrypted
-  const encLengh = encrypted.length
-  return decrypted.slice(0,240).split('').map( (char, i) => {
-    const j = i % encLengh
-    if (/\s/.test(char) || i % 15 === 0) return ' '
-    return encrypted[j]
-  }).join('')
+function EncryptedMessage({ encrypted, decrypted }) {
+  if (encrypted === decrypted) return encrypted;
+  const encLengh = encrypted.length;
+  return decrypted
+    .slice(0, 240)
+    .split("")
+    .map((char, i) => {
+      const j = i % encLengh;
+      if (/\s/.test(char) || i % 15 === 0) return " ";
+      return encrypted[j];
+    })
+    .join("");
 }
 
-function DecryptMessage({children}){
-   let delay = 1000
-   const [reveal, setReveal] = useState(false)
-   const gifs = ['https://media.giphy.com/media/wcjtdRkYDK0sU/giphy.gif', 'https://media.giphy.com/media/VGuAZNdkPUpEY/giphy.gif', 'https://media.giphy.com/media/l3q2LuW8lGMfSMKlO/200w_d.gif', 'https://media.giphy.com/media/4T1NFafropdQOrBYw6/200w_d.gif', 'https://media.giphy.com/media/olN2N0iROsYow/giphy-downsized.gif']
-   const [gifIndex] = useState(Math.floor(Math.random()*gifs.length))
-   useEffect( () => {
-     setTimeout(setReveal,delay, true)
-     return
-   },[])
-   if (!reveal) return <img className='decoding' src={gifs[gifIndex]} />
-   return children
+function DecryptMessage({ children }) {
+  let delay = 1000;
+  const [reveal, setReveal] = useState(false);
+  const gifs = [
+    "https://media.giphy.com/media/wcjtdRkYDK0sU/giphy.gif",
+    "https://media.giphy.com/media/VGuAZNdkPUpEY/giphy.gif",
+    "https://media.giphy.com/media/l3q2LuW8lGMfSMKlO/200w_d.gif",
+    "https://media.giphy.com/media/4T1NFafropdQOrBYw6/200w_d.gif",
+    "https://media.giphy.com/media/olN2N0iROsYow/giphy-downsized.gif"
+  ];
+  const [gifIndex] = useState(Math.floor(Math.random() * gifs.length));
+  useEffect(() => {
+    setTimeout(setReveal, delay, true);
+    return;
+  }, []);
+  if (!reveal) return <img className="decoding" src={gifs[gifIndex]} />;
+  return children;
 }
 
-function HiddenMessage({message}){
+function HiddenMessage({ message }) {
   return (
-    <div className='fake-hidden-message'>
-      <div className='rectangle r1'></div>
-      <div className='rectangle r2'></div>
-      <div className='rectangle r3'></div>
+    <div className="fake-hidden-message">
+      <div className="rectangle r1"></div>
+      <div className="rectangle r2"></div>
+      <div className="rectangle r3"></div>
     </div>
-  )
+  );
 }
 
-function MessageIcon({message}){
-  switch(message.type.replace(/:.*/,'')) {
-    case 'image':
-      return <i className={'fas fa-image'} />
-    case 'imgur':
-      return <i className={'fas fa-image'} />
-    case 'video':
-      return <i className={'fas fa-video'} />
-    case 'youtube':
-      return <i className={'fab fa-youtube'} />
-    case 'twitter':
-      return <i className={'fab fa-twitter'} />
-    case 'gift':
-      return <i className={'fas fa-gift'} />
-    case 'meme':
-      return <i class="far fa-comment-alt"></i>
-    case 'link':
-      return <i class="fas fa-link"></i>
+function MessageIcon({ message }) {
+  switch (message.type.replace(/:.*/, "")) {
+    case "image":
+      return <i className={"fas fa-image"} />;
+    case "imgur":
+      return <i className={"fas fa-image"} />;
+    case "video":
+      return <i className={"fas fa-video"} />;
+    case "youtube":
+      return <i className={"fab fa-youtube"} />;
+    case "twitter":
+      return <i className={"fab fa-twitter"} />;
+    case "gift":
+      return <i className={"fas fa-gift"} />;
+    case "meme":
+      return <i class="far fa-comment-alt"></i>;
+    case "link":
+      return <i class="fas fa-link"></i>;
     default:
-      return <i className={'fas fa-align-left'} />
+      return <i className={"fas fa-align-left"} />;
   }
 }
 
-function VisibleMessageImage({message}){
-  return <img src={message.link} style={{width: '100%', maxWidth: '450px'}} />
+function VisibleMessageImage({ message }) {
+  return (
+    <img src={message.link} style={{ width: "100%", maxWidth: "450px" }} />
+  );
 }
 
-function VisibleMessageYoutube({message}){
-  const matches = message.link.match(/^.*(youtu.be\/|v\/|e\/|u\/\w+\/|embed\/|v=)([^#\&\?]*).*/)
-  const videoId = matches[matches.length-1]
-  return <div style={{width: '100%', maxWidth: '450px'}}><YouTube videoId={videoId} /></div>
+function VisibleMessageYoutube({ message }) {
+  const matches = message.link.match(
+    /^.*(youtu.be\/|v\/|e\/|u\/\w+\/|embed\/|v=)([^#\&\?]*).*/
+  );
+  const videoId = matches[matches.length - 1];
+  return (
+    <div style={{ width: "100%", maxWidth: "450px" }}>
+      <YouTube videoId={videoId} />
+    </div>
+  );
 }
 
-function VisibleMessageTwitter({message}){
-  const tweetId = nodeURL.parse(message.link).pathname.split('/')[3]
+function VisibleMessageTwitter({ message }) {
+  const tweetId = nodeURL.parse(message.link).pathname.split("/")[3];
 
-  return <TwitterTweetEmbed tweetId={tweetId} />
+  return <TwitterTweetEmbed tweetId={tweetId} />;
 }
 
-function VisibleMessageVideo({message}){
-  let videourl = message.link.replace('.gifv', '.mp4');
+function VisibleMessageVideo({ message }) {
+  let videourl = message.link.replace(".gifv", ".mp4");
   return (
     <video controls loop="true" autoplay="true" muted="true">
       <source src={videourl} />
       Your browser does not support video
     </video>
-  )
+  );
 }
 
-function VisibleMessage({message}){
-  let messageComponent = null
-  switch(message.type) {
-    case 'image':
-      messageComponent = <VisibleMessageImage message={message} />
-      break
-    case 'youtube':
-      messageComponent = <VisibleMessageYoutube message={message} />
-      break
-    case 'twitter':
-      messageComponent = <VisibleMessageTwitter message={message} />
-      break
-    case 'video':
-      messageComponent = <VisibleMessageVideo message={message} />
-      break
-    case 'imgur':
-      messageComponent = <VisibleMessageVideo message={message} />
-      break
+function VisibleMessage({ message }) {
+  let messageComponent = null;
+  switch (message.type) {
+    case "image":
+      messageComponent = <VisibleMessageImage message={message} />;
+      break;
+    case "youtube":
+      messageComponent = <VisibleMessageYoutube message={message} />;
+      break;
+    case "twitter":
+      messageComponent = <VisibleMessageTwitter message={message} />;
+      break;
+    case "video":
+      messageComponent = <VisibleMessageVideo message={message} />;
+      break;
+    case "imgur":
+      messageComponent = <VisibleMessageVideo message={message} />;
+      break;
     default:
-      messageComponent = <Linkify>{message.message}</Linkify>
-      break
+      messageComponent = <Linkify>{message.message}</Linkify>;
+      break;
   }
-  if (!message.decoded) return messageComponent
-  return <DecryptMessage>{messageComponent}</DecryptMessage>
+  if (!message.decoded) return messageComponent;
+  return <DecryptMessage>{messageComponent}</DecryptMessage>;
 }
 
-function MemeMessageBody({message, decodeThreshold}){
-    const memeKey = message.type.replace('meme:', '')
-    const memeData = memeTypes.find( data => data.key === memeKey) || {url: "https://sitechecker.pro/wp-content/uploads/2017/12/404.png"}
-    let messageComponent = null
-    if (message.hidden){
-      messageComponent = <Meme toptext={message.hint} bottomtext={message.id.replace(/-/g,'').toUpperCase().slice(0,20)} url={memeData.url} />
-    } else {
-      messageComponent = <Meme toptext={message.hint} bottomtext={message.message} url={memeData.url} />
-      if (message.decoded) messageComponent = <DecryptMessage>{messageComponent}</DecryptMessage>
-    }
-   return (
-     <React.Fragment>
-       <Col md="1" className='content-type-hint'>
-         <MessageIcon message={message} />
-       </Col>
-       <Col md="9 ml-2">
-         <div className='message-target'>{messageComponent}</div>
-         {decodeThreshold}
-       </Col>
-     </React.Fragment>
-   )
-}
-
-function CommentBubble({message, canComment, onClick=()=>{}}){
-  if (message.parentid) return null // can't comment on a comment
+function MemeMessageBody({ message, decodeThreshold }) {
+  const memeKey = message.type.replace("meme:", "");
+  const memeData = memeTypes.find(data => data.key === memeKey) || {
+    url: "https://sitechecker.pro/wp-content/uploads/2017/12/404.png"
+  };
+  let messageComponent = null;
+  if (message.hidden) {
+    messageComponent = (
+      <Meme
+        toptext={message.hint}
+        bottomtext={message.id
+          .replace(/-/g, "")
+          .toUpperCase()
+          .slice(0, 20)}
+        url={memeData.url}
+      />
+    );
+  } else {
+    messageComponent = (
+      <Meme
+        toptext={message.hint}
+        bottomtext={message.message}
+        url={memeData.url}
+      />
+    );
+    if (message.decoded)
+      messageComponent = <DecryptMessage>{messageComponent}</DecryptMessage>;
+  }
   return (
-      <a className='badge badge-light' href="#" onClick={onClick}><i class="far fa-comment"></i> {message.childCount || 0}</a>
-  )
+    <React.Fragment>
+      <Col md="1" className="content-type-hint">
+        <MessageIcon message={message} />
+      </Col>
+      <Col md="9 ml-2">
+        <div className="message-target">{messageComponent}</div>
+        {decodeThreshold}
+      </Col>
+    </React.Fragment>
+  );
 }
 
-function ago(past){
-  let elapsed = Date.now()-past
-  elapsed = Math.floor(elapsed/1000)*1000
-  if (elapsed === 0) return 'now'
-  return ms(elapsed)
+function CommentBubble({ message, canComment, onClick = () => {} }) {
+  if (message.parentid) return null; // can't comment on a comment
+  return (
+    <a className="badge badge-light" href="#" onClick={onClick}>
+      <i class="far fa-comment"></i> {message.childCount || 0}
+    </a>
+  );
 }
 
-export default function MessageCard({message, myToken, token, isSignedIn, actions, canCopyUrl=true, canLinkToProfile=true, canComment=true, showFooter=true, canDestroy=true, onClickComment, onClickMessageCard}){
-  const [destroyCountDown, setDestroyCountDown] = useState(null)
-  const [copied, setCopied] = useState(null)
+function ago(past) {
+  let elapsed = Date.now() - past;
+  elapsed = Math.floor(elapsed / 1000) * 1000;
+  if (elapsed === 0) return "now";
+  return ms(elapsed);
+}
 
-  if (!onClickComment){
-    onClickComment = clickHandler(() => history.push(`/$${token.name}/${message.id}`))
+export default function MessageCard({
+  message,
+  myToken,
+  token,
+  isSignedIn,
+  actions,
+  canCopyUrl = true,
+  canLinkToProfile = true,
+  canComment = true,
+  showFooter = true,
+  canDestroy = true,
+  onClickComment,
+  onClickMessageCard
+}) {
+  const [destroyCountDown, setDestroyCountDown] = useState(null);
+  const [copied, setCopied] = useState(null);
+
+  if (!onClickComment) {
+    onClickComment = clickHandler(() =>
+      history.push(`/$${token.name}/${message.id}`)
+    );
   }
 
-  if (!onClickMessageCard){
-    onClickMessageCard = onClickComment
+  if (!onClickMessageCard) {
+    onClickMessageCard = onClickComment;
   }
 
-  function destroyMessage(){
-    if (destroyCountDown == null) return setDestroyCountDown(3)
-    setDestroyCountDown(null)
-  }
-
-  useEffect( ()=>{
-    if (destroyCountDown == null) return
-    const id = destroyCountDown > 0 ? setTimeout(setDestroyCountDown, 1000, destroyCountDown-1) : setTimeout(actions.destroy, 1000, message)
-    return () => clearTimeout(id)
-  }, [destroyCountDown])
-
-  let destroyIcon = null
-  if (myToken && message.tokenid === myToken.id && canDestroy){
-    destroyIcon = (
-      <a href="#" onClick={clickHandler(destroyMessage)} className='message-delete'>
-        { destroyCountDown == null ? <i className="fas fa-times"></i> : destroyCountDown <= 0 ? <i className="fas fa-circle destroying"></i> : <span>{destroyCountDown} <span className='small text-muted'>(cancel)</span></span> }
-      </a>
-    )
+  function destroyMessage() {
+    if (destroyCountDown == null) return setDestroyCountDown(3);
+    setDestroyCountDown(null);
   }
 
   useEffect(() => {
-    const id = setTimeout(setCopied, 1500, null)
-    return () => clearTimeout(id)
-  }, [copied])
+    if (destroyCountDown == null) return;
+    const id =
+      destroyCountDown > 0
+        ? setTimeout(setDestroyCountDown, 1000, destroyCountDown - 1)
+        : setTimeout(actions.destroy, 1000, message);
+    return () => clearTimeout(id);
+  }, [destroyCountDown]);
 
-  const messageUrl = `/$${token.name}/${message.shortid || message.id}`
+  let destroyIcon = null;
+  if (myToken && message.tokenid === myToken.id && canDestroy) {
+    destroyIcon = (
+      <a
+        href="#"
+        onClick={clickHandler(destroyMessage)}
+        className="message-delete"
+      >
+        {destroyCountDown == null ? (
+          <i className="fas fa-times"></i>
+        ) : destroyCountDown <= 0 ? (
+          <i className="fas fa-circle destroying"></i>
+        ) : (
+          <span>
+            {destroyCountDown}{" "}
+            <span className="small text-muted">(cancel)</span>
+          </span>
+        )}
+      </a>
+    );
+  }
 
-  function decodeTweetText(){
-    return `🔑 ${actionWordFuture} in @2100hq`
+  useEffect(() => {
+    const id = setTimeout(setCopied, 1500, null);
+    return () => clearTimeout(id);
+  }, [copied]);
+
+  const messageUrl = `/$${token.name}/${message.shortid || message.id}`;
+
+  function decodeTweetText() {
+    return `🔑 ${actionWordFuture} in @2100hq`;
     // if (!message.recipientcount){
     //   return "🔑 Be the first to decode in @2100hq"
     // } else {
@@ -321,72 +460,134 @@ export default function MessageCard({message, myToken, token, isSignedIn, action
     // }
   }
 
-  function postTweet(){
-    const encrypted = message.id.replace(/-/g,'').toUpperCase().slice(0,20)
-    const text = []
+  function postTweet() {
+    const encrypted = message.id
+      .replace(/-/g, "")
+      .toUpperCase()
+      .slice(0, 20);
+    const text = [];
     if (message.hint) {
-      text.push(`🗨️ ${message.hint}`)
+      text.push(`🗨️ ${message.hint}`);
     } else {
-      text.push(decodeTweetText())
+      text.push(decodeTweetText());
     }
-    text.push(`🔒 ${encrypted}`)
+    text.push(`🔒 ${encrypted}`);
 
-    if (message.hint){
-      text.push(`\n${decodeTweetText()}`)
+    if (message.hint) {
+      text.push(`\n${decodeTweetText()}`);
     }
-    text.push(window.location.origin + messageUrl)
+    text.push(window.location.origin + messageUrl);
 
     window.open(
-      `https://twitter.com/intent/tweet?text=${encodeURIComponent(text.join("\n"))}`,
+      `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+        text.join("\n")
+      )}`,
       null,
-      'width=500,height=400',
-    )
+      "width=500,height=400"
+    );
   }
-  const actionWordPast = message.type === 'gift' ? 'redeemed' : 'decoded'
-  const actionWordFuture = message.type === 'gift' ? 'redeem' : 'decode'
+  const actionWordPast = message.type === "gift" ? "redeemed" : "decoded";
+  const actionWordFuture = message.type === "gift" ? "redeem" : "decode";
 
-  const messageComponent = message.hidden ? <HiddenMessage message={message} key={'hidden'+message.id}/> : <VisibleMessage message={message} key={'visible'+message.id}/>
+  const messageComponent = message.hidden ? (
+    <HiddenMessage message={message} key={"hidden" + message.id} />
+  ) : (
+    <VisibleMessage message={message} key={"visible" + message.id} />
+  );
 
-  const decodeThreshold = message.hidden ? <div className='hidden-text'><DecodeThreshold name={token.name} token={token} message={message} isSignedIn={isSignedIn} actions={actions} /></div> : null
+  const decodeThreshold = message.hidden ? (
+    <div className="hidden-text">
+      <DecodeThreshold
+        name={token.name}
+        token={token}
+        message={message}
+        isSignedIn={isSignedIn}
+        actions={actions}
+      />
+    </div>
+  ) : null;
 
-  const classNames = ['message-card', `message-type-${message.type.replace(/:.*/,'')}`]
-  if (destroyCountDown != null) classNames.push('message-destroy-countdown')
-  if (message.hidden) classNames.push('message-hidden')
+  const classNames = [
+    "message-card",
+    `message-type-${message.type.replace(/:.*/, "")}`
+  ];
+  if (destroyCountDown != null) classNames.push("message-destroy-countdown");
+  if (message.hidden) classNames.push("message-hidden");
 
   return (
-    <div className={classNames.join(' ') + ' clearfix'} key={message.id}>
+    <div className={classNames.join(" ") + " clearfix"} key={message.id}>
       {destroyIcon}
-        <div style={{width: '10%', float: 'right', textAlign: 'center'}}>
-          <a href='#' onClick={clickHandler(()=>history.push(`/$${token.name}`))}><ProfileImage token={token} /></a>
-          <span className='message-time text-muted'>{ ago(message.created) + ` ago` }</span>
-          <div className="small message-copy-url" onClick={clickHandler(postTweet)}>
-            <i class="fab fa-twitter"></i><span> tweet</span>
-          </div>
+      <div style={{ width: "10%", float: "right", textAlign: "center" }}>
+        <a
+          href="#"
+          onClick={clickHandler(() => history.push(`/$${token.name}`))}
+        >
+          <ProfileImage token={token} />
+        </a>
+        <div className="tweet-this">
+        <span className="message-time text-muted">
+          {ago(message.created) + ` ago`}
+        </span>
+        <div
+          className="small message-copy-url"
+          onClick={clickHandler(postTweet)}
+        >
+          <i class="fab fa-twitter"></i>
         </div>
-        <div className='message-content' style={{width: '90%', float: 'left'}}>
-          <Row className='no-gutters message-header'>
-            <Col>
-              {message.hint && <div><span className='message-hint' onClick={onClickMessageCard}><Linkify>{message.hint}</Linkify></span></div>}
-            </Col>
-          </Row>
-          <Row className='no-gutters message-body'>
-            <Col>
-              {messageComponent}
-              {decodeThreshold}
-            </Col>
-          </Row>
-          <Row className='no-gutters message-footer' style={{ display: showFooter ? 'auto' : 'none'}}>
-            <Col md='12'>
-            <span className='badge badge-pill badge-light'>
-            <HoldersProfiles prefix='' suffix='decoding' noholderstext="0 " holders={Object.entries(token.stakes||{}).filter(([address]) => !(message.recipients||[]).includes(address)).filter(([address,amount]) => amount !== 0 && amount !== "0").map(([address])=>address)} />
-            </span>
-            <span className='badge badge-pill badge-light'>
-              <HoldersProfiles prefix='' suffix='decoded' noholderstext='0 ' holders={message.recipients || message.recipientcount} />
-            </span>
-              <CommentBubble message={message} canComment={canComment} onClick={onClickComment}/>
-            </Col>
-          </Row>
         </div>
+      </div>
+      <div className="message-content" style={{ width: "90%", float: "left" }}>
+        <Row className="no-gutters message-header">
+          <Col>
+            {message.hint && (
+              <div>
+                <span className="message-hint" onClick={onClickMessageCard}>
+                  <Linkify>{message.hint}</Linkify>
+                </span>
+              </div>
+            )}
+          </Col>
+        </Row>
+        <Row className="no-gutters message-body">
+          <Col>
+            {messageComponent}
+            {decodeThreshold}
+          </Col>
+        </Row>
+        <Row
+          className="no-gutters message-footer"
+          style={{ display: showFooter ? "auto" : "none" }}
+        >
+          <Col md="12">
+            <span className="badge badge-pill badge-light">
+              <HoldersProfiles
+                prefix=""
+                suffix="decoding"
+                noholderstext="0 "
+                holders={Object.entries(token.stakes || {})
+                  .filter(
+                    ([address]) => !(message.recipients || []).includes(address)
+                  )
+                  .filter(([address, amount]) => amount !== 0 && amount !== "0")
+                  .map(([address]) => address)}
+              />
+            </span>
+            <span className="badge badge-pill badge-light">
+              <HoldersProfiles
+                prefix=""
+                suffix="decoded"
+                noholderstext="0 "
+                holders={message.recipients || message.recipientcount}
+              />
+            </span>
+            <CommentBubble
+              message={message}
+              canComment={canComment}
+              onClick={onClickComment}
+            />
+          </Col>
+        </Row>
+      </div>
     </div>
-   )
+  );
 }

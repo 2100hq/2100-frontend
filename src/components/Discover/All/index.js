@@ -160,7 +160,7 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
     }}>
       <div className="col-1" style={{textAlign: 'center'}}>
         <Crown token={token}/>
-        <span className={'rank rank'+token.rank}>{token.rank}</span><br/>
+        {token.rank !== 1 && <span className={'rank rank'+token.rank}>{token.rank}</span>}<br/>
       </div>
       <div className='col-1' style={{textAlign: 'center'}}>
           <ProfileImage className={Number(myStake) === 0 ? 'profile-image' : 'profile-image pulse'} token={token} /><br/>

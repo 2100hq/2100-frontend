@@ -8,6 +8,11 @@
 
 .asset-table{
 
+  .profile-image {
+    width: 30px;
+    height: 30px;
+  }
+
   .table-header{
     height: 2.5rem;
   }
@@ -46,8 +51,7 @@
   cursor: pointer;
   color: #444;
   background-color: white;
-  margin: 3px;
-  border-radius: 3px;
+  margin: 2px;
 
   &.editing{
     cursor: default;

@@ -5,13 +5,19 @@ $message-margin: 0.3rem;
 .message-card{
 	position: relative;
 	overflow: hidden;
-	margin: 3px;
+	margin: 2px;
 	margin-left: 0px;
-	border-radius: 3px;
 	padding: 1rem;
 
 	.message-time{
+		display: block;
+		padding-top: 5px;
 		font-size: 0.7rem;
+	}
+
+	.fab .fa-twitter {
+		width: 15px;
+		height: 15px;
 	}
 
 	&.message-hidden{
@@ -31,7 +37,7 @@ $message-margin: 0.3rem;
 
 	.message-header{
 		.message-hint{
-			font-weight: 800;
+			font-weight: 700;
 			font-size: 1rem;
 			cursor: pointer;
 			&:hover{
@@ -77,6 +83,13 @@ $message-margin: 0.3rem;
 
 	.message-footer{
 		margin-top: $message-margin;
+
+		.col-md-12 {
+			display: flex;
+			flex-flow: row nowrap;
+			align-items: center;
+		}
+
 	}
 
 	.message-delete{
