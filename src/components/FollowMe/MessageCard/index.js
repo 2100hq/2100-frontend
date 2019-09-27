@@ -527,7 +527,7 @@ export default function MessageCard({
           href="#"
           onClick={clickHandler(() => history.push(`/$${token.name}`))}
         >
-          <ProfileImage token={token} />
+          <ProfileImage token={token}/>
         </a>
         <div className="tweet-this">
         <span className="message-time text-muted">

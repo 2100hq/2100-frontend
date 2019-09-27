@@ -9,6 +9,11 @@ $message-margin: 0.3rem;
 	margin-right: 0px;
 	padding: 1rem;
 
+	.profile-image{
+		max-width: 45px;
+		max-height: 45px;
+	}
+
 	.decode-button {
 		background: #fff;
 		border: 1px solid #2AC88F;
