@@ -5,6 +5,7 @@ import ms from 'ms'
 import {get} from 'lodash'
 import {Row, Col} from 'react-bootstrap'
 import ProfileImage from '../ProfileImage'
+import './style.scss'
 
 function RewardsHeadingText({state}){
   const latestBlock = get(state, 'public.latestBlock.number', 0)

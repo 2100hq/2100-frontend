@@ -522,7 +522,7 @@ export default function MessageCard({
   return (
     <div className={classNames.join(" ") + " clearfix"} key={message.id}>
       {destroyIcon}
-      <div style={{ width: "10%", float: "right", textAlign: "center" }}>
+      <div style={{ width: "10%", float: "left", textAlign: "center" }}>
         <a
           href="#"
           onClick={clickHandler(() => history.push(`/$${token.name}`))}
@@ -541,9 +541,9 @@ export default function MessageCard({
         </div>
         </div>
       </div>
-      <div className="message-content" style={{ width: "90%", float: "left" }}>
+      <div className="message-content" style={{ width: "90%", float: "right" }}>
         <Row className="no-gutters message-header">
-          <Col>
+          <Col style={{marginLeft: '1rem'}}>
             {message.hint && (
               <div>
                 <span className="message-hint" onClick={onClickMessageCard}>
@@ -554,7 +554,7 @@ export default function MessageCard({
           </Col>
         </Row>
         <Row className="no-gutters message-body">
-          <Col>
+          <Col style={{marginLeft: '1rem'}}>
             {messageComponent}
             {decodeThreshold}
           </Col>
