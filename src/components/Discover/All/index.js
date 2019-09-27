@@ -129,23 +129,11 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
   } else {
     columns = (
       <React.Fragment>
-        <div className="col-1 small text-center">
-          ${ token.totalStakes !== "0" ? <CountUp balance={totalStakes} decimals={2} /> : "0.00" }
+        <div className="col-3 small text-center">
+          <CountUp balance={myStake} decimals={2} /> / { token.totalStakes !== "0" ? <CountUp balance={totalStakes} decimals={2} /> : "0.00" }
         </div>
-        <div className="col-1 small text-center">
-            <span>{Number(myStake) === 0 ? '-' : myStake}</span>
-        </div>
-        <div className="col-1 small text-center">
-            <span>{Number(myStake) === 0 ? '-' : myStake}</span>
-        </div>
-        <div className="col-1 small text-center">
-            <span>{Number(myStake) === 0 ? '-' : myStake}</span>
-        </div>
-        <div className="col-1 small text-center">
-            <span>{Number(myStake) === 0 ? '-' : myStake}</span>
-        </div>
-        <div className="col-1 small text-center">
-          <div><CountUp balance={balance} /></div>
+        <div className="col-3 small text-center">
+          <div><CountUp balance={balance} decimals={4}/> / 2100</div>
         </div>
         <div className="col-1" style={{textAlign: 'center'}}>
           <i class="text-muted far fa-edit"></i>
@@ -234,12 +222,8 @@ function All({tokens = [], location, myToken, isAllocating, isEditing, setIsEdit
         <div className="col-4 asset-search">
           <i class="fas fa-search" /><input type='text' value={rawAssetSearch} onChange={setAssetSearch}/>
         </div>
-        <div className="col-1">Total</div>
-        <div className="col-1">Me</div>
-        <div className="col-1">New</div>
-        <div className="col-1">New</div>
-        <div className="col-1">New</div>
-        <div className="col-1">Balance</div>
+        <div className="col-3">Me / Total</div>
+        <div className="col-3">Balance</div>
       </div>
       {rows}
     </div>

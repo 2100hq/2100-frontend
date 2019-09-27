@@ -44,35 +44,26 @@ export default function Nav (props) {
         </ul>
       </div>
       <hr/>
-      <Row className='personal-data-feed no-gutters justify-content-center small'>
+      <Row className='no-gutters justify-content-center'>
         <Col md='10'>
-          <h6>🎉 you earned</h6>
+        <div className='time-to-reward'>30s to next reward</div>
+        </Col>
+      </Row>
+      <hr/>
+      <Row className='user-data-feed no-gutters justify-content-center small'>
+        <Col md='10'>
+          <h6>Latest rewards</h6>
           <Row className='asset-earnings no-gutters'>
-            <Col md='2'><ProfileImage token='benjmnr'/></Col>
-            <Col md='10'>
-              <div>$benjmnr</div>
+            <Col md='2'>
+              <ProfileImage token='fehrsam'/>
+            </Col>
+            <Col md='10' style={{paddingLeft: '0.5rem'}}>
+              <div><strong>$fehrsam</strong></div>
+              <div>you earned:</div>
+              <div>0.0003 $fehrsam (4th)</div>
+              <div>top staker: <br/> $brttb</div>
             </Col>
           </Row>
-          <Row className='asset-earnings no-gutters'>
-            <Col md='2'><ProfileImage token='brttb'/></Col>
-            <Col md='10'>
-              <div>$brttb</div>
-            </Col>
-          </Row>
-          <Row className='asset-earnings no-gutters'>
-            <Col md='2'><ProfileImage token='fehrsam'/></Col>
-            <Col md='10'>
-              <div>fehrsam</div>
-            </Col>
-          </Row>
-          <Row className='asset-earnings no-gutters'>
-            <Col md='2'><ProfileImage token='jessewldn'/></Col>
-            <Col md='10'>
-              <div>$jessewldn</div>
-            </Col>
-          </Row>
-          <p>and 5 more...</p>
-          <p>based on #34235465</p>
           <hr/>
         </Col>
       </Row>
