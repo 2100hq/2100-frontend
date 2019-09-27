@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { useStoreContext } from "../../../contexts/Store";
 import { get, shuffle } from "lodash";
 import { BigNumber, toDecimals, weiDecimals } from "../../../utils";
@@ -22,75 +22,75 @@ import "./style.scss";
 
 const nodeURL = require("url");
 
-function CharReveal({ encrypted, decrypted, length, reveal }) {
-  const [step, setStep] = useState(-1);
+// function CharReveal({ encrypted, decrypted, length, reveal }) {
+//   const [step, setStep] = useState(-1);
 
-  const [shuffled] = useState(shuffle([...Array(length).keys()]));
-  const [randStart] = useState(Math.floor(Math.random() * 100));
-  if (decrypted === "priv2")
-    console.log(step, length, shuffled, shuffled.length);
-  useEffect(() => {
-    if (decrypted === "priv2") console.log("effect");
-    if (!reveal) return;
-    if (step >= shuffled.length) return;
-    if (step === -1) {
-      setTimeout(setStep, randStart, step + 1);
-      return;
-    }
-    setTimeout(setStep, 10, step + 1);
-    return;
-  }, [reveal, step]);
-  // if (decrypted !== 'priv2') return null
-  const encLength = encrypted.length;
-  const message = [];
+//   const [shuffled] = useState(shuffle([...Array(length).keys()]));
+//   const [randStart] = useState(Math.floor(Math.random() * 100));
+//   if (decrypted === "priv2")
+//     console.log(step, length, shuffled, shuffled.length);
+//   useEffect(() => {
+//     if (decrypted === "priv2") console.log("effect");
+//     if (!reveal) return;
+//     if (step >= shuffled.length) return;
+//     if (step === -1) {
+//       setTimeout(setStep, randStart, step + 1);
+//       return;
+//     }
+//     setTimeout(setStep, 10, step + 1);
+//     return;
+//   }, [reveal, step]);
+//   // if (decrypted !== 'priv2') return null
+//   const encLength = encrypted.length;
+//   const message = [];
 
-  return decrypted
-    .split("")
-    .map((char, i) => {
-      const j = i % encLength;
-      console.log(char, i);
-      if (/\s/.test(char)) {
-        console.log("found space");
-        return char;
-      }
-      console.log("current step", step);
-      if (step === -1) return encrypted[j];
-      for (let s = 0; s < step + 1; s++) {
-        console.log(
-          shuffled[s] === i,
-          shuffled,
-          s,
-          shuffled[s],
-          i,
-          decrypted[i]
-        );
-        if (shuffled[s] === i) return decrypted[i];
-      }
-      return encrypted[j];
-    })
-    .join("");
-  //
+//   return decrypted
+//     .split("")
+//     .map((char, i) => {
+//       const j = i % encLength;
+//       console.log(char, i);
+//       if (/\s/.test(char)) {
+//         console.log("found space");
+//         return char;
+//       }
+//       console.log("current step", step);
+//       if (step === -1) return encrypted[j];
+//       for (let s = 0; s < step + 1; s++) {
+//         console.log(
+//           shuffled[s] === i,
+//           shuffled,
+//           s,
+//           shuffled[s],
+//           i,
+//           decrypted[i]
+//         );
+//         if (shuffled[s] === i) return decrypted[i];
+//       }
+//       return encrypted[j];
+//     })
+//     .join("");
+//   //
 
-  // const [intervalId, setIntervalId] = useState()
+//   // const [intervalId, setIntervalId] = useState()
 
-  // const nextStepTimeout = 0
-  // useEffect( () => {
-  //   if (!reveal) return
-  //   if (step >= 2) return
-  //   if (step === 0) {
-  //     setTimeout(setStep,randStart,step+1)
-  //     return
-  //   }
-  //   setTimeout(setStep,nextStepTimeout,step+1)
-  //   return
-  // },[reveal, step])
-  // return (
-  //   <span className={`char-reveal step-${step}`}>
-  //     <span className='decrypted'>{decrypted}</span>
-  //     <span className='encrypted'>{encrypted}</span>
-  //   </span>
-  // )
-}
+//   // const nextStepTimeout = 0
+//   // useEffect( () => {
+//   //   if (!reveal) return
+//   //   if (step >= 2) return
+//   //   if (step === 0) {
+//   //     setTimeout(setStep,randStart,step+1)
+//   //     return
+//   //   }
+//   //   setTimeout(setStep,nextStepTimeout,step+1)
+//   //   return
+//   // },[reveal, step])
+//   // return (
+//   //   <span className={`char-reveal step-${step}`}>
+//   //     <span className='decrypted'>{decrypted}</span>
+//   //     <span className='encrypted'>{encrypted}</span>
+//   //   </span>
+//   // )
+// }
 
 function DecodeThreshold({ name, token, message, isSignedIn, actions }) {
   /* 4 states
@@ -200,19 +200,19 @@ function DecodeThreshold({ name, token, message, isSignedIn, actions }) {
     );
 }
 
-function EncryptedMessage({ encrypted, decrypted }) {
-  if (encrypted === decrypted) return encrypted;
-  const encLengh = encrypted.length;
-  return decrypted
-    .slice(0, 240)
-    .split("")
-    .map((char, i) => {
-      const j = i % encLengh;
-      if (/\s/.test(char) || i % 15 === 0) return " ";
-      return encrypted[j];
-    })
-    .join("");
-}
+// function EncryptedMessage({ encrypted, decrypted }) {
+//   if (encrypted === decrypted) return encrypted;
+//   const encLengh = encrypted.length;
+//   return decrypted
+//     .slice(0, 240)
+//     .split("")
+//     .map((char, i) => {
+//       const j = i % encLengh;
+//       if (/\s/.test(char) || i % 15 === 0) return " ";
+//       return encrypted[j];
+//     })
+//     .join("");
+// }
 
 function DecryptMessage({ children }) {
   let delay = 1000;
@@ -368,9 +368,12 @@ function MemeMessageBody({ message, decodeThreshold }) {
 }
 
 function CommentBubble({ message, canComment, onClick = () => {} }) {
-  if (message.parentid) return null; // can't comment on a comment
+  const count = message.childCount || 0
+  const [prevCount] = useState(count)
+  const classNames = ["badge", "badge-pill", "badge-light", "comment-bubble"]
+  if (prevCount !== count) classNames.push('comment-count-changed')
   return (
-    <a className="badge badge-pill badge-light comment-bubble" href="#" onClick={onClick}>
+    <a className={classNames.join(' ')} href="#" onClick={onClick}>
       <i class="far fa-comment"></i> {message.childCount || 0}
     </a>
   );
