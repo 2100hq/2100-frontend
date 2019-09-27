@@ -12,6 +12,7 @@ import ms from 'ms'
 
 import './style.scss'
 
+const oneminute = ms('1m')
 function Destroy({comment, onDestroying=()=>{}, onDestroyed=()=>{}}){
   const {actions, isSignedIn} = useFollowMeContext()
   const {query} = useStoreContext()
@@ -58,6 +59,9 @@ function Comment({comment, username, onDestroyed}){
     )
   }
 
+  let elapsed = Date.now()-comment.created
+  elapsed = elapsed < oneminute ? 'now' : ms(elapsed)
+
   const classNames = ["comment"]
   if (isDestroying) classNames.push('message-destroy-countdown')
 
@@ -74,7 +78,7 @@ function Comment({comment, username, onDestroyed}){
           <span className='username'>${name}</span>
           </div>
           <div className='single-comment-body'>{message}</div>
-          <span className='ago text-muted'>{ms(Date.now()-comment.created)}</span>
+          <span className='ago text-muted'>{elapsed}</span>
         </div>
       </Col>
       </Row>
@@ -138,34 +142,48 @@ function Comments({message, query, onDestroyed}){
   return comments
 }
 
+function notificationsByParentId(notifications,parentid){
+  return Object.values(notifications).filter( notification => notification.parentid === parentid)
+}
+
 export default function SingleMessage(props){
   const {messageid, token} = props
   const { query, state } = useStoreContext()
-  const { myToken, actions, isSignedIn, messages } = useFollowMeContext()
-  const [message, setComment] = useState()
+  const { myToken, actions, isSignedIn, messages, private: {decodedMessages = {}, notifications={}} } = useFollowMeContext()
+  const [message, setMessage] = useState()
   const [loading, setLoading] = useState(true)
+  const [seenNotifications, setSeenNotifications] = useState(notificationsByParentId(notifications,messageid))
   function getMessage(){
     actions.getMessage(messageid).then( result => {
       if (!result) return // error message?
-      setComment(result)
+      setMessage(result)
       if (loading) setLoading(false)
     })
   }
+
+  useEffect(getMessage, [isSignedIn, decodedMessages[messageid]])
+
   useEffect(() => {
-    getMessage()
-    const id = setTimeout(getMessage, state.config.followMePoll)
-    return () => clearTimeout(id)
-  },[isSignedIn]) // when create window closes, fetch
+    const newNotifications = Object.values(notifications).filter( notification => {
+      if (notification.parentid !== messageid) return false
+      if (seenNotifications.includes(notification.id)) return false
+      return true
+    })
+    if (newNotifications.length > 0){
+      setSeenNotifications([...seenNotifications, ...newNotifications])
+      getMessage()
+    }
+
+
+  },[Object.keys(notifications).join('')])
 
   // if message is cached, get it
   useEffect( () => {
     if (!messages[messageid] || !loading) return
-     setComment(messages[messageid])
+     setMessage(messages[messageid])
   }, [])
 
   if (!message) return null
-  console.log();
-  console.log(message);
 
   return(
     <div className='single-message'>

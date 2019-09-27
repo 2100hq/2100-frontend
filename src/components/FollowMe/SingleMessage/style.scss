@@ -5,6 +5,9 @@
 	margin-bottom: 101px;
 	padding-bottom: 0.5rem;
 	background-color: #F3F6F6;
+	.message-card .comment-bubble.comment-count-changed {
+		background: #f3f3f3 !important;
+	}
 	// background: url('/img/stripes-light.png') repeat;
 	.message-card{
 		border: none;

@@ -3,9 +3,11 @@ import ReactDOM from 'react-dom'
 import './index.css'
 import App from './App'
 import * as serviceWorker from './serviceWorker'
+import { x2100host, followmehost } from './utils/config'
 
 import Web3Provider, { Connectors, Web3Consumer } from 'web3-react'
 import SocketProvider from './contexts/Socket'
+import FollowMeSocketProvider from './contexts/FollowMeSocket'
 import StoreProvider from './contexts/Store'
 import FollowMeProvider from './contexts/FollowMe'
 
@@ -16,11 +18,13 @@ const MetaMask = new Connectors.InjectedConnector({
 
 ReactDOM.render(
   <Web3Provider connectors={{ MetaMask }} libraryName={'ethers.js'}>
-    <SocketProvider>
+    <SocketProvider host={x2100host}>
       <StoreProvider>
-        <FollowMeProvider>
-          <App />
-        </FollowMeProvider>
+        <FollowMeSocketProvider host={followmehost}>
+            <FollowMeProvider>
+            <App />
+          </FollowMeProvider>
+        </FollowMeSocketProvider>
       </StoreProvider>
     </SocketProvider>
   </Web3Provider>,
