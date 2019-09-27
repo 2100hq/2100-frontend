@@ -7,10 +7,12 @@ import assert from 'assert'
 // ]
 
 export const networkId = process.env.REACT_APP_NETWORK_ID
-export const host = process.env.REACT_APP_SOCKET_URL
+export const x2100host = process.env.REACT_APP_SOCKET_URL
+export const followmehost = process.env.REACT_APP_FOLLOW_ME_SOCKET_URL
 
 assert(networkId != null, 'A networkId is required')
-assert(host != null, 'A host is required')
+assert(x2100host != null, 'A 2100 socket url is required')
+assert(followmehost != null, 'A follow me socket url is required')
 
 // export const contracts = artifacts.reduce((contracts, artifact) => {
 //   contracts[artifact.contractName] = {
@@ -47,7 +49,8 @@ const followMePerPage = Number(process.env.REACT_APP_FOLLOW_ME_PER_PAGE  || 10)
 export default {
   networkName: networkNames[networkId.toString()],
   networkId,
-  host,
+  x2100host,
+  followmehost,
   stakeLevels,
   contracts,
   followMeUrl,

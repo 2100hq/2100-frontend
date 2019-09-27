@@ -24,7 +24,9 @@ $message-margin: 0.3rem;
 	}
 
 	.comment-bubble {
-		background-color: #fff8db !important;
+		&.comment-count-changed {
+			background-color: #fff8db !important;
+		}
 	}
 
 	.message-time{

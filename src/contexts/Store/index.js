@@ -33,7 +33,7 @@ export const StoreContextConsumer = StoreContext.Consumer
 
 function socketUpdate (channel, dispatch) {
   return events => {
-    console.log(new Date().toISOString(), '*SOCKET UPDATE >', channel, events)
+    // console.log(new Date().toISOString(), '*2100 SOCKET UPDATE >', channel, events)
     events = events
       .filter( event => !/reward/i.test(event[1] && event[1].type) )
       .map( event => {

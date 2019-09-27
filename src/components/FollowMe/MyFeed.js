@@ -4,9 +4,9 @@ import {useStoreContext} from '../../contexts/Store'
 import FollowMe from './'
 
 export default function MyFeed(){
-  const { privateMessages } = useFollowMeContext()
+  const state = useFollowMeContext()
 
   return (
-      <FollowMe messages={privateMessages} showForm={false} className='my-feed'/>
+      <FollowMe messages={state.private.messages} showForm={false} className='my-feed'/>
   )
 }

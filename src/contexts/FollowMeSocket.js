@@ -8,15 +8,15 @@ import React, {
   useEffect
 } from 'react'
 
-export const SocketContext = createContext()
+export const FollowMeSocketContext = createContext()
 
-export function useSocketContext () {
-  return useContext(SocketContext)
+export function useFollowMeSocketContext () {
+  return useContext(FollowMeSocketContext)
 }
 
-export const SocketContextConsumer = SocketContext.Consumer
+export const FollowMeSocketContextConsumer = FollowMeSocketContext.Consumer
 
-export default function SocketProvider ({ children, host }) {
+export default function FollowMeSocketProvider ({ children, host }) {
   const [io, setIo] = useState()
 
   const [network, setNetwork] = useState({
@@ -37,25 +37,25 @@ export default function SocketProvider ({ children, host }) {
 
     _io.on('connect', () => {
       console.log()
-      console.log('2100 io.connect')
+      console.log('followme io.connect')
 
       setNetwork({ loading: false, connected: true, error: false })
     })
     _io.on('connect_error', error => {
       console.log()
-      console.log('2100 io.connect_error')
+      console.log('followme io.connect_error')
 
       setNetwork({ loading: false, connected: false, error: error.message })
     })
     _io.on('error', error => {
       console.log()
-      console.log('2100 io.error')
+      console.log('followme io.error')
 
       setNetwork({ loading: false, connected: false, error: error.message })
     })
     _io.on('disconnect', reason => {
       console.log()
-      console.log('2100 io.')
+      console.log('followme io.')
 
       setNetwork({ loading: false, connected: false, error: reason })
       if (reason === 'io server disconnect') {
@@ -108,8 +108,8 @@ export default function SocketProvider ({ children, host }) {
   }, [network])
 
   return (
-    <SocketContext.Provider value={contextValue}>
+    <FollowMeSocketContext.Provider value={contextValue}>
       {children}
-    </SocketContext.Provider>
+    </FollowMeSocketContext.Provider>
   )
 }
