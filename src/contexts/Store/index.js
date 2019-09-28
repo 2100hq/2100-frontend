@@ -82,8 +82,8 @@ export default function StoreProvider ({ children }) {
     socket.listen('public', socketUpdate('public', dispatch))
     socket.listen('auth', socketUpdate('auth', dispatch))
     socket.listen('admin', socketUpdate('admin', dispatch))
-    socket.listen('stats', socketUpdate('stats', dispatch))
-    socket.auth('joinStats')
+    // socket.listen('stats', socketUpdate('stats', dispatch))
+    // socket.auth('joinStats')
   }, [socket.network.loading])
 
   // add network info to private state
