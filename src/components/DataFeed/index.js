@@ -1,7 +1,7 @@
 import React, {useMemo, useState, useEffect} from 'react'
 import { useStoreContext } from '../../contexts/Store'
 import _BigNumber from 'bignumber.js'
-import { BigNumber, toDecimals, oneblockReward } from '../../utils'
+import { BigNumber, toDecimals, oneblockReward, numberSuffix } from '../../utils'
 import ms from 'ms'
 import {get} from 'lodash'
 import {Row, Col} from 'react-bootstrap'
@@ -112,7 +112,7 @@ function EarningsFeed({state, query}){
       if (!myStake || myStake === "0") return null // not staking this round
       const myProportion = BigNumber(myStake).div( _BigNumber.sum(...stakers.map(([_,stake])=>stake)))
       const myEarning = toDecimals(myProportion.times(oneblockReward).times(5),6)
-      const suffix = myRank % 10 === 1 ? 'st' : myRank % 10 === 2 ? 'nd' : myRank % 10 === 3 ? 'rd' : 'th'
+      const suffix = numberSuffix(myRank)
       return {name, myRank, suffix, myStake, myEarning, largestStakerName, blockNumber: latestBlock}
     }).filter(x => x)
     setMyEarnings(newEarnings)

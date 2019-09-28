@@ -156,3 +156,5 @@ export const routeConfigs = {
     path: '/'
   }
 }
+
+export const numberSuffix = n => n % 10 === 1 ? 'st' : n % 10 === 2 ? 'nd' : n % 10 === 3 ? 'rd' : 'th'
