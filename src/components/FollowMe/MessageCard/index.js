@@ -529,17 +529,17 @@ export default function MessageCard({
         >
           <ProfileImage token={token}/>
         </a>
-        <div className="tweet-this">
-        <span className="message-time text-muted">
+
+        <span className="message-time">
           {ago(message.created) + ` ago`}
         </span>
-        <div
-          className="small message-copy-url"
+        <a
+          href="#"
+          className="small message-share"
           onClick={clickHandler(postTweet)}
         >
           <i class="fab fa-twitter"></i>
-        </div>
-        </div>
+        </a>
       </div>
       <div className="message-content" style={{ width: "90%", float: "right" }}>
         <Row className="no-gutters message-header">
