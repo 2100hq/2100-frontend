@@ -1,7 +1,7 @@
 import React, { useState,useEffect, useRef, useMemo } from 'react'
 import { useStoreContext } from '../../../contexts/Store'
 import { toDecimals, BigNumber, weiDecimals, extractUsernameAndMessageIdFromLocation, oneblockReward, daiAPRperBlock } from '../../../utils'
-import history from '../../../utils/history'
+import LinkableName from '../../LinkableName'
 import useDebounce from '../../../utils/hooks/useDebounce'
 import Allocator from '../../Allocator'
 import ProfileImage from '../../ProfileImage'
@@ -154,13 +154,7 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
           <ProfileImage className={Number(myStake) === 0 ? 'profile-image' : 'profile-image pulse'} token={token} /><br/>
       </div>
       <div className="col-3" style={{overflow: 'hidden'}}>
-          <a href="#" onClick={(e) => {
-            e.preventDefault()
-            e.stopPropagation()
-            history.push(`/$${token.name}`)
-          }}>
-            <span style={{fontWeight: 'bold'}}>${token.name}</span>
-          </a>
+        <LinkableName token={token} style={{fontWeight: 'bold'}} />
       </div>
       {columns}
     </div>

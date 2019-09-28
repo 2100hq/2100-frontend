@@ -6,6 +6,7 @@ import ms from 'ms'
 import {get} from 'lodash'
 import {Row, Col} from 'react-bootstrap'
 import ProfileImage from '../ProfileImage'
+import LinkableName from '../LinkableName'
 
 function RewardsHeadingText({state}){
   const latestBlock = get(state, 'public.latestBlock.number', 0)
@@ -136,10 +137,10 @@ function EarningsFeed({state, query}){
               <ProfileImage token={name}/>
             </Col>
             <Col md='10' style={{paddingLeft: '0.5rem'}}>
-              <div><strong>${name}</strong></div>
+              <div><strong><LinkableName name={name} /></strong></div>
               <div>you earned:</div>
-              <div>{myEarning} ${name} ({myRank}{suffix})</div>
-              { myRank !== 1 && <div>top staker: <br/> ${largestStakerName}</div> }
+              <div>{myEarning} <LinkableName name={name} /> ({myRank}{suffix})</div>
+              { myRank !== 1 && <div>top staker: <br/> <LinkableName name={largestStakerName} /></div> }
             </Col>
           </Row>
           <hr/>

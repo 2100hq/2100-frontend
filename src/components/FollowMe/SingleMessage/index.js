@@ -6,6 +6,7 @@ import { useFollowMeContext } from '../../../contexts/FollowMe'
 import MessageCard from '../MessageCard'
 import {Form, Row, Col, Container, InputGroup, Button} from 'react-bootstrap'
 import ProfileImage from '../../ProfileImage'
+import LinkableName from '../../LinkableName'
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon'
 import {isEmpty} from 'lodash'
 import ms from 'ms'
@@ -75,7 +76,7 @@ function Comment({comment, username, onDestroyed}){
       <Col md='10' className='single-comment-row'>
         <div className='single-comment speech-bubble'>
           <div className='single-comment-header'>
-          <span className='username'>${name}</span>
+          <LinkableName name={name} className='username' />
           </div>
           <div className='single-comment-body'>{message}</div>
           <span className='ago text-muted'>{elapsed}</span>
