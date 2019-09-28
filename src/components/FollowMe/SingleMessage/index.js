@@ -146,7 +146,7 @@ function Comments({message, query, onDestroyed}){
   let comments = (message.children).concat(recipientTimestamps).sort( (a, b) => a.created - b.created).map( comment => {
     const username = comment.isRecipientTimestamp ? '2100hq' : query.getUserName(comment.userid)
     return (
-      <Comment comment={comment} username={username} onDestroyed={onDestroyed} displayUsername={comment.isRecipientTimestamp}/>
+      <Comment comment={comment} username={username} onDestroyed={onDestroyed} displayUsername={!comment.isRecipientTimestamp}/>
     )
   })
 
