@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import useInputState from '../../../utils/hooks/useInputState'
 import clickHandler from '../../../utils/clickHandler'
 import { useStoreContext } from '../../../contexts/Store'
+import { numberSuffix } from '../../../utils'
 import { useFollowMeContext } from '../../../contexts/FollowMe'
 import MessageCard from '../MessageCard'
 import {Form, Row, Col, Container, InputGroup, Button} from 'react-bootstrap'
@@ -10,6 +11,8 @@ import LinkableName from '../../LinkableName'
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon'
 import {isEmpty} from 'lodash'
 import ms from 'ms'
+import * as linkify from "linkifyjs";
+import Linkify from "linkifyjs/react";
 
 import './style.scss'
 
@@ -47,7 +50,7 @@ function Destroy({comment, onDestroying=()=>{}, onDestroyed=()=>{}}){
   )
 }
 
-function Comment({comment, username, onDestroyed}){
+function Comment({comment, username, onDestroyed=()=>{}, displayUsername = true}){
   const [isDestroying, setIsDestroying] = useState(false)
   const face = username ? <ProfileImage token={username} /> : <Jazzicon diameter={25} seed={jsNumberForAddress(comment.userid)} />
   const name = username
@@ -76,9 +79,9 @@ function Comment({comment, username, onDestroyed}){
       <Col md='10' className='single-comment-row'>
         <div className='single-comment speech-bubble'>
           <div className='single-comment-header'>
-          <LinkableName name={name} className='username' />
+          {displayUsername && <LinkableName name={name} className='username' />}
           </div>
-          <div className='single-comment-body'>{message}</div>
+          <div className='single-comment-body'><Linkify>{message}</Linkify></div>
           <span className='ago text-muted'>{elapsed}</span>
         </div>
       </Col>
@@ -122,17 +125,30 @@ function CommentForm({message, onSubmitted}){
   )
 }
 
-function Comments({message, query, onDestroyed}){
-  let comments = []
+function formatRecipientTimestampsAsComments(message,query){
+  return (message.recipientTimestamps || []).map( (data, i) =>{
+    data = {...data}
+    const username = query.getUserName(data.userid)
+    const suffix = numberSuffix(i+1)
+    data.isRecipientTimestamp = true
+    data.message = <React.Fragment><LinkableName name={username} /> was {i+1}{suffix} to decode this message</React.Fragment>
+    data.hidden = false
+    data.userid='0x0'
+    return data
+  })
+}
 
-  if (message.children){
-    comments = message.children.sort( (a, b) => a.created - b.created).map( comment => {
-      const username = query.getUserName(comment.userid)
-      return (
-        <Comment comment={comment} username={username} onDestroyed={onDestroyed} />
-      )
-    })
-  }
+function Comments({message, query, onDestroyed}){
+  if (!message.children) message.children = []
+
+  const recipientTimestamps = formatRecipientTimestampsAsComments(message,query)
+
+  let comments = (message.children).concat(recipientTimestamps).sort( (a, b) => a.created - b.created).map( comment => {
+    const username = comment.isRecipientTimestamp ? '2100hq' : query.getUserName(comment.userid)
+    return (
+      <Comment comment={comment} username={username} onDestroyed={onDestroyed} displayUsername={comment.isRecipientTimestamp}/>
+    )
+  })
 
   if (comments.length === 0){
     comments.push(
