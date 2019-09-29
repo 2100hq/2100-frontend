@@ -5,16 +5,40 @@ $message-margin: 0.3rem;
 .message-card{
 	position: relative;
 	overflow: hidden;
-	margin: 2px;
-	margin-right: 0px;
 	padding: 1rem;
 
+	&.message-hidden{
+		background-color: #fff;
+		border: 1px solid $twentyonemuted;
+	}
+
+	&:not(.message-hidden){
+		border: 1px solid #eee;
+		.message-body{
+			padding: 0.5rem;
+		}
+	}
+
+	&:hover{
+		.message-share, .message-delete{
+			opacity: 1;
+			transition: linear 0.2s all;
+		}
+
+	}
 
 	.message-share, .message-delete{
 		position: absolute;
 		color: #aaa;
-		right: 2rem;
+		right: 1.5rem;
 		z-index: 9999999;
+		opacity: 0;
+
+		&:hover{
+			color: #333;
+		}
+
+		transition: linear 1s color;
 	}
 
 	.message-share{
@@ -62,16 +86,6 @@ $message-margin: 0.3rem;
 		font-size: 0.6rem;
 	}
 
-
-	&.message-hidden{
-		background-color: #fff;
-	}
-
-	&:not(.message-hidden){
-		.message-body{
-			padding: 0.5rem;
-		}
-	}
 
 	.amount-underline{
 		text-decoration: underline;
