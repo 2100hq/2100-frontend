@@ -134,7 +134,7 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
           <CountUp balance={myStake} decimals={2} /> / { token.totalStakes !== "0" ? <CountUp balance={totalStakes} decimals={2} /> : "0.00" }
         </div>
         <div className="col-3 text-center">
-          <div><CountUp balance={balance} decimals={4}/> / 2100</div>
+          <div><CountUp balance={balance} decimals={4}/></div>
         </div>
         <div className="col-1" style={{textAlign: 'center'}}>
           <i class="text-muted far fa-edit"></i>
