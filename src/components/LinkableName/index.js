@@ -1,8 +1,14 @@
 import React from 'react'
 import history from '../../utils/history'
-import clickHanlder from '../../utils/clickHandler'
+import clickHandler from '../../utils/clickHandler'
 
 export default function LinkableName({name, token, style={}, className=''}){
+
+  function onClick(){
+    if (isAddress) return
+    history.push(`/${name}`)
+  }
+
   if (token) {
     if (token.name) {
       name = token.name
@@ -10,9 +16,19 @@ export default function LinkableName({name, token, style={}, className=''}){
       name = token
     }
   }
+
+  // ethereum address
+  const isAddress = name.indexOf('0x') === 0
+
+  if (isAddress){
+    name = name.slice(0,9)
+  } else {
+    name = `$${name}`
+  }
+
   return (
-    <a href="#" onClick={clickHanlder(history.push,[`/$${name}`])} style={style} className={className}>
-      ${name}
+    <a href={isAddress ? null : '#'} onClick={clickHandler(onClick)} style={style} className={className}>
+      {name}
     </a>
   )
 }
