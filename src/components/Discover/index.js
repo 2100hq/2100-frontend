@@ -67,9 +67,11 @@ function Badge({ text, isActive }){
 }
 
 export default function Discover () {
-  const { state, query } = useStoreContext()
+  const { state, query, dispatch, actions } = useStoreContext()
   const currentView = query.getCurrentView()
-  const [isEditing, setIsEditing] = useState({})
+
+  const {setIsEditing} = query
+  const isEditing = query.getIsEditingAllocations()
 
   useEffect(()=>{
     setIsEditing({})

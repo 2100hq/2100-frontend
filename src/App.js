@@ -19,6 +19,7 @@ import {Row, Col, Card} from 'react-bootstrap'
 import Sidebar from './components/Sidebar'
 import CreateMessageButton from './components/FollowMe/CreateMessageButton'
 import CreateMessageFixed from './components/FollowMe/CreateMessageFixed'
+import AllocationModal from './components/AllocationModal'
 
 import Discover from './components/Discover'
 import history from './utils/history'
@@ -66,6 +67,7 @@ function App(){
         <CreateMessageFixed />
         <Alerts />
         <ErrorModal />
+        <AllocationModal />
       </BrowserClasses>
     </Router>
   )

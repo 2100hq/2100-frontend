@@ -10,6 +10,8 @@ import { sortBy } from 'lodash'
 import { Link } from 'react-router-dom'
 import { withRouter } from 'react-router'
 import { Spinner } from 'react-bootstrap'
+import Crown from '../Crown'
+
 import './style.scss'
 function CountUp ({balance, decimals = 5}) {
   const { countUp, update } = useCountUp({
@@ -23,14 +25,6 @@ function CountUp ({balance, decimals = 5}) {
     update(balance)
   }, [balance])
   return (countUp)
-}
-
-function Crown({token}){
-  if (token.rank == 1){
-     return <i className='fas fa-crown' style={{color: 'orange'}}/>
-  } else {
-    return null
-  }
 }
 
 
@@ -115,19 +109,19 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
 
   let columns = null
 
-  if (isEditing){
-    columns = (
-      <React.Fragment>
-        <div className="col-5">
-          <Allocator token={token} onComplete={()=>setIsEditing({})} onClickOutside={()=>setIsEditing({})} className='allocator' />
-        </div>
-        <div className="col-1">
-        { isAllocatingToken ? <Spinner animation="grow" /> : <i className="text-muted fas fa-times-circle close-allocator" onClick={()=>!isAllocating && setIsEditing({})}></i>
-        }
-        </div>
-      </React.Fragment>
-    )
-  } else {
+  // if (isEditing){
+  //   columns = (
+  //     <React.Fragment>
+  //       <div className="col-5">
+  //         <Allocator token={token} onComplete={()=>setIsEditing({})} onClickOutside={()=>setIsEditing({})} className='allocator' />
+  //       </div>
+  //       <div className="col-1">
+  //       { isAllocatingToken ? <Spinner animation="grow" /> : <i className="text-muted fas fa-times-circle close-allocator" onClick={()=>!isAllocating && setIsEditing({})}></i>
+  //       }
+  //       </div>
+  //     </React.Fragment>
+  //   )
+  // } else {
     columns = (
       <React.Fragment>
         <div className="col-3 text-center">
@@ -141,7 +135,7 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
         </div>
       </React.Fragment>
     )
-  }
+  // }
 
   return (
       <div className={"row no-gutters asset-row align-items-center"+selected+allocating+editing+changed+staking} onClick={()=>{
