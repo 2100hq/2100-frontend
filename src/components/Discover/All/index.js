@@ -40,26 +40,7 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
   const [earning, setEarning] = useState('0.000000')
   const [earningZero, setEarningZero] = useState(true)
   const [rankChanged, setRankChanged] = useState(false)
-  // useEffect(()=> {
-  //   let newEarning = null
 
-  //   if (BigNumber(token.myStake).gt(0)){
-  //     newEarning = BigNumber(token.myStake).div(token.totalStakes).times('0.000189')
-  //   }
-
-  //   // owners reward
-  //   if (myToken && token.id === myToken.id){
-  //     if (newEarning == null) newEarning = BigNumber(0)
-  //     newEarning = newEarning.plus('0.000021')
-  //   }
-
-  //   newEarning = newEarning == null ? '0.000000' : newEarning.dp(6,1).toString()
-  //   setEarning(newEarning)
-  //   setEarningZero(BigNumber(newEarning).eq(0))
-  // },[token.myStake,token.totalStakes,(myToken&&myToken.id)])
-
-
-  // const stakers = Object.values(token.stakes || {}).filter( stake => BigNumber(stake).gt(0) ).length
 
   useEffect( () => {
     if (prevTotalStakeRef.current === token.totalStakes) return setStakeArrowDirection(null)
@@ -104,28 +85,6 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
   const staking = Number(myStake) === 0 ? '' : ' staking-row'
   const selected = currentUsername === token.name ? ' selected' : ''
   const changed = rankChanged ? ` rank-changed-${rankChanged}` : ''
-
-  let columns = null
-
-  // if (isEditing){
-  //   columns = (
-  //     <React.Fragment>
-  //       <div className="col-5">
-  //         <Allocator token={token} onComplete={()=>setIsEditing({})} onClickOutside={()=>setIsEditing({})} className='allocator' />
-  //       </div>
-  //       <div className="col-1">
-  //       { isAllocatingToken ? <Spinner animation="grow" /> : <i className="text-muted fas fa-times-circle close-allocator" onClick={()=>!isAllocating && setIsEditing({})}></i>
-  //       }
-  //       </div>
-  //     </React.Fragment>
-  //   )
-  // } else {
-    columns = (
-      <React.Fragment>
-
-      </React.Fragment>
-    )
-  // }
 
   return (
       <div className={"row no-gutters asset-row align-items-center"+selected+changed+staking} onClick={()=>{
