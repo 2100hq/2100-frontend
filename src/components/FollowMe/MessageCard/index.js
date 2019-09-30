@@ -370,12 +370,12 @@ function MemeMessageBody({ message, decodeThreshold }) {
 function CommentBubble({ message, canComment, onClick = () => {} }) {
   const count = message.childCount || 0
   const [prevCount] = useState(count)
-  const classNames = ["badge", "badge-pill", "badge-light", "comment-bubble"]
+  const classNames = ["badge", "badge-light", "comment-bubble"]
   if (prevCount !== count) classNames.push('comment-count-changed')
   return (
-    <a className={classNames.join(' ')} href="#" onClick={onClick}>
+    <span className={classNames.join(' ')} onClick={onClick}>
       <i class="far fa-comment"></i> {message.childCount || 0}
-    </a>
+    </span>
   );
 }
 
@@ -543,7 +543,7 @@ export default function MessageCard({
       </div>
       <div className="message-content" style={{ width: "90%", float: "right" }}>
         <Row className="no-gutters message-header">
-          <Col style={{marginLeft: '1rem'}}>
+          <Col md={{span: 11, offset: 1}}>
             {message.hint && (
               <div>
                 <span className="message-hint" onClick={onClickMessageCard}>
@@ -554,7 +554,7 @@ export default function MessageCard({
           </Col>
         </Row>
         <Row className="no-gutters message-body">
-          <Col style={{marginLeft: '1rem'}}>
+          <Col md={{span: 11, offset: 1}}>
             {messageComponent}
             {decodeThreshold}
           </Col>
@@ -563,8 +563,8 @@ export default function MessageCard({
           className="no-gutters message-footer"
           style={{ display: showFooter ? "auto" : "none" }}
         >
-          <Col md="12">
-            <span className="badge badge-pill badge-light">
+          <Col md={{span: 11, offset: 1}}>
+            <span className="badge badge-light">
               <HoldersProfiles
                 prefix=""
                 suffix="staking"
@@ -577,7 +577,7 @@ export default function MessageCard({
                   .map(([address]) => address)}
               />
             </span>
-            <span className="badge badge-pill badge-light">
+            <span className="badge badge-light">
               <HoldersProfiles
                 prefix=""
                 suffix="decoded"

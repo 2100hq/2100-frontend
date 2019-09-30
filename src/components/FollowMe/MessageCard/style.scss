@@ -7,6 +7,28 @@ $message-margin: 0.3rem;
 	overflow: hidden;
 	padding: 1rem;
 
+	.badge {
+		font-family: "Inter UI", sans-serif;
+		font-weight: 500;
+		font-size: 10px;
+		color: #333;
+		border: solid 1px #ddd;
+		background-color: white;
+		margin-right: 3px;
+		i{
+			font-size: 10px;
+		}
+
+		&.span{
+			display: inline-block;
+		}
+
+		&.comment-bubble{
+			
+		}
+
+	}
+
 	&.message-hidden{
 		background-color: #fff;
 		border-bottom: 1px solid #eee;

@@ -109,28 +109,16 @@ hr {
 .badge {
 	font-family: "Inter UI", sans-serif;
 	font-weight: 500;
-	padding: 4px;
-	margin: 3px;
-	border-radius: 3px;
-	background: #f3f3f3;
-}
+	border: solid 1px #ddd;
+	background-color: white;
+	margin-right: 3px;
+	i{
+		font-size: 10px;
+	}
 
-.badge-pill {
-	min-height: 26px;
-	padding: 4px;
-	display: flex;
-	justify-content: center;
-	align-items: center;
-	flex-flow: row nowrap;
-}
-
-.far.fa-comment {
-	padding-left: 2px;
-	padding-right: 3px;
-}
-
-.font-weight-bold {
-	background: #b6ffce2d
+	&.span{
+		display: inline-block;
+	}
 }
 
 .token-name{
