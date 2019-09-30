@@ -105,7 +105,7 @@ function DecodeThreshold({ name, token, message, isSignedIn, actions }) {
     return (
       <span>
         hold{" "}
-        <span className="font-weight-bold">
+        <span>
           <span className="amount-underline">
             {toDecimals(message.threshold, 3, 0)}
           </span>{" "}
@@ -189,7 +189,7 @@ function DecodeThreshold({ name, token, message, isSignedIn, actions }) {
     return (
       <span>
         hold{" "}
-        <span className="font-weight-bold">
+        <span>
           <span className="amount-underline">
             {toDecimals(message.threshold, 3, 0)}
           </span>{" "}
