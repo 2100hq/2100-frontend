@@ -50,6 +50,7 @@ export default function AllocationModal(){
   const [close, setClose] = useState(false)
   const { state, query, actions } = useStoreContext()
   let isEditing = query.getIsEditingAllocations()
+  const isSignedIn = query.getIsSignedIn()
   let editingTokenId = isEditing&&isEditing.tokenid
   const tokens = useMemo( () => {
     if (!editingTokenId) return []
@@ -58,7 +59,7 @@ export default function AllocationModal(){
     tokens = Object.keys(tokens)
     tokens.unshift(editingTokenId)
     return tokens.map(query.getToken)
-  }, [isEditing])
+  }, [isEditing, isSignedIn])
 
   const rows = tokens.map(token => <Row token={token} />)
 
