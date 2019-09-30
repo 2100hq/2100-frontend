@@ -25,7 +25,6 @@ function Hesitate({onCancel, onDiscard}){
 }
 
 function Row({token}){
-  //+selected+allocating+editing+changed+staking
   return (
     <div className={"row no-gutters asset-row align-items-center"}>
       <div className="col-1" style={{textAlign: 'center'}}>
