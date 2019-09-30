@@ -71,7 +71,7 @@ function RewardsHeadingText({state}){
 
   const emojis = ["","🕘","🕖","🕓","🕐"]
 
-  let textToGo = blocksToGo === 5 && latestBlock !== 0 && maxTimeToGo-msToGo > 4000 ? `🎉 Issuing rewards` : `Time to next reward`
+  let textToGo = blocksToGo === 5 && latestBlock !== 0 && maxTimeToGo-msToGo > 4000 ? `🎉 Issuing rewards` : `Next reward`
 
   return (
     <React.Fragment>
@@ -143,33 +143,45 @@ function EarningsFeed({state, query}){
     return myEarnings.map( ({name, myRank, suffix, myEarning, largestStakerName}) => {
       return (
         <React.Fragment key={name}>
-          <Row className='asset-holdings no-gutters'>
-            <Col md='2'>
-              <ProfileImage token={name}/>
-            </Col>
-            <Col md='10' style={{paddingLeft: '0.5rem'}}>
-              <div><CountUp balance={myEarning} /> <LinkableName name={name} /></div>
-              <Row style={{marginTop: '0.5rem'}}>
-                <Col xs='1'>
-                  1st
-                </Col>
-                <Col xs='10'>
-                  <LinkableName name={largestStakerName} />
-                </Col>
-                { myRank !== 1 && (
-                  <React.Fragment>
-                    <Col xs='1'>
-                      {myRank}{suffix}
-                    </Col>
-                    <Col xs='10'>
-                      me
-                    </Col>
-                  </React.Fragment>
-                )}
-              </Row>
-            </Col>
-          </Row>
-          <hr/>
+        <div className='asset-holdings'>
+        <Row className='no-gutters'>
+          <Col className='pl-2' md='2'>
+            <ProfileImage name={name}/>
+          </Col>
+          <Col className='pl-2' md='10'>
+            <Row className=' no-gutters align-items-center'>
+              <Col md='12'>
+              <strong>
+              <CountUp balance={myEarning} /> <LinkableName name={name} />
+              </strong>
+              </Col>
+            </Row>
+            <Row className='no-gutters mt-1'>
+              <Col>
+                  <Row>
+                  <Col sm='2'><span className='badge badge-light stake-rank'>1st</span></Col>
+                  <Col>
+                    <LinkableName name={largestStakerName} />
+                  </Col>
+                  </Row>
+                  { myRank !== 1 && (
+                    <React.Fragment>
+                    <Row>
+                      <Col sm='2'>
+                        <span className='badge badge-light stake-rank'>{myRank}{suffix}</span>
+                      </Col>
+                      <Col>
+                        me
+                      </Col>
+                      </Row>
+                    </React.Fragment>
+                  )}
+              </Col>            
+            </Row>
+          </Col>
+        </Row>
+
+        </div>
         </React.Fragment>
       )
     })
@@ -177,8 +189,8 @@ function EarningsFeed({state, query}){
 
   return (
     <React.Fragment>
-      <Row className='user-data-feed no-gutters justify-content-center small'>
-        <Col md='10'>
+      <Row className='user-data-feed justify-content-center small'>
+        <Col md='12'>
           <h6 style={{marginBottom: '1rem'}}>Latest Earnings</h6>
           {earningsRows}
         </Col>
