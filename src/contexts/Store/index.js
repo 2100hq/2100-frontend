@@ -31,6 +31,8 @@ export function useStoreContext () {
 
 export const StoreContextConsumer = StoreContext.Consumer
 
+const allowWindowObj = Boolean(process.env.REACT_APP_ALLOW_WINDOW_OBJECT)
+
 function socketUpdate (channel, dispatch) {
   return events => {
     // console.log(new Date().toISOString(), '*2100 SOCKET UPDATE >', channel, events)
@@ -186,11 +188,11 @@ export default function StoreProvider ({ children }) {
   // provide context of all these to children
   const contextValue = useMemo(() => {
     const state = { ...privState, ...Selectors(privState) }
-    const query = Query(state)
-    window.appstate = state
+    if (allowWindowObj) window.appstate = state
 
     const dispatcher = Dispatcher({dispatch, socket, web3, state, actions })
     dispatcher.replaceLib('dispatch', dispatcher)
+    const query = Query({ dispatch: dispatcher, state, actions })
     return { dispatch: dispatcher, state, actions, query }
   }, [privState, socket, web3])
 

@@ -22,6 +22,8 @@ export function useFollowMeContext () {
 
 export const FollowMeContextConsumer = FollowMeContext.Consumer
 
+const allowWindowObj = Boolean(process.env.REACT_APP_ALLOW_WINDOW_OBJECT)
+
 function update(state, action, clone=true){
   state = set(state, action.params.path, action.params.data)
   if (!clone) return state
@@ -287,7 +289,7 @@ export default function FollowMeProvider ({ children }) {
       destroy: Destroy(fmstate),
       setShowCreate: show => update('showCreate', show)
     }
-    window.fmstate = fmstate
+    if (allowWindowObj) window.fmstate = fmstate
     const messages = combineMessages(fmstate)
     return { ...fmstate, myToken, messages, actions }
   }, [fmstate])

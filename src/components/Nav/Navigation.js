@@ -55,7 +55,7 @@ export default function Navigation(){
 
   if (allowedViews.length < 2) return null // don't need to show tabs if there's only one possible view
 
-  const tabs = allowedViews.map( viewType => <Nav.Link eventKey={viewType}>{getViewName(viewType)}</Nav.Link> )
+  const tabs = allowedViews.map( viewType => <Nav.Link eventKey={viewType} key={viewType}>{getViewName(viewType)}</Nav.Link> )
 
   return (
     <Nav className='fm-nav small' activeKey={currentView} defaultActiveKey={currentView} onSelect={setView}>
