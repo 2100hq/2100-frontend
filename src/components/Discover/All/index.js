@@ -107,6 +107,7 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
   const balance = useMemo(() => toDecimals(token.balances.available,5), [token.balances.available])
   const totalStakes = useMemo( ()=>toDecimals(token.totalStakes), [token.totalStakes])
 
+  const staking = Number(myStake) === 0 ? '' : ' staking-row'
   const selected = currentUsername === token.name ? ' selected' : ''
   const allocating = isAllocating ? ' allocating' : ''
   const editing = isEditing ? ' editing' : ''
@@ -129,10 +130,10 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
   } else {
     columns = (
       <React.Fragment>
-        <div className="col-3 small text-center">
+        <div className="col-3 text-center">
           <CountUp balance={myStake} decimals={2} /> / { token.totalStakes !== "0" ? <CountUp balance={totalStakes} decimals={2} /> : "0.00" }
         </div>
-        <div className="col-3 small text-center">
+        <div className="col-3 text-center">
           <div><CountUp balance={balance} decimals={4}/> / 2100</div>
         </div>
         <div className="col-1" style={{textAlign: 'center'}}>
@@ -143,21 +144,21 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
   }
 
   return (
-    <div className={"row no-gutters asset-row align-items-center"+selected+allocating+editing+changed} onClick={()=>{
-      !isEditing && !isAllocating && setIsEditing({tokenid: token.id})
-    }}>
-      <div className="col-1" style={{textAlign: 'center'}}>
-        <Crown token={token}/>
-        {token.rank !== 1 && <span className={'rank rank'+token.rank}>{token.rank}</span>}<br/>
+      <div className={"row no-gutters asset-row align-items-center"+selected+allocating+editing+changed+staking} onClick={()=>{
+        !isEditing && !isAllocating && setIsEditing({tokenid: token.id})
+      }}>
+        <div className="col-1" style={{textAlign: 'center'}}>
+          <Crown token={token}/>
+          {token.rank !== 1 && <span className={'rank rank'+token.rank}>{token.rank}</span>}<br/>
+        </div>
+        <div className='col-1' style={{textAlign: 'center'}}>
+            <ProfileImage className={Number(myStake) === 0 ? 'profile-image' : 'profile-image pulse'} token={token} /><br/>
+        </div>
+        <div className="col-3" style={{overflow: 'hidden'}}>
+          <LinkableName token={token} />
+        </div>
+        {columns}
       </div>
-      <div className='col-1' style={{textAlign: 'center'}}>
-          <ProfileImage className={Number(myStake) === 0 ? 'profile-image' : 'profile-image pulse'} token={token} /><br/>
-      </div>
-      <div className="col-3" style={{overflow: 'hidden'}}>
-        <LinkableName token={token} />
-      </div>
-      {columns}
-    </div>
   )
 }
 
