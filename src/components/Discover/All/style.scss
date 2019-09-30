@@ -57,10 +57,13 @@
 .asset-row{
   font-size: 0.8rem;
   padding: 0.4rem 0;
-  cursor: pointer;
   color: #444;
   background-color: $twentyonemuted;
   border-bottom: 1px solid #eee;
+
+  &:hover{
+    background-color: #fff;
+  }
   
   &.staking-row{
     background-color: #fff;
@@ -95,7 +98,7 @@
       }
     }
   }
-  
+
   &.selected{
     background-color: #F3F6F6;
     color: #000;

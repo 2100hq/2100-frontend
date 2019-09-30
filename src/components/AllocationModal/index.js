@@ -80,6 +80,7 @@ export default function AllocationModal(){
       animation={false}
       backdrop={true}
       backdropClassName={'allocate-backdrop'}
+      size='lg'
     >
       {!showHesitate && (
         <Modal.Header closeButton>Test</Modal.Header>
