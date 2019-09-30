@@ -122,7 +122,7 @@ export default function Allocator ({ token, className='', onComplete=()=>{}, onC
       </Row>
       <Row>
         <Col>
-          {percentOfPool}% of rewards
+          {percentOfPool}% of pool
         </Col>
       </Row>
     </Container>

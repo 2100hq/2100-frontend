@@ -5,6 +5,7 @@ import Allocator from '../Allocator'
 import ProfileImage from '../ProfileImage'
 import LinkableName from '../LinkableName'
 import Crown from '../Discover/Crown'
+import './style.scss'
 
 function Hesitate({onCancel, onDiscard}){
   return (
@@ -76,9 +77,12 @@ export default function AllocationModal(){
       onHide={() => query.setIsEditing({})}
       aria-labelledby='contained-modal-title-vcenter'
       centered
+      animation={false}
+      backdrop={true}
+      backdropClassName={'allocate-backdrop'}
     >
       {!showHesitate && (
-        <Modal.Header closeButton />
+        <Modal.Header closeButton>Test</Modal.Header>
       )}
       <div style={{display: showHesitate ? 'none' : 'block'}}>
         <div className="asset-table">

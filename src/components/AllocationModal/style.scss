@@ -1,0 +1,19 @@
+.modal-backdrop.allocate-backdrop{
+	background-color: rgba(0,0,0,0.3) !important;
+}
+
+.modal{
+	z-index: 999999999;
+	.asset-row{
+		&:hover{
+		cursor: default;
+		}
+
+		input{
+			&:hover{
+				cursor: pointer;
+			}
+		}
+	}
+}
+
