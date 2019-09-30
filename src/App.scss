@@ -24,7 +24,7 @@ body{
 	height: 100%;
 	font-size: 1rem;
 	font-family: 'Noto Serif JP', serif !important;
-	background-color: #F3F6F6;
+	background-color: $twentyonemuted;
 	::-webkit-scrollbar {
 		display: none;
 	}
@@ -34,7 +34,7 @@ body{
 hr {
 	border: none;
 	height: 2px;
-	background-color: #F3F6F6;
+	background-color: $twentyonemuted;
 }
 
 .container-fluid{

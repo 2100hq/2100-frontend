@@ -113,12 +113,13 @@ $message-margin: 0.3rem;
 				margin-right: 10px;
 				background: repeating-linear-gradient(
 					-55deg,
-					rgba(0,0,0,0.1),
-					rgba(0,0,0,0.1) 10px,
-					rgba(0,0,0,0.05) 10px,
-					rgba(0,0,0,0.05) 20px
+					rgba(0,0,0,0.12),
+					rgba(0,0,0,0.12) 10px,
+					rgba(0,0,0,0.02) 10px,
+					rgba(0,0,0,0.02) 20px
 					);
-				border-radius: $twentyoneborderradius;
+				border-radius: 20px;
+				border: 1px solid #ddd;
 				&.r1{
 					width: 100px;
 				}
