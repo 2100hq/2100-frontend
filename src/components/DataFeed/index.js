@@ -159,7 +159,7 @@ function EarningsFeed({state, query}){
             <Row className='no-gutters mt-1'>
               <Col>
                   <Row>
-                  <Col sm='2'><span className='badge badge-light stake-rank'>1st</span></Col>
+                  <Col sm='2'><span className='badge badge-light stake-rank'>Top</span></Col>
                   <Col>
                     <LinkableName name={largestStakerName} />
                   </Col>
