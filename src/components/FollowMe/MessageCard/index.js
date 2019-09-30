@@ -543,7 +543,7 @@ export default function MessageCard({
       </div>
       <div className="message-content" style={{ width: "90%", float: "right" }}>
         <Row className="no-gutters message-header">
-          <Col md={{span: 11, offset: 1}}>
+          <Col style={{marginLeft: '1rem'}}>
             {message.hint && (
               <div>
                 <span className="message-hint" onClick={onClickMessageCard}>
@@ -554,7 +554,7 @@ export default function MessageCard({
           </Col>
         </Row>
         <Row className="no-gutters message-body">
-          <Col md={{span: 11, offset: 1}}>
+          <Col style={{marginLeft: '1rem'}}>
             {messageComponent}
             {decodeThreshold}
           </Col>
@@ -563,7 +563,7 @@ export default function MessageCard({
           className="no-gutters message-footer"
           style={{ display: showFooter ? "auto" : "none" }}
         >
-          <Col md={{span: 11, offset: 1}}>
+          <Col style={{marginLeft: '1rem'}}>
             <span className="badge badge-light">
               <HoldersProfiles
                 prefix=""

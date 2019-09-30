@@ -24,7 +24,9 @@ $message-margin: 0.3rem;
 		}
 
 		&.comment-bubble{
-			
+			&:hover{
+				cursor: pointer;
+			}
 		}
 
 	}
