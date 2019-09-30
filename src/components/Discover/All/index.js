@@ -103,8 +103,6 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
 
   const staking = Number(myStake) === 0 ? '' : ' staking-row'
   const selected = currentUsername === token.name ? ' selected' : ''
-  const allocating = isAllocating ? ' allocating' : ''
-  const editing = isEditing ? ' editing' : ''
   const changed = rankChanged ? ` rank-changed-${rankChanged}` : ''
 
   let columns = null
@@ -124,22 +122,14 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
   // } else {
     columns = (
       <React.Fragment>
-        <div className="col-3 text-center">
-          <CountUp balance={myStake} decimals={2} /> / { token.totalStakes !== "0" ? <CountUp balance={totalStakes} decimals={2} /> : "0.00" }
-        </div>
-        <div className="col-3 text-center">
-          <div><CountUp balance={balance} decimals={4}/></div>
-        </div>
-        <div className="col-1" style={{textAlign: 'center'}}>
-          <i class="text-muted far fa-edit"></i>
-        </div>
+
       </React.Fragment>
     )
   // }
 
   return (
-      <div className={"row no-gutters asset-row align-items-center"+selected+allocating+editing+changed+staking} onClick={()=>{
-        !isEditing && !isAllocating && setIsEditing({tokenid: token.id})
+      <div className={"row no-gutters asset-row align-items-center"+selected+changed+staking} onClick={()=>{
+        setIsEditing({tokenid: token.id})
       }}>
         <div className="col-1" style={{textAlign: 'center'}}>
           <Crown token={token}/>
@@ -151,7 +141,15 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
         <div className="col-3" style={{overflow: 'hidden'}}>
           <LinkableName token={token} />
         </div>
-        {columns}
+        <div className="col-3 text-center">
+          <CountUp balance={myStake} decimals={2} /> / { token.totalStakes !== "0" ? <CountUp balance={totalStakes} decimals={2} /> : "0.00" }
+        </div>
+        <div className="col-3 text-center">
+          <div><CountUp balance={balance} decimals={4}/></div>
+        </div>
+        <div className="col-1" style={{textAlign: 'center'}}>
+          <i class="text-muted far fa-edit"></i>
+        </div>
       </div>
   )
 }

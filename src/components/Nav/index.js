@@ -39,7 +39,7 @@ export default function Nav (props) {
         <div className='our-brand'>
           <Link to='/'><Logo /></Link>
         </div>
-        <ul class="nav flex-column vertical-nav">
+        <ul className="nav flex-column vertical-nav">
           <User {...props} key='user' />
         </ul>
       </div>
