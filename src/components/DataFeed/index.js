@@ -7,77 +7,81 @@ import {get} from 'lodash'
 import {Row, Col} from 'react-bootstrap'
 import ProfileImage from '../ProfileImage'
 import LinkableName from '../LinkableName'
+import { useCountUp } from 'react-countup'
 import './style.scss'
+const isDev = !/alpha/.test(window.location.href)
 
-function RewardsHeadingText({state}){
-  const latestBlock = get(state, 'public.latestBlock.number', 0)
-  const blocksToGo = 5-latestBlock % 5
-  let timeToGo = useMemo( () => ms(blocksToGo * 15000), [latestBlock])
-  if (latestBlock === 0) timeToGo = 'Calculating time'
-  const emojis = ["","🕘","🕖","🕓","🕐","🎉"]
-
-  let textToGo = blocksToGo === 5 && latestBlock !== 0 ? `Issuing rewards` : `${timeToGo} to next reward`
-  return `${emojis[blocksToGo]} ${textToGo}`
+function CountUp ({balance, decimals = 5}) {
+  const { countUp, update } = useCountUp({
+    start: 0,
+    end: balance,
+    delay: 0,
+    decimals,
+    duration: 0.25
+  })
+  useEffect(() => {
+    update(balance)
+  }, [balance])
+  return (countUp)
 }
 
-// function HoldingsFeed({state, query}){
-//   const isSignedIn = query.getIsSignedIn()
+function useBlockCountdown(state){
+  const latestBlock = get(state, 'public.latestBlock.number', 0)
+  const blocksToGo = 5-latestBlock % 5
+  const maxTimeToGo = 5 * 15000
+  const timeToGo = blocksToGo*15000
+  const [msToGo, setMsToGo] = useState(timeToGo)
 
-//   if (!isSignedIn) return null // figure this out later
+  useEffect(()=>{
+    if (blocksToGo === 5) setMsToGo(maxTimeToGo)
+    const id = setInterval(() => {
+      setMsToGo(current => {
+        // progress bar is behind blocks
+        if (current>timeToGo) {
+          let inc = 500
+          if (current-timeToGo > 5000) inc = 1000
+          if (current-timeToGo > 10000) inc = 2000
+          if (current-timeToGo > 20000) inc = 10000
+          return current-inc
+        }
+        // if blocks are behind progress bar let progress bar go a bit
+        if (timeToGo-current < 5000) return current-200
+        return current
+      })
+    },1000)
+    return () => clearInterval(id)
+  }, [latestBlock])
 
-//   const useraddress = query.getUserAddress().toLowerCase()
-//   const holdings = {...get(state, 'stats.earned.latest',{})}
-//   delete holdings['2100']
+  return {
+    percent: useMemo( () => msToGo == 0 ? 0 : String((msToGo/maxTimeToGo)*100), [msToGo] ),
+    blocksToGo,
+    maxTimeToGo,
+    msToGo
+  }
+}
 
-//   const myHoldings = Object.entries(holdings).filter( ([_, holders]) => {
-//     return Object.keys(holders).includes(useraddress)
-//   }).map( ([name, holders]) => {
-//     holders = Object.entries(holders).filter( ([address]) => address !=name ).sort( (a, b) => BigNumber(a[1]).lt(b[1]) ? -1 : 1)
-//     const largestHolderAdderss = holders[holders.length - 1][0]
-//     let largestHolderName = query.getUserName(largestHolderAdderss) || largestHolderAdderss
-//     let myRank = 0
-//     let myHolding = "0.00"
-//     holders.forEach( ([address, holding], i) => {
-//       if (address === useraddress) {
-//         myRank = holders.length - i
-//         myHolding = toDecimals(holding,6)
-//       }
-//     })
-//     myRank = myRank + 1
-//     const suffix = myRank % 10 === 1 ? 'st' : myRank % 10 === 2 ? 'nd' : myRank % 10 === 3 ? 'rd' : 'th'
-//     return {name, myRank, suffix, myHolding, largestHolderName}
-//   })
+function RewardsHeadingText({state}){
+  const {
+    latestBlock,
+    percent,
+    blocksToGo,
+    maxTimeToGo,
+    msToGo
+  } = useBlockCountdown(state)
 
-//   const holdingsRows = myHoldings.map( ({name, myRank, myHolding, suffix, largestHolderName}) => {
-//     return (
-//       <React.Fragment>
-//         <Row className='asset-holdings no-gutters'>
-//           <Col md='2'>
-//             <ProfileImage token={name}/>
-//           </Col>
-//           <Col md='10' style={{paddingLeft: '0.5rem'}}>
-//             <div><strong>${name}</strong></div>
-//             <div>you hold:</div>
-//             <div>{myHolding} ${name} ({myRank}{suffix})</div>
-//             { myRank !== 1 && <div>top staker: <br/> ${largestHolderName}</div> }
-//           </Col>
-//         </Row>
-//         <hr/>
-//       </React.Fragment>
-//     )
-//   })
+  const emojis = ["","🕘","🕖","🕓","🕐"]
 
-//   return (
-//     <React.Fragment>
-//       <Row className='user-data-feed no-gutters justify-content-center small'>
-//         <Col md='10'>
-//           <h6>Your Holdings</h6>
-//           {holdingsRows}
-//         </Col>
-//       </Row>
-//     </React.Fragment>
-//   )
-// }
+  let textToGo = blocksToGo === 5 && latestBlock !== 0 && maxTimeToGo-msToGo > 4000 ? `🎉 Issuing rewards` : `Time to next reward`
+
+  return (
+    <React.Fragment>
+      <div>{blocksToGo < 5 ? emojis[blocksToGo] : emojis[4]} {textToGo}</div>
+      <div class="progress">
+        <div class="progress-bar" role="progressbar" style={{width: String(percent)+'%'}} aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+      </div>
+    </React.Fragment>
+  )
+}
 
 function EarningsFeed({state, query}){
   const isSignedIn = query.getIsSignedIn()
@@ -88,7 +92,7 @@ function EarningsFeed({state, query}){
   useEffect(()=> {
     if (!isSignedIn) return
     if (latestBlock == null) return
-    // if (latestBlock%5!==0) return
+    if (!isDev && latestBlock%5!==0) return
     if (latestBlock === lastProcessedBlock) return
     setLastProcessedBlock(latestBlock)
 
@@ -122,7 +126,7 @@ function EarningsFeed({state, query}){
 
   const earningsRows = useMemo( () => {
     if (lastProcessedBlock == null || !isSignedIn || !hasToken) {
-      let text = "Computing... hang tight!"
+      let text = "Waiting for next rewards... hang tight!"
       if (!hasToken) text = <span>Link your Twitter to see your stats</span>
       if (!isSignedIn) text = <span>Sign in to see your stats</span>
       return (
@@ -144,9 +148,25 @@ function EarningsFeed({state, query}){
               <ProfileImage token={name}/>
             </Col>
             <Col md='10' style={{paddingLeft: '0.5rem'}}>
-              <div>{myEarning} <br/> <LinkableName name={name} /></div>
-              <div><span className='badge badge-light'>{myRank}{suffix} largest</span></div>
-              { myRank !== 1 && <div style={{marginTop: '0.5rem'}}> 🐋 <LinkableName name={largestStakerName} /></div> }
+              <div><CountUp balance={myEarning} /> <LinkableName name={name} /></div>
+              <Row style={{marginTop: '0.5rem'}}>
+                <Col xs='1'>
+                  1st
+                </Col>
+                <Col xs='10'>
+                  <LinkableName name={largestStakerName} />
+                </Col>
+                { myRank !== 1 && (
+                  <React.Fragment>
+                    <Col xs='1'>
+                      {myRank}{suffix}
+                    </Col>
+                    <Col xs='10'>
+                      me
+                    </Col>
+                  </React.Fragment>
+                )}
+              </Row>
             </Col>
           </Row>
           <hr/>
