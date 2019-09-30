@@ -9,11 +9,11 @@ $message-margin: 0.3rem;
 
 	&.message-hidden{
 		background-color: #fff;
-		border: 1px solid $twentyonemuted;
+		border-bottom: 1px solid #eee;
 	}
 
 	&:not(.message-hidden){
-		border: 1px solid #eee;
+		border-bottom: 1px solid #eee;
 		.message-body{
 			padding: 0.5rem;
 		}
@@ -113,13 +113,12 @@ $message-margin: 0.3rem;
 				margin-right: 10px;
 				background: repeating-linear-gradient(
 					-55deg,
-					rgba(0,0,0,0.12),
-					rgba(0,0,0,0.12) 10px,
-					rgba(0,0,0,0.02) 10px,
-					rgba(0,0,0,0.02) 20px
+					rgba(0,0,0,0.1),
+					rgba(0,0,0,0.1) 10px,
+					rgba(0,0,0,0.03) 10px,
+					rgba(0,0,0,0.03) 20px
 					);
-				border-radius: 20px;
-				border: 1px solid #ddd;
+				border-radius: $twentyoneborderradius;
 				&.r1{
 					width: 100px;
 				}

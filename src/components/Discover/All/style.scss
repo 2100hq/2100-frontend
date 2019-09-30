@@ -60,8 +60,8 @@
   cursor: pointer;
   color: #444;
   background-color: $twentyonemuted;
-  margin: 2px;
-
+  border-bottom: 1px solid #eee;
+  
   &.staking-row{
     background-color: #fff;
     font-weight: bold;

@@ -59,6 +59,8 @@ hr {
 }
 
 .followme{
+	border-left: 1px solid #eee;
+	border-right: 1px solid #eee;
 
 	.create-messages-button-fixed{
 		position: fixed;
@@ -92,16 +94,6 @@ hr {
 			transition: all 0.1s linear;
 		}
 	}
-}
-
-.discover{
-	// opacity: 0.8;
-	// &:hover{
-	// 	opacity: 1;
-	// }
-
-	// transition: opacity 0.2s linear;
-
 }
 
 .enough-to-decode {
