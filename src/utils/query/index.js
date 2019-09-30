@@ -1,9 +1,6 @@
-import queries from './queries'
+import getters from './getters'
+import setters from './setters'
 
-export default function Query(state){
-  const boundQueries = { ...queries }
-  Object.keys(boundQueries).forEach( fn => {
-    boundQueries[fn] = (...args) => queries[fn](state, ...args)
-  })
-  return boundQueries
+export default function Query(...args){
+  return { ...getters(...args), ...setters(...args) }
 }
