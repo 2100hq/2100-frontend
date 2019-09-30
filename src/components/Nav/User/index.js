@@ -6,13 +6,23 @@ import './style.scss'
 import Dropdown from 'react-bootstrap/Dropdown'
 import { BN, toDecimals } from '../../../utils'
 import { get } from 'lodash'
-function Balances ({ state }) {
+function Balances ({ state, actions, dispatch }) {
   if (!state.private || !state.private.me) return null
+  const hasClaimedDai = state.private.mytoken && state.private.me.claimed
+console.log({hasClaimedDai})
   const { used, total } = state.controller.balances
   return (
     <div className='nav-link slide-left'>
     {/* wallet no more <Link className='nav-link slide-left' to='/wallet'>*/}
       <img className='dai-logo' src='../img/dai.png' /> {toDecimals(used)} / {toDecimals(total)}
+      {
+        !hasClaimedDai && (<div className="text-muted small" style={{paddingLeft:'16px'}}>
+          <a href='#' onClick={e => {
+             e.preventDefault()
+             dispatch(actions.claimFakeDai())
+          }}>Get fake DAI</a>
+        </div>)
+      }
     {/*</Link>*/}
     </div>
   )
@@ -58,12 +68,12 @@ function Wave(){
 }
 
 function SignedIn () {
-  const { state, query } = useStoreContext()
+  const { state, query, actions, dispatch } = useStoreContext()
   const hasToken = query.getMyToken()
   return (
     [
       <li className='nav-item' key='balances'>
-        <Balances state={state} />
+        <Balances state={state} actions={actions} dispatch={dispatch}/>
       </li>,
       <Dropdown as='li' className='nav-item' key='dropdown'>
         <Dropdown.Toggle as='a' className='nav-link in' href='#'>
