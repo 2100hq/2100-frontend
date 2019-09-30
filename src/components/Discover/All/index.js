@@ -154,7 +154,7 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
           <ProfileImage className={Number(myStake) === 0 ? 'profile-image' : 'profile-image pulse'} token={token} /><br/>
       </div>
       <div className="col-3" style={{overflow: 'hidden'}}>
-        <LinkableName token={token} style={{fontWeight: 'bold'}} />
+        <LinkableName token={token} />
       </div>
       {columns}
     </div>
