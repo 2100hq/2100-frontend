@@ -13,10 +13,10 @@ function RewardsHeadingText({state}){
   const latestBlock = get(state, 'public.latestBlock.number', 0)
   const blocksToGo = 5-latestBlock % 5
   let timeToGo = useMemo( () => ms(blocksToGo * 15000), [latestBlock])
-  if (latestBlock === 0) timeToGo = 'Some time'
+  if (latestBlock === 0) timeToGo = 'Calculating time'
   const emojis = ["","🕘","🕖","🕓","🕐","🎉"]
 
-  const textToGo = blocksToGo === 5 && latestBlock !== 0 ? `Issuing rewards` : `${timeToGo} to next reward`
+  let textToGo = blocksToGo === 5 && latestBlock !== 0 ? `Issuing rewards` : `${timeToGo} to next reward`
   return `${emojis[blocksToGo]} ${textToGo}`
 }
 
@@ -81,6 +81,7 @@ function RewardsHeadingText({state}){
 
 function EarningsFeed({state, query}){
   const isSignedIn = query.getIsSignedIn()
+  const hasToken = Boolean(query.getMyToken())
   const latestBlock = get(state, 'public.latestBlock.number', null)
   const [myEarnings, setMyEarnings] = useState()
   const [lastProcessedBlock, setLastProcessedBlock] = useState()
@@ -120,16 +121,21 @@ function EarningsFeed({state, query}){
   },[isSignedIn,latestBlock])
 
   const earningsRows = useMemo( () => {
-    if (lastProcessedBlock == null) return (
-      <React.Fragment>
-        <Row className='asset-holdings no-gutters'>
-        <Col>
-          <strong>Computing... hang tight!</strong>
-        </Col>
-        </Row>
-        <hr/>
-      </React.Fragment>
-    )
+    if (lastProcessedBlock == null || !isSignedIn || !hasToken) {
+      let text = "Computing... hang tight!"
+      if (!hasToken) text = <span>Link your Twitter to see your stats</span>
+      if (!isSignedIn) text = <span>Sign in to see your stats</span>
+      return (
+        <React.Fragment>
+          <Row className='asset-holdings no-gutters'>
+          <Col>
+            <strong>{text}</strong>
+          </Col>
+          </Row>
+          <hr/>
+        </React.Fragment>
+      )
+    }
     return myEarnings.map( ({name, myRank, suffix, myEarning, largestStakerName}) => {
       return (
         <React.Fragment key={name}>
@@ -147,8 +153,8 @@ function EarningsFeed({state, query}){
         </React.Fragment>
       )
     })
-  }, [lastProcessedBlock])
-  if (!isSignedIn) return null // figure this out later
+  }, [lastProcessedBlock, isSignedIn, hasToken])
+
   return (
     <React.Fragment>
       <Row className='user-data-feed no-gutters justify-content-center small'>
