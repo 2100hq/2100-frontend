@@ -128,7 +128,7 @@ export default function Allocator ({ token, className='', onComplete=()=>{}, onC
          value={Number(sliderVal)}
          onChange={handleChange}
          onChangeCommitted={handleMouseUp}
-         valueLabelDisplay="on"
+         valueLabelDisplay="auto"
          disabled={isDisabled}
          marks = {marks}
         />
