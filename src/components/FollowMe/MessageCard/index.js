@@ -22,6 +22,8 @@ import "./style.scss";
 
 const nodeURL = require("url");
 
+const lineBreakRegExp = /(\r\n|\r|\n)/
+
 // function CharReveal({ encrypted, decrypted, length, reveal }) {
 //   const [step, setStep] = useState(-1);
 
@@ -302,6 +304,7 @@ function VisibleMessageVideo({ message }) {
 
 function VisibleMessage({ message }) {
   let messageComponent = null;
+
   switch (message.type) {
     case "image":
       messageComponent = <VisibleMessageImage message={message} />;
@@ -319,7 +322,8 @@ function VisibleMessage({ message }) {
       messageComponent = <VisibleMessageVideo message={message} />;
       break;
     default:
-      messageComponent = <Linkify>{message.message}</Linkify>;
+      const processed = message.message.split(lineBreakRegExp).map(c => lineBreakRegExp.test(c) ? <br /> : c)
+      messageComponent = <Linkify>{processed}</Linkify>;
       break;
   }
   if (!message.decoded) return messageComponent;
