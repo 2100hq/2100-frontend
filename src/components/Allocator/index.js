@@ -7,7 +7,7 @@ import Slider from '@material-ui/core/Slider';
 import './style.scss'
 
 
-export default function Allocator ({ token, className='', onComplete=()=>{}, onClickOutside=()=>{} }) {
+export default function Allocator ({ token, className='', onComplete=()=>{}, onClickOutside=()=>{}, onChange=()=>{} }) {
   const { state, query, dispatch, actions } = useStoreContext()
   const isSignedIn = query.getIsSignedIn()
   const isAllocating = query.getIsAllocating()
@@ -74,19 +74,15 @@ export default function Allocator ({ token, className='', onComplete=()=>{}, onC
 
 
   function handleChange(e, val){
-    const newVal = e.target.value
+    const newVal = Number(e.target.value)
     const oldVal = myStake
     const diff = BigNumber(newVal).minus(oldVal)
     if (diff.gt(available)) return
-
+    onChange(token.id, newVal)
     setSliderVal(newVal)
   }
 
   const color = remaining < 1.00 ? remaining < 0.05 ? 'low' : 'medium' : 'high'
-
-
-  const availablePercent = useMemo( ()=>BigNumber(available).div(total).times(100).toNumber(), [total, available])
-  const usedPercent = useMemo( ()=>BigNumber(100).minus(availablePercent).toNumber(), [availablePercent])
 
   return (
     <Container className={`${className} ${color}`}>
@@ -104,14 +100,8 @@ export default function Allocator ({ token, className='', onComplete=()=>{}, onC
           />
         </Col>
         <Col xs={4}>
-          <strong>{convertToTwoDecimals(sliderVal)}</strong> ({percentOfPool}% of reward)
+          <strong>{convertToTwoDecimals(String(sliderVal))}</strong> ({percentOfPool}% of reward)
         </Col>
-{/*        <Col xs={8}>
-        available: {availablePercent+'%'} used: {usedPercent+'%'}
-        <div style={{width: availablePercent+'%', borderRight: '2px solid blue', height: '10px'}} />
-
-        <div style={{width: usedPercent+'%', borderRight: '2px solid red', height: '10px'}} />
-        </Col>*/}
       </Row>
     </Container>
   )
