@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { BigNumber, toDecimals, fromDecimals, convertToTwoDecimals } from '../../utils'
 import { get } from 'lodash'
 import { useStoreContext } from '../../contexts/Store'
@@ -8,7 +8,6 @@ import './style.scss'
 
 
 export default function Allocator ({ token, className='', onComplete=()=>{}, onClickOutside=()=>{} }) {
-  const node = useRef()
   const { state, query, dispatch, actions } = useStoreContext()
   const isSignedIn = query.getIsSignedIn()
   const isAllocating = query.getIsAllocating()
@@ -73,21 +72,6 @@ export default function Allocator ({ token, className='', onComplete=()=>{}, onC
     onComplete()
   }, [myCommand, commandId])
 
-  // detect clicks outside of this node; needs to re-bind when allocating happens
-  useEffect(() => {
-    function handleDocumentClick (e) {
-     if (node.current.contains(e.target)) return
-     if (isAllocatingToken) return // in the process of allocating this token
-     onClickOutside()
-    }
-
-    document.addEventListener("mousedown", handleDocumentClick);
-
-    return () => {
-      document.removeEventListener("mousedown", handleDocumentClick);
-    }
-  }, [isAllocatingToken])
-
 
   function handleChange(e, val){
     const newVal = e.target.value
@@ -101,7 +85,7 @@ export default function Allocator ({ token, className='', onComplete=()=>{}, onC
   const color = remaining < 1.00 ? remaining < 0.05 ? 'low' : 'medium' : 'high'
 
   return (
-    <Container className={`${className} ${color}`} ref={node}>
+    <Container className={`${className} ${color}`}>
       <Row>
         <Col xs={8}>
           <input
