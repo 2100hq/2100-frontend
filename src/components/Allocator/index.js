@@ -84,6 +84,10 @@ export default function Allocator ({ token, className='', onComplete=()=>{}, onC
 
   const color = remaining < 1.00 ? remaining < 0.05 ? 'low' : 'medium' : 'high'
 
+
+  const availablePercent = useMemo( ()=>BigNumber(available).div(total).times(100).toNumber(), [total, available])
+  const usedPercent = useMemo( ()=>BigNumber(100).minus(availablePercent).toNumber(), [availablePercent])
+
   return (
     <Container className={`${className} ${color}`}>
       <Row>
@@ -101,6 +105,12 @@ export default function Allocator ({ token, className='', onComplete=()=>{}, onC
         </Col>
         <Col xs={4}>
           <strong>{convertToTwoDecimals(sliderVal)}</strong> ({percentOfPool}% of reward)
+        </Col>
+        <Col xs={8}>
+        available: {availablePercent+'%'} used: {usedPercent+'%'}
+        <div style={{width: availablePercent+'%', borderRight: '2px solid blue', height: '10px'}} />
+
+        <div style={{width: usedPercent+'%', borderRight: '2px solid red', height: '10px'}} />
         </Col>
       </Row>
     </Container>
