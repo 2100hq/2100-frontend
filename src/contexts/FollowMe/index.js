@@ -291,7 +291,7 @@ export default function FollowMeProvider ({ children }) {
     }
     if (allowWindowObj) window.fmstate = fmstate
     const messages = combineMessages(fmstate)
-    return { ...fmstate, myToken, messages, actions }
+    return { ...fmstate, myToken, messages, actions, network: socket.network }
   }, [fmstate])
 
   return (
