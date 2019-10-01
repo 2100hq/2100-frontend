@@ -207,8 +207,8 @@ export default function MessageForm({onSubmitted}){
                   <Col>
                       <Row>
                         <Col>
-                          <Form.Label className='small'>
-                              <i className='fas fa-eye' /> Visible to everyone
+                          <Form.Label>
+                              visible to everyone
                           </Form.Label>
                         </Col>
                       </Row>
@@ -221,7 +221,7 @@ export default function MessageForm({onSubmitted}){
                 </Row>
               </Form.Group>
 
-              <Form.Group controlId="message">
+              <Form.Group className='post-body' controlId="message">
                 <Row>
                   <Col>
                     <Form.Label className='small'>
@@ -235,7 +235,6 @@ export default function MessageForm({onSubmitted}){
                   </Col>
                 </Row>
               </Form.Group>
-
               <Row>
                 <Col>
                   { hasToken ? tokenRequirement : <Link className="create-token-message" to={ isSignedIn ? "/manage" : '/' }><i class="fas fa-bolt"></i> {isSignedIn ? 'Create your token to' : 'Sign in to'} send messages</Link> }

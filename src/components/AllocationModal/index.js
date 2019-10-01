@@ -46,6 +46,7 @@ export default function AllocationModal(){
 
   return (
     <Modal
+      className='allocation-modal'
       show={Boolean(editingTokenId)}
       onHide={onHide}
       aria-labelledby='contained-modal-title-vcenter'

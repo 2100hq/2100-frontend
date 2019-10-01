@@ -3,7 +3,7 @@ import MessageForm from '../MessageForm'
 import VertiallyCenteredModal from '../../VerticallyCenteredModal'
 import { useFollowMeContext } from '../../../contexts/FollowMe'
 import { Modal, Button } from 'react-bootstrap'
-
+import './style.scss'
 function Hesitate({onCancel, onDiscard}){
   return (
     <React.Fragment>
@@ -39,6 +39,7 @@ export default function CreateMessageModal () {
 
   return (
     <Modal
+      className='create-message-modal'
       show={Boolean(showCreate)}
       onHide={() => setShowHesitate(true)}
       aria-labelledby='contained-modal-title-vcenter'
