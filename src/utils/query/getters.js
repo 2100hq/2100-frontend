@@ -15,13 +15,13 @@ export default function Getters({state}){
       // if it's not an address treat it as a username
       return get(state, `tokens.${tokenid.replace(/^\$/, '')}`, {})
     },
-    getTokenName: (tokenid) => get(getters.getToken(state,tokenid), 'name'),
+    getTokenName: (tokenid) => get(getters.getToken(tokenid), 'name'),
     getUserMyName: () => get(state,'private.username'),
     getMyToken: () => get(state, 'private.mytoken'),
     getUserAddress: () => get(state, 'web3.account',''),
     getIsConnected: () => get(state, 'network.connected'),
     getIsLoading: () => get(state, 'network.loading'),
-    getIsMyToken: (token) => (getters.getMyToken(state) || {}).id === token.id,
+    getIsMyToken: (token) => (getters.getMyToken() || {}).id === token.id,
     getUserName: (userid) => get(state, ['owners', userid, 'name']),
     getIsAllocating: () => get(state, 'intents.allocating', false),
     getIsEditingAllocations: () => get(state, 'intents.editingAllocations', false),
