@@ -3,7 +3,8 @@ import {useStoreContext} from '../../contexts/Store'
 import PublicFeed from '../FollowMe/PublicFeed'
 import MyFeed from '../FollowMe/MyFeed'
 import ThresholdFeed from '../FollowMe/ThresholdFeed'
-import TypeFeed from '../FollowMe/TypeFeed'
+import DecodedFeed from '../FollowMe/DecodedFeed'
+import DecodingFeed from '../FollowMe/DecodingFeed'
 import Navigation from '../Nav/Navigation'
 
 import './style.scss'
@@ -18,10 +19,9 @@ export default function Sidebar (props) {
 
   const viewMap = {
     New: () => <PublicFeed onChangePage={onChangePage}/>,
-    Following: () => <MyFeed onChangePage={onChangePage}/>,
-    Cheap: () => <ThresholdFeed maxThreshold="0.00021" onChangePage={onChangePage}/>,
     Premium: () => <ThresholdFeed minThreshold="0.5" onChangePage={onChangePage}/>,
-    Gifts: () =>  <TypeFeed type="gift" onChangePage={onChangePage}/>
+    Decoding: () => <DecodingFeed minThreshold="0.5" onChangePage={onChangePage}/>,
+    Decoded: () => <DecodedFeed minThreshold="0.5" onChangePage={onChangePage}/>,
   }
 
   const view = typeof viewMap[currentView] === 'function' ? viewMap[currentView]() : null

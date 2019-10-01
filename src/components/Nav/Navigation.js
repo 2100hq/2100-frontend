@@ -48,7 +48,7 @@ export default function Navigation(){
   const allowedViews = useMemo(()=>{
     if (isSignedIn) return state.config.views // if signed in, see everything
     return state.config.views.filter( view => {
-      if (view === 'Following') return false // if not signed in, cant see "Holding"
+      if (/dec/i.test(view)) return false // if not signed in, cant see "decoded/decoding"
       return true
     })
   }, [isSignedIn])
