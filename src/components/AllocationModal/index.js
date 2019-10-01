@@ -31,10 +31,10 @@ function Row({token}){
       <div className='col-1' style={{textAlign: 'center'}}>
           <ProfileImage token={token} /><br/>
       </div>
-      <div className="col-3" style={{overflow: 'hidden'}}>
+      <div className="col-2" style={{overflow: 'hidden'}}>
         <LinkableName token={token} />
       </div>
-      <div className="col-8">
+      <div className="col-9">
         <Allocator token={token} className='allocator' />
       </div>
     </div>

@@ -103,7 +103,7 @@ export default function Allocator ({ token, className='', onComplete=()=>{}, onC
   return (
     <Container className={`${className} ${color}`} ref={node}>
       <Row>
-        <Col xs={9}>
+        <Col xs={8}>
           <input
            type="range"
            min={0}
@@ -115,13 +115,8 @@ export default function Allocator ({ token, className='', onComplete=()=>{}, onC
            disabled={isDisabled}
           />
         </Col>
-        <Col xs={3}>
-          {percentOfPool}% of reward
-        </Col>
-      </Row>
-      <Row>
-        <Col>
-          {convertToTwoDecimals(sliderVal)}
+        <Col xs={4}>
+          <strong>{convertToTwoDecimals(sliderVal)}</strong> ({percentOfPool}% of reward)
         </Col>
       </Row>
     </Container>

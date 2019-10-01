@@ -4,13 +4,18 @@
 
 .modal{
 	z-index: 999999999;
+	.asset-table{
+		padding: 3rem;
+	}
 	.asset-row{
+		background-color: #FFF !important;
+
 		&:hover{
-		cursor: default;
-		background-color: #F3F6F6 !important;
+			cursor: default;
 		}
 
 		input{
+			width: 100%;
 			&:hover{
 				cursor: pointer;
 			}
