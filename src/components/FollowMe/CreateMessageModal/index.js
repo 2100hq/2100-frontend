@@ -6,7 +6,7 @@ import { Modal, Button } from 'react-bootstrap'
 
 function Hesitate({onCancel, onDiscard}){
   return (
-    <>
+    <React.Fragment>
     <Modal.Header>
       <Modal.Title>
         Done?
@@ -18,7 +18,7 @@ function Hesitate({onCancel, onDiscard}){
     <Modal.Footer>
       <Button onClick={onCancel} variant="secondary">Cancel</Button><Button onClick={onDiscard} variant="danger">Discard</Button>
     </Modal.Footer>
-    </>
+    </React.Fragment>
   )
 }
 
@@ -47,8 +47,12 @@ export default function CreateMessageModal () {
       {!showHesitate && (
         <Modal.Header closeButton />
       )}
-      <div style={{display: showHesitate ? 'none' : 'block'}}><MessageForm parentid={parentid} onSubmitted={() => actions.setShowCreate(false)}/></div>
-      {showHesitate && <Hesitate onCancel={()=>setShowHesitate(false)} onDiscard={()=>setClose(true)} /> }
+      <Modal.Body>
+        <div style={{display: showHesitate ? 'none' : 'block'}}>
+          <MessageForm parentid={parentid} onSubmitted={() => actions.setShowCreate(false)}/>
+        </div>
+        {showHesitate && <Hesitate onCancel={()=>setShowHesitate(false)} onDiscard={()=>setClose(true)} /> }
+      </Modal.Body>
     </Modal>
   )
 }
