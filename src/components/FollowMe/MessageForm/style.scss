@@ -22,25 +22,27 @@ input#hint{
 label[for=message]{
   font-size: 1rem;
   input{
-    background-color: #eee;
+    border-radius: 3px;
+    border: 1px solid #ddd;
   }
 }
 
 .form-group.post-body{
-  border-left: 3px solid #ddd;
-  padding: 1rem;
-  background-color: #fff;
-
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 1.5rem;
+  background-color: #F3F6F6;
 }
 
 textarea#message{
   padding: 0;
   margin: 0;
+  margin-top: 0.5rem;
   color: black;
-  background-color: #fff;
+  background-color: #F3F6F6;
   font-size: 1.2rem;
     &::placeholder{
-    color: black;
+    color: #999;
   }
 }
 
