@@ -192,47 +192,6 @@ export default function MessageForm({onSubmitted}){
     setThreshold(newThresh.toString())
   }
 
-  // useEffect( () => {
-  //   const holdings = Object.entries(followers)
-  //   let count = hasFollowers ? holdings.length : 0
-  //   let recipients = []
-  //   let holdingSum = BigNumber(0)
-  //   if (threshold != null){
-  //     recipients = holdings.filter( ([address, amount]) => {
-  //       holdingSum = holdingSum.plus(amount)
-  //       return BigNumber(amount).gte(threshold)
-  //     }).map( ([address]) => address )
-  //     count = recipients.length
-  //   }
-  //   setRecipients(recipients)
-  //   setRecipientCount(count)
-
-  // }, [threshold, followers])
-
-
-  // const timeToDecode = useMemo( ()=> {
-  //   const sortedAmounts = Object.values(followers).filter( amount => BigNumber(amount).lt(threshold) ).sort(function (a, b) { return BigNumber(a).minus(BigNumber(b)).gt(0) ? 1 : -1 })
-  //   const medianIndex =  Math.floor(sortedAmounts.length/2)
-  //   const median = sortedAmounts[medianIndex] || "0"
-  //   const blockReward = BigNumber("0.00021").times(weiDecimals)
-  //   const blockTime = 15000
-  //   const minBlock = 1
-  //   let blocksToSee = BigNumber(threshold).minus(median).div(blockReward)
-  //   blocksToSee = blocksToSee.lt(minBlock) ? BigNumber(minBlock) : blocksToSee
-  //   const timeToSee = Math.ceil(blocksToSee.times(blockTime).toNumber())
-  //   const convertedTime = ms(timeToSee || blockTime).replace(/m$/,' min.').replace(/s$/,' sec.')
-  //   return `${convertedTime} for most to decode`
-
-  // }, [Object.values(followers).join(''), threshold])
-
-  // const tokenRequirement = (
-  //   <div>
-  //     <ThresholdInput defaultThreshold={toDecimals(threshold,15)} onChange={handleSetThreshold} /> ${myTokenName} required
-  //     <div className="small text-muted">{timeToDecode}</div>
-  //   </div>
-  // )
-
-
   useEffect(()=>{
     calcTimeToSee({levels:contentLevels,current:contentLevel,amounts:holderAmounts, threshold})
   }, [threshold])
@@ -243,7 +202,7 @@ export default function MessageForm({onSubmitted}){
       <Row>
         <Col>
           <ul className='holders-coda small'>
-            <div style={{marginBottom: '0.5rem'}}>Approximate Time to decode:</div>
+            <div style={{marginBottom: '0.5rem'}}>Time to decode:</div>
             {contentLevels.map( data => {
               return (
                 <li style={{cursor: 'pointer'}} onClick={()=> { setThreshold(data.amount) }} >{data.holderType}: <span style={{fontWeight: 'bold'}}>{data.timeToSee || "Calculating"}</span></li>
@@ -257,26 +216,14 @@ export default function MessageForm({onSubmitted}){
   function PrivatePlaceHolder(type = 'Post'){
     switch(type){
       case 'Post':
-        return 'Decodable Message'
-      case 'Image':
-        return 'Link to image'
-      case 'Video':
-        return 'Link to video'
+        return 'Hidden Message'
       case 'Link':
-        return 'Decodable Url'
-      case 'Meme':
-        return 'Bottom Text'
-      case 'Gift':
-        return 'DM me with the message I HODL YOU'
+        return 'Hidden Url'
     }
   }
 
   function PublicPlaceHolder(type = 'Post'){
     switch(type){
-      case 'Meme':
-        return 'Top Text'
-      case 'Gift':
-        return 'a free T-shirt'
       default:
         return 'Headline'
     }
@@ -292,7 +239,7 @@ export default function MessageForm({onSubmitted}){
   }
 
   const tabNames = [
-    'Post', 'Image', 'Video', 'Link', 'Meme', 'Gift'
+    'Post', 'Link'
   ]
 
   const [currentTab, setTab] = useState(tabNames[0])
@@ -316,20 +263,22 @@ export default function MessageForm({onSubmitted}){
   return (
         <div  className="message-form">
             <ul className='nav nav-pills mt-2'>{tabs}</ul>
-
-            { currentTab === 'Meme' && <MemeSelect memeTypes={memeTypes} memeType={memeType} onChange={setMemeType} key='meme-select'/>}
-
             <Form>
               <Form.Group controlId="hint" className='form-group-hint'>
                 <Row>
                   <Col>
-                    <InputGroup>
-                      <Prepend type={currentTab} isHint={true} />
-                      <Form.Control as="input" value={hint || ''} onChange={changeData} disabled={isDisabled ? 'disabled' : null} maxlength={120} placeholder={publicHint}/>
-                    </InputGroup>
-                    <Form.Label className='small'>
-                        <i className='fas fa-eye' /> Visible to everyone
-                    </Form.Label>
+                      <Row>
+                        <Col>
+                          <Form.Label className='small'>
+                              <i className='fas fa-eye' /> Visible to everyone
+                          </Form.Label>
+                        </Col>
+                      </Row>
+                      <Row>
+                        <Col>
+                          <Form.Control as="input" value={hint || ''} onChange={changeData} disabled={isDisabled ? 'disabled' : null} maxlength={120} placeholder={publicHint}/>
+                        </Col>
+                      </Row>
                   </Col>
                 </Row>
               </Form.Group>
@@ -337,36 +286,20 @@ export default function MessageForm({onSubmitted}){
               <Form.Group controlId="message">
                 <Row>
                   <Col>
-                    <InputGroup>
-                      <Prepend type={currentTab} isHint={false} />
-                      <Form.Control as={PrivateControlType(currentTab)} rows="6" value={message || ''} onChange={changeData} disabled={isDisabled ? 'disabled' : null} placeholder={PrivatePlaceHolder(currentTab)}/>
-                    </InputGroup>
                     <Form.Label className='small'>
-                      <Row>
-                        <Col>
-                          hold {footerText} <ThresholdInput defaultThreshold={thresholdNumber} onChange={handleSetThreshold} /> ${myTokenName} to see
-                        </Col>
-                      </Row>
-                      <Row>
-                        <Col>
-                          <Slider
-                             min={0.00021}
-                             max={sliderMax}
-                             step={0.00021}
-                             value={thresholdNumber}
-                             onChange={(e, val) => handleSetThreshold(val)}
-                            />
-                        </Col>
-                      </Row>
+                      hold {footerText} <ThresholdInput defaultThreshold={thresholdNumber} onChange={handleSetThreshold} /> ${myTokenName} to see
                     </Form.Label>
+                  </Col>
+                </Row>
+                <Row>
+                  <Col>
+                      <Form.Control as={PrivateControlType(currentTab)} rows="6" value={message || ''} onChange={changeData} disabled={isDisabled ? 'disabled' : null} placeholder={PrivatePlaceHolder(currentTab)}/>
                   </Col>
                 </Row>
               </Form.Group>
 
-              { currentTab === "Meme" && <Meme toptext={hint} bottomtext={message} url={memeTypes[memeType].url} key='meme-image'/>}
-
-              <Row className=''>
-                <Col md='12'>
+              <Row>
+                <Col>
                   { hasToken ? tokenRequirement : <Link className="create-token-message" to={ isSignedIn ? "/manage" : '/' }><i class="fas fa-bolt"></i> {isSignedIn ? 'Create your token to' : 'Sign in to'} send messages</Link> }
                 </Col>
               </Row>
