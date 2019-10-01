@@ -66,11 +66,15 @@ export default function AllocationModal(){
     setShowHesitate(false)
   }, [close])
 
+  function onHide(){
+    if (query.getIsAllocating()) return
+    query.setIsEditing({})
+  }
 
   return (
     <Modal
       show={Boolean(editingTokenId)}
-      onHide={() => query.setIsEditing({})}
+      onHide={onHide}
       aria-labelledby='contained-modal-title-vcenter'
       centered
       animation={false}
