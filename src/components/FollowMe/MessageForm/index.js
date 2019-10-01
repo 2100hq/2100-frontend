@@ -107,6 +107,7 @@ export default function MessageForm({onSubmitted}){
   const hasFollowers = myToken && followerCount > 0
 
   const isDisabled = !hasToken || submitting
+  const canSubmit = !isDisabled && !isEmpty(message) && !isEmpty(hint) && !isNaN(threshold) && threshold != null
 
 
   function changeData(e){
@@ -240,7 +241,7 @@ export default function MessageForm({onSubmitted}){
                   { hasToken ? tokenRequirement : <Link className="create-token-message" to={ isSignedIn ? "/manage" : '/' }><i class="fas fa-bolt"></i> {isSignedIn ? 'Create your token to' : 'Sign in to'} send messages</Link> }
                 </Col>
               </Row>
-              <Button className='compose-submit-button' variant="primary" disabled={isDisabled || isEmpty(message) || isNaN(threshold) || threshold == null? 'disabled' : null} type="submit" onSubmit={handleSend} onClick={handleSend}>
+              <Button className='compose-submit-button' variant="primary" disabled={canSubmit ? null : 'disabled'} type="submit" onSubmit={handleSend} onClick={handleSend}>
                 { submitting ? 'Sending' : 'Send' }
               </Button>
             </Form>
