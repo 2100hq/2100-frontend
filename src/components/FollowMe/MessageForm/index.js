@@ -24,7 +24,7 @@ function isEmpty(message){
 }
 
 const contentLevels = [
-  {level: 0,  name: 'Mediocre', holderType: 'New Holder'},
+  {level: 0,  name: 'Mediocre', holderType: 'New Staker'},
   {level: 5, name: 'Regular', holderType: '🐟 Minnow'},
   {level: 50, name: 'Premium', holderType: '🦈 Shark'},
   {level: 75, name: 'Exclusive', holderType: '🐋 Whale'},
@@ -269,8 +269,8 @@ export default function MessageForm({onSubmitted}){
                   <Col>
                       <Row>
                         <Col>
-                          <Form.Label className='small'>
-                              <i className='fas fa-eye' /> Visible to everyone
+                          <Form.Label>
+                              visible to everyone
                           </Form.Label>
                         </Col>
                       </Row>
