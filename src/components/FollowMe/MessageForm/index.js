@@ -257,7 +257,7 @@ export default function MessageForm({onSubmitted}){
   function PrivatePlaceHolder(type = 'Post'){
     switch(type){
       case 'Post':
-        return 'Decodable Text'
+        return 'Decodable Message'
       case 'Image':
         return 'Link to image'
       case 'Video':
@@ -278,7 +278,7 @@ export default function MessageForm({onSubmitted}){
       case 'Gift':
         return 'a free T-shirt'
       default:
-        return 'Public Hint'
+        return 'Headline'
     }
   }
 
@@ -328,7 +328,7 @@ export default function MessageForm({onSubmitted}){
                       <Form.Control as="input" value={hint || ''} onChange={changeData} disabled={isDisabled ? 'disabled' : null} maxlength={120} placeholder={publicHint}/>
                     </InputGroup>
                     <Form.Label className='small'>
-                        <i className='fas fa-eye' /> Everyone
+                        <i className='fas fa-eye' /> Visible to everyone
                     </Form.Label>
                   </Col>
                 </Row>
@@ -344,7 +344,7 @@ export default function MessageForm({onSubmitted}){
                     <Form.Label className='small'>
                       <Row>
                         <Col>
-                          <i className='fas fa-eye' /> {footerText} <ThresholdInput defaultThreshold={thresholdNumber} onChange={handleSetThreshold} /> ${myTokenName} required
+                          hold {footerText} <ThresholdInput defaultThreshold={thresholdNumber} onChange={handleSetThreshold} /> ${myTokenName} to see
                         </Col>
                       </Row>
                       <Row>
