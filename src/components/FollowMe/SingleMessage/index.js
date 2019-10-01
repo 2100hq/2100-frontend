@@ -166,11 +166,13 @@ function notificationsByParentId(notifications,parentid){
 export default function SingleMessage(props){
   const {messageid, token} = props
   const { query, state } = useStoreContext()
-  const { myToken, actions, isSignedIn, messages, private: {decodedMessages = {}, notifications={}} } = useFollowMeContext()
+  const { myToken, actions, isSignedIn, messages, private: {decodedMessages = {}, notifications={}}, network } = useFollowMeContext()
   const [message, setMessage] = useState()
   const [loading, setLoading] = useState(true)
   const [seenNotifications, setSeenNotifications] = useState(notificationsByParentId(notifications,messageid))
+
   function getMessage(){
+    if (network.loading) return
     actions.getMessage(messageid).then( result => {
       if (!result) return // error message?
       setMessage(result)
@@ -178,7 +180,7 @@ export default function SingleMessage(props){
     })
   }
 
-  useEffect(getMessage, [isSignedIn, decodedMessages[messageid]])
+  useEffect(getMessage, [network.loading, isSignedIn, decodedMessages[messageid]])
 
   useEffect(() => {
     const newNotifications = Object.values(notifications).filter( notification => {
