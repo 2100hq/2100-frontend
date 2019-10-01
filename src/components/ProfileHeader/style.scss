@@ -1,41 +1,86 @@
-.profile-header{
-	background-color: white;
-	padding: 3rem;
+.profile-header {
+  background-color: white;
+  padding: 3rem;
 
-	.image-area{
-		text-align: center;
-	}
+  .image-area {
+    text-align: center;
+  }
 
-	.token-name{
-		font-size: 1.2rem;
-	}
+  .token-name {
+    font-size: 1.3rem;
+  }
 
-	.profile-image{
-		max-width: 100px;
-		max-height: 100px;
-	}
+  .profile-image {
+    max-width: 100px;
+    max-height: 100px;
+  }
 
-	.token-stakes{
-	}
+  .token-stakes {
+  }
 
-	.top-holders, .top-stakers{
-		font-size: 0.9rem;
-		margin-bottom: 0.5rem;
-		.profile-image{
-			max-width: 18px;
-			max-height: 18px;
-			margin-right: 3px;
+  .top-holders,
+  .top-stakers {
+    font-size: 0.9rem;
+    margin-bottom: 0.5rem;
+    .profile-image {
+      max-width: 18px;
+      max-height: 18px;
+      margin-right: 3px;
+    }
+  }
+
+  .fab.fa-twitter {
+    transition: color 0.3s ease-in-out;
+    font-size: 12px;
+    position: relative;
+	top: -2px;
+	color: #a1a1a1;
+    &:hover {
+      color: #1da1f2;
+    }
+  }
+
+  .fans {
+	  display: flex;
+	  flex-flow: row wrap;
+	  strong {
+		color: rgb(110, 110, 110) !important;
+		font-weight: 600 !important;
+	  }
+	  .top-holder,
+	  .top-staker {
+		  .description {
+			  align-self: center;
+			line-height: 0.7rem;
+		  }
+		color: #a1a1a1;
+		align-items: center;
+		justify-content: center;
+		flex-basis: 100%;
+		font-family: "Inter", sans-serif;
+		font-weight: 300;
+		font-size: 0.7rem;
+		margin-top: 5px;
+		.photo {
+			display: inline-flex;
+			align-self: center;
+			img {
+				width: 18px;
+				height: 18px;
+				margin-right: 5px;
+			}
 		}
-	}
+	  }
+  }
 
-	// .module {
-	// 	width: 108px;
-	// 	height: 108px;
-	// 	border: double 4px transparent;
-	// 	border-radius: 50%;
-	// 	background-image: linear-gradient(white, white), radial-gradient(circle at top left, #f00,#3020ff);
-	// 	background-origin: border-box;
-	// 	background-clip: content-box, border-box;
-	// 	margin: 0 auto;
-	// }
+  // .module {
+  // 	width: 108px;
+  // 	height: 108px;
+  // 	border: double 4px transparent;
+  // 	border-radius: 50%;
+  // 	background-image: linear-gradient(white, white), radial-gradient(circle at top left, #f00,#3020ff);
+  // 	background-origin: border-box;
+  // 	background-clip: content-box, border-box;
+  // 	margin: 0 auto;
+  // }
 }
