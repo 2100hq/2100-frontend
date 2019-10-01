@@ -18,7 +18,7 @@ import BrowserClasses from './components/BrowserClasses'
 import {Row, Col, Card} from 'react-bootstrap'
 import Sidebar from './components/Sidebar'
 import CreateMessageButton from './components/FollowMe/CreateMessageButton'
-import CreateMessageFixed from './components/FollowMe/CreateMessageFixed'
+import CreateMessageModal from './components/FollowMe/CreateMessageModal'
 import AllocationModal from './components/AllocationModal'
 
 import Discover from './components/Discover'
@@ -66,7 +66,7 @@ function App(){
             </Col>
           </Row>
         </div>
-        <CreateMessageFixed />
+        <CreateMessageModal />
         <Alerts />
         <ErrorModal />
         <AllocationModal />
