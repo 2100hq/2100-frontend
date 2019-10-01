@@ -115,14 +115,13 @@ export default function Allocator ({ token, className='', onComplete=()=>{}, onC
            disabled={isDisabled}
           />
         </Col>
-
-        <Col xs={1}>
-          {convertToTwoDecimals(sliderVal)}
+        <Col xs={3}>
+          {percentOfPool}% of reward
         </Col>
       </Row>
       <Row>
         <Col>
-          {percentOfPool}% of pool
+          {convertToTwoDecimals(sliderVal)}
         </Col>
       </Row>
     </Container>

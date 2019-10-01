@@ -90,24 +90,24 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
       <div className={"row no-gutters asset-row align-items-center"+selected+changed+staking} onClick={()=>{
         setIsEditing({tokenid: token.id})
       }}>
-        <div className="col-1" style={{textAlign: 'center'}}>
+        <div className="col-1 text-center">
           <Crown token={token}/>
           {token.rank !== 1 && <span className={'rank rank'+token.rank}>{token.rank}</span>}<br/>
         </div>
-        <div className='col-1' style={{textAlign: 'center'}}>
+        <div className='col-1'>
             <ProfileImage className={Number(myStake) === 0 ? 'profile-image' : 'profile-image pulse'} token={token} /><br/>
         </div>
         <div className="col-3" style={{overflow: 'hidden'}}>
           <LinkableName token={token} />
         </div>
-        <div className="col-3 text-center">
-          <CountUp balance={myStake} decimals={2} /> / { token.totalStakes !== "0" ? <CountUp balance={totalStakes} decimals={2} /> : "0.00" }
+        <div className="col-2" style={{overflow: 'hidden'}}>
+          +0.00 %
+        </div>
+        <div className="col-2 text-center">
+          <span className='my-stake'><CountUp balance={myStake} decimals={2} /></span><span className='total-stakes'> / { token.totalStakes !== "0" ? <CountUp balance={totalStakes} decimals={2} /> : "0.00" }</span>
         </div>
         <div className="col-3 text-center">
           <div><CountUp balance={balance} decimals={4}/></div>
-        </div>
-        <div className="col-1" style={{textAlign: 'center'}}>
-          <i class="text-muted far fa-edit"></i>
         </div>
       </div>
   )
@@ -163,13 +163,14 @@ function All({tokens = [], location, myToken, isAllocating, isEditing, setIsEdit
 
   return (
     <div className="asset-table">
-      <div className="row table-header no-gutters text-center small align-items-center">
+      <div className="row table-header no-gutters small align-items-center">
         <div className="col-1">#</div>
         <div className="col-4 asset-search">
           <i class="fas fa-search" /><input type='text' value={rawAssetSearch} onChange={setAssetSearch}/>
         </div>
+        <div className="col-2">% Change</div>
         <div className="col-3">Me / Total</div>
-        <div className="col-3">Balance</div>
+        <div className="col-2">Balance</div>
       </div>
       {rows}
     </div>

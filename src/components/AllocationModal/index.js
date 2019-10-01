@@ -28,17 +28,13 @@ function Hesitate({onCancel, onDiscard}){
 function Row({token}){
   return (
     <div className={"row no-gutters asset-row align-items-center"}>
-      <div className="col-1" style={{textAlign: 'center'}}>
-        <Crown token={token}/>
-        {token.rank !== 1 && <span className={'rank rank'+token.rank}>{token.rank}</span>}<br/>
-      </div>
       <div className='col-1' style={{textAlign: 'center'}}>
           <ProfileImage token={token} /><br/>
       </div>
       <div className="col-3" style={{overflow: 'hidden'}}>
         <LinkableName token={token} />
       </div>
-      <div className="col-5">
+      <div className="col-8">
         <Allocator token={token} className='allocator' />
       </div>
     </div>

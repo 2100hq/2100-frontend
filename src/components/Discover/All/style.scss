@@ -61,8 +61,34 @@
   background-color: $twentyonemuted;
   border-bottom: 1px solid #eee;
 
+  .my-stake{
+
+  }
+
+  .total-stakes{
+
+  }
+
   &:hover{
     background-color: #fff;
+
+    .my-stake{
+      padding: 0 10px;
+      border-radius: 3px;
+      font-weight: bold;
+      cursor: pointer;
+      background-color: #333;
+      color: white;
+      &:after{
+        content: ' edit'
+      }
+      &:hover{
+        background-color: #666;
+      }
+    }
+    .total-stakes{
+      display: none;
+    }
   }
   
   &.staking-row{
@@ -74,10 +100,10 @@
     cursor: default;
   }
   &.rank-changed-up{
-    background-color: lighten(orange,20%);
+    background-color: #E7FFE7;
   }
   &.rank-changed-down{
-    background-color: lighten(orange,20%);
+    background-color: #FFE4E1;
   }
   .fa-edit {
     display: none;
