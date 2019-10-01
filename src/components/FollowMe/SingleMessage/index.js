@@ -125,15 +125,15 @@ function CommentForm({message, onSubmitted}){
   )
 }
 
-function formatRecipientTimestampsAsComments(message,query){
+function getSystemComments(message,query){
   return (message.recipientTimestamps || []).map( (data, i) =>{
     data = {...data}
     const username = query.getUserName(data.userid)
     const suffix = numberSuffix(i+1)
-    data.isRecipientTimestamp = true
+    data.isSystemComment = true
     data.message = <React.Fragment><LinkableName name={username} /> was {i+1}{suffix} to decode this message</React.Fragment>
     data.hidden = false
-    data.userid='0x0'
+    data.userid='system'
     return data
   })
 }
@@ -141,12 +141,12 @@ function formatRecipientTimestampsAsComments(message,query){
 function Comments({message, query, onDestroyed}){
   if (!message.children) message.children = []
 
-  const recipientTimestamps = formatRecipientTimestampsAsComments(message,query)
+  const recipientTimestamps = getSystemComments(message,query)
 
   let comments = (message.children).concat(recipientTimestamps).sort( (a, b) => a.created - b.created).map( comment => {
-    const username = comment.isRecipientTimestamp ? '2100hq' : query.getUserName(comment.userid)
+    const username = comment.isSystemComment ? '2100hq' : query.getUserName(comment.userid)
     return (
-      <Comment comment={comment} username={username} onDestroyed={onDestroyed} displayUsername={!comment.isRecipientTimestamp}/>
+      <Comment comment={comment} username={username} onDestroyed={onDestroyed} displayUsername={!comment.isSystemComment}/>
     )
   })
 
@@ -166,11 +166,13 @@ function notificationsByParentId(notifications,parentid){
 export default function SingleMessage(props){
   const {messageid, token} = props
   const { query, state } = useStoreContext()
-  const { myToken, actions, isSignedIn, messages, private: {decodedMessages = {}, notifications={}} } = useFollowMeContext()
+  const { myToken, actions, isSignedIn, messages, private: {decodedMessages = {}, notifications={}}, network } = useFollowMeContext()
   const [message, setMessage] = useState()
   const [loading, setLoading] = useState(true)
   const [seenNotifications, setSeenNotifications] = useState(notificationsByParentId(notifications,messageid))
+
   function getMessage(){
+    if (network.loading) return
     actions.getMessage(messageid).then( result => {
       if (!result) return // error message?
       setMessage(result)
@@ -178,7 +180,7 @@ export default function SingleMessage(props){
     })
   }
 
-  useEffect(getMessage, [isSignedIn, decodedMessages[messageid]])
+  useEffect(getMessage, [network.loading, isSignedIn, decodedMessages[messageid]])
 
   useEffect(() => {
     const newNotifications = Object.values(notifications).filter( notification => {
