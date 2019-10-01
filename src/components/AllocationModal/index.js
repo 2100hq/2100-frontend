@@ -58,11 +58,11 @@ export default function AllocationModal(){
       {!showHesitate && (
         <Modal.Header closeButton>
           <div className='row justify-content-center align-items-center'>
-            <div className='col-md-4 pt-2 pb-2'>
+            <div className='col-md-4'>
                 <img className='staking-breakdown' src='/img/staking-breakdown3.png' />
             </div>
-            <div className='col-md-7'>
-              <h5>Earning Rewards</h5>
+            <div className='col-md-6'>
+              <h5>Rewards</h5>
               <p className='small'>Rewards are generated for each 2100 asset about once per minute. Attach your DAI to assets to earn a part of the reward.</p>
             </div>
           </div>

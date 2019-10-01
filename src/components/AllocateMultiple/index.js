@@ -71,13 +71,28 @@ export default function AllocateMultiple(){
 
   return (
     <React.Fragment>
-      <span className='balance badge badge-light badge-pills'><img className='dai-logo' src='/img/dai.png' /> {convertToTwoDecimals(available.toString())} / {convertToTwoDecimals(total.toString())}</span>
-      <div class="progress">
-        <div class="progress-bar" role="progressbar" style={{width: String(availablePercent)+'%'}} aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+      <div className='progress-bar-area'>
+        <div className='row align-items-center justify-content-center'>
+          <div className='col-md-4 offset-md-5'>
+            <div class="progress">
+              <div class="progress-bar" role="progressbar" style={{width: String(availablePercent)+'%'}} aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+            </div>        
+          </div>
+          <div className='col-md-3'>
+            <span className=''>
+              <img className='dai-logo' src='/img/dai.png' /> {convertToTwoDecimals(available.toString())} / {convertToTwoDecimals(total.toString())}
+            </span>
+          </div>
+        </div>
       </div>
       <div className="asset-table">
         {rows}
       </div>
     </React.Fragment>
+
+
+
+
+
   )
 }
