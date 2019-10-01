@@ -8,7 +8,10 @@
 		padding: 3rem;
 	}
 	.asset-row{
-		background-color: #FFF !important;
+		background-color: #fff !important;
+
+		&:first-child{
+		}
 
 		&:hover{
 			cursor: default;

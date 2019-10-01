@@ -5,6 +5,7 @@ import Allocator from '../Allocator'
 import ProfileImage from '../ProfileImage'
 import LinkableName from '../LinkableName'
 import Crown from '../Discover/Crown'
+
 import './style.scss'
 
 function Hesitate({onCancel, onDiscard}){
@@ -79,7 +80,14 @@ export default function AllocationModal(){
       size='lg'
     >
       {!showHesitate && (
-        <Modal.Header closeButton>Test</Modal.Header>
+        <Modal.Header closeButton>
+          <div className='row'>
+            <div className='col-md-12'>
+              <h3>Stake</h3>
+              <p>Rewards are generated for every 2100 asset approximately once per minute. Allocate your DAI to an asset to claim a percentage of the reward. ie. </p>
+            </div>
+          </div>
+        </Modal.Header>
       )}
       <div style={{display: showHesitate ? 'none' : 'block'}}>
         <div className="asset-table">
