@@ -106,12 +106,12 @@ export default function Allocator ({ token, className='', onComplete=()=>{}, onC
         <Col xs={4}>
           <strong>{convertToTwoDecimals(sliderVal)}</strong> ({percentOfPool}% of reward)
         </Col>
-        <Col xs={8}>
+{/*        <Col xs={8}>
         available: {availablePercent+'%'} used: {usedPercent+'%'}
         <div style={{width: availablePercent+'%', borderRight: '2px solid blue', height: '10px'}} />
 
         <div style={{width: usedPercent+'%', borderRight: '2px solid red', height: '10px'}} />
-        </Col>
+        </Col>*/}
       </Row>
     </Container>
   )

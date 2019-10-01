@@ -5,12 +5,16 @@
 .modal{
 	z-index: 999999999;
 	.asset-table{
-		padding: 3rem;
+		padding: 2rem;
 	}
 	.asset-row{
 		background-color: #fff !important;
 
 		&:first-child{
+		}
+
+		&:last-child{
+			border-bottom: none;
 		}
 
 		&:hover{
@@ -23,6 +27,11 @@
 				cursor: pointer;
 			}
 		}
+	}
+	.staking-breakdown{
+		max-width: 225px;
+		width: 80%;
+		height: 80%;
 	}
 }
 
