@@ -5,6 +5,15 @@
 .modal{
 	z-index: 999999999;
 
+	.close{
+		span:not(.sr-only){
+			color: black;
+			position: relative;
+			top: 10px;
+			right: 10px;
+		}
+	}
+
 	.modal-header{
 		border-bottom: none;
 		padding-bottom: 0;
