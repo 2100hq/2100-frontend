@@ -14,7 +14,7 @@ function Balances ({ state, actions, dispatch }) {
   return (
     <div className='nav-link slide-left'>
     {/* wallet no more <Link className='nav-link slide-left' to='/wallet'>*/}
-      <span className='balance badge badge-light badge-pills'><img className='dai-logo' src='../img/dai.png' /> {toDecimals(used)} / {toDecimals(total)}</span>
+      <span className='balance'><img className='dai-logo' src='../img/dai.png' /> {toDecimals(used)} / {toDecimals(total)}</span>
       {
         !hasClaimedDai && (<div className="text-muted small" style={{paddingLeft:'16px'}}>
           <a href='#' onClick={e => {

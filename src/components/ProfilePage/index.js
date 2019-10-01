@@ -120,7 +120,7 @@ export default function Profile (props) {
     <div className='profile'>
       {isNewUser && <NewUserWelcome clearNewUser={clearNewUser}/>}
       <span className='context-bar'>
-        <Link to='/'><i class="fas fa-arrow-circle-left"></i></Link> Viewing a single profile
+        <Link to='/'><i style={{fontSize: '1.4rem'}} class="fas fa-arrow-circle-left"></i></Link>
       </span>
       <ProfileHeader token={token} />
       <div className='profile-body'>

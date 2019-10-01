@@ -35,15 +35,18 @@ function NavBrand(){
 export default function Nav (props) {
   return (
     <React.Fragment>
-      <div style={{textAlign: 'center'}}>
-        <div className='our-brand'>
+      <Row className='no-gutters text-center mt-3 mb-3'>
+        <Col md='12'>
           <Link to='/'><Logo /></Link>
-        </div>
-        <ul className="nav flex-column vertical-nav">
-          <User {...props} key='user' />
-        </ul>
-      </div>
-      <hr/>
+        </Col>
+      </Row>
+      <Row className='no-gutters text-center'>
+        <Col md='12'>
+          <ul className="nav flex-column vertical-nav">
+            <User {...props} key='user' />
+          </ul>
+        </Col>
+      </Row>
       <DataFeed />
     </React.Fragment>
     )

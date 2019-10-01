@@ -75,10 +75,19 @@ function RewardsHeadingText({state}){
 
   return (
     <React.Fragment>
-      <div>{blocksToGo < 5 ? emojis[blocksToGo] : emojis[4]} {textToGo}</div>
-      <div class="progress">
-        <div class="progress-bar" role="progressbar" style={{width: String(percent)+'%'}} aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
-      </div>
+      <Row className='small text-muted mb-2'>
+        <Col>
+          {blocksToGo < 5 ? emojis[blocksToGo] : emojis[4]} {textToGo}
+        </Col>
+      </Row>
+      <Row className='small'>
+        <Col md='12'>      
+        <div class="progress">
+          <div class="progress-bar" role="progressbar" style={{width: String(percent)+'%'}} aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+          </div>
+        </div>
+        </Col>
+      </Row>
     </React.Fragment>
   )
 }

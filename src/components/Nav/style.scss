@@ -6,8 +6,8 @@
 }
 
 .logo{
-	margin-top: 2rem;
-	max-width: 75px;
+	max-width: 80px;
+	max-height: 80px;
 }
 
 .nav-link.active {
@@ -16,4 +16,11 @@
 
 .fm-nav{
 	height: 2.5rem;
+}
+
+ul.nav{
+	.nav-item .nav-link{
+		padding: 0.25rem 1rem;
+	}
+	margin-bottom: 1.2rem;
 }
