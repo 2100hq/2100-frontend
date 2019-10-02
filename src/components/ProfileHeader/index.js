@@ -3,6 +3,7 @@ import ProfileImage from "../ProfileImage";
 import { toDecimals } from "../../utils";
 import { Row, Col } from "react-bootstrap";
 import "./style.scss";
+import * as moment from "moment";
 
 // An ordered list of tokens corresponding to the holders of $this.
 let holders = [
@@ -110,9 +111,44 @@ let amtStaked = 34.39;
 // Other statistics...
 let numStakers = 34;
 let numHolders = 5;
-let supply = 0.9384;
-let created = Date.now();
+let supply = 0.009384;
+let created = new Date();
 let posts = 6;
+
+// Profile statistics
+let columns = info => [
+  {
+    title: "Amount Staked",
+    content: <span className="feature">{info.amtStaked}</span>
+  },
+  {
+    title: "Circulating Supply",
+    content: (
+      <span className="feature">
+        {info.supply}
+        <span className="small-grey">of 2100</span>
+      </span>
+    )
+  },
+  {
+    title: "Genesis",
+    content: (<span className="feature-small">
+    {moment(info.created).fromNow()}
+  </span>)
+  },
+  {
+    title: "Stakers",
+    content: (<span className="feature">{info.numStakers}</span>)
+  },
+  {
+    title: "Holders",
+    content: (<span className="feature">{info.numHolders}</span>)
+  },
+  {
+    title: "Posts",
+    content: (<span className="feature">{info.posts}</span>)
+  }
+];
 
 export default function ProfileHeader({
   token,
@@ -145,21 +181,43 @@ export default function ProfileHeader({
           </div>
           <div className="fans">
             <div className="top-holder">
-              <div className="photo"><ProfileImage token={holders[0]} /></div>
+              <div className="photo">
+                <ProfileImage token={holders[0]} />
+              </div>
               <span className="description">
-                <strong>${holders[0].name}</strong> is the largest holder. 🐳
+                <strong>${holders[0].name}</strong> is the #1 holder. 🐳
               </span>
             </div>
             <div className="top-staker">
-              <div className="photo"><ProfileImage token={stakers[0]} /></div>
+              <div className="photo">
+                <ProfileImage token={stakers[0]} />
+              </div>
               <span className="description">
-                <strong>${stakers[0].name}</strong> is the largest staker. ⛏
+                <strong>${stakers[0].name}</strong> is the #1 staker. ⛏
               </span>
             </div>
           </div>
           <div className="token-url small mt-2"></div>
         </Col>
-        <Col md="5" className="stakeholders-area">
+        <Col className="stat">
+          <div className="stat-col">
+            {columns(info).slice(0, 3).map(col => 
+              <div className="item">
+                <h4>{col.title}</h4>
+                {col.content}
+              </div>
+            )}
+          </div>
+          <div className="stat-col">
+            {columns(info).slice(3, 6).map(col => 
+              <div className="item">
+                <h4>{col.title}</h4>
+                {col.content}
+              </div>
+            )}
+          </div>
+        </Col>
+        {/* <Col md="5" className="stakeholders-area">
           <div className="top-holders">
             <div className="top-label">Top Holders</div>
             {holders.slice(0, 5).map(holder => (
@@ -173,7 +231,7 @@ export default function ProfileHeader({
               <ProfileImage token={holder} />
             ))}
           </div>
-        </Col>
+        </Col> */}
       </Row>
     </div>
   );
