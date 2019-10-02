@@ -221,15 +221,14 @@ export default function MessageForm({onSubmitted}){
                   </Col>
                 </Row>
               </Form.Group>
-
-              <Form.Group className='post-body' controlId="message">
-                <Row>
+                <Row className='threshold-area'>
                   <Col>
                     <Form.Label className='small'>
                       hold {footerText} <ThresholdInput defaultThreshold={thresholdNumber} onChange={handleSetThreshold} /> ${myTokenName} to see
                     </Form.Label>
                   </Col>
                 </Row>
+              <Form.Group className='post-body' controlId="message">
                 <Row>
                   <Col>
                       <Form.Control as={PrivateControlType(currentTab)} rows="6" value={message || ''} onChange={changeData} disabled={isDisabled ? 'disabled' : null} placeholder={PrivatePlaceHolder(currentTab)}/>
