@@ -187,7 +187,7 @@ function DecodeThreshold({ name, token, message, isSignedIn, actions }) {
   if (decoding)
     return (
       <span>
-        <i class="fas fa-exclamation"></i> decoding...
+        <i className="fas fa-exclamation"></i> decoding...
       </span>
     );
 
@@ -267,9 +267,9 @@ function MessageIcon({ message }) {
     case "gift":
       return <i className={"fas fa-gift"} />;
     case "meme":
-      return <i class="far fa-comment-alt"></i>;
+      return <i className="far fa-comment-alt"></i>;
     case "link":
-      return <i class="fas fa-link"></i>;
+      return <i className="fas fa-link"></i>;
     default:
       return <i className={"fas fa-align-left"} />;
   }
@@ -385,7 +385,7 @@ function CommentBubble({ message, canComment, onClick = () => {} }) {
   if (prevCount !== count) classNames.push('comment-count-changed')
   return (
     <span className={classNames.join(' ')} onClick={onClick}>
-      <i class="far fa-comment"></i> {message.childCount || 0}
+      <i className="far fa-comment"></i> {message.childCount || 0}
     </span>
   );
 }
@@ -549,7 +549,7 @@ export default function MessageCard({
           className="small message-share"
           onClick={clickHandler(postTweet)}
         >
-          <i class="fab fa-twitter"></i>
+          <i className="fab fa-twitter"></i>
         </a>
       </div>
       <div className="message-content" style={{ width: "90%", float: "right" }}>

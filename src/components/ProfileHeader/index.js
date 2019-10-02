@@ -19,7 +19,7 @@ export default function ProfileHeader({token}){
               <img src='/img/dai.png' style={{ width: '16px','vertical-align': 'baseline' }} /> {toDecimals(token.totalStakes, 2)} staking
             </div>
             <div className='token-url small mt-2'>
-              <a className='text-muted' href={`https://twitter.com/${token.name}`}><i class="fab fa-twitter"></i> {`${token.name}`}</a>
+              <a className='text-muted' href={`https://twitter.com/${token.name}`}><i className="fab fa-twitter"></i> {`${token.name}`}</a>
             </div>
         </Col>
         <Col md='5' className='stakeholders-area'>

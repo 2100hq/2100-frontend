@@ -47,7 +47,7 @@ export default function SingleMessagePage (props) {
   return (
     <div className='single-message-page'>
       <div className='context-bar'>
-        <Link to='/'><i style={{fontSize: '1.4rem'}} class="fas fa-arrow-circle-left"></i></Link>
+        <Link to='/'><i style={{fontSize: '1.4rem'}} className="fas fa-arrow-circle-left"></i></Link>
       </div>
         <FollowMeSingleMessage token={token} messageid={messageid} />
     </div>

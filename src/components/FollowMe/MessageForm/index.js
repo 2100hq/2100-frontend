@@ -208,7 +208,7 @@ export default function MessageForm({onSubmitted}){
                   <Col>
                       <Row>
                         <Col>
-                          <Form.Label>
+                          <Form.Label className='small'>
                               visible to everyone
                           </Form.Label>
                         </Col>
@@ -221,23 +221,27 @@ export default function MessageForm({onSubmitted}){
                   </Col>
                 </Row>
               </Form.Group>
-                <Row className='threshold-area'>
-                  <Col>
-                    <Form.Label className='small'>
-                      hold {footerText} <ThresholdInput defaultThreshold={thresholdNumber} onChange={handleSetThreshold} /> ${myTokenName} to see
-                    </Form.Label>
-                  </Col>
-                </Row>
-              <Form.Group className='post-body' controlId="message">
-                <Row>
-                  <Col>
-                      <Form.Control as={PrivateControlType(currentTab)} rows="6" value={message || ''} onChange={changeData} disabled={isDisabled ? 'disabled' : null} placeholder={PrivatePlaceHolder(currentTab)}/>
-                  </Col>
-                </Row>
-              </Form.Group>
               <Row>
                 <Col>
-                  { hasToken ? tokenRequirement : <Link className="create-token-message" to={ isSignedIn ? "/manage" : '/' }><i class="fas fa-bolt"></i> {isSignedIn ? 'Create your token to' : 'Sign in to'} send messages</Link> }
+                  <Row className='threshold-area'>
+                      <Col>
+                        <Form.Label className='small'>
+                          hold {footerText} <ThresholdInput defaultThreshold={thresholdNumber} onChange={handleSetThreshold} /> ${myTokenName} to see
+                        </Form.Label>
+                      </Col>
+                  </Row>
+                <Form.Group className='post-body' controlId="message">
+                  <Row>
+                    <Col>
+                        <Form.Control as={PrivateControlType(currentTab)} rows="6" value={message || ''} onChange={changeData} disabled={isDisabled ? 'disabled' : null} placeholder={PrivatePlaceHolder(currentTab)}/>
+                    </Col>
+                  </Row>
+                </Form.Group>
+                </Col>
+              </Row>
+              <Row>
+                <Col>
+                  { hasToken ? tokenRequirement : <Link className="create-token-message" to={ isSignedIn ? "/manage" : '/' }><i className="fas fa-bolt"></i> {isSignedIn ? 'Create your token to' : 'Sign in to'} send messages</Link> }
                 </Col>
               </Row>
               <Button className='compose-submit-button' variant="primary" disabled={canSubmit ? null : 'disabled'} type="submit" onSubmit={handleSend} onClick={handleSend}>

@@ -75,10 +75,10 @@ export default function AllocateMultiple(){
         <div className='row align-items-center'>
         <div className='col-md-5'></div>
         <div className='col-md-4'>
-              <div class="progress">
-                <div class="progress-bar" role="progressbar" style={{width: String(availablePercent)+'%'}} aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+              <div className="progress">
+                <div className="progress-bar" role="progressbar" style={{width: String(availablePercent)+'%'}} aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
                 </div>
-              </div> 
+              </div>
         </div>
         <div className='col-md-3'>
         <span>

@@ -21,7 +21,7 @@ export default function MessageModal({match}){
        animate={false}
      >
       <Modal.Header>
-        <i class="fas fa-times-circle" style={{position: 'absolute', top: '0.25rem', right: '0.25rem', cursor: 'pointer'}} onClick={hide}></i>
+        <i className="fas fa-times-circle" style={{position: 'absolute', top: '0.25rem', right: '0.25rem', cursor: 'pointer'}} onClick={hide}></i>
       </Modal.Header>
       <SingleMessage messageid={messageid} token={token} canCopyUrl={false}/>
      </Modal>

@@ -38,7 +38,7 @@ function Description({description, token, isMyToken}){
   )
 
   return (
-    <Form class="token-description" onSubmit={handlePersist}>
+    <Form className="token-description" onSubmit={handlePersist}>
       <Form.Group as={Row}>
         {(Boolean(description) || editing) && (
           <Col md="8">
