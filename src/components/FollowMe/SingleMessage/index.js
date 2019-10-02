@@ -183,6 +183,13 @@ export default function SingleMessage(props){
   useEffect(getMessage, [network.loading, isSignedIn, decodedMessages[messageid]])
 
   useEffect(() => {
+    if (!message || !token) return
+    setMessage( prevMessage => {
+      return actions.addMetadataToMessage(prevMessage, token)
+    })
+  }, [token && token.isStaking, token && token.balances.available])
+
+  useEffect(() => {
     const newNotifications = Object.values(notifications).filter( notification => {
       if (notification.parentid !== messageid) return false
       if (seenNotifications.includes(notification.id)) return false

@@ -4,6 +4,7 @@ export default function Getters({state}){
   const getters = {
     getIsSignedIn: () => get(state, 'private.isSignedIn', false),
     getLatestBlock: () => get(state, 'public.latestBlock.number'),
+    getTokens: () => get(state, ['tokens'], {}),
     getToken: (tokenid) => {
       if (!tokenid) return {}
       if (tokenid.tokenid || tokenid.id) tokenid=tokenid.tokenid || tokenid.id

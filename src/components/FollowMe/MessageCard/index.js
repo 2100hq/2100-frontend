@@ -117,52 +117,72 @@ function DecodeThreshold({ name, token, message, isSignedIn, actions }) {
       </span>
     );
 
-  const available = get(token, "balances.available", "0");
-  const diff = BigNumber(message.threshold).minus(available);
-  const isStaking = BigNumber(token.myStake).gt(0);
+  const {decodable, thresholdDiff} = message
+  const {myStake, isStaking} = token
   let timeToDecode = null;
+  const diff = !decodable ? BigNumber(thresholdDiff) : null
 
   async function decodeMessage(id) {
     setDecoding(true);
     const resp = await actions.decodeMessage(id);
     setDecoding(false);
   }
+  // NOT DECODABLE
+  if (!decodable){
+    // STAKING
+    if (isStaking) {
+      const divisor = BigNumber(myStake)
+        .div(token.totalStakes)
+        .times(0.9)
+        .times(0.00021)
+        .times(5)
+        .times(weiDecimals);
 
-  if (isStaking && diff.gt(0)) {
-    const divisor = BigNumber(token.myStake)
-      .div(token.totalStakes)
-      .times(0.9)
-      .times(0.00021)
-      .times(5)
-      .times(weiDecimals);
-    const blocks = diff
-      .div(divisor)
-      .dp(0, 0)
-      .toNumber();
-    timeToDecode = <span>({ms(blocks * 15000 * 5)})</span>;
-  } else {
-    const total = BigNumber("10").times(weiDecimals);
-    const divisor = total
-      .div(BigNumber(token.totalStakes || "1").plus(total))
-      .times(0.9)
-      .times(0.00021)
-      .times(5)
-      .times(weiDecimals);
-    const blocks = diff
-      .div(divisor)
-      .dp(0, 0)
-      .toNumber();
-    timeToDecode = <span>({ms(blocks * 15000 * 5)})</span>;
+
+      const blocks = diff
+        .div(divisor)
+        .dp(0, 0)
+        .toNumber();
+      timeToDecode = <span>({ms(blocks * 15000 * 5)})</span>;
+
+      return (
+        <span>
+          {" "}
+          {toDecimals(diff, 3, 0)}{" "}
+          <span className="token-name">{name} to go</span> {timeToDecode}
+        </span>
+      );
+
+    } else {
+      // NOT STAKING
+      const total = BigNumber("10").times(weiDecimals);
+      const divisor = total
+        .div(BigNumber(token.totalStakes || "1").plus(total))
+        .times(0.9)
+        .times(0.00021)
+        .times(5)
+        .times(weiDecimals);
+      const blocks = diff
+        .div(divisor)
+        .dp(0, 0)
+        .toNumber();
+      timeToDecode = <span>({ms(blocks * 15000 * 5)})</span>;
+
+      return (
+        <span>
+          hold{" "}
+          <span>
+            <span className="amount-underline">
+              {toDecimals(message.threshold, 3, 0)}
+            </span>{" "}
+            ${name}
+          </span>{" "}
+          to see {timeToDecode}
+        </span>
+      );
+
+    }
   }
-
-  if (diff.gt(0) && isStaking)
-    return (
-      <span>
-        {" "}
-        {toDecimals(diff, 3, 0)}{" "}
-        <span className="token-name">{name} to go</span> {timeToDecode}
-      </span>
-    );
 
   if (decoding)
     return (
@@ -171,7 +191,7 @@ function DecodeThreshold({ name, token, message, isSignedIn, actions }) {
       </span>
     );
 
-  if (diff.lte(0))
+  if (decodable)
     return (
       <span>
         <span>you have enough&nbsp;</span>
@@ -187,19 +207,6 @@ function DecodeThreshold({ name, token, message, isSignedIn, actions }) {
       </span>
     );
 
-  if (!isStaking)
-    return (
-      <span>
-        hold{" "}
-        <span>
-          <span className="amount-underline">
-            {toDecimals(message.threshold, 3, 0)}
-          </span>{" "}
-          ${name}
-        </span>{" "}
-        to see {timeToDecode}
-      </span>
-    );
 }
 
 // function EncryptedMessage({ encrypted, decrypted }) {
