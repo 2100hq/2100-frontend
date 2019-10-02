@@ -44,6 +44,7 @@ export default function CreateMessageModal () {
       onHide={() => setShowHesitate(true)}
       aria-labelledby='contained-modal-title-vcenter'
       centered
+      animation={false}
     >
       {!showHesitate && (
         <Modal.Header closeButton />

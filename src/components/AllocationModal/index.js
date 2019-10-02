@@ -66,7 +66,7 @@ export default function AllocationModal(){
             </div>
             <div className='col-md-6'>
               <h5>Rewards</h5>
-              <p className='small'>Rewards are generated for each 2100 asset about once per minute. Attach your DAI to assets to earn a part of the reward.</p>
+              <p className='small'>Rewards are generated for each 2100 asset about once per minute. Stake DAI to earn a part of the reward.</p>
             </div>
           </div>
         </Modal.Header>

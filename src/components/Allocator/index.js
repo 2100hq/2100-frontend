@@ -87,10 +87,10 @@ export default function Allocator ({ token, className='', onComplete=()=>{}, onC
   return (
     <Container className={`${className} ${color}`}>
       <Row>
-        <Col xs={1}>
-          <strong>{convertToTwoDecimals(String(sliderVal))}</strong>
+        <Col xs={2}>
+          <img className='dai-logo' src='/img/dai.png' /> {convertToTwoDecimals(String(sliderVal))}
         </Col>
-        <Col xs={8}>
+        <Col xs={7}>
           <input
            type="range"
            min={0}

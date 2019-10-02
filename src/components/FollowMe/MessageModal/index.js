@@ -18,6 +18,7 @@ export default function MessageModal({match}){
        aria-labelledby='contained-modal-title-vcenter'
        centered
        onHide={hide}
+       animate={false}
      >
       <Modal.Header>
         <i class="fas fa-times-circle" style={{position: 'absolute', top: '0.25rem', right: '0.25rem', cursor: 'pointer'}} onClick={hide}></i>
