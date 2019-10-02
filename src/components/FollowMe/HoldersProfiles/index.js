@@ -7,7 +7,7 @@ import './style.scss'
 
 function Face({name, address,index}){
   if (name) return <ProfileImage token={name} className={'holder-icon holder-icon-'+index}/>
-  return <div className={'jazzicon holder-icon holder-icon-'+index}><Jazzicon diameter={25} seed={jsNumberForAddress(address)} /></div>
+  return <div className={'jazzicon holder-icon holder-icon-'+index}><Jazzicon diameter={12} seed={jsNumberForAddress(address)} /></div>
 }
 
 function Faces({addresses=[], count=3}){

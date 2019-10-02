@@ -128,7 +128,7 @@ function CommentForm({message, onSubmitted}){
 function getSystemComments(message,query){
   return (message.recipientTimestamps || []).map( (data, i) =>{
     data = {...data}
-    const username = query.getUserName(data.userid)
+    const username = query.getUserName(data.userid) || data.userid
     const suffix = numberSuffix(i+1)
     data.isSystemComment = true
     data.message = <React.Fragment><LinkableName name={username} /> was {i+1}{suffix} to decode this message</React.Fragment>
