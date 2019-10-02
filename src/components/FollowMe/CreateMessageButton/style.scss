@@ -1,0 +1,29 @@
+	.create-messages-button-fixed{
+		position: absolute;
+		top: 0px;
+		right: 0px;
+		z-index: 99999;
+
+		.compose-button{
+			font-size: 1.4rem;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			width: 2.5rem;
+			height: 2.5rem;
+  			font-size: 18px;
+			background-color: white;
+			color: black;
+			transition: opacity 0.2s linear;
+
+			&:hover{
+				cursor: pointer;
+				color: white;
+				background-color: black;
+				width: 75px;
+				height: 75px;
+			}
+
+			transition: all 0.1s linear;
+		}
+	}
