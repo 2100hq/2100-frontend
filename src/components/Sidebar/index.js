@@ -1,6 +1,6 @@
 import React, {useState, useRef} from 'react'
 import {useStoreContext} from '../../contexts/Store'
-import PublicFeed from '../FollowMe/PublicFeed'
+import NewFeed from '../FollowMe/NewFeed'
 import MyFeed from '../FollowMe/MyFeed'
 import ThresholdFeed from '../FollowMe/ThresholdFeed'
 import DecodedFeed from '../FollowMe/DecodedFeed'
@@ -19,7 +19,7 @@ export default function Sidebar (props) {
   const currentView = query.getCurrentView()
 
   const viewMap = {
-    New: () => <PublicFeed onChangePage={onChangePage}/>,
+    New: () => <NewFeed onChangePage={onChangePage}/>,
     Premium: () => <ThresholdFeed minThreshold="0.5" onChangePage={onChangePage}/>,
     Decoding: () => <DecodingFeed minThreshold="0.5" onChangePage={onChangePage}/>,
     Decodable: () => <DecodableFeed minThreshold="0.5" onChangePage={onChangePage}/>,
