@@ -5,6 +5,7 @@ import MyFeed from '../FollowMe/MyFeed'
 import ThresholdFeed from '../FollowMe/ThresholdFeed'
 import DecodedFeed from '../FollowMe/DecodedFeed'
 import DecodingFeed from '../FollowMe/DecodingFeed'
+import DecodableFeed from '../FollowMe/DecodableFeed'
 import Navigation from '../Nav/Navigation'
 
 import './style.scss'
@@ -21,6 +22,7 @@ export default function Sidebar (props) {
     New: () => <PublicFeed onChangePage={onChangePage}/>,
     Premium: () => <ThresholdFeed minThreshold="0.5" onChangePage={onChangePage}/>,
     Decoding: () => <DecodingFeed minThreshold="0.5" onChangePage={onChangePage}/>,
+    Decodable: () => <DecodableFeed minThreshold="0.5" onChangePage={onChangePage}/>,
     Decoded: () => <DecodedFeed minThreshold="0.5" onChangePage={onChangePage}/>,
   }
 
