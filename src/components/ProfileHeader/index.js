@@ -14,10 +14,27 @@ import {
   Label
 } from "recharts";
 import ProfileImage from "../ProfileImage";
+import LinkableName from "../LinkableName";
 import { toDecimals } from "../../utils";
+import BigNumber from 'bignumber.js'
 import { Row, Col } from "react-bootstrap";
 import "./style.scss";
 import * as moment from "moment";
+
+// takes a list of data and truncates any data past the max adding it to an 'others' object
+function truncateData(list=[], total="1", max=10){
+  if (list.length < max) return list
+  const others = {
+    rank: max+1,
+    name: 'others',
+    value: BigNumber.sum(...list.slice(max).map(t=>t.value)).dp(4,0).toNumber()
+  }
+
+  others.percent = new BigNumber(others.value).div(total).dp(4,0).toNumber()
+
+  const top = list.slice(0,max)
+  return [...top, others]
+}
 
 const colors = ["#ADDEB5", "#BAB9FF", "#FAC2FF"];
 
@@ -146,13 +163,13 @@ let numPosts = 6;
 let columns = info => [
   {
     title: "Amount Staked",
-    content: <span className="feature">{info.amtStaked}</span>
+    content: <span className="feature">{info.amtStaked != null ? info.amtStaked : '-'}</span>
   },
   {
     title: "Circulating Supply",
     content: (
       <span className="feature">
-        {info.supply}
+        {info.supply != null ? info.supply : '-'}
         <span className="small-grey">of 2100</span>
       </span>
     )
@@ -160,36 +177,30 @@ let columns = info => [
   {
     title: "Genesis",
     content: (
-      <span className="feature-small">{moment(info.created).fromNow()}</span>
+      <span className="feature-small">{info.created != null ? moment(info.created).fromNow() : '-'}</span>
     )
   },
   {
     title: "Stakers",
-    content: <span className="feature">{info.numStakers}</span>
+    content: <span className="feature">{info.numStakers != null ? info.numStakers : '-'}</span>
   },
   {
     title: "Holders",
-    content: <span className="feature">{info.numHolders}</span>
+    content: <span className="feature">{info.numHolders != null ? info.numHolders : '-'}</span>
   },
   {
     title: "Posts",
-    content: <span className="feature">{info.numPosts}</span>
+    content: <span className="feature">{info.numPosts != null ? info.numPosts : '-'}</span>
   }
 ];
 
 export default function ProfileHeader({
   token,
-  info = {
-    holders,
-    stakers,
-    amtStaked,
-    numStakers,
-    supply,
-    numHolders,
-    created,
-    numPosts
-  }
+  info = {}
 }) {
+  const truncatedHolders = info.holders != null && supply != null ? truncateData(info.holders, supply) : []
+  const truncatedStakers = info.stakers != null && info.amtStaked != null ? truncateData(info.stakers, info.amtStaked) : []
+
   const [activeIndex, setActiveIndex] = useState({
     holders: 1,
     stakers: 1
@@ -262,18 +273,18 @@ export default function ProfileHeader({
         <div className="fans">
           <div className="top-holder">
             <div className="photo">
-              <ProfileImage token={holders[0]} />
+              <ProfileImage token={info.holders[0]} />
             </div>
             <span className="description">
-              <strong>${holders[0].name}</strong> is the #1 holder. 🐳
+              <strong><LinkableName token={info.holders[0]} /></strong> is the #1 holder. 🐳
             </span>
           </div>
           <div className="top-staker">
             <div className="photo">
-              <ProfileImage token={stakers[0]} />
+              <ProfileImage token={info.stakers[0]} />
             </div>
             <span className="description">
-              <strong>${stakers[0].name}</strong> is the #1 staker. ⛏
+              <strong><LinkableName token={info.stakers[0]} /></strong> is the #1 staker. ⛏
             </span>
           </div>
         </div>
@@ -307,7 +318,7 @@ export default function ProfileHeader({
           <ResponsiveContainer>
             <PieChart>
               <Pie
-                data={data}
+                data={truncatedStakers}
                 dataKey="value"
                 innerRadius="25%"
                 outerRadius="45%"
@@ -316,8 +327,8 @@ export default function ProfileHeader({
                 onMouseEnter={onStakersPieEnter}
                 isAnimationActive={false}
               >
-                {data.map((entry, index) => (
-                  <Cell key={`slice-${index}`} fill={colors[index % 10]} />
+                {truncatedStakers.map((entry, index) => (
+                  <Cell key={`slice-${index}`} fill={colors[index % colors.length]} />
                 ))}
               </Pie>
             </PieChart>
@@ -338,7 +349,7 @@ export default function ProfileHeader({
           <ResponsiveContainer>
             <PieChart>
               <Pie
-                data={data}
+                data={truncatedHolders}
                 dataKey="value"
                 innerRadius="25%"
                 outerRadius="45%"
@@ -347,8 +358,8 @@ export default function ProfileHeader({
                 onMouseEnter={onHoldersPieEnter}
                 isAnimationActive={false}
               >
-                {data.map((entry, index) => (
-                  <Cell key={`slice-${index}`} fill={colors[index % 10]} />
+                {truncatedHolders.map((entry, index) => (
+                  <Cell key={`slice-${index}`} fill={colors[index % colors.length]} />
                 ))}
               </Pie>
             </PieChart>

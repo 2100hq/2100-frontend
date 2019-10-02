@@ -265,6 +265,17 @@ export default function AsyncHandlers (libs = {}) {
         libs.dispatch(actions.error(action.type, e))
         return false
       }
+    },
+    GET_TOKEN_HOLDERS: async action => {
+      try {
+        const resp = await libs.socket.public('tokenHolders', action.params.tokenid)
+        return resp
+      } catch(e){
+        console.log();
+        console.log(e);
+
+        return null
+      }
     }
   }
 }

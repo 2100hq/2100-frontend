@@ -17,6 +17,8 @@ export default function LinkableName({name, token, style={}, className=''}){
     }
   }
 
+  if (name == null) return null
+
   // ethereum address
   const isAddress = name.indexOf('0x') === 0
 

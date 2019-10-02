@@ -26,6 +26,7 @@ const actions = {
   error: (key, error) => actionGenerator('ERROR', { [key]: error }),
   verifyTwitter: ({link, description='', tweetType}) => actionGenerator('VERIFY_TWITTER', {link, description, tweetType}),
   claimFakeDai: () => actionGenerator('CLAIM_FAKE_DAI', {}),
+  getTokenHolders: (tokenid) => actionGenerator('GET_TOKEN_HOLDERS', {tokenid}),
 }
 
 function actionGenerator (type, params, resp) {
