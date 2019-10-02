@@ -116,7 +116,7 @@ function CommentForm({message, onSubmitted}){
          <Form.Group controlId="comment">
           <InputGroup>
             <Form.Control inline as="input" rows="1" value={comment || ''} onChange={setComment} disabled={isDisabled ? 'disabled' : null} placeholder={placeholder}/>
-            <div className='custom-submit' onClick={handleSubmit} disabled={isDisabled || isEmpty(comment)}><i class="fas fa-arrow-up"></i>{isSubmitting && 'ting'}</div>
+            <div className='custom-submit' onClick={handleSubmit} disabled={isDisabled || isEmpty(comment)}><i className="fas fa-arrow-up"></i>{isSubmitting && 'ting'}</div>
           </InputGroup>
           </Form.Group>
         </Form>
@@ -128,7 +128,7 @@ function CommentForm({message, onSubmitted}){
 function getSystemComments(message,query){
   return (message.recipientTimestamps || []).map( (data, i) =>{
     data = {...data}
-    const username = query.getUserName(data.userid)
+    const username = query.getUserName(data.userid) || data.userid
     const suffix = numberSuffix(i+1)
     data.isSystemComment = true
     data.message = <React.Fragment><LinkableName name={username} /> was {i+1}{suffix} to decode this message</React.Fragment>

@@ -166,7 +166,7 @@ function All({tokens = [], location, myToken, isAllocating, isEditing, setIsEdit
       <div className="row table-header no-gutters small align-items-center">
         <div className="col-1 text-center">#</div>
         <div className="col-4 asset-search">
-          <i class="fas fa-search" /><input type='text' value={rawAssetSearch} onChange={setAssetSearch}/>
+          <i className="fas fa-search" /><input type='text' value={rawAssetSearch} onChange={setAssetSearch}/>
         </div>
         <div className="col-2">% Change</div>
         <div className="col-3">Me / Total</div>

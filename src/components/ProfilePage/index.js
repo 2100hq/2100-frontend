@@ -53,7 +53,7 @@ function Description({description, token, isMyToken}){
   )
 
   return (
-    <Form class="token-description" onSubmit={handlePersist}>
+    <Form className="token-description" onSubmit={handlePersist}>
       <Form.Group as={Row}>
         {(Boolean(description) || editing) && (
           <Col md="8">
@@ -120,7 +120,7 @@ export default function Profile (props) {
     <div className='profile'>
       {isNewUser && <NewUserWelcome clearNewUser={clearNewUser}/>}
       <span className='context-bar'>
-        <Link to='/'><i style={{fontSize: '1.4rem'}} class="fas fa-arrow-circle-left"></i></Link>
+        <Link to='/'><i style={{fontSize: '1.4rem'}} className="fas fa-arrow-circle-left"></i></Link>
       </span>
       <ProfileHeader token={token} />
       <div className='profile-body'>

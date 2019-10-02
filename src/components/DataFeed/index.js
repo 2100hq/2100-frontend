@@ -81,9 +81,9 @@ function RewardsHeadingText({state}){
         </Col>
       </Row>
       <Row className='small'>
-        <Col md='12'>      
-        <div class="progress">
-          <div class="progress-bar" role="progressbar" style={{width: String(percent)+'%'}} aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
+        <Col md='12'>
+        <div className="progress">
+          <div className="progress-bar" role="progressbar" style={{width: String(percent)+'%'}} aria-valuenow="75" aria-valuemin="0" aria-valuemax="100">
           </div>
         </div>
         </Col>
@@ -185,7 +185,7 @@ function EarningsFeed({state, query}){
                       </Row>
                     </React.Fragment>
                   )}
-              </Col>            
+              </Col>
             </Row>
           </Col>
         </Row>
