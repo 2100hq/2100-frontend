@@ -58,9 +58,11 @@ export default function AllocationModal(){
     >
       {!showHesitate && (
         <Modal.Header closeButton>
-          <div className='row justify-content-center align-items-center'>
-            <div className='col-md-4'>
-                <img className='staking-breakdown' src='/img/staking-breakdown3.png' />
+          <div className='row align-items-center'>
+            <div className='col-md-5'>
+              <div className='staking-diagram'>
+                <img className='img-responsive' src='/img/staking-diagram.png' />
+                </div>
             </div>
             <div className='col-md-6'>
               <h5>Rewards</h5>
