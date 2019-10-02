@@ -7,7 +7,7 @@ import {Pagination} from 'react-bootstrap'
 import './style.scss'
 
 
-export default function FollowMeFeed({messages={}, showForm, className, styles, startPage=0, onChangePage = () => {}}){
+export default function FollowMeFeed({messages={}, className, styles, startPage=0, onChangePage = () => {}}){
 
   const {query, state} = useStoreContext()
   const perPage = state.config.followMePerPage

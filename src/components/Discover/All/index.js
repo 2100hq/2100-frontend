@@ -103,7 +103,7 @@ function Row ({ token, myToken, currentUsername, isAllocating, isEditing,  setIs
         <div className="col-2" style={{overflow: 'hidden'}}>
           +0.00 %
         </div>
-        <div className="col-2 text-center">
+        <div style={{cursor: 'pointer'}} className="col-2 text-center">
           <span className='my-stake'><CountUp balance={myStake} decimals={2} /></span><span className='total-stakes'> / { token.totalStakes !== "0" ? <CountUp balance={totalStakes} decimals={2} /> : "0.00" }</span>
         </div>
         <div className="col-3 text-center">
@@ -166,7 +166,7 @@ function All({tokens = [], location, myToken, isAllocating, isEditing, setIsEdit
       <div className="row table-header no-gutters small align-items-center">
         <div className="col-1">#</div>
         <div className="col-4 asset-search">
-          <i class="fas fa-search" /><input type='text' value={rawAssetSearch} onChange={setAssetSearch}/>
+          <i className="fas fa-search" /><input type='text' value={rawAssetSearch} onChange={setAssetSearch}/>
         </div>
         <div className="col-2">% Change</div>
         <div className="col-3">Me / Total</div>

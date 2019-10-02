@@ -1,0 +1,12 @@
+.create-message-modal{
+	.modal-header{
+		padding: 0;
+		border: none;
+	}
+	.close{
+		position: absolute;
+		right: 10px;
+		top: 10px;
+		z-index: 99999999;
+	}
+}

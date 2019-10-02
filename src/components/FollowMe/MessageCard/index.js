@@ -22,6 +22,8 @@ import "./style.scss";
 
 const nodeURL = require("url");
 
+const lineBreakRegExp = /(\r\n|\r|\n)/
+
 // function CharReveal({ encrypted, decrypted, length, reveal }) {
 //   const [step, setStep] = useState(-1);
 
@@ -115,61 +117,81 @@ function DecodeThreshold({ name, token, message, isSignedIn, actions }) {
       </span>
     );
 
-  const available = get(token, "balances.available", "0");
-  const diff = BigNumber(message.threshold).minus(available);
-  const isStaking = BigNumber(token.myStake).gt(0);
+  const {decodable, thresholdDiff} = message
+  const {myStake, isStaking} = token
   let timeToDecode = null;
+  const diff = !decodable ? BigNumber(thresholdDiff) : null
 
   async function decodeMessage(id) {
     setDecoding(true);
     const resp = await actions.decodeMessage(id);
     setDecoding(false);
   }
+  // NOT DECODABLE
+  if (!decodable){
+    // STAKING
+    if (isStaking) {
+      const divisor = BigNumber(myStake)
+        .div(token.totalStakes)
+        .times(0.9)
+        .times(0.00021)
+        .times(5)
+        .times(weiDecimals);
 
-  if (isStaking && diff.gt(0)) {
-    const divisor = BigNumber(token.myStake)
-      .div(token.totalStakes)
-      .times(0.9)
-      .times(0.00021)
-      .times(5)
-      .times(weiDecimals);
-    const blocks = diff
-      .div(divisor)
-      .dp(0, 0)
-      .toNumber();
-    timeToDecode = <span>({ms(blocks * 15000 * 5)})</span>;
-  } else {
-    const total = BigNumber("10").times(weiDecimals);
-    const divisor = total
-      .div(BigNumber(token.totalStakes || "1").plus(total))
-      .times(0.9)
-      .times(0.00021)
-      .times(5)
-      .times(weiDecimals);
-    const blocks = diff
-      .div(divisor)
-      .dp(0, 0)
-      .toNumber();
-    timeToDecode = <span>({ms(blocks * 15000 * 5)})</span>;
+
+      const blocks = diff
+        .div(divisor)
+        .dp(0, 0)
+        .toNumber();
+      timeToDecode = <span>({ms(blocks * 15000 * 5)})</span>;
+
+      return (
+        <span>
+          {" "}
+          {toDecimals(diff, 3, 0)}{" "}
+          <span className="token-name">{name} to go</span> {timeToDecode}
+        </span>
+      );
+
+    } else {
+      // NOT STAKING
+      const total = BigNumber("10").times(weiDecimals);
+      const divisor = total
+        .div(BigNumber(token.totalStakes || "1").plus(total))
+        .times(0.9)
+        .times(0.00021)
+        .times(5)
+        .times(weiDecimals);
+      const blocks = diff
+        .div(divisor)
+        .dp(0, 0)
+        .toNumber();
+      timeToDecode = <span>({ms(blocks * 15000 * 5)})</span>;
+
+      return (
+        <span>
+          hold{" "}
+          <span>
+            <span className="amount-underline">
+              {toDecimals(message.threshold, 3, 0)}
+            </span>{" "}
+            ${name}
+          </span>{" "}
+          to see {timeToDecode}
+        </span>
+      );
+
+    }
   }
-
-  if (diff.gt(0) && isStaking)
-    return (
-      <span>
-        {" "}
-        {toDecimals(diff, 3, 0)}{" "}
-        <span className="token-name">{name} to go</span> {timeToDecode}
-      </span>
-    );
 
   if (decoding)
     return (
       <span>
-        <i class="fas fa-exclamation"></i> decoding...
+        <i className="fas fa-exclamation"></i> decoding...
       </span>
     );
 
-  if (diff.lte(0))
+  if (decodable)
     return (
       <span>
         <span>you have enough&nbsp;</span>
@@ -185,19 +207,6 @@ function DecodeThreshold({ name, token, message, isSignedIn, actions }) {
       </span>
     );
 
-  if (!isStaking)
-    return (
-      <span>
-        hold{" "}
-        <span>
-          <span className="amount-underline">
-            {toDecimals(message.threshold, 3, 0)}
-          </span>{" "}
-          ${name}
-        </span>{" "}
-        to see {timeToDecode}
-      </span>
-    );
 }
 
 // function EncryptedMessage({ encrypted, decrypted }) {
@@ -258,9 +267,9 @@ function MessageIcon({ message }) {
     case "gift":
       return <i className={"fas fa-gift"} />;
     case "meme":
-      return <i class="far fa-comment-alt"></i>;
+      return <i className="far fa-comment-alt"></i>;
     case "link":
-      return <i class="fas fa-link"></i>;
+      return <i className="fas fa-link"></i>;
     default:
       return <i className={"fas fa-align-left"} />;
   }
@@ -302,6 +311,7 @@ function VisibleMessageVideo({ message }) {
 
 function VisibleMessage({ message }) {
   let messageComponent = null;
+
   switch (message.type) {
     case "image":
       messageComponent = <VisibleMessageImage message={message} />;
@@ -319,7 +329,8 @@ function VisibleMessage({ message }) {
       messageComponent = <VisibleMessageVideo message={message} />;
       break;
     default:
-      messageComponent = <Linkify>{message.message}</Linkify>;
+      const processed = message.message.split(lineBreakRegExp).map(c => lineBreakRegExp.test(c) ? <br /> : c)
+      messageComponent = <Linkify>{processed}</Linkify>;
       break;
   }
   if (!message.decoded) return messageComponent;
@@ -374,7 +385,7 @@ function CommentBubble({ message, canComment, onClick = () => {} }) {
   if (prevCount !== count) classNames.push('comment-count-changed')
   return (
     <span className={classNames.join(' ')} onClick={onClick}>
-      <i class="far fa-comment"></i> {message.childCount || 0}
+      <i className="far fa-comment"></i> {message.childCount || 0}
     </span>
   );
 }
@@ -538,7 +549,7 @@ export default function MessageCard({
           className="small message-share"
           onClick={clickHandler(postTweet)}
         >
-          <i class="fab fa-twitter"></i>
+          <i className="fab fa-twitter"></i>
         </a>
       </div>
       <div className="message-content" style={{ width: "90%", float: "right" }}>

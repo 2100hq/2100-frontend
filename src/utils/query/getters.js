@@ -4,6 +4,7 @@ export default function Getters({state}){
   const getters = {
     getIsSignedIn: () => get(state, 'private.isSignedIn', false),
     getLatestBlock: () => get(state, 'public.latestBlock.number'),
+    getTokens: () => get(state, ['tokens'], {}),
     getToken: (tokenid) => {
       if (!tokenid) return {}
       if (tokenid.tokenid || tokenid.id) tokenid=tokenid.tokenid || tokenid.id
@@ -27,11 +28,15 @@ export default function Getters({state}){
     getIsEditingAllocations: () => get(state, 'intents.editingAllocations', false),
     getCurrentView: () => state.view,
     getActiveTokensArray: () => Object.values(state.tokens || {}).sort( (a, b) => a.rank - b.rank ),
-    getMyStakedOrHeldTokensArray: () => Object.values(state.tokens || {}).filter(token => {
-        const hasBalance = get(token, 'balances.available', "0") !== "0"
-        const isStaking = get(token, 'myStake', "0") !== "0"
+    getMyStakedOrHeldTokensArray: (sorted = true) => {
+      const tokens = Object.values(state.tokens || {}).filter(token => {
+        const hasBalance = get(token, 'hasBalance', false)
+        const isStaking = get(token, 'isStaking', false)
         return hasBalance || isStaking
-      }).sort( (a, b) => a.rank - b.rank ),
+      })
+      if (!sorted) return tokens
+      return tokens.sort( (a, b) => a.rank - b.rank )
+    },
     getTopTenTokensArray: () => Object.values(state.tokens || {}).filter(token => {
         return token.rank < 11
       }).sort( (a, b) => a.rank - b.rank ),

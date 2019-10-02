@@ -51,11 +51,13 @@ function selectActive (state) {
       return sum.add(BN(stake))
     }, BN(0)).toString()
     token.myStake = get(myStakes, token.id, '0')
+    token.isStaking = token.myStake !== "0"
     token.level = get(stakeLevels, token.id, '0')
     token.balances = {
       available: get(state, ['private', 'myWallets', 'available', token.id, 'balance'], '0'),
       locked: get(state, ['private', 'myWallets', 'locked', token.id, 'balance'], '0')
     }
+    token.hasBalance = token.balances.available !== "0"
   })
 
   active = active.sort( (a, b) => BN(a.totalStakes).gt(b.totalStakes) ? -1 : 1)

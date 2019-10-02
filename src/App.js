@@ -17,8 +17,7 @@ import Admin from './components/Admin'
 import BrowserClasses from './components/BrowserClasses'
 import {Row, Col, Card} from 'react-bootstrap'
 import Sidebar from './components/Sidebar'
-import CreateMessageButton from './components/FollowMe/CreateMessageButton'
-import CreateMessageFixed from './components/FollowMe/CreateMessageFixed'
+import CreateMessageModal from './components/FollowMe/CreateMessageModal'
 import AllocationModal from './components/AllocationModal'
 
 import Discover from './components/Discover'
@@ -49,7 +48,6 @@ function App(){
                 <React.Fragment>
                   <Row className='no-gutters main'>
                     <Col md='6' className='followme' ref={node}>
-                          <CreateMessageButton />
                         {/* follow me */}
                         <Switch>
                           <Route exact path='/:username([$]{1,1}[a-zA-Z0-9_]+)/:messageid' component={SingleMessagePage} />
@@ -66,7 +64,7 @@ function App(){
             </Col>
           </Row>
         </div>
-        <CreateMessageFixed />
+        <CreateMessageModal />
         <Alerts />
         <ErrorModal />
         <AllocationModal />

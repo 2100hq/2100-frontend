@@ -1,8 +1,11 @@
 import React, { useMemo } from 'react'
 import { compact } from 'lodash'
 import { useStoreContext } from '../../contexts/Store'
+import { useFollowMeContext } from '../../contexts/FollowMe'
 import { Nav } from 'react-bootstrap'
 import history from '../../utils/history'
+import {Badge} from 'react-bootstrap'
+import CreateMessageButton from '../FollowMe/CreateMessageButton'
 import './style.scss'
 function Tab({current, name, set}){
   function handleClick(e){
@@ -17,25 +20,9 @@ function Tab({current, name, set}){
   )
 }
 
-function getViewName(viewType){
-  switch(viewType){
-    case 'Cheap':
-      return <span>Low Cost</span>
-    case 'Premium':
-      return <span>Premium</span>
-    case 'New':
-      return <span>New</span>
-    case 'Following':
-      return <span>Following</span>
-    case 'Gifts':
-      return <span>Gifts</span>
-    default:
-      return viewType
-  }
-}
-
 export default function Navigation(){
   const {state, query, dispatch, actions} = useStoreContext()
+  const { messages } = useFollowMeContext()
   const isSignedIn = query.getIsSignedIn()
   const currentView = query.getCurrentView()
 
@@ -48,7 +35,7 @@ export default function Navigation(){
   const allowedViews = useMemo(()=>{
     if (isSignedIn) return state.config.views // if signed in, see everything
     return state.config.views.filter( view => {
-      if (view === 'Following') return false // if not signed in, cant see "Holding"
+      if (/dec/i.test(view)) return false // if not signed in, cant see "decoded/decoding"
       return true
     })
   }, [isSignedIn])
@@ -57,9 +44,26 @@ export default function Navigation(){
 
   const tabs = allowedViews.map( viewType => <Nav.Link eventKey={viewType} key={viewType}>{getViewName(viewType)}</Nav.Link> )
 
+
+  function getViewName(viewType){
+    switch(viewType){
+      case 'Decodable':
+        const number = Object.values(messages||{}).filter(m=>m.decodable).length
+        const badge = number > 0 ? <Badge>{number}</Badge> : null
+        return <span>Decodable {badge}</span>
+      case 'Decoding':
+        return <span>Staking</span>
+      case 'Decoded':
+        return <span>Seen</span>
+      default:
+        return viewType
+    }
+  }
+
   return (
-    <Nav className='fm-nav small' activeKey={currentView} defaultActiveKey={currentView} onSelect={setView}>
+    <Nav className='fm-nav sticky-top' activeKey={currentView} defaultActiveKey={currentView} onSelect={setView}>
       {tabs}
+      <CreateMessageButton />
     </Nav>
   )
 }

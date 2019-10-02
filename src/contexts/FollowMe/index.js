@@ -11,6 +11,7 @@ import { useFollowMeSocketContext } from '../FollowMeSocket'
 
 import { set,sortBy, keyBy } from 'lodash'
 import {useStoreContext} from '../Store'
+import {BigNumber} from '../../utils'
 import { get } from 'lodash'
 // import API from './API'
 
@@ -100,6 +101,41 @@ function combineMessages(fmstate){
     })
   })
   return messages
+}
+
+function addMetadataToMessages(messages={}, tokens={}){
+  Object.values(messages).forEach(message => addMetadataToMessage(message, tokens[message.tokenid]))
+  return messages
+}
+
+function addMetadataToMessage(message={}, token){
+    if (!message.hidden) {
+      message.decodable = false
+      message.thresholdDiff = "-1"
+      return message
+    }
+    if (!token) {
+       message.decodable = false
+       message.thresholdDiff = message.threshold
+       return message
+    }
+
+    if (!token.hasBalance) {
+      message.decodable = false
+      message.thresholdDiff = message.threshold
+      return message
+    }
+    const available = get(token, "balances.available", "0");
+    const diff = BigNumber(message.threshold).minus(available)
+    message.decodable = diff.lte(0)
+
+    if (message.decodable) {
+      message.thresholdDiff = "-1"
+    } else {
+      message.thresholdDiff = diff.toString()
+    }
+
+    return message
 }
 
 export default function FollowMeProvider ({ children }) {
@@ -230,7 +266,8 @@ export default function FollowMeProvider ({ children }) {
     return async (id) => {
       if (channel == null) channel = fmstate.isSignedIn ? 'private' : 'public'
       try {
-        const message = await socket[channel]('getMessage', id)
+        let message = await socket[channel]('getMessage', id)
+        message = addMetadataToMessage(message, query.getTokens()[message.tokenid])
         return message
 
       } catch(e){
@@ -256,7 +293,7 @@ export default function FollowMeProvider ({ children }) {
       const channel = fmstate.isSignedIn ? 'private' : 'public'
       try {
         destroy(`tokenFeedMessages.${tokenid}`)
-        const messages = await socket[channel]('getTokenFeed', tokenid)
+        let messages = await socket[channel]('getTokenFeed', tokenid)
         update(`tokenFeedMessages.${tokenid}`, keyBy(messages, 'id'))
       } catch(e){
         return null
@@ -280,6 +317,27 @@ export default function FollowMeProvider ({ children }) {
     }
   }
 
+  function removeTokenFeed(tokenid){
+    destroy(`tokenFeedMessages.${tokenid}`)
+  }
+
+  const tokensHash = useMemo(()=>Object.values(query.getTokens()).map(token => token.balances.available+token.isStaking).join(''),[appstate])
+
+  const messages = useMemo(()=> {
+    let messages = combineMessages(fmstate)
+    const tokens = query.getTokens()
+    messages = addMetadataToMessages(messages, tokens)
+    return messages
+  },[fmstate,tokensHash,myToken])
+
+  // update metadata on any token feed messages
+  useEffect(() => {
+    Object.entries(fmstate.tokenFeedMessages||{}).forEach(([tokenid, messages]) => {
+      messages = addMetadataToMessages(messages, query.getTokens())
+      update(`tokenFeedMessages.${tokenid}`, messages)
+    })
+  }, [tokensHash, Object.keys(fmstate.tokenFeedMessages||{}).join('')])
+
   const contextValue = useMemo(() => {
     const actions = {
       sendMessage: SendMessage(fmstate),
@@ -287,10 +345,13 @@ export default function FollowMeProvider ({ children }) {
       decodeMessage: DecodeMessage(fmstate),
       getTokenFeed: GetTokenFeed(fmstate),
       destroy: Destroy(fmstate),
-      setShowCreate: show => update('showCreate', show)
+      removeTokenFeed,
+      setShowCreate: show => update('showCreate', show),
+      addMetadataToMessages,
+      addMetadataToMessage
     }
     if (allowWindowObj) window.fmstate = fmstate
-    const messages = combineMessages(fmstate)
+
     return { ...fmstate, myToken, messages, actions, network: socket.network }
   }, [fmstate])
 

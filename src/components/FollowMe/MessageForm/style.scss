@@ -1,12 +1,64 @@
 .message-form{
+
+.form-control:focus{
+  box-shadow: none !important;
+}
+
+input#hint, textarea#message{
+  border: none;
+  border-radius: 0; 
+}
+
+input#hint{
+  border-bottom: 3px solid black;
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: black;
+  &::placeholder{
+    color: black;
+  }
+}
+
+input:invalid {
+    box-shadow: none;
+}
+
+label[for=message]{
   font-size: 1rem;
-  textarea{
+  input{
+    border-radius: 3px;
+    border: 1px solid #ddd;
+  }
+}
+
+.form-group.post-body{
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  padding: 1rem;
+  padding-top: 0.5rem;
+  background-color: #F3F6F6;
+}
+
+textarea#message{
+  padding: 0;
+  margin: 0;
+  margin-top: 0.5rem;
+  color: black;
+  background-color: #F3F6F6;
+  font-size: 1.2rem;
+    &::placeholder{
+    color: #999;
+  }
+}
+
+
+  .threshold-area{
+    font-size: 1rem;
   }
   .threshold-input {
-    border: 0;
-    width: 5.25em;
-    padding-left: 0.25em;
+    max-width: 75px;
   }
+
   .nav {
     margin-bottom: 1rem;
   }
@@ -14,6 +66,7 @@
   select {
     margin-bottom: 1rem;
   }
+
 }
 
 .compose-submit-button{

@@ -23,5 +23,9 @@ export default function ProfileFeed({token}){
     actions.getTokenFeed(token.id)
   }, [isSignedIn])
 
+  useEffect(()=>{
+    return () => actions.removeTokenFeed(token.id)
+  }, [])
+
   return <FollowMe messages={tokenMessages} showForm={showForm} className='profile-feed'/>
 }

@@ -41,7 +41,7 @@ const stakeLevels = Number(process.env.REACT_APP_STAKE_LEVELS || 2)
 const followMeUrl = process.env.REACT_APP_FOLLOWME_URL
 const followMePoll = Number(process.env.REACT_APP_FOLLOWME_POLL || 2000)
 
-const views = ['New', 'Following', 'Cheap', 'Premium', 'Gifts']
+const views = ['New', 'Decoding', 'Decodable', 'Decoded']
 const defaultView = 'New'
 
 const followMePerPage = Number(process.env.REACT_APP_FOLLOW_ME_PER_PAGE  || 10)
