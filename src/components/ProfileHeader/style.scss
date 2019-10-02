@@ -1,6 +1,11 @@
 .profile-header {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  justify-content: space-around;
   background-color: white;
   padding: 3rem;
+  border-bottom: 1px solid #eee;
 
   .image-area {
     text-align: center;
@@ -13,9 +18,6 @@
   .profile-image {
     max-width: 100px;
     max-height: 100px;
-  }
-
-  .token-stakes {
   }
 
   .top-holders,
@@ -33,112 +35,153 @@
     transition: color 0.3s ease-in-out;
     font-size: 12px;
     position: relative;
-	top: -2px;
-	color: #a1a1a1;
+    top: -2px;
+    color: #a1a1a1;
     &:hover {
       color: #1da1f2;
     }
   }
 
   .fans {
-	  margin-top: 6px;
-	  display: flex;
-	  flex-flow: row wrap;
-	  justify-content: flex-start;
-	  strong {
-		color: rgb(110, 110, 110) !important;
-		font-weight: 600 !important;
-	  }
-	  .top-holder,
-	  .top-staker {
-		  .description {
-			  align-self: center;
-			line-height: 0.7rem;
-		  }
-		color: #a1a1a1;
-		align-items: center;
-		flex-basis: 100%;
-		font-family: "Inter", sans-serif;
-		font-weight: 300;
-		font-size: 0.7rem;
-		margin-top: 5px;
-		.photo {
-			display: inline-flex;
-			align-self: center;
-			img {
-				width: 16px;
-				height: 16px;
-				margin-right: 5px;
-			}
-		}
-	  }
+    width: 100%;
+    margin-top: 6px;
+    flex-flow: row wrap;
+    strong {
+      color: rgb(110, 110, 110) !important;
+      font-weight: 600 !important;
+    }
+    .top-holder,
+    .top-staker {
+      .description {
+        align-self: center;
+        line-height: 0.7rem;
+      }
+      color: #a1a1a1;
+      align-items: center;
+      flex-basis: 100%;
+      font-family: "Inter", sans-serif;
+      font-weight: 300;
+      font-size: 0.7rem;
+      margin-top: 5px;
+      .photo {
+        display: inline-flex;
+        align-self: center;
+        img {
+          width: 16px;
+          height: 16px;
+          margin-right: 5px;
+        }
+      }
+    }
   }
 
-  .stat {
-	  display: flex;
-	  flex-flow: row nowrap;
-	  border-radius: 3px;
-	.stat-col {
-		width: 100%;
+  .stats {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-around;
+    border-radius: 3px;
+    min-width: 200px;
+    .stat-col {
+      flex-basis: 50% 100% auto;
+      display: flex;
+      flex-flow: column nowrap;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      height: 100%;
+      .item {
+        display: flex;
+        flex-flow: column nowrap;
+        justify-content: center;
+        align-items: center;
+        height: 60px;
+      }
+      .feature {
+        font-weight: 700;
+        font-size: 18px;
+      }
+      .feature-small {
+        font-size: 11px;
+        line-height: 12px;
+        max-width: 110px;
+      }
+      .small-grey {
+        font-style: normal;
+        font-weight: 400;
+        font-size: 10px;
+        color: #c4c4c4;
+        line-height: 3px;
+        display: block;
+        padding-top: 5px;
+      }
+      font-family: Inter;
+      font-style: normal;
+      font-weight: normal;
+      font-size: 19px;
+      line-height: 23px;
+      margin: 10px 0px;
+    }
+
+    h4 {
+      font-family: Inter;
+      font-style: 300;
+      font-weight: normal;
+      font-size: 10px;
+      line-height: 23px;
+      color: #a6a6a6;
+      margin-bottom: 0px;
+    }
+  }
+
+  .photo {
+    display: flex;
+    flex-flow: column nowrap;
+    flex-basis: 50% 100% auto;
+    align-items: center;
+  }
+
+  .charts {
+	flex-basis: 100%;
+    display: flex;
+    flex-flow: row wrap;
+	align-items: center;
+	justify-content: space-around;
+    font-family: "Inter", sans-serif;
+	
+	.chart {
+		.recharts-responsive-container {
+			min-width: 180px;
+			min-height: 220px;
+		}
+		.recharts-pie-sector {
+			cursor: pointer !important;
+		}
+		flex: 1;
 		display: flex;
 		flex-flow: column nowrap;
 		align-items: center;
 		justify-content: center;
-		text-align: center;
-		height: 100%;
-		.item {
-			display: flex;
-			flex-flow: column nowrap;
-			justify-content: center;
-			align-items: center;
-			height: 60px;
-		}
-		.feature {
-			font-weight: 700;
-			font-size: 18px;
-		}
-		.feature-small {
-			font-size: 11px;
-			line-height: 12px;
-			max-width: 110px;
-		}
-		.small-grey {
-			font-style: normal;
-			font-weight: normal;
+		h3 {
+			position: relative;
+			top: 50px;
+			font-family: "Inter", sans-serif;
+			text-transform: uppercase;
+			font-weight: 600;
 			font-size: 10px;
-			color: #cecece;
-			line-height: 3px;
-			display: block;
-			padding-top: 4px;
+			color: #ADADAD;
 		}
-		font-family: Inter;
-		font-style: normal;
-		font-weight: normal;
-		font-size: 19px;
-		line-height: 23px;
-		margin-bottom: 10px;
 	}
 
-	h4 { 
-		font-family: Inter;
-		font-style: normal;
-		font-weight: normal;
-		font-size: 10px;
-		line-height: 23px;
-		color: #A6A6A6;
-		margin-bottom: 0px;
-		margin-top: 10px;
-	}
+    .username {
+      font-size: 12px;
+      color: #1d1d1d !important;
+      font-weight: 600;
+    }
+
+    .amount {
+      font-size: 11px;
+      font-weight: 400;
+      color: #adadad !important;
+    }
   }
-
-  // .module {
-  // 	width: 108px;
-  // 	height: 108px;
-  // 	border: double 4px transparent;
-  // 	border-radius: 50%;
-  // 	background-image: linear-gradient(white, white), radial-gradient(circle at top left, #f00,#3020ff);
-  // 	background-origin: border-box;
-  // 	background-clip: content-box, border-box;
-  // 	margin: 0 auto;
-  // }
 }
