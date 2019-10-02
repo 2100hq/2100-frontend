@@ -5,6 +5,7 @@ import { useFollowMeContext } from '../../contexts/FollowMe'
 import { Nav } from 'react-bootstrap'
 import history from '../../utils/history'
 import {Badge} from 'react-bootstrap'
+import CreateMessageButton from '../FollowMe/CreateMessageButton'
 import './style.scss'
 function Tab({current, name, set}){
   function handleClick(e){
@@ -60,8 +61,9 @@ export default function Navigation(){
   }
 
   return (
-    <Nav className='fm-nav small' activeKey={currentView} defaultActiveKey={currentView} onSelect={setView}>
+    <Nav className='fm-nav sticky-top' activeKey={currentView} defaultActiveKey={currentView} onSelect={setView}>
       {tabs}
+      <CreateMessageButton />
     </Nav>
   )
 }

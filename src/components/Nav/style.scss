@@ -15,7 +15,26 @@
 }
 
 .fm-nav{
-	height: 2.5rem;
+	border-bottom: 1px solid #eee;
+	background-color: white;
+
+		.compose-button{
+			background-color: white;
+			color: black;
+			transition: opacity 0.2s linear;
+			width: 41px;
+			line-height: 41px;
+			text-align: center;
+
+			&:hover{
+				cursor: pointer;
+				color: white;
+				background-color: black;
+			}
+
+			transition: all 0.1s linear;
+		}
+
 }
 
 ul.nav{
