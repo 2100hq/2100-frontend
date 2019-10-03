@@ -5,7 +5,9 @@
 	font-size: 1rem;
 	.nav-item.dropdown > .nav-link.in.dropdown-toggle {
 		font-weight: 600;
+		font-size: 1.1rem;
 		color: #000;
+		text-transform: unset !important;
 		span.in {
 			position: relative;
 			top: 2px;
@@ -22,7 +24,7 @@
 	font-weight: 500;
 	font-size: 0.7rem !important;
 	position: relative;
-	top: -20px;
+	top: -25px;
 }
 
 .logo{
