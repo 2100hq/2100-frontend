@@ -129,8 +129,8 @@ export default function Profile (props) {
       return {
         rank: i+1,
         name: query.getUserName(userid) || userid,
-        value: new _BigNumber(amount).div(weiDecimals).div(100).dp(4,0).toNumber(),
-        percent: new _BigNumber(amount).div(token.totalStakes).dp(4,0).toNumber()
+        value: new _BigNumber(amount).div(weiDecimals).dp(4,0).toNumber(),
+        _percent: new _BigNumber(amount).div(token.totalStakes).dp(4,0).toNumber()
       }
     })
 
@@ -148,8 +148,8 @@ export default function Profile (props) {
         return {
           rank: i+1,
           name: query.getUserName(userid) || userid,
-          value: new _BigNumber(amount).div(weiDecimals).div(100).dp(4,0).toNumber(),
-          percent: new _BigNumber(amount).div(supply).dp(4,0).toNumber()
+          value: new _BigNumber(amount).div(weiDecimals).dp(4,0).toNumber(),
+          _percent: new _BigNumber(amount).div(supply).dp(4,0).toNumber()
         }
       })
     }
