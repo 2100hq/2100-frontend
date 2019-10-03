@@ -120,7 +120,7 @@ function DecodeThreshold({ name, token, message, isSignedIn, actions }) {
   const {decodable, thresholdDiff} = message
   const {myStake, isStaking} = token
   let timeToDecode = null;
-  const diff = !decodable ? BigNumber(thresholdDiff) : null
+  const diff = !decodable && thresholdDiff != null ? BigNumber(thresholdDiff) : null // metadata hasnt loaded yet
 
   async function decodeMessage(id) {
     setDecoding(true);
@@ -130,6 +130,8 @@ function DecodeThreshold({ name, token, message, isSignedIn, actions }) {
   // NOT DECODABLE
   if (!decodable){
     // STAKING
+    if (diff == null) return null  // metadata hasnt loaded yet
+
     if (isStaking) {
       const divisor = BigNumber(myStake)
         .div(token.totalStakes)
@@ -162,6 +164,7 @@ function DecodeThreshold({ name, token, message, isSignedIn, actions }) {
         .times(0.00021)
         .times(5)
         .times(weiDecimals);
+
       const blocks = diff
         .div(divisor)
         .dp(0, 0)
@@ -412,7 +415,6 @@ export default function MessageCard({
   onClickMessageCard
 }) {
   const [destroyCountDown, setDestroyCountDown] = useState(null);
-  const [copied, setCopied] = useState(null);
 
   if (!onClickComment) {
     onClickComment = clickHandler(() =>
@@ -438,6 +440,8 @@ export default function MessageCard({
     return () => clearTimeout(id);
   }, [destroyCountDown]);
 
+  if (!message.id) return
+
   let destroyIcon = null;
   if (myToken && message.tokenid === myToken.id && canDestroy) {
     destroyIcon = (
@@ -459,11 +463,6 @@ export default function MessageCard({
       </a>
     );
   }
-
-  useEffect(() => {
-    const id = setTimeout(setCopied, 1500, null);
-    return () => clearTimeout(id);
-  }, [copied]);
 
   const messageUrl = `/$${token.name}/${message.shortid || message.id}`;
 
