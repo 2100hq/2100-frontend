@@ -1,6 +1,21 @@
-.card.create-token {
+@import "node_modules/bootstrap/scss/_functions.scss";
+@import "node_modules/bootstrap/scss/_variables.scss";
+@import "node_modules/bootstrap/scss/mixins/_breakpoints.scss";
+
+
+
+
+.create-token {
   border: inherit !important;
+  padding: 2rem;
+
+@include media-breakpoint-up(md) { 
+    height: 100vh;
+}
+
+
   .tweet-content, input{
+    background-color: white;
     padding: 1rem;
     margin: 1rem 0;
     display: inline-block;

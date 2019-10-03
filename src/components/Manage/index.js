@@ -127,13 +127,9 @@ export default function Manage (props) {
     setStep(gotoStep)
   }
   return (
-    <div className='row'>
-      <div className=''>
-        <div className='card create-token'>
-          <div className='card-body'>
+    <div className='create-token row justify-content-center align-items-center'>
+      <div className='col-md-6'>
             {steps[step]({publicAddress, gotoStep, setTweetType, tweetType})}
-          </div>
-        </div>
       </div>
     </div>
   )
