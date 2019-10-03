@@ -9,21 +9,14 @@ import { BN, toDecimals } from '../../../utils'
 import { get } from 'lodash'
 function Balances ({ state, actions, dispatch }) {
   if (!state.private || !state.private.me) return null
-  const hasClaimedDai = state.private.mytoken && state.private.me.claimed
+
 
   const { used, total } = state.controller.balances
   return (
     <div className='nav-link slide-left'>
     {/* wallet no more <Link className='nav-link slide-left' to='/wallet'>*/}
       <span className='balance'><img className='dai-logo' src='../img/dai.png' /> {toDecimals(used)} / {toDecimals(total)}</span>
-      {
-        !hasClaimedDai && (<div className="text-muted small" style={{paddingLeft:'16px'}}>
-          <a href='#' onClick={e => {
-             e.preventDefault()
-             dispatch(actions.claimFakeDai())
-          }}>Get fake DAI</a>
-        </div>)
-      }
+
     {/*</Link>*/}
     </div>
   )
@@ -71,35 +64,29 @@ function Wave(){
 function SignedIn () {
   const { state, query, actions, dispatch } = useStoreContext()
   const hasToken = query.getMyToken()
+  const hasClaimedDai = state.private.mytoken && state.private.me.claimed
   return (
-    [
-      <Dropdown as='li' className='nav-item' key='dropdown'>
-        <Dropdown.Toggle as='a' className='nav-link in' href='#'>
+    <div>
+      <li className='nav-item'>
+        <a className='nav-link in'>
           <AddressIcon username={query.getUserMyName()} useraddress={query.getUserAddress()} />
-        </Dropdown.Toggle>
+        </a>
         <Wave />
-        <Dropdown.Menu>
-          {/*<Link className='dropdown-item' to='/wallet'>
-            Wallet
-          </Link>*/}
-          {
-            !hasToken && (
-              <Link className='dropdown-item' to='/manage'>
-                Link Username
-              </Link>
-            )
-          }
-          <AdminLink state={state} />
-          <Dropdown.Divider />
-          <Link className='dropdown-item' to='/signout'>
-            Sign Out
-          </Link>
-        </Dropdown.Menu>
-      </Dropdown>,
+      </li>
       <li className='nav-item' key='balances'>
         <Balances state={state} actions={actions} dispatch={dispatch}/>
       </li>
-    ]
+
+      {hasToken && !hasClaimedDai && (<li className="nav-item text-muted small" style={{paddingLeft:'16px'}}>
+        <a href='#' onClick={e => {
+           e.preventDefault()
+           dispatch(actions.claimFakeDai())
+        }}>Get fake DAI</a>
+      </li>)}
+      {!hasToken && (<li className="nav-item text-muted small" style={{paddingLeft:'16px'}}>
+        <Link to="/manage"><i className="fab fa-twitter"></i> Link Username</Link>
+      </li>)}
+    </div>
   )
 }
 
@@ -139,8 +126,10 @@ function Disconnected({}){
 
 function SigningIn () {
   return (
-    <div className='spinner-grow' role='status'>
-      <span className='sr-only'>Loading...</span>
+    <div className="flex-column">
+      <div className='spinner-grow' role='status'>
+        <span className='sr-only'>Loading...</span>
+      </div>
     </div>
   )
 }
