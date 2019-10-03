@@ -7,20 +7,36 @@ $message-margin: 0.3rem;
 	overflow: hidden;
 	padding: 1.1rem;
 
+	@media (max-width: 420px) {
+		.main-photo .profile-image {
+			width: 30px !important;
+			height: 30px !important;
+		}
+	}
+
 	.badge {
 		font-family: "Inter UI", sans-serif;
 		font-weight: 500;
 		font-size: 10px;
 		color: #333;
 		border: 1px solid #eee;
-		background-color: #fff;
-		margin-right: 3px;
-		i{
+		background: #fff !important;
+		margin-right: 6px;
+		i {
 			font-size: 10px;
 		}
 
 		&.span{
 			display: inline-block;
+		}
+
+		&.badge-light {
+			height: 25px;
+			display: inline-flex;
+			align-items: center;
+			flex-flow: row nowrap;
+			padding-left: 5px !important;
+			padding-right: 5px !important;
 		}
 
 		&.comment-bubble{
@@ -102,32 +118,60 @@ $message-margin: 0.3rem;
 	}
 
 	.comment-bubble {
+		display: flex;
+		flex-flow: row nowrap;
+		align-items: center;
+		i {
+			margin-right: 3px;
+		}
 		&.comment-count-changed {
 			background-color: #fff8db !important;
 		}
 	}
 
 	.message-time{
-		font-family: "Inter UI", sans-serif;
+		font-family: "Inter", sans-serif;
 		display: block;
-		font-weight: 300;
-		margin-top: 7px;
-		font-size: 0.6rem;
+		font-weight: 400;
+		margin-top: 8px;
+		color: #777777;
+		font-size: 10px;
+		transition: all 0.3s ease-in-out;
+		&:hover {
+			color: #535ac2;
+		}
 	}
 
 
 	.amount-underline{
-		text-decoration: underline;
+		font-family: "Inter", sans-serif;
+		font-weight: 700;
+		border-bottom: 1px solid #000;
+	}
+
+	.time-to-decode {
+		font-weight: 400;
+		font-size: 10px;
+		color: #c4c4c4;
+		transition: all 0.3s ease-in-out;
+		&:hover {
+			color: #535ac2;
+		}
 	}
 
 	.message-header{
 		.message-hint{
 			font-family: "Noto Serif JP", serif;
 			font-weight: 700;
-			font-size: 1.1rem;
+			font-size: 1rem;
 			cursor: pointer;
+			transition: all 0.2s linear;
+			background: none;
+			background-size: 0%;
 			&:hover{
-				text-decoration: underline;
+				text-decoration: none;
+				background: rgba(0, 0, 0, 0.05);
+				background-size: 100%;
 			}
 		}
 	}
@@ -170,10 +214,20 @@ $message-margin: 0.3rem;
 	.message-footer{
 		margin-top: $message-margin;
 
-		.col-md-12 {
-			display: flex;
+		.col {
+			display: flex !important;
 			flex-flow: row nowrap;
 			align-items: center;
+			margin-top: 5px;
+			.holders-profiles {
+				font-family: "Inter", sans-serif;
+				display: flex !important;
+				flex-flow: row nowrap;
+				align-items: center;
+			}
+			.holders-profiles.no-holders {
+				font-weight: 400;
+			} 
 		}
 
 	}

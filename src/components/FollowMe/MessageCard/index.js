@@ -22,7 +22,7 @@ import "./style.scss";
 
 const nodeURL = require("url");
 
-const lineBreakRegExp = /(\r\n|\r|\n)/
+const lineBreakRegExp = /(\r\n|\r|\n)/;
 
 // function CharReveal({ encrypted, decrypted, length, reveal }) {
 //   const [step, setStep] = useState(-1);
@@ -117,10 +117,11 @@ function DecodeThreshold({ name, token, message, isSignedIn, actions }) {
       </span>
     );
 
-  const {decodable, thresholdDiff} = message
-  const {myStake, isStaking} = token
+  const { decodable, thresholdDiff } = message;
+  const { myStake, isStaking } = token;
   let timeToDecode = null;
-  const diff = !decodable && thresholdDiff != null ? BigNumber(thresholdDiff) : null // metadata hasnt loaded yet
+  const diff =
+    !decodable && thresholdDiff != null ? BigNumber(thresholdDiff) : null; // metadata hasnt loaded yet
 
   async function decodeMessage(id) {
     setDecoding(true);
@@ -128,9 +129,9 @@ function DecodeThreshold({ name, token, message, isSignedIn, actions }) {
     setDecoding(false);
   }
   // NOT DECODABLE
-  if (!decodable){
+  if (!decodable) {
     // STAKING
-    if (diff == null) return null  // metadata hasnt loaded yet
+    if (diff == null) return null; // metadata hasnt loaded yet
 
     if (isStaking) {
       const divisor = BigNumber(myStake)
@@ -140,21 +141,19 @@ function DecodeThreshold({ name, token, message, isSignedIn, actions }) {
         .times(5)
         .times(weiDecimals);
 
-
       const blocks = diff
         .div(divisor)
         .dp(0, 0)
         .toNumber();
-      timeToDecode = <span>({ms(blocks * 15000 * 5)})</span>;
+      timeToDecode = <span className="time-to-decode">{ms(blocks * 15000 * 5)} left</span>;
 
       return (
         <span>
+          you need
           {" "}
-          {toDecimals(diff, 3, 0)}{" "}
-          <span className="token-name">{name} to go</span> {timeToDecode}
+          <span className="amount-underline">{toDecimals(diff, 3, 0)}</span>{" "}more ${name} {timeToDecode}
         </span>
       );
-
     } else {
       // NOT STAKING
       const total = BigNumber("10").times(weiDecimals);
@@ -169,7 +168,7 @@ function DecodeThreshold({ name, token, message, isSignedIn, actions }) {
         .div(divisor)
         .dp(0, 0)
         .toNumber();
-      timeToDecode = <span>({ms(blocks * 15000 * 5)})</span>;
+      timeToDecode = <span className="time-to-decode">{ms(blocks * 15000 * 5)} left</span>;
 
       return (
         <span>
@@ -183,7 +182,6 @@ function DecodeThreshold({ name, token, message, isSignedIn, actions }) {
           to see {timeToDecode}
         </span>
       );
-
     }
   }
 
@@ -209,7 +207,6 @@ function DecodeThreshold({ name, token, message, isSignedIn, actions }) {
         </a>
       </span>
     );
-
 }
 
 // function EncryptedMessage({ encrypted, decrypted }) {
@@ -332,7 +329,9 @@ function VisibleMessage({ message }) {
       messageComponent = <VisibleMessageVideo message={message} />;
       break;
     default:
-      const processed = message.message.split(lineBreakRegExp).map(c => lineBreakRegExp.test(c) ? <br /> : c)
+      const processed = message.message
+        .split(lineBreakRegExp)
+        .map(c => (lineBreakRegExp.test(c) ? <br /> : c));
       messageComponent = <Linkify>{processed}</Linkify>;
       break;
   }
@@ -382,13 +381,17 @@ function MemeMessageBody({ message, decodeThreshold }) {
 }
 
 function CommentBubble({ message, canComment, onClick = () => {} }) {
-  const count = message.childCount || 0
-  const [prevCount] = useState(count)
-  const classNames = ["badge", "badge-light", "comment-bubble"]
-  if (prevCount !== count) classNames.push('comment-count-changed')
+  const count = message.childCount || 0;
+  const [prevCount] = useState(count);
+  const classNames = ["badge", "badge-light", "comment-bubble"];
+  if (prevCount !== count) classNames.push("comment-count-changed");
   return (
-    <span className={classNames.join(' ')} onClick={onClick}>
-      <i className="far fa-comment"></i> {message.childCount || 0}
+    <span className={classNames.join(" ")} onClick={onClick}>
+      <i className="fas fa-comment" style={{ fontSize: "1 rem" }}></i>{" "}
+      <div style={{ fontWeight: "400" }}>
+        <span style={{ fontWeight: "bold" }}>{message.childCount || 0}</span>{" "}
+        comment{message.childCount > 1 || message.childCount === 0 ? `s` : ``}
+      </div>
     </span>
   );
 }
@@ -440,7 +443,7 @@ export default function MessageCard({
     return () => clearTimeout(id);
   }, [destroyCountDown]);
 
-  if (!message.id) return
+  if (!message.id) return;
 
   let destroyIcon = null;
   if (myToken && message.tokenid === myToken.id && canDestroy) {
@@ -532,17 +535,15 @@ export default function MessageCard({
   return (
     <div className={classNames.join(" ") + " clearfix"} key={message.id}>
       {destroyIcon}
-      <div style={{ width: "10%", float: "left", textAlign: "center" }}>
+      <div style={{ width: "10%", float: "left", textAlign: "center" }} className="main-photo">
         <a
           href="#"
           onClick={clickHandler(() => history.push(`/$${token.name}`))}
         >
-          <ProfileImage token={token}/>
+          <ProfileImage token={token} />
         </a>
 
-        <span className="message-time">
-          {ago(message.created) + ` ago`}
-        </span>
+        <span className="message-time">{ago(message.created) + ` ago`}</span>
         <a
           href="#"
           className="small message-share"
@@ -553,7 +554,7 @@ export default function MessageCard({
       </div>
       <div className="message-content" style={{ width: "90%", float: "right" }}>
         <Row className="no-gutters message-header">
-          <Col style={{marginLeft: '1rem'}}>
+          <Col style={{ marginLeft: "1.2rem" }}>
             {message.hint && (
               <div>
                 <span className="message-hint" onClick={onClickMessageCard}>
@@ -564,7 +565,7 @@ export default function MessageCard({
           </Col>
         </Row>
         <Row className="no-gutters message-body">
-          <Col style={{marginLeft: '1rem'}}>
+          <Col style={{ marginLeft: "1.2rem" }}>
             {messageComponent}
             {decodeThreshold}
           </Col>
@@ -573,12 +574,11 @@ export default function MessageCard({
           className="no-gutters message-footer"
           style={{ display: showFooter ? "auto" : "none" }}
         >
-          <Col style={{marginLeft: '1rem'}}>
+          <Col style={{ marginLeft: "1.2rem" }}>
             <span className="badge badge-light">
               <HoldersProfiles
                 prefix=""
                 suffix="staking"
-                noholderstext="0 "
                 holders={Object.entries(token.stakes || {})
                   .filter(
                     ([address]) => !(message.recipients || []).includes(address)
@@ -590,8 +590,7 @@ export default function MessageCard({
             <span className="badge badge-light">
               <HoldersProfiles
                 prefix=""
-                suffix="decoded"
-                noholderstext="0 "
+                suffix="decoding"
                 holders={message.recipients || message.recipientcount}
               />
             </span>

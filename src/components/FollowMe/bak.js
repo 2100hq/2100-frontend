@@ -24,7 +24,7 @@ function invisibleSubtext({name, token, message, isSignedIn, state, decodeMessag
   if (BigNumber(token.myStake).gt(0) && diff.gt(0)){
     const divisor = BigNumber(token.myStake).div(token.totalStakes).times(0.9).times(0.00021).times(weiDecimals)
     const blocks = diff.div(divisor).dp(0,0).toNumber()
-    timeToDecode = (<span>({ms(blocks*15000)} to go)</span>)
+    timeToDecode = (<span className="time-to-decode">{ms(blocks*15000)} left</span>)
   }
   if (diff.gt(0)) return <span>need {toDecimals(diff, 3, 0)} <span className='token-name'>{name}</span> {timeToDecode}</span>
   return <span className="enough-to-decode">you have enough {name} to <a href="#" onClick={handleClick}>decode</a></span>
