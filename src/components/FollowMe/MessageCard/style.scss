@@ -104,15 +104,16 @@ $message-margin: 0.3rem;
 	}
 
 	.decode-button {
+		font-weight: bold;
 		background: #fff;
 		border: 1px solid #2AC88F;
 		color: #2AC88F;
-		transition: all 0.3s ease-in-out;
+		transition: all 0.1s ease-in-out;
 		padding-top: 4px;
 		padding-bottom: 3px;
 		&:hover {
-			border-color: 1px solid #2AC88F;
-			background-color: #2AC88F;
+			border-color: 1px solid #2AC88F !important;
+			background-color: #2AC88F !important;
 			color: #fff;
 		}
 	}
