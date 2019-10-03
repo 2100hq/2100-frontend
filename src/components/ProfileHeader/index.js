@@ -230,11 +230,10 @@ export default function ProfileHeader({
     return (
       <g>
         <text x={cx} y={cy} dy="34%" className="username" textAnchor="middle">
-          {payload.name}
+          <LinkableName name={payload.name} />
         </text>
         <text x={cx} y={cy} dy="42%" className="amount" textAnchor="middle">
-          {(percent * 100).toFixed(2)}% · {(payload.value * 100).toFixed(2)} $
-          {token.name}
+          {(percent*100).toFixed(2)}% · {payload.value} <LinkableName name={payload.name} />
         </text>
         <Sector
           cx={cx}
