@@ -168,16 +168,18 @@ function DecodeThreshold({ name, token, message, isSignedIn, actions }) {
         .div(divisor)
         .dp(0, 0)
         .toNumber();
-      timeToDecode = <span className="time-to-decode">{ms(blocks * 15000 * 5)} left</span>;
+      timeToDecode = <span className="time-to-decode">about {ms(blocks * 15000 * 5)}</span>;
 
       return (
-        <span>
+        <span className='hold-to-see'>
           hold{" "}
           <span>
-            <span className="amount-underline">
+            <span className="reveal-amount">
               {toDecimals(message.threshold, 3, 0)}
             </span>{" "}
-            ${name}
+            <span className='reveal-name'>
+              ${name}
+            </span>
           </span>{" "}
           to see {timeToDecode}
         </span>
