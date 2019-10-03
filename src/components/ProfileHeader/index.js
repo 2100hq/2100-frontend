@@ -16,10 +16,13 @@ import {
 import ProfileImage from "../ProfileImage";
 import LinkableName from "../LinkableName";
 import { toDecimals } from "../../utils";
+import history from "../../utils/history";
 import BigNumber from 'bignumber.js'
 import { Row, Col } from "react-bootstrap";
 import "./style.scss";
 import * as moment from "moment";
+
+const maxChartValues = 10
 
 // takes a list of data and truncates any data past the max adding it to an 'others' object
 function truncateData(list=[], total="1", max=10){
@@ -30,7 +33,7 @@ function truncateData(list=[], total="1", max=10){
     value: BigNumber.sum(...list.slice(max).map(t=>t.value)).dp(4,0).toNumber()
   }
 
-  others.percent = new BigNumber(others.value).div(total).dp(4,0).toNumber()
+  others._percent = new BigNumber(others.value).div(total).dp(4,0).toNumber()
 
   const top = list.slice(0,max)
   return [...top, others]
@@ -198,12 +201,12 @@ export default function ProfileHeader({
   token,
   info = {}
 }) {
-  const truncatedHolders = info.holders != null && supply != null ? truncateData(info.holders, supply) : []
-  const truncatedStakers = info.stakers != null && info.amtStaked != null ? truncateData(info.stakers, info.amtStaked) : []
+  const truncatedHolders = info.holders != null && supply != null ? truncateData(info.holders, supply, maxChartValues) : []
+  const truncatedStakers = info.stakers != null && info.amtStaked != null ? truncateData(info.stakers, info.amtStaked, maxChartValues) : []
 
   const [activeIndex, setActiveIndex] = useState({
-    holders: 1,
-    stakers: 1
+    holders: 0,
+    stakers: 0
   });
 
   const onStakersPieEnter = (data, idx, e) => {
@@ -256,6 +259,12 @@ export default function ProfileHeader({
       </g>
     );
   };
+
+  const onPieClick = props => {
+    const { name } = props
+    if (!name || name.indexOf('0x') === 0) return
+    history.push(`/$${name}`)
+  }
 
   return (
     <div className="profile-header">
@@ -313,7 +322,7 @@ export default function ProfileHeader({
       </div>
       <div className="charts">
         {stakers.length > 0 && <div className="chart">
-        <h3>Top Stakers</h3>
+        <h3>Top {maxChartValues} Stakers</h3>
           <ResponsiveContainer>
             <PieChart>
               <Pie
@@ -325,6 +334,7 @@ export default function ProfileHeader({
                 activeShape={renderActiveShape}
                 onMouseEnter={onStakersPieEnter}
                 isAnimationActive={false}
+                onClick={onPieClick}
               >
                 {truncatedStakers.map((entry, index) => (
                   <Cell key={`slice-${index}`} fill={colors[index % colors.length]} />
@@ -334,7 +344,7 @@ export default function ProfileHeader({
           </ResponsiveContainer>
         </div>}
         {holders.length > 0 && <div className="chart">
-        <h3>Top Holders</h3>
+        <h3>Top {maxChartValues} Holders</h3>
           <ResponsiveContainer>
             <PieChart>
               <Pie
@@ -346,6 +356,7 @@ export default function ProfileHeader({
                 activeShape={renderActiveShape}
                 onMouseEnter={onHoldersPieEnter}
                 isAnimationActive={false}
+                onClick={onPieClick}
               >
                 {truncatedHolders.map((entry, index) => (
                   <Cell key={`slice-${index}`} fill={colors[index % colors.length]} />
