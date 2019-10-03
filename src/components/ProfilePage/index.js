@@ -135,10 +135,10 @@ export default function Profile (props) {
 
     const numStakers = stakers.length
     const created = token.created
-    const numPosts = tokenFeedMessages[token.id] ? Object.keys(tokenFeedMessages[token.id] || {}).length : '-'
+    const numPosts = tokenFeedMessages[token.id] ? Object.keys(tokenFeedMessages[token.id] || {}).length : null
 
     let holders = tokenHolders ? Object.entries(tokenHolders) : []
-    const supply = tokenHolders ? _BigNumber.sum(...holders.map(([_,amount])=> amount)) : '-'
+    const supply = tokenHolders ? _BigNumber.sum(...holders.map(([_,amount])=> amount)) : null
     if (tokenHolders){
       holders = holders.filter(s => new _BigNumber(s[1]).gt(0))
       holders.sort( (a, b) => new _BigNumber(a[1]).gt(b[1]) ? -1 : 1)
@@ -151,20 +151,9 @@ export default function Profile (props) {
           percent: new _BigNumber(amount).div(supply).dp(4,0).toNumber()
         }
       })
-
-      // const others = {
-      //   rank: othersRank,
-      //   name: 'others',
-      //   value: _BigNumber.sum(...holders.slice(othersRank-1).map(t=>t.value)).dp(4,0).toNumber()
-      // }
-
-      // others.percent = new BigNumber(others.value).div(supply).dp(4,0).toNumber()
-
-      // holders = holders.slice(0,othersRank-1)
-      // holders.push(others)
     }
 
-    const numHolders = tokenHolders ? Object.values(supply).length : '-'
+    const numHolders = tokenHolders ? Object.values(holders).length : null
 
     return {
       amtStaked,
