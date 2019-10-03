@@ -25,7 +25,7 @@ export default function ProfileImage({token, name, className='', style={}, linka
   if (isEmpty(name)) name = '0x00000'
   return (
     <a href={linkable ? '#' : null} onClick={clickHandler(onClick)}>
-      <img className={'img-fluid profile-image '+className} alt={`$${name}`} title={`$${name}`} style={style} src={url(name)} onError={onError} />
+      <img className={'profile-image '+className} alt={`$${name}`} title={`$${name}`} style={style} src={url(name)} onError={onError} />
     </a>
   )
 }

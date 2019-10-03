@@ -17,7 +17,7 @@ function ProtectedNavItem ({state, children}) {
 function Logo(){
   return(
     <React.Fragment>
-    <img className='logo' src='/img/logo9.png' />
+    <img className='logo' style={{"paddingTop":"5px"}} src='/img/logo9.png' />
     </React.Fragment>
     )
 }

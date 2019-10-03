@@ -6,7 +6,7 @@ import './style.scss'
 export default function ContextBar (props) {
   return (
       <div className='context-bar'>
-        <Link to='/'><i style={{fontSize: '1.4rem'}} className="fas fa-arrow-circle-left"></i></Link>
+        <Link to='/'><i style={{fontSize: '1rem'}} className="fas fa-chevron-left"></i></Link>
       </div>
   )
 }

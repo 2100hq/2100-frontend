@@ -8,6 +8,6 @@ export default function CreateMessageButton(props){
   const show= Boolean(showCreate)
   if (show) return null
   return (
-      <div className='compose-button' {...props} onClick={()=>actions.setShowCreate(true)}><i className="fas fa-pen"></i></div>
+      <div className='compose-button' {...props} onClick={()=>actions.setShowCreate(true)}>Create</div>
   )
 }
