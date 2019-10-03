@@ -49,7 +49,7 @@ export default function Navigation(){
     switch(viewType){
       case 'Decodable':
         const number = Object.values(messages||{}).filter(m=>m.decodable).length
-        const badge = number > 0 ? <Badge>{number}</Badge> : null
+        const badge = number > 0 ? <span className="decodable-posts">{number}</span> : null
         return <span>Decodable {badge}</span>
       case 'Decoding':
         return <span>Staking</span>
