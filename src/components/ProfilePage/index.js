@@ -198,7 +198,7 @@ export default function Profile (props) {
       </span>
       <ProfileHeader token={token} info={info} key={token && token.id} />
       <div className='profile-body'>
-        <FollowMeProfileFeed token={token} />
+        <FollowMeProfileFeed token={token} key={token && token.id}/>
       </div>
     </div>
   )
