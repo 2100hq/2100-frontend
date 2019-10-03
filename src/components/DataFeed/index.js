@@ -198,7 +198,7 @@ function EarningsFeed({state, query}){
 
   return (
     <React.Fragment>
-      <Row className='user-data-feed justify-content-center small'>
+      <Row className='no-gutters user-data-feed justify-content-center small'>
         <Col md='12' className='ml-4'>
           <h6 style={{marginBottom: '1rem',}}>Latest Earnings</h6>
           {earningsRows}

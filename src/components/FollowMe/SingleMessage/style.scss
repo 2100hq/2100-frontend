@@ -2,8 +2,6 @@
 
 
 .single-message{
-	margin-bottom: 101px;
-	padding-bottom: 0.5rem;
 	background-color: #F3F6F6;
 	.message-card .comment-bubble.comment-count-changed {
 		background: #f3f3f3 !important;
@@ -14,14 +12,9 @@
 	}
 
 	.comment-form-area{
-		position: fixed;
-		bottom: 0;
-		left: calc(2/12);
-		width: 41.6%;
 		background-color: #F3F6F6;
-		height: 100px;
 		border-top: 1px solid #ddd;
-
+		padding: 1rem 0;
 		input{
 			border-radius: 50px !important;
 			line-height: 38px;
