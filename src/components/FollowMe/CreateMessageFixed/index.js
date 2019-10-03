@@ -36,7 +36,7 @@ export default function CreateMessageModal () {
     setShowHesitate(false)
   }, [close])
 
-  const {replyid} = showCreate
+  const {parentid} = showCreate
   const show= Boolean(showCreate)
   if (!show) return null
   return (
@@ -46,12 +46,12 @@ export default function CreateMessageModal () {
           <Row className='compose-header small'>
             <Col>
               <h5 className="mt-3 mb-3">Compose</h5>
-              <i class="fas fa-times-circle close" onClick={ () =>  actions.setShowCreate(false)}/>
+              <i className="fas fa-times-circle close" onClick={ () =>  actions.setShowCreate(false)}/>
             </Col>
           </Row>
           <Row>
             <Col>
-                <MessageForm replyid={replyid} onSubmitted={() => actions.setShowCreate(false)}/>
+                <MessageForm parentid={parentid} onSubmitted={() => actions.setShowCreate(false)}/>
             </Col>
           </Row>
         </Container>

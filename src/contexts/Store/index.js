@@ -31,9 +31,11 @@ export function useStoreContext () {
 
 export const StoreContextConsumer = StoreContext.Consumer
 
+const allowWindowObj = Boolean(process.env.REACT_APP_ALLOW_WINDOW_OBJECT)
+
 function socketUpdate (channel, dispatch) {
   return events => {
-    console.log(new Date().toISOString(), '*SOCKET UPDATE >', channel, events)
+    // console.log(new Date().toISOString(), '*2100 SOCKET UPDATE >', channel, events)
     events = events
       .filter( event => !/reward/i.test(event[1] && event[1].type) )
       .map( event => {
@@ -41,6 +43,19 @@ function socketUpdate (channel, dispatch) {
         return event
       })
     dispatch(actions.batchUpdate(events))
+  }
+}
+
+function updateStates (dispatch){
+  return events => {
+    events.forEach( event => {
+      const path = event[0]
+      const data = event[1]
+      if (path.length === 0) {
+        const {earned: {latest: earned}} = data
+        delete earned['2100']
+      }
+    })
   }
 }
 
@@ -58,7 +73,6 @@ export default function StoreProvider ({ children }) {
     auth: { token: localStorage.getItem('token')},
     view: config.defaultView
   })
-
   // useEffect( () => {
   //   console.log(new Date().toISOString(), 'LATEST BLOCK', get(privState, 'public.latestBlock.number'))
   // }, [get(privState, 'public.latestBlock.number')])
@@ -70,6 +84,8 @@ export default function StoreProvider ({ children }) {
     socket.listen('public', socketUpdate('public', dispatch))
     socket.listen('auth', socketUpdate('auth', dispatch))
     socket.listen('admin', socketUpdate('admin', dispatch))
+    // socket.listen('stats', socketUpdate('stats', dispatch))
+    // socket.auth('joinStats')
   }, [socket.network.loading])
 
   // add network info to private state
@@ -172,11 +188,11 @@ export default function StoreProvider ({ children }) {
   // provide context of all these to children
   const contextValue = useMemo(() => {
     const state = { ...privState, ...Selectors(privState) }
-    const query = Query(state)
-    window.appstate = state
+    if (allowWindowObj) window.appstate = state
 
     const dispatcher = Dispatcher({dispatch, socket, web3, state, actions })
     dispatcher.replaceLib('dispatch', dispatcher)
+    const query = Query({ dispatch: dispatcher, state, actions })
     return { dispatch: dispatcher, state, actions, query }
   }, [privState, socket, web3])
 

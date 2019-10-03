@@ -4,7 +4,8 @@ import { matchPath } from 'react-router'
 
 import Main from './components/Main'
 import Portfolio from './components/Portfolio'
-import Profile from './components/Profile'
+import ProfilePage from './components/ProfilePage'
+import SingleMessagePage from './components/SingleMessagePage'
 import Onboarding from './components/Onboarding'
 import Nav from './components/Nav'
 import Breakpoints from './components/Breakpoints'
@@ -16,9 +17,8 @@ import Admin from './components/Admin'
 import BrowserClasses from './components/BrowserClasses'
 import {Row, Col, Card} from 'react-bootstrap'
 import Sidebar from './components/Sidebar'
-import CreateMessageButton from './components/FollowMe/CreateMessageButton'
-import CreateMessageFixed from './components/FollowMe/CreateMessageFixed'
-import FollowMeMessageModal from './components/FollowMe/MessageModal'
+import CreateMessageModal from './components/FollowMe/CreateMessageModal'
+import AllocationModal from './components/AllocationModal'
 
 import Discover from './components/Discover'
 import history from './utils/history'
@@ -35,7 +35,7 @@ function App(){
       <BrowserClasses>
         {/*<Breakpoints />*/}
         <div className='container-fluid'>
-          <Row>
+          <Row className='no-gutters'>
             <Col md='2' className='nav-column'>
               <Nav />
             </Col>
@@ -45,38 +45,29 @@ function App(){
                 {/*<Route path='/wallet' exact component={Wallet} />*/}
                 <Route path='/manage' exact component={Manage} />
                 <Route path='/admin' exact component={Admin} />
-
-                <Row className='main'>
-                  <Col md='6' className='discover'>
-                    <Discover />
-                  </Col>
-                  <Col md='6' className='followme' ref={node}>
-                        <CreateMessageButton />
-                      {/* follow me */}
-                      <Switch>
-                        <Route exact path='/:username([$].*)' render = {
-                          props => {
-                            const isMessageMatch = matchPath(props.location.pathname, routeConfigs.message)
-                            let {match} = props
-                            if (isMessageMatch) match = isMessageMatch
-                            props = {...props, match}
-                            return <Profile {...props} />
-                          }
-                        } />
-                        <Route render={ props => <Sidebar onChangePage={onChangePage} {...props} /> } />
-                      </Switch>
-                  </Col>
-                </Row>
+                <React.Fragment>
+                  <Row className='no-gutters main'>
+                    <Col md='6' className='followme' ref={node}>
+                        {/* follow me */}
+                        <Switch>
+                          <Route exact path='/:username([$]{1,1}[a-zA-Z0-9_]+)/:messageid' component={SingleMessagePage} />
+                          <Route exact path='/:username([$]{1,1}[a-zA-Z0-9_]+)' component={ProfilePage} />
+                          <Route render={ props => <Sidebar onChangePage={onChangePage} {...props} /> } />
+                        </Switch>
+                    </Col>
+                    <Col md='6' className='discover'>
+                      <Discover />
+                    </Col>
+                  </Row>
+                </React.Fragment>
               </Switch>
             </Col>
           </Row>
-          <Route exact path='/:username([$]{1,1}[a-zA-Z0-9_]+)/:messageid' render= {
-            props => <FollowMeMessageModal {...props} />
-          } />
         </div>
-        <CreateMessageFixed />
+        <CreateMessageModal />
         <Alerts />
         <ErrorModal />
+        <AllocationModal />
       </BrowserClasses>
     </Router>
   )

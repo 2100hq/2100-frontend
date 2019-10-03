@@ -1,0 +1,20 @@
+@import "../../Variables";
+
+.single-message-page{
+
+	.message-card.message-hidden{
+		padding: 2rem;
+		border-bottom: 1px solid #eee;
+	}
+
+	.mini-profile{
+		margin: 1rem;
+		margin-bottom: 0;
+	}
+}
+
+.page-name-message{
+	.create-messages-button-fixed{
+		display: none;
+	}
+}

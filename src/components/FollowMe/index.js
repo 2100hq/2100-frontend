@@ -7,7 +7,7 @@ import {Pagination} from 'react-bootstrap'
 import './style.scss'
 
 
-export default function FollowMeFeed({messages={}, showForm, className, styles, startPage=0, onChangePage = () => {}}){
+export default function FollowMeFeed({messages={}, className, styles, startPage=0, onChangePage = () => {}}){
 
   const {query, state} = useStoreContext()
   const perPage = state.config.followMePerPage
@@ -23,7 +23,7 @@ export default function FollowMeFeed({messages={}, showForm, className, styles, 
   const chunks = chunk(messages, perPage)
   messages = chunks[page] || []
 
-  const cards = messages.map( message => <MessageCard message={message} myToken={myToken} token={query.getToken(message.tokenid)} isSignedIn={isSignedIn} actions={actions} key={message.id+(message.hidden||'visible')} canComment={false}/>)
+  const cards = messages.map( message => <MessageCard message={message} myToken={myToken} token={query.getToken(message.tokenid)} isSignedIn={isSignedIn} actions={actions} key={message.id+(message.hidden||'visible')} />)
 
   const prevDisabled = page === 0
   const nextDisabled = page === chunks.length - 1

@@ -1,15 +1,20 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import FollowMeProfileFeed from '../FollowMe/ProfileFeed'
-import FollowMeSingleMessage from '../FollowMe/SingleMessage'
+
 import { Route } from "react-router-dom";
 import Allocator from '../Allocator'
 import ProfileImage from '../ProfileImage'
 import { Link } from 'react-router-dom'
-import { toDecimals } from '../../utils'
+import { toDecimals, weiDecimals } from '../../utils'
 import { Redirect }  from 'react-router-dom'
 import { useStoreContext } from '../../contexts/Store'
+import { useFollowMeContext } from '../../contexts/FollowMe'
 import { Button, Form, Col, Row, Card } from 'react-bootstrap'
 import Confetti from 'react-confetti'
+import ProfileHeader from '../ProfileHeader'
+import {get} from 'lodash'
+import _BigNumber from 'bignumber.js'
+import ContextBar from '../ContextBar'
 import './style.scss'
 
 function NewUserWelcome({clearNewUser}){
@@ -52,7 +57,7 @@ function Description({description, token, isMyToken}){
   )
 
   return (
-    <Form class="token-description" onSubmit={handlePersist}>
+    <Form className="token-description" onSubmit={handlePersist}>
       <Form.Group as={Row}>
         {(Boolean(description) || editing) && (
           <Col md="8">
@@ -83,7 +88,7 @@ export default function Profile (props) {
 
   const [loadingState, setLoadingState] = useState(0)
 
-  const { query } = useStoreContext()
+  const { state, query, dispatch, actions } = useStoreContext()
   const username = match.params.username
   const messageid = match.params.messageid
   const isLoading = query.getIsLoading()
@@ -91,6 +96,9 @@ export default function Profile (props) {
 
   const token = query.getToken(username)
 
+  const fmstate = useFollowMeContext()
+  const {tokenFeedMessages} = fmstate
+  const [tokenHolders, setTokenHolders] = useState()
   useEffect( () => {
     if (loadingState === 3) return // token exists and loaded
     let id
@@ -101,6 +109,64 @@ export default function Profile (props) {
     if (isConnected && token && token.id) setLoadingState(3) // token exists
     return () => clearTimeout(id)
   }, [isConnected, token && token.id])
+
+  useEffect(()=> {
+    if (state.network.loading) return
+    if (!token || !token.id) return
+    dispatch(actions.getTokenHolders(token.id)).then(resp => {
+      if (resp) setTokenHolders(resp)
+    })
+  }, [token && token.id, state.network.loading])
+
+  const info = useMemo(()=> {
+    const othersRank = 6
+    const amtStaked = toDecimals(token.totalStakes||"0",2,0)
+
+    let stakers = Object.entries(token.stakes || {}).filter(s => new _BigNumber(s[1]).gt(0))
+    stakers.sort( (a, b) => new _BigNumber(a[1]).gt(b[1]) ? -1 : 1)
+
+    stakers = stakers.map( ([userid, amount], i) => {
+      return {
+        rank: i+1,
+        name: query.getUserName(userid) || userid,
+        value: new _BigNumber(amount).div(weiDecimals).div(100).dp(4,0).toNumber(),
+        percent: new _BigNumber(amount).div(token.totalStakes).dp(4,0).toNumber()
+      }
+    })
+
+    const numStakers = stakers.length
+    const created = token.created
+    const numPosts = tokenFeedMessages[token.id] ? Object.keys(tokenFeedMessages[token.id] || {}).length : null
+
+    let holders = tokenHolders ? Object.entries(tokenHolders) : []
+    const supply = tokenHolders ? _BigNumber.sum(...holders.map(([_,amount])=> amount)) : null
+    if (tokenHolders){
+      holders = holders.filter(s => new _BigNumber(s[1]).gt(0))
+      holders.sort( (a, b) => new _BigNumber(a[1]).gt(b[1]) ? -1 : 1)
+
+      holders = holders.map( ([userid, amount], i) => {
+        return {
+          rank: i+1,
+          name: query.getUserName(userid) || userid,
+          value: new _BigNumber(amount).div(weiDecimals).div(100).dp(4,0).toNumber(),
+          percent: new _BigNumber(amount).div(supply).dp(4,0).toNumber()
+        }
+      })
+    }
+
+    const numHolders = tokenHolders ? Object.values(holders).length : null
+
+    return {
+      amtStaked,
+      numStakers,
+      created,
+      numPosts,
+      numHolders,
+      supply: tokenHolders ? toDecimals(supply,4) : supply,
+      stakers,
+      holders
+    }
+  }, [token, fmstate, tokenHolders])
 
   if (loadingState==0 || loadingState==1) return <h1>Loading</h1>
 
@@ -114,45 +180,14 @@ export default function Profile (props) {
   const description = token.description || ''
   const hasDescription = Boolean(description.replace(/\s*/g,''))
 
-
   return (
-  <div className='profile'>
-    {isNewUser && <NewUserWelcome clearNewUser={clearNewUser}/>}
-    <Link className='close-link' to='/'><i class="fas fa-times-circle"></i></Link>
-    <div className='profile-header align-items-center justify-content-center'>
-      <div className='col-auto'>
-          <ProfileImage token={token}/>
-          <div className='token-stakes'>
-            <img src='../img/dai.png' style={{ width: '16px','vertical-align': 'baseline' }} /> {toDecimals(token.totalStakes)} staking
-          </div>
-          <div className='token-name'>
-            {token.name}
-          </div>
-          <div className='token-url small text-muted'>
-            <a href={`https://twitter.com/${token.name}`}>{`twitter.com/${token.name}`}</a>
-          </div>
+    <div className='profile'>
+      {isNewUser && <NewUserWelcome clearNewUser={clearNewUser}/>}
+      <ContextBar />
+      <ProfileHeader token={token} info={info} key={token && token.id} />
+      <div className='profile-body'>
+        <FollowMeProfileFeed token={token} key={token && token.id}/>
       </div>
     </div>
-    <div className='profile-body'>
-      { messageid && isSignedIn ? <FollowMeSingleMessage messageid={messageid} token={token}/> : <FollowMeProfileFeed token={token} /> }
-    </div>
-
-  </div>
   )
-  // return (
-  //   <div className='row justify-content-center'>
-  //   	<div className='col-md-6'>
-  //   		<div style={{marginTop:'2rem'}} className={`profile ${!hasDescription && 'no-description'}`}>
-		// 			<h1><span className='token-name'>{token.name}</span></h1>
-		// 			<Description description={description} isMyToken={isMyToken} token={token}/>
-		// 			{isSignedIn && <Allocator token={token}/> }
-		// 			<div>
-  //       <img src='../img/dai.png' style={{ width: '14px','vertical-align': 'baseline' }} /> <span className='text-muted'>{stakeText}</span>
-		// 			</div>
-		// 			<hr/>
-  //         { messageid ? <FollowMeSingleMessage messageid={messageid} token={token}/> : <FollowMeProfileFeed token={token} />}
-  //   		</div>
-  //   	</div>
-  //   </div>
-  // )
 }

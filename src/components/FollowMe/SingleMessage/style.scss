@@ -1,0 +1,134 @@
+@import "../../../Variables";
+
+
+.single-message{
+	background-color: #F3F6F6;
+	.message-card .comment-bubble.comment-count-changed {
+		background: #f3f3f3 !important;
+	}
+	// background: url('/img/stripes-light.png') repeat;
+	.message-card{
+		border: none;
+	}
+
+	.comment-form-area{
+		background-color: #F3F6F6;
+		border-top: 1px solid #ddd;
+		padding: 1rem 0;
+		input{
+			border-radius: 50px !important;
+			line-height: 38px;
+		}
+
+		.custom-submit{
+			width: 38px;
+			height: 38px;
+			margin-left: 10px;
+			line-height: 38px;
+			text-align: center;
+			color: white;
+			border-radius: 50%;
+ 			background-color: $twentyoneprimary;
+ 			cursor: pointer;
+ 			&:hover{
+ 				background-color: darken(#636fd0,5%);
+ 			}
+		}
+	}
+
+}
+
+.comment {
+	margin: 1rem;
+
+	.single-comment-profile{
+		margin: 0;
+		padding: 0;
+	}
+
+	.single-comment{
+		background-color: white;
+		padding: 0.5rem 1rem;
+		float: left;
+		position: relative;
+		border-radius: 1rem;
+
+		.username{
+			font-size: 0.8rem;
+			font-weight: bold;
+		}
+
+		.ago{
+			position: absolute;
+			bottom: 0.5rem;
+			right: 0.5rem;
+			font-size: 0.5rem;
+		}
+
+		.single-comment-body{
+			margin-bottom: 1rem;
+		}
+
+		&.speech-bubble {
+			position: relative;
+			background: #fff;
+			border-radius: .4em;
+		}
+
+		&.speech-bubble:after {
+			content: '';
+			position: absolute;
+			left: 0;
+			top: 50%;
+			width: 0;
+			height: 0;
+			border: 10px solid transparent;
+			border-right-color: #fff;
+			border-left: 0;
+			margin-top: -10px;
+			margin-left: -10px;
+		}
+	}
+
+	.fake-hidden-message{
+		.rectangle{
+			display: inline-block;
+			height: 15px;
+			margin-right: 10px;
+			background: repeating-linear-gradient(
+				-55deg,
+				rgba(0,0,0,0.1),
+				rgba(0,0,0,0.1) 10px,
+				rgba(0,0,0,0.05) 10px,
+				rgba(0,0,0,0.05) 20px
+				);
+			border-radius: 2px;
+			&.r1{
+				width: 10rem;
+			}
+
+		}
+
+	}
+
+	.message-delete{
+		display: none;
+		position: absolute;
+		top: 1rem;
+		right: 1.5rem;
+		z-index: 999999;
+		opacity: 0.75;
+		&:hover{
+			text-decoration: none;
+		}
+	}
+
+	&.message-destroy-countdown, &:hover {
+		.destroying {
+			color: red;
+		}
+		.message-delete{
+			display: block;
+		}
+	}
+}

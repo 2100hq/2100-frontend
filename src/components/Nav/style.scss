@@ -2,20 +2,45 @@
 @import "../../Variables";
 
 .vertical-nav{
-	font-size: 1.1rem;
+	font-size: 1rem;
 }
 
-.our-brand{
-}
-
-.nav-link{
-	// padding: 0.4rem 0 !important;
+.logo{
+	max-width: 80px;
+	max-height: 80px;
 }
 
 .nav-link.active {
-  font-weight: bold;
+	font-weight: bold;
 }
 
-.nav-pills .nav-link.active, .nav-pills .show > .nav-link {
+.fm-nav{
+	border-bottom: 1px solid #eee;
+	background-color: white;
 
+		.compose-button{
+			background-color: #eee;
+			margin-left: 1rem;
+			color: black;
+			transition: opacity 0.2s linear;
+			width: 41px;
+			line-height: 41px;
+			text-align: center;
+
+			&:hover{
+				cursor: pointer;
+				color: white;
+				background-color: black;
+			}
+
+			transition: all 0.1s linear;
+		}
+
+}
+
+ul.nav{
+	.nav-item .nav-link{
+		padding: 0.25rem 1rem;
+	}
+	margin-bottom: 1.2rem;
 }

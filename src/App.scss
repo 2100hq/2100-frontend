@@ -4,7 +4,7 @@
 //then override bootstrap variables
 $theme-colors: (
 	"primary": $twentyoneprimary
-);
+	);
 
 //then import Bootstrap
 @import "node_modules/bootstrap/scss/bootstrap";
@@ -14,15 +14,7 @@ $theme-colors: (
 @import "node_modules/bootstrap/scss/_variables.scss";
 @import "node_modules/bootstrap/scss/mixins/_breakpoints.scss";
 
-//then app wide styles
-@font-face {
-	font-family: "Redacted";
-	src: url("/fonts/redacted-regular.eot");
-	src: url("/fonts/redacted-regular.woff2") format("woff2"),
-	url("/fonts/redacted-regular.woff") format("woff"),
-	url("/fonts/redacted-regular.otf") format("opentype"),
-	url("/fonts/redacted-regular.svg#filename") format("svg");
-}
+@import url('https://rsms.me/inter/inter.css');
 
 html{
 	height: 100%;
@@ -32,71 +24,72 @@ body{
 	height: 100%;
 	font-size: 1rem;
 	font-family: 'Noto Serif JP', serif !important;
-}
-
-
-.container-fluid{
-	height: 100%;
-}
-
-
-.followme, .discover, .nav-column{
-
-@include media-breakpoint-up(md) {
-	padding: 0;
-	height: 100vh;
-	overflow-y: scroll;
+	background-color: $twentyonemuted;
 	::-webkit-scrollbar {
 		display: none;
 	}
+   	scrollbar-width: none
 }
 
+hr {
+	border: none;
+	height: 2px;
+	background-color: $twentyonemuted;
+}
+
+.container-fluid{
+	height: 100%;
+	padding: 0;
+	margin: 0;
+}
+
+.modal-backdrop{
+	background-color: rgba(0,0,0,0.7);
+}
+
+.followme, .discover, .nav-column{
+
+	@include media-breakpoint-up(md) {
+		height: 100vh;
+		overflow-y: scroll;
+	}
+
+}
+
+.nav-column{
+	background-color: white;
+  	border-radius: 3px;
+  	overflow-x: hidden;
 }
 
 .followme{
-		opacity: 1;
-
-
-	.create-messages-button-fixed{
-		position: fixed;
-		bottom: 4rem;
-		right: 4rem;
-		z-index: 999;
-
-		.compose-button{
-			font-size: 1.4rem;
-			display: flex;
-			justify-content: center;
-			align-items: center;
-			width: 4.5rem;
-			height: 4.5rem;
-			border-radius: 50%;
-			background-color: white;
-			color:$twentyoneprimary;
-			box-shadow: 3px 3px 3px 3px rgba(0,0,0,0.3);
-			transition: opacity 0.2s linear;
-			border: 3px solid $twentyoneprimary;
-
-
-			&:hover{
-				cursor: pointer;
-				color: white;
-				background-color: $twentyoneprimary;
-			}
-
-			transition: all 0.1s linear;
-		}
-	}
+	border-left: 1px solid #eee;
+	border-right: 1px solid #eee;
 }
 
-.discover{
-	opacity: 0.8;
-	&:hover{
-		opacity: 1;
+.enough-to-decode {
+	font-family: "Inter UI";
+	font-weight: 300;
+	font-size: 14px;
+	display: flex;
+	flex-flow: row nowrap;
+	align-items: center;
+	justify-content: flex-start;
+}
+
+.badge {
+	font-family: "Inter UI", sans-serif;
+	font-weight: 500;
+	border: solid 1px #ddd;
+	background-color: white;
+	margin-right: 3px;
+	i{
+		font-size: 10px;
 	}
 
-	transition: opacity 0.2s linear;
-
+	&.span{
+		display: inline-block;
+	}
 }
 
 .token-name{
@@ -116,6 +109,9 @@ body{
 
 }
 
+iframe{
+	max-width: 100%;
+}
 
 .card{
 	border: none !important;

@@ -27,7 +27,7 @@ function invisibleSubtext({name, token, message, isSignedIn, state, decodeMessag
     timeToDecode = (<span>({ms(blocks*15000)} to go)</span>)
   }
   if (diff.gt(0)) return <span>need {toDecimals(diff, 3, 0)} <span className='token-name'>{name}</span> {timeToDecode}</span>
-  return <span>you have enough {name} to <a href="#" onClick={handleClick}>decode</a></span>
+  return <span className="enough-to-decode">you have enough {name} to <a href="#" onClick={handleClick}>decode</a></span>
 }
 
 function visibleSubtext(name, message, myToken){

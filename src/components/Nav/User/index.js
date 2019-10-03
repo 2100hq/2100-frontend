@@ -9,12 +9,12 @@ import { get } from 'lodash'
 function Balances ({ state, actions, dispatch }) {
   if (!state.private || !state.private.me) return null
   const hasClaimedDai = state.private.mytoken && state.private.me.claimed
-console.log({hasClaimedDai})
+
   const { used, total } = state.controller.balances
   return (
     <div className='nav-link slide-left'>
     {/* wallet no more <Link className='nav-link slide-left' to='/wallet'>*/}
-      <img className='dai-logo' src='../img/dai.png' /> {toDecimals(used)} / {toDecimals(total)}
+      <span className='balance'><img className='dai-logo' src='../img/dai.png' /> {toDecimals(used)} / {toDecimals(total)}</span>
       {
         !hasClaimedDai && (<div className="text-muted small" style={{paddingLeft:'16px'}}>
           <a href='#' onClick={e => {
@@ -72,9 +72,6 @@ function SignedIn () {
   const hasToken = query.getMyToken()
   return (
     [
-      <li className='nav-item' key='balances'>
-        <Balances state={state} actions={actions} dispatch={dispatch}/>
-      </li>,
       <Dropdown as='li' className='nav-item' key='dropdown'>
         <Dropdown.Toggle as='a' className='nav-link in' href='#'>
           <AddressIcon username={query.getUserMyName()} useraddress={query.getUserAddress()} />
@@ -97,7 +94,10 @@ function SignedIn () {
             Sign Out
           </Link>
         </Dropdown.Menu>
-      </Dropdown>
+      </Dropdown>,
+      <li className='nav-item' key='balances'>
+        <Balances state={state} actions={actions} dispatch={dispatch}/>
+      </li>
     ]
   )
 }

@@ -17,11 +17,15 @@ export default function ProfileFeed({token}){
   const {query} = useStoreContext()
   const { messages, tokenFeedMessages, actions, myToken, isSignedIn } = useFollowMeContext()
   const showForm = false //isSignedIn && myToken && myToken.id === token.id
-  const tokenMessages = { ...(tokenFeedMessages[token.id] || {}), ...filterByToken(messages, token) }
+  const tokenMessages = tokenFeedMessages[token.id]
 
   useEffect(() => {
     actions.getTokenFeed(token.id)
   }, [isSignedIn])
+
+  useEffect(()=>{
+    return () => actions.removeTokenFeed(token.id)
+  }, [])
 
   return <FollowMe messages={tokenMessages} showForm={showForm} className='profile-feed'/>
 }

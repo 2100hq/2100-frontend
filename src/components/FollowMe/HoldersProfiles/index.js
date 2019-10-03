@@ -7,7 +7,7 @@ import './style.scss'
 
 function Face({name, address,index}){
   if (name) return <ProfileImage token={name} className={'holder-icon holder-icon-'+index}/>
-  return <div className={'jazzicon holder-icon holder-icon-'+index}><Jazzicon diameter={25} seed={jsNumberForAddress(address)} /></div>
+  return <div className={'jazzicon holder-icon holder-icon-'+index}><Jazzicon diameter={12} seed={jsNumberForAddress(address)} /></div>
 }
 
 function Faces({addresses=[], count=3}){
@@ -54,9 +54,9 @@ export default function HoldersProfiles({holders, prefix, suffix, noholderstext,
 
   if (holdersCount === 0) return noholderstext
 
-  const andMore = holdersCount > facesCount ? `and ${holdersCount-facesCount} more` : null
+  const andMore = holdersCount > facesCount ? <span> +{holdersCount-facesCount} </span> : null
 
-  if (!suffix){
+  if (suffix==null){
     suffix = holdersCount > facesCount ? ` holder${holdersCount-facesCount>1?'s':''}` : ' only'
   }
 

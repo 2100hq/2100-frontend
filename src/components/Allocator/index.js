@@ -1,14 +1,13 @@
-import React, { useState, useEffect, useRef, useMemo } from 'react'
+import React, { useState, useEffect, useMemo } from 'react'
 import { BigNumber, toDecimals, fromDecimals, convertToTwoDecimals } from '../../utils'
 import { get } from 'lodash'
 import { useStoreContext } from '../../contexts/Store'
-import {Form} from 'react-bootstrap'
+import {Row, Col, Container} from 'react-bootstrap'
 import Slider from '@material-ui/core/Slider';
 import './style.scss'
 
 
-export default function Allocator ({ token, className='', onComplete=()=>{}, onClickOutside=()=>{} }) {
-  const node = useRef()
+export default function Allocator ({ token, className='', onComplete=()=>{}, onClickOutside=()=>{}, onChange=()=>{} }) {
   const { state, query, dispatch, actions } = useStoreContext()
   const isSignedIn = query.getIsSignedIn()
   const isAllocating = query.getIsAllocating()
@@ -27,6 +26,18 @@ export default function Allocator ({ token, className='', onComplete=()=>{}, onC
   const [sliderVal, setSliderVal] = useState(myStake)
   const [remaining, setRemaining] = useState(available)
 
+  const pool = useMemo( ()=>{
+    const useraddress = query.getUserAddress().toLowerCase()
+    const amounts = Object.entries(token.stakes || {}).filter( ([address]) => address != useraddress).map( ([_,amount])=>amount)
+    return toDecimals(amounts.reduce( (sum, amount) => sum.plus(amount), BigNumber(0)))
+  },[token.stakes])
+
+  const percentOfPool = useMemo( () =>{
+     const total = BigNumber(pool).plus(sliderVal)
+     return BigNumber(sliderVal).div(total).times(100).dp(1).toNumber().toFixed(1)
+  },[pool, sliderVal])
+
+
   useEffect( () => {
     setSliderVal(myStake)
   },[myStake])
@@ -38,7 +49,7 @@ export default function Allocator ({ token, className='', onComplete=()=>{}, onC
     setRemaining( BigNumber(available).minus(diff).toNumber())
   },[sliderVal, available, myStake])
 
-  async function handleMouseUp(e, val){
+  async function handleMouseUp(e){
     if (isDisabled) return
     if (BigNumber(sliderVal).eq(myStake)) return
     dispatch(actions.update('intents.allocating', {tokenid:token.id,val:sliderVal}))
@@ -61,78 +72,40 @@ export default function Allocator ({ token, className='', onComplete=()=>{}, onC
     onComplete()
   }, [myCommand, commandId])
 
-  // detect clicks outside of this node; needs to re-bind when allocating happens
-  useEffect(() => {
-    function handleDocumentClick (e) {
-     if (node.current.contains(e.target)) return
-     if (isAllocatingToken) return // in the process of allocating this token
-     onClickOutside()
-    }
-
-    document.addEventListener("mousedown", handleDocumentClick);
-
-    return () => {
-      document.removeEventListener("mousedown", handleDocumentClick);
-    }
-  }, [isAllocatingToken])
-
 
   function handleChange(e, val){
-    const newVal = val //e.target.value
+    const newVal = Number(e.target.value)
     const oldVal = myStake
     const diff = BigNumber(newVal).minus(oldVal)
     if (diff.gt(available)) return
-
+    onChange(token.id, newVal)
     setSliderVal(newVal)
   }
 
-  // if(/bieb/.test(token.name)) console.log(sliderVal)
-  /*<Slider
-   min={0}
-   max={Number(total)}
-   step={0.01}
-   value={Number(sliderVal)}
-   onChange={handleChange}
-   onChangeCommitted={handleMouseUp}
-   valueLabelDisplay="on"
-   disabled={isDisabled}
-  />*/
-  /*
-  <input
-         type="range"
-         min={0}
-         max={Number(total)}
-         step={0.01}
-         value={Number(sliderVal)}
-         onChange={handleChange}
-         onMouseUp={handleMouseUp}
-         valueLabelDisplay="on"
-         disabled={isDisabled}
-        /> {sliderVal}
-  */
-  const marks = []
-
-  if (available+myStake > total*0.1){
-    marks.push({
-      value: available+myStake
-    })
-  }
   const color = remaining < 1.00 ? remaining < 0.05 ? 'low' : 'medium' : 'high'
 
   return (
-    <div className={`${className} ${color}`} ref={node}>
-      <Slider
-         min={0}
-         max={total}
-         step={0.01}
-         value={Number(sliderVal)}
-         onChange={handleChange}
-         onChangeCommitted={handleMouseUp}
-         valueLabelDisplay="on"
-         disabled={isDisabled}
-         marks = {marks}
-        />
-
-    </div>
+    <Container className={`${className} ${color}`}>
+      <Row>
+        <Col xs={2}>
+          <img className='dai-logo' src='/img/dai.png' /> {convertToTwoDecimals(String(sliderVal))}
+        </Col>
+        <Col xs={7}>
+          <input
+           type="range"
+           min={0}
+           max={Number(total)}
+           step={0.01}
+           value={Number(sliderVal)}
+           onChange={handleChange}
+           onMouseUp={handleMouseUp}
+           disabled={isDisabled}
+          />
+        </Col>
+        <Col xs={3}>
+          {percentOfPool}% of reward
+        </Col>
+      </Row>
+    </Container>
   )
 }

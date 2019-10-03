@@ -8,8 +8,6 @@ import React, {
   useEffect
 } from 'react'
 
-import { host } from '../utils/config'
-
 export const SocketContext = createContext()
 
 export function useSocketContext () {
@@ -18,7 +16,7 @@ export function useSocketContext () {
 
 export const SocketContextConsumer = SocketContext.Consumer
 
-export default function SocketProvider ({ children }) {
+export default function SocketProvider ({ children, host }) {
   const [io, setIo] = useState()
 
   const [network, setNetwork] = useState({
@@ -39,25 +37,25 @@ export default function SocketProvider ({ children }) {
 
     _io.on('connect', () => {
       console.log()
-      console.log('io.connect')
+      console.log('2100 io.connect')
 
       setNetwork({ loading: false, connected: true, error: false })
     })
     _io.on('connect_error', error => {
       console.log()
-      console.log('io.connect_error')
+      console.log('2100 io.connect_error')
 
       setNetwork({ loading: false, connected: false, error: error.message })
     })
     _io.on('error', error => {
       console.log()
-      console.log('io.error')
+      console.log('2100 io.error')
 
       setNetwork({ loading: false, connected: false, error: error.message })
     })
     _io.on('disconnect', reason => {
       console.log()
-      console.log('io.')
+      console.log('2100 io.')
 
       setNetwork({ loading: false, connected: false, error: reason })
       if (reason === 'io server disconnect') {

@@ -12,65 +12,47 @@ import memeTypes from '../memeTypes'
 import getPercentile from '../../../utils/percentile'
 import {BigNumber, toDecimals, fromDecimals, weiDecimals} from '../../../utils'
 import HoldersProfiles from '../HoldersProfiles'
-import MessageCard from '../MessageCard'
 
 import './style.scss'
-
-const giftHintText = "I am gifting"
-const giftRdedeemText = "To redeem"
 
 function isEmpty(message){
   if (!message) return true
   return message.replace(/\s+/, '') === ''
 }
 
-const contentLevels = [
-  {level: 0,  name: 'Mediocre', holderType: 'New Holder'},
-  {level: 5, name: 'Regular', holderType: '🐟 Minnow'},
-  {level: 50, name: 'Premium', holderType: '🦈 Shark'},
-  {level: 75, name: 'Exclusive', holderType: '🐋 Whale'},
-  {level: 95, name: 'Ultra Exclusive', holderType: '🦄 Unicorn'}
+const levels = [
+  {level: 0, holderType: 'New Staker'},
+  {level: 'avg', holderType: 'Average Holder'},
+  {level: 100, holderType: 'Largest Holder'}
 ]
 
-function ContentLevelSelect({ levels=[], current=0, onChange=()=>{}}){
+const blockReward = BigNumber("0.00021").times(weiDecimals).times(5)
+const blockTime = 15000*5
+const minBlock = BigNumber(1)
 
-  function handleChange(e){
-    e.preventDefault()
-    onChange(e.target.value)
-  }
-
-  const options = levels.map( (data, i) =>{
-    return <option value={i}>{data.name}</option>
-  })
-  return (
-    <select className="form-control content-level-select" value={current} onChange={handleChange}>
-      {options}
-    </select>
-  )
-
-}
-
-function calcTimeToSee({levels=[], current=0, amounts=[], threshold}){
-  levels.forEach( data => {
+function calcTimeToSee({levels=[], amounts=[], threshold}){
+  levels = levels.map( data => {
+    data = {...data}
     let amount = BigNumber(1)
-    if (data.level !== 0){
+    if (data.level > 0 && data.level < 100 && data.level !== 'avg'){
       amount = getPercentile(amounts, data.level, true)
+    } else if (data.level === 100){
+      if (amounts.length > 0) amount = amounts[amounts.length-1]
+    } else if (data.level === 'avg'){
+      amount = amounts[Math.floor(amounts.length/2)] || BigNumber(1)
     }
     data.amount = amount
+    return data
   })
-  threshold = BigNumber(threshold)
-  const blockReward = BigNumber("0.00021").times(weiDecimals)
-  const blockTime = 15000
-  const minBlock = 1
-  levels.forEach( data => {
-    if (isNaN(threshold)) return data.timeToSee = 'n/a'
-    let blocksToSee = BigNumber(threshold).minus(data.amount).div(blockReward)
-    blocksToSee = threshold.eq(data.amount) ? BigNumber(0) : blocksToSee
-    blocksToSee = blocksToSee.eq(0) && current === 0 ? BigNumber(1) : blocksToSee.lt(0) ? BigNumber(0) : blocksToSee
+  threshold = (!threshold || threshold === "" || isNaN(threshold)) ? BigNumber(1) : BigNumber(threshold)
+  return levels.map( data => {
+    data = {...data}
+    let blocksToSee =  threshold.eq(data.amount) ? BigNumber(0) : BigNumber(threshold).minus(data.amount).div(blockReward)
+    if (blocksToSee.lt(0)) blocksToSee = BigNumber(0)
     const timeToSee = Math.ceil(blocksToSee.times(blockTime).toNumber())
     data.timeToSee = timeToSee === 0 ? "now" : ms(timeToSee)
+    return data
   })
-  return levels
 }
 
 function ThresholdInput({defaultThreshold, onChange = ()=>{}}){
@@ -96,39 +78,7 @@ function Tab({currentTab, tabName, setTab}){
   )
 }
 
-function Prepend({type, isHint = true}){
-  switch (type){
-    case 'Gift':
-      const text = isHint ? giftHintText : giftRdedeemText
-      return (
-        <InputGroup.Prepend>
-          <InputGroup.Text>{text}</InputGroup.Text>
-        </InputGroup.Prepend>
-      )
-    default:
-      return null
-  }
-}
-
-function MemeSelect({memeTypes, memeType, onChange=()=>{}}){
-  function handleChange(e){
-    e.preventDefault()
-    onChange(e.target.value)
-  }
-
-  const options = memeTypes.map( (data,i)=>{
-
-
-    return <option value={i}>{data.emoji} {data.name}</option>
-  })
-  return (
-    <select className="form-control meme-type-select" value={memeType} onChange={handleChange}>
-      {options}
-    </select>
-  )
-}
-
-export default function MessageForm({onSubmitted, replyid}){
+export default function MessageForm({onSubmitted}){
   const {query} = useStoreContext()
 
   let { api, isSignedIn, myToken, messages = {}, publicMessages = {}, followers = {}, actions } = useFollowMeContext()
@@ -141,7 +91,6 @@ export default function MessageForm({onSubmitted, replyid}){
   // sort amounts
   holderAmounts = useMemo(() =>holderAmounts.sort(function (a, b) { return BigNumber(a).minus(BigNumber(b)).gt(0) ? 1 : -1 }), [followerHash])
   const followerCount = holderAmounts.length
-  const sliderMax = useMemo(() => Number(toDecimals(getPercentile(holderAmounts, contentLevels[3].level))), [followerHash])
   const [submitting, setSubmitting] = useState(false)
 
   const [data, setData] = useState({})
@@ -149,7 +98,7 @@ export default function MessageForm({onSubmitted, replyid}){
   const [error, setError] = useState()
   const [contentLevel, setContentLevel] = useState(0)
 
-  const [threshold, setThreshold] = useState(useMemo(() => fromDecimals("0.00021"), []))
+  const [threshold, setThreshold] = useState(fromDecimals("0.00021"))
 
   const [recipientCount, setRecipientCount] = useState(0)
   const [recipients, setRecipients] = useState([])
@@ -158,6 +107,7 @@ export default function MessageForm({onSubmitted, replyid}){
   const hasFollowers = myToken && followerCount > 0
 
   const isDisabled = !hasToken || submitting
+  const canSubmit = !isDisabled && !isEmpty(message) && !isEmpty(hint) && !isNaN(threshold) && threshold != null
 
 
   function changeData(e){
@@ -172,11 +122,9 @@ export default function MessageForm({onSubmitted, replyid}){
     e.preventDefault()
     if (isEmpty(message) || isNaN(threshold)) return
     setSubmitting(true)
-    const type = /meme/i.test(currentTab) ? `meme:${memeTypes[memeType].key}` : currentTab.toLowerCase()
-    const _hint = /gift/i.test(currentTab) ? `${giftHintText} ${hint}` : hint
-    const _message = /gift/i.test(currentTab) ? `${giftRdedeemText} ${message}` : message
+    const type = currentTab.toLowerCase()
 
-    const resp = await actions.sendMessage(_message, _hint, threshold.toString(), type)
+    const resp = await actions.sendMessage({message, hint, threshold:threshold.toString(), type})
     setSubmitting(false)
     if (resp) {
       setData({})
@@ -193,50 +141,9 @@ export default function MessageForm({onSubmitted, replyid}){
     setThreshold(newThresh.toString())
   }
 
-  // useEffect( () => {
-  //   const holdings = Object.entries(followers)
-  //   let count = hasFollowers ? holdings.length : 0
-  //   let recipients = []
-  //   let holdingSum = BigNumber(0)
-  //   if (threshold != null){
-  //     recipients = holdings.filter( ([address, amount]) => {
-  //       holdingSum = holdingSum.plus(amount)
-  //       return BigNumber(amount).gte(threshold)
-  //     }).map( ([address]) => address )
-  //     count = recipients.length
-  //   }
-  //   setRecipients(recipients)
-  //   setRecipientCount(count)
-
-  // }, [threshold, followers])
-
-
-  // const timeToDecode = useMemo( ()=> {
-  //   const sortedAmounts = Object.values(followers).filter( amount => BigNumber(amount).lt(threshold) ).sort(function (a, b) { return BigNumber(a).minus(BigNumber(b)).gt(0) ? 1 : -1 })
-  //   const medianIndex =  Math.floor(sortedAmounts.length/2)
-  //   const median = sortedAmounts[medianIndex] || "0"
-  //   const blockReward = BigNumber("0.00021").times(weiDecimals)
-  //   const blockTime = 15000
-  //   const minBlock = 1
-  //   let blocksToSee = BigNumber(threshold).minus(median).div(blockReward)
-  //   blocksToSee = blocksToSee.lt(minBlock) ? BigNumber(minBlock) : blocksToSee
-  //   const timeToSee = Math.ceil(blocksToSee.times(blockTime).toNumber())
-  //   const convertedTime = ms(timeToSee || blockTime).replace(/m$/,' min.').replace(/s$/,' sec.')
-  //   return `${convertedTime} for most to decode`
-
-  // }, [Object.values(followers).join(''), threshold])
-
-  // const tokenRequirement = (
-  //   <div>
-  //     <ThresholdInput defaultThreshold={toDecimals(threshold,15)} onChange={handleSetThreshold} /> ${myTokenName} required
-  //     <div className="small text-muted">{timeToDecode}</div>
-  //   </div>
-  // )
-
-
-  useEffect(()=>{
-    calcTimeToSee({levels:contentLevels,current:contentLevel,amounts:holderAmounts, threshold})
-  }, [threshold])
+  const contentLevels = useMemo(()=>{
+    return calcTimeToSee({levels,amounts:holderAmounts, threshold})
+  }, [threshold, followerHash])
 
   const thresholdNumber = useMemo( ()=> Number(toDecimals(threshold,15)), [threshold])
 
@@ -244,7 +151,7 @@ export default function MessageForm({onSubmitted, replyid}){
       <Row>
         <Col>
           <ul className='holders-coda small'>
-            <div style={{marginBottom: '0.5rem'}}>Approximate Time to decode:</div>
+            <div style={{marginBottom: '0.5rem'}}>Time to decode:</div>
             {contentLevels.map( data => {
               return (
                 <li style={{cursor: 'pointer'}} onClick={()=> { setThreshold(data.amount) }} >{data.holderType}: <span style={{fontWeight: 'bold'}}>{data.timeToSee || "Calculating"}</span></li>
@@ -258,28 +165,16 @@ export default function MessageForm({onSubmitted, replyid}){
   function PrivatePlaceHolder(type = 'Post'){
     switch(type){
       case 'Post':
-        return 'Decodable Text'
-      case 'Image':
-        return 'Link to image'
-      case 'Video':
-        return 'Link to video'
+        return 'Hidden Message'
       case 'Link':
-        return 'Decodable Url'
-      case 'Meme':
-        return 'Bottom Text'
-      case 'Gift':
-        return 'DM me with the message I HODL YOU'
+        return 'Hidden Url'
     }
   }
 
   function PublicPlaceHolder(type = 'Post'){
     switch(type){
-      case 'Meme':
-        return 'Top Text'
-      case 'Gift':
-        return 'a free T-shirt'
       default:
-        return 'Public Hint'
+        return 'Headline'
     }
   }
 
@@ -293,7 +188,7 @@ export default function MessageForm({onSubmitted, replyid}){
   }
 
   const tabNames = [
-    'Post', 'Image', 'Video', 'Link', 'Meme', 'Gift'
+    'Post', 'Link'
   ]
 
   const [currentTab, setTab] = useState(tabNames[0])
@@ -302,78 +197,54 @@ export default function MessageForm({onSubmitted, replyid}){
 
   let footerText = null
 
-  // if (hasToken && hasFollowers && recipientCount === 0){
-  //    footerText = 'Future holders'
-  // } else if (hasToken) {
-  //   footerText = <HoldersProfiles holders={recipients} prefix="Visible to " suffix=" right now"/>
-  // } else {
-  //   footerText = '0 holders'
-  // }
-
   const publicHint = PublicPlaceHolder(currentTab)
-
-  const [memeType, setMemeType] = useState(0)
 
   return (
         <div  className="message-form">
-            { replyid && <div style={{width: '50%'}}><MessageCard {...{message: messages[replyid], myToken, token: query.getToken(messages[replyid].tokenid), isSignedIn, actions, canCopyUrl:false, canLinkToProfile:false, canComment: false, showFooter: false}} /></div> }
-
             <ul className='nav nav-pills mt-2'>{tabs}</ul>
-
-            { currentTab === 'Meme' && <MemeSelect memeTypes={memeTypes} memeType={memeType} onChange={setMemeType} key='meme-select'/>}
-
             <Form>
               <Form.Group controlId="hint" className='form-group-hint'>
                 <Row>
                   <Col>
-                    <InputGroup>
-                      <Prepend type={currentTab} isHint={true} />
-                      <Form.Control as="input" value={hint || ''} onChange={changeData} disabled={isDisabled ? 'disabled' : null} maxlength={120} placeholder={publicHint}/>
-                    </InputGroup>
-                    <Form.Label className='small'>
-                        <i className='fas fa-eye' /> Everyone
-                    </Form.Label>
-                  </Col>
-                </Row>
-              </Form.Group>
-
-              <Form.Group controlId="message">
-                <Row>
-                  <Col>
-                    <InputGroup>
-                      <Prepend type={currentTab} isHint={false} />
-                      <Form.Control as={PrivateControlType(currentTab)} rows="6" value={message || ''} onChange={changeData} disabled={isDisabled ? 'disabled' : null} placeholder={PrivatePlaceHolder(currentTab)}/>
-                    </InputGroup>
-                    <Form.Label className='small'>
                       <Row>
                         <Col>
-                          <i className='fas fa-eye' /> {footerText} <ThresholdInput defaultThreshold={thresholdNumber} onChange={handleSetThreshold} /> ${myTokenName} required
+                          <Form.Label className='small'>
+                              visible to everyone
+                          </Form.Label>
                         </Col>
                       </Row>
                       <Row>
                         <Col>
-                          <Slider
-                             min={0.00021}
-                             max={sliderMax}
-                             step={0.00021}
-                             value={thresholdNumber}
-                             onChange={(e, val) => handleSetThreshold(val)}
-                            />
+                          <Form.Control as="input" value={hint || ''} onChange={changeData} disabled={isDisabled ? 'disabled' : null} maxlength={120} placeholder={publicHint}/>
                         </Col>
                       </Row>
-                    </Form.Label>
                   </Col>
                 </Row>
               </Form.Group>
-
-              { currentTab === "Meme" && <Meme toptext={hint} bottomtext={message} url={memeTypes[memeType].url} key='meme-image'/>}
-
-              <Row className=''>
-                <Col md='12'>
-                  { hasToken ? tokenRequirement : <Link className="create-token-message" to={ isSignedIn ? "/manage" : '/' }><i class="fas fa-bolt"></i> {isSignedIn ? 'Create your token to' : 'Sign in to'} send messages</Link> }
+              <Row>
+                <Col>
+                  <Row className='threshold-area'>
+                      <Col>
+                        <Form.Label className='small'>
+                          hold {footerText} <ThresholdInput defaultThreshold={thresholdNumber} onChange={handleSetThreshold} /> ${myTokenName} to see
+                        </Form.Label>
+                      </Col>
+                  </Row>
+                <Form.Group className='post-body' controlId="message">
+                  <Row>
+                    <Col>
+                        <Form.Control as={PrivateControlType(currentTab)} rows="6" value={message || ''} onChange={changeData} disabled={isDisabled ? 'disabled' : null} placeholder={PrivatePlaceHolder(currentTab)}/>
+                    </Col>
+                  </Row>
+                </Form.Group>
                 </Col>
               </Row>
-              <Button className='compose-submit-button' variant="primary" disabled={isDisabled || isEmpty(message) || isNaN(threshold) || threshold == null? 'disabled' : null} type="submit" onSubmit={handleSend} onClick={handleSend}>
+              <Row>
+                <Col>
+                  { hasToken ? tokenRequirement : <Link className="create-token-message" to={ isSignedIn ? "/manage" : '/' }><i className="fas fa-bolt"></i> {isSignedIn ? 'Create your token to' : 'Sign in to'} send messages</Link> }
+                </Col>
+              </Row>
+              <Button className='compose-submit-button' variant="primary" disabled={canSubmit ? null : 'disabled'} type="submit" onSubmit={handleSend} onClick={handleSend}>
                 { submitting ? 'Sending' : 'Send' }
               </Button>
             </Form>

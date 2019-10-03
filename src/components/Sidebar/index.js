@@ -1,9 +1,11 @@
 import React, {useState, useRef} from 'react'
 import {useStoreContext} from '../../contexts/Store'
-import PublicFeed from '../FollowMe/PublicFeed'
+import NewFeed from '../FollowMe/NewFeed'
 import MyFeed from '../FollowMe/MyFeed'
 import ThresholdFeed from '../FollowMe/ThresholdFeed'
-import TypeFeed from '../FollowMe/TypeFeed'
+import DecodedFeed from '../FollowMe/DecodedFeed'
+import DecodingFeed from '../FollowMe/DecodingFeed'
+import DecodableFeed from '../FollowMe/DecodableFeed'
 import Navigation from '../Nav/Navigation'
 
 import './style.scss'
@@ -17,11 +19,11 @@ export default function Sidebar (props) {
   const currentView = query.getCurrentView()
 
   const viewMap = {
-    New: () => <PublicFeed onChangePage={onChangePage}/>,
-    Following: () => <MyFeed onChangePage={onChangePage}/>,
-    Cheap: () => <ThresholdFeed maxThreshold="0.00021" onChangePage={onChangePage}/>,
+    New: () => <NewFeed onChangePage={onChangePage}/>,
     Premium: () => <ThresholdFeed minThreshold="0.5" onChangePage={onChangePage}/>,
-    Gifts: () =>  <TypeFeed type="gift" onChangePage={onChangePage}/>
+    Decoding: () => <DecodingFeed minThreshold="0.5" onChangePage={onChangePage}/>,
+    Decodable: () => <DecodableFeed minThreshold="0.5" onChangePage={onChangePage}/>,
+    Decoded: () => <DecodedFeed minThreshold="0.5" onChangePage={onChangePage}/>,
   }
 
   const view = typeof viewMap[currentView] === 'function' ? viewMap[currentView]() : null

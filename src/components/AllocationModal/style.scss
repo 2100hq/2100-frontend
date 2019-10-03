@@ -1,0 +1,69 @@
+@import "node_modules/bootstrap/scss/_functions.scss";
+@import "node_modules/bootstrap/scss/_variables.scss";
+@import "node_modules/bootstrap/scss/mixins/_breakpoints.scss";
+
+// No media query necessary for xs breakpoint as it's effectively `@media (min-width: 0) { ... }`
+@include media-breakpoint-up(sm) { }
+@include media-breakpoint-up(md) { }
+@include media-breakpoint-up(lg) { }
+@include media-breakpoint-up(xl) { }
+
+.allocation-modal.modal{
+	z-index: 999999999;
+
+	button.close{
+		position: absolute;
+		top:1rem;
+		right: 1rem;
+	}
+
+	.modal-header{
+		border-bottom: none;
+		padding-bottom: 0;
+	}
+	.asset-table,{
+		padding: 2rem;
+		padding-top: 0;
+	}
+
+	.asset-row{
+		background-color: #fff !important;
+
+		&:first-child{
+		}
+
+		&:last-child{
+			border-bottom: none;
+		}
+
+		&:hover{
+			cursor: default;
+		}
+
+		input{
+			width: 100%;
+			&:hover{
+				cursor: pointer;
+			}
+		}
+	}
+
+	.progress-bar-area{
+
+		&:media-breakpoint-up(sm) { 
+			position: relative;
+			top: -3rem;
+		}
+
+	}
+
+	.staking-diagram{
+		text-align: center;
+		padding: 1rem;
+		img{
+			max-width: 250px;
+			width: 100%;
+		}
+	}
+}
+

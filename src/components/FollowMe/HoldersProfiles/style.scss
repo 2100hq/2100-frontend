@@ -1,15 +1,8 @@
-.holders-profiles {
-  display: block;
-}
-.holders-profiles + .holders-profiles {
-  margin-top: 0.5rem;
-}
 
 .holder-icon{
-	width: 20px;
-	height: 20px;
-	margin-right: -0.25rem;
-  position:relative;
+	width: 15px;
+	height: 15px;
+  margin-right: 2px;
 }
 
 .holder-icon-1 {
@@ -26,7 +19,7 @@
 
 // span needs less margin if only 2 profile images
 .holder-icon-1 + span{
-  margin-left: 0.3rem;
+  margin-left: 0.5rem;
 }
 
 // span needs less margin if only 2 profile images
@@ -35,11 +28,11 @@
 }
 
 .holder-icon-3 + span{
-  margin-left: 0.6rem;
+  margin-left: 0.3rem;
 }
 
-.jazzicon {
+.holder-icon.jazzicon {
   display: inline-block;
   position: relative;
-  top: 10px;
+  top: 2px;
 }

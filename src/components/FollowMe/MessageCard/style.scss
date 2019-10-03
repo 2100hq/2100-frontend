@@ -1,0 +1,181 @@
+@import "../../../Variables";
+
+$message-margin: 0.3rem;
+
+.message-card{
+	position: relative;
+	overflow: hidden;
+	padding: 1.1rem;
+
+	.badge {
+		font-family: "Inter UI", sans-serif;
+		font-weight: 500;
+		font-size: 10px;
+		color: #333;
+		border: 1px solid #eee;
+		background-color: #fff;
+		margin-right: 3px;
+		i{
+			font-size: 10px;
+		}
+
+		&.span{
+			display: inline-block;
+		}
+
+		&.comment-bubble{
+			&:hover{
+				cursor: pointer;
+			}
+		}
+
+	}
+
+	&.message-hidden{
+		background-color: #fff;
+		border-bottom: 1px solid #eee;
+	}
+
+	&:not(.message-hidden){
+		border-bottom: 1px solid #eee;
+		.message-body{
+			padding: 0.5rem;
+		}
+
+		.badge{
+			background-color: transparent;
+			border: none;
+		}
+	}
+
+	&:hover{
+		.message-share, .message-delete{
+			opacity: 1;
+			transition: linear 0.2s all;
+		}
+
+	}
+
+	.message-share, .message-delete{
+		position: absolute;
+		color: #aaa;
+		right: 1.5rem;
+		z-index: 9999999;
+		opacity: 0;
+
+		&:hover{
+			color: #333;
+		}
+
+		transition: linear 1s color;
+	}
+
+	.message-share{
+		bottom: 1rem;
+	}
+
+	.message-delete{
+		top: 1rem;
+	}
+
+	.message-copy-url{
+		opacity: 1;
+	}
+
+	.profile-image{
+		max-width: 45px;
+		max-height: 45px;
+	}
+
+	.decode-button {
+		background: #fff;
+		border: 1px solid #2AC88F;
+		color: #2AC88F;
+		transition: all 0.3s ease-in-out;
+		padding-top: 4px;
+		padding-bottom: 3px;
+		&:hover {
+			border-color: 1px solid #2AC88F;
+			background-color: #2AC88F;
+			color: #fff;
+		}
+	}
+
+	.comment-bubble {
+		&.comment-count-changed {
+			background-color: #fff8db !important;
+		}
+	}
+
+	.message-time{
+		font-family: "Inter UI", sans-serif;
+		display: block;
+		font-weight: 300;
+		margin-top: 7px;
+		font-size: 0.6rem;
+	}
+
+
+	.amount-underline{
+		text-decoration: underline;
+	}
+
+	.message-header{
+		.message-hint{
+			font-family: "Noto Serif JP", serif;
+			font-weight: 700;
+			font-size: 1.1rem;
+			cursor: pointer;
+			&:hover{
+				text-decoration: underline;
+			}
+		}
+	}
+
+	.message-body{
+
+		.fake-hidden-message{
+			margin-top: $message-margin;
+			.rectangle{
+				display: inline-block;
+				height: 15px;
+				margin-right: 10px;
+				background: repeating-linear-gradient(
+					-55deg,
+					$twentyonemuted,
+					$twentyonemuted 10px,
+					darken($twentyonemuted,5%) 10px,
+					darken($twentyonemuted,5%) 20px
+					);
+				border-radius: $twentyoneborderradius;
+				&.r1{
+					width: 100px;
+				}
+
+				&.r2{
+					width: 100px;
+				}
+
+				&.r3{
+					width: 100px;
+				}
+			}
+
+		}
+		.hidden-text{
+			margin-top: $message-margin;
+		}
+	}
+
+	.message-footer{
+		margin-top: $message-margin;
+
+		.col-md-12 {
+			display: flex;
+			flex-flow: row nowrap;
+			align-items: center;
+		}
+
+	}
+
+}

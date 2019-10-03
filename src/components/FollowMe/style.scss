@@ -1,143 +1,7 @@
 //import variables
 @import "../../Variables";
 
-
 /* message compose styles */
-.modal-backdrop{
-
-  background-color: #ddd !important;
-  &.show{
-    opacity: 0.7 !important;
-  }
-}
-/* message compose styles */
-
-.message{
-  position: relative;
-  background-color: rgba(0,0,0,0.03);
-  padding: 1rem 2rem 0.5rem 1.5rem;
-  font-size: 1.1rem;
-  opacity: 0.8;
-  transition: opacity 0.2s linear;
-  border-bottom: 1px solid #eee;
-  overflow: hidden;
-
-    .message-hint{
-      font-size: 1.1rem;
-      font-weight: bold;
-      letter-spacing: -0.02rem;
-      font-weight: bold;
-      letter-spacing: 0;
-      margin-bottom: 1rem;
-      margin-top:0.25rem;
-    }
-
-  &.message-hidden{
-  background-color: #fff;
-
-
-
-
-    .decode-instruction{
-      font-size: 0.9rem;
-      border-radius: 1rem;
-      margin-top: 1rem;
-    }
-
-    .encrypted-text{
-     font-family: Redacted;
-     color: #ddd;
-     margin: 0.5rem 0;
-     font-size: 1rem;
-     width: 75%;
-    }
-
-    &.message-type-text, &.message-type-link{
-      $color: #28357f;
-      border-right: 5px solid $color;
-      .message-hint{
-      }
-    }
-
-    &.message-type-youtube{
-      $color: #FF0000;
-      border-right: 5px solid $color;
-
-    }
-
-    &.message-type-twitter{
-      $color: #1da1f2;
-      border-right: 5px solid $color;
-
-    }
-
-    &.message-type-image{
-      $color: $twentyonesecondary;
-      border-right: 5px solid $color;
-
-    }
-
-    &.message-type-meme{
-      $color: green;
-      border-right: 5px solid $color;
-    }
-    &.message-type-gift{
-      $color: lightblue;
-      border-right: 5px solid $color;
-    }
-  }
-
-  &:hover{
-    opacity: 1;
-  }
-
-  color: black;
-  border-left: 1px solid #eee;
-
-  .content-type-hint{
-    font-size: 1.2rem;
-    color: #aaa;
-  }
-
-
-
-  .token-name{
-    color: black;
-    font-weight: bold;
-    margin-bottom: 1.5rem;
-  }
-
-  .message-time{
-    font-size: 0.7rem;
-  }
-
-  .message-delete{
-    display: none;
-    position: absolute;
-    top: 2rem;
-    right: 2rem;
-    opacity: 0.75;
-    &:hover{
-      text-decoration: none;
-    }
-  }
-
-  &.message-destroy-countdown, &:hover {
-    .destroying {
-      color: red;
-    }
-    .message-delete{
-      display: block;
-    }
-  }
-
-  &:hover {
-    .message-copy-url{
-      opacity: 0.75;
-      display: inline-block;
-    }
-  }
-}
 
 .follow-me-feed{
   .pagination {
@@ -166,25 +30,10 @@
 
 }
 
-
-.message-time{
-	margin-left: 0.4rem;
-}
-
-
 .message-copy-url{
+  position: absolute;
+  bottom: 0;
+  right: 0;
   cursor: pointer;
-  float: right;
   opacity: 0;
-  display: inline-block;
-  i {
-    margin-right: 0.5em;
-  }
 }
-
-.message-header .profile-image{
-  width: 2.75rem;
-  height: 2.75rem;
-  margin-right: 0.5rem;
-}
-
