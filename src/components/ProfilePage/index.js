@@ -11,6 +11,7 @@ import { useStoreContext } from '../../contexts/Store'
 import { Button, Form, Col, Row, Card } from 'react-bootstrap'
 import Confetti from 'react-confetti'
 import ProfileHeader from '../ProfileHeader'
+import ContextBar from '../ContextBar'
 import './style.scss'
 
 function NewUserWelcome({clearNewUser}){
@@ -119,9 +120,7 @@ export default function Profile (props) {
   return (
     <div className='profile'>
       {isNewUser && <NewUserWelcome clearNewUser={clearNewUser}/>}
-      <span className='context-bar'>
-        <Link to='/'><i style={{fontSize: '1.4rem'}} className="fas fa-arrow-circle-left"></i></Link>
-      </span>
+      <ContextBar />
       <ProfileHeader token={token} />
       <div className='profile-body'>
         <FollowMeProfileFeed token={token} />
