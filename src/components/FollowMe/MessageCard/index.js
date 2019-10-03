@@ -592,7 +592,7 @@ export default function MessageCard({
             <span className="badge badge-light">
               <HoldersProfiles
                 prefix=""
-                suffix="decoding"
+                suffix="decoded"
                 holders={message.recipients || message.recipientcount}
               />
             </span>
