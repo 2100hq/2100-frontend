@@ -423,7 +423,7 @@ export default function MessageCard({
 
   if (!onClickComment) {
     onClickComment = clickHandler(() =>
-      history.push(`/$${token.name}/${message.id}`)
+      history.push(`/$${token.name}/${message.shortid}`)
     );
   }
 
