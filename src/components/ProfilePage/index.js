@@ -14,6 +14,7 @@ import Confetti from 'react-confetti'
 import ProfileHeader from '../ProfileHeader'
 import {get} from 'lodash'
 import _BigNumber from 'bignumber.js'
+import ContextBar from '../ContextBar'
 import './style.scss'
 
 function NewUserWelcome({clearNewUser}){
@@ -182,9 +183,7 @@ export default function Profile (props) {
   return (
     <div className='profile'>
       {isNewUser && <NewUserWelcome clearNewUser={clearNewUser}/>}
-      <span className='context-bar'>
-        <Link to='/'><i style={{fontSize: '1.4rem'}} className="fas fa-arrow-circle-left"></i></Link>
-      </span>
+      <ContextBar />
       <ProfileHeader token={token} info={info} key={token && token.id} />
       <div className='profile-body'>
         <FollowMeProfileFeed token={token} key={token && token.id}/>

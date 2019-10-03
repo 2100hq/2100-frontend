@@ -1,0 +1,16 @@
+	.context-bar{
+		color: #aaa;
+		background-color: #fff;
+		font-size: 0.8rem;
+		padding: 0.5rem;
+		border-bottom: 1px solid #eee;
+		i{
+			color: #aaa;
+			font-size: 1.1rem;
+			&:hover{
+				color: blue;
+			}			
+		}
+
+		z-index: 9999999;
+	}
