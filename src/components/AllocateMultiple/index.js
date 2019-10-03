@@ -22,10 +22,9 @@ export default function AllocateMultiple(){
       return BigNumber(total).minus(sum).toNumber()
     }, [total, used])
 
-  if (!total) total = 10**18
   if (!available) available = 0
 
-  const availablePercent = (available/total)*100
+  const availablePercent = total ? (available/total)*100 : 0
 
   const tokens = useMemo( () => {
     if (!editingTokenId) return []
