@@ -80,6 +80,16 @@ Loading states
   3: connected to the network, data, found token
 */
 
+function filterByToken(messages, token){
+  const tokenMessages = Object.values(messages).filter( message => message.tokenid === token.id )
+
+  if (tokenMessages.length === 0) return {}
+  return tokenMessages.reduce( (obj, message) => {
+    obj[message.id] = message
+    return obj
+  }, {})
+}
+
 export default function Profile (props) {
 
   const { match } = props
@@ -97,7 +107,7 @@ export default function Profile (props) {
   const token = query.getToken(username)
 
   const fmstate = useFollowMeContext()
-  const {tokenFeedMessages} = fmstate
+  const {tokenFeedMessages, messages} = fmstate
   const [tokenHolders, setTokenHolders] = useState()
   useEffect( () => {
     if (loadingState === 3) return // token exists and loaded
@@ -136,7 +146,7 @@ export default function Profile (props) {
 
     const numStakers = stakers.length
     const created = token.created
-    const numPosts = tokenFeedMessages[token.id] ? Object.keys(tokenFeedMessages[token.id] || {}).length : null
+    const numPosts = tokenFeedMessages[token.id] ? Object.keys({ ...(tokenFeedMessages[token.id] || {}), ...filterByToken(messages, token) }).length : null
 
     let holders = tokenHolders ? Object.entries(tokenHolders) : []
     const supply = tokenHolders ? _BigNumber.sum(...holders.map(([_,amount])=> amount)) : null
