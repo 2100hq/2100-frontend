@@ -7,25 +7,6 @@
 	.message-card{
 		margin-left: 0;
 	}
-	.context-bar{
-		color: #aaa;
-		font-size: 0.8rem;
-		position: absolute;
-		top: 0;
-		left: 0;
-		padding: 0.75rem 1rem;
-		i{
-			color: #aaa;
-			font-size: 1.1rem;
-			position: relative;
-			top: .2rem;
-			&:hover{
-				color: $twentyonesecondary;
-			}			
-		}
-
-		z-index: 9999999;
-	}
 
 }
 

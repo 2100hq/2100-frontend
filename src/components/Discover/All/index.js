@@ -164,7 +164,7 @@ function All({tokens = [], location, myToken, isAllocating, isEditing, setIsEdit
   return (
     <div className="asset-table">
       <div className="row table-header no-gutters small align-items-center">
-        <div className="col-1">#</div>
+        <div className="col-1 text-center">#</div>
         <div className="col-4 asset-search">
           <i className="fas fa-search" /><input type='text' value={rawAssetSearch} onChange={setAssetSearch}/>
         </div>
