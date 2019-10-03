@@ -17,7 +17,7 @@ export default function ProfileFeed({token}){
   const {query} = useStoreContext()
   const { messages, tokenFeedMessages, actions, myToken, isSignedIn } = useFollowMeContext()
   const showForm = false //isSignedIn && myToken && myToken.id === token.id
-  const tokenMessages = tokenFeedMessages[token.id]
+  const tokenMessages = { ...(tokenFeedMessages[token.id] || {}), ...filterByToken(messages, token) }
 
   useEffect(() => {
     actions.getTokenFeed(token.id)
