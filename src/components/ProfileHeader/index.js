@@ -313,7 +313,7 @@ export default function ProfileHeader({
         </div>
       </div>
       <div className="charts">
-        <div className="chart">
+        {stakers.length > 0 && <div className="chart">
         <h3>Top Stakers</h3>
           <ResponsiveContainer>
             <PieChart>
@@ -333,18 +333,8 @@ export default function ProfileHeader({
               </Pie>
             </PieChart>
           </ResponsiveContainer>
-        </div>
-        {/* <div className="chart">
-        <h3>Top Stakers</h3>
-          <ResponsiveContainer>
-          <BarChart layout="vertical" width={400} height={400} data={data2} maxBarSize={10}>
-            <XAxis dataKey="rank" />
-            <YAxis type="number" dataKey="value" />
-            <Bar fill="#ff7300" maxBarSize={15} isAnimationActive={false} dataKey="value" />
-          </BarChart>
-          </ResponsiveContainer>
-        </div> */}
-        <div className="chart">
+        </div>}
+        {holders.length > 0 && <div className="chart">
         <h3>Top Holders</h3>
           <ResponsiveContainer>
             <PieChart>
@@ -364,7 +354,7 @@ export default function ProfileHeader({
               </Pie>
             </PieChart>
           </ResponsiveContainer>
-        </div>
+        </div>}
       </div>
     </div>
   );
