@@ -22,8 +22,7 @@ function Tab({current, name, set}){
 
 export default function Navigation(){
   const {state, query, dispatch, actions} = useStoreContext()
-  const { messages } = useFollowMeContext()
-  const isSignedIn = query.getIsSignedIn()
+  const { messages, isSignedIn } = useFollowMeContext()
   const currentView = query.getCurrentView()
 
   const setView = view => {

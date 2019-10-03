@@ -161,8 +161,14 @@ export default function StoreProvider ({ children }) {
   const isAuthenticated = get(privState, 'private.me')
 
   useEffect( () => {
-    dispatch(actions.update(['private', 'isSignedIn'], Boolean(isUnlocked && isAuthenticated)))
-  }, [isUnlocked,isAuthenticated])
+    // must be connected now and in the past cycle to be considered signedIn (this allows us to detected disconnected and sign back in)
+    dispatch(actions.update(['private', 'isSignedIn'], Boolean(isUnlocked && isAuthenticated && socket.network.connected && privState.network.connected)))
+  }, [isUnlocked,isAuthenticated,socket.network.connected])
+
+  // useEffect( () => {
+  //   if (!socket.network.disconnected) return
+  //   dispatch(actions.update(['private'], {}))
+  // }, [socket.network.disconnected])
 
   useEffect( () => {
     const isUnlocked = Boolean(get(privState,'web3.active') && get(privState,'web3.account'))

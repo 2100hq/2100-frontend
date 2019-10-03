@@ -150,7 +150,9 @@ export default function FollowMeProvider ({ children }) {
   const authToken2100 = appstate.auth.token
   const update = (path, ...args) => dispatch(actions.update(path, ...args))
   const destroy = path => dispatch(actions.destroy(path))
-  const reset = () => dispatch({ type: 'RESET', initalState: { ...InitialState(followMeUrl), public: fmstate.public} } )
+  const reset = () => {
+    dispatch({ type: 'RESET', initalState: { ...InitialState(followMeUrl), public: fmstate.public} } )
+  }
 
   // async function updateInbox(){
   //   try {
@@ -202,14 +204,17 @@ export default function FollowMeProvider ({ children }) {
       return
     }
     if (!isSignedIn2100 && !authToken2100){
-      if (isSignedIn) socket.auth('unauthenticate')
+      if (isSignedIn) socket.auth('unauthenticate').catch((e)=>{})
       // either not logged in or unknown address
       // api.private.setToken(null)
       reset()
     }
 
-  }, [isSignedIn2100, authToken2100])
+    if (socket.network.disconnected){
+      update('isSignedIn', false)
+    }
 
+  }, [isSignedIn2100, authToken2100, socket.network.disconnected])
 
   // useEffect( ()=> {
   //   if (!isSignedIn || !isSignedIn2100) return
@@ -230,7 +235,7 @@ export default function FollowMeProvider ({ children }) {
   useEffect( ()=> {
     if (!isSignedIn || !myToken || !isSignedIn2100) return
     updateFollowers(myToken.id)
-    const id = setInterval(updateFollowers,followMePoll,myToken.id)
+    const id = setInterval(updateFollowers,followMePoll*5,myToken.id)
     return () => clearInterval(id)
   }, [isSignedIn, myToken, isSignedIn2100])
 

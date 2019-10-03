@@ -39,28 +39,41 @@ export default function FollowMeSocketProvider ({ children, host }) {
       console.log()
       console.log('followme io.connect')
 
-      setNetwork({ loading: false, connected: true, error: false })
+      // reconnect will handle setting connected: true
+      return setNetwork( prevNetwork => {
+        if (prevNetwork.reconnected) return prevNetwork
+        return { loading: false, connected: true, error: false }
+      })
+      console.log('followme io.connect after reconnected')
     })
     _io.on('connect_error', error => {
       console.log()
       console.log('followme io.connect_error')
 
-      setNetwork({ loading: false, connected: false, error: error.message })
+      setNetwork(prevNetwork => {
+        return { loading: false, connected: false, disconnected: prevNetwork.disconnected, error: error.message }
+      })
     })
     _io.on('error', error => {
       console.log()
       console.log('followme io.error')
 
-      setNetwork({ loading: false, connected: false, error: error.message })
+      setNetwork(prevNetwork => {
+        return { loading: false, connected: false, disconnected: prevNetwork.disconnected, error: error.message }
+      })
     })
     _io.on('disconnect', reason => {
       console.log()
-      console.log('followme io.')
+      console.log('followme io.disconnect')
 
-      setNetwork({ loading: false, connected: false, error: reason })
+      setNetwork({ loading: false, disconnected: true, connected: false, error: reason })
       if (reason === 'io server disconnect') {
         io.connect()
       }
+    })
+    _io.on('reconnect', e => {
+      console.log('followme io.reconnect')
+      setNetwork({ loading: false, connected: true, reconnected: true, error: false })
     })
   }, [])
 

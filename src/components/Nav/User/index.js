@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { Link, Redirect } from 'react-router-dom'
 import { useStoreContext } from '../../../contexts/Store'
+import { useFollowMeContext } from '../../../contexts/FollowMe'
 import Jazzicon, { jsNumberForAddress } from 'react-jazzicon'
 import './style.scss'
 import Dropdown from 'react-bootstrap/Dropdown'
@@ -126,6 +127,16 @@ function NotSigningIn ({ onClick }) {
   )
 }
 
+function Disconnected({}){
+  return (
+    <li className='nav-item'>
+      <div className='nav-link' style={{fontWeight: 'bold'}}>
+        <i className="fas fa-circle" style={{color: 'red'}}></i> Not connected
+      </div>
+    </li>
+  )
+}
+
 function SigningIn () {
   return (
     <div className='spinner-grow' role='status'>
@@ -137,6 +148,8 @@ function SigningIn () {
 export default function User (props) {
   const prevRoute = get(props, 'location.state.from')
   const { state, dispatch, actions } = useStoreContext()
+  const { network:fmnetwork } = useFollowMeContext()
+  const {network} = state
   const intent = ['intents', 'signingIn']
   const signingIn = get(state, intent)
 
@@ -149,15 +162,18 @@ export default function User (props) {
     get(state, ['error', 'UNLOCK_WALLET']) ||
     get(state, ['error', 'METAMASK'])
 
-  const setSigningIn = val => dispatch(actions.update(intent, val))
+  const setSigningIn = val => {
+    dispatch(actions.update(intent, val))
+  }
 
   const publicAddress = get(state, 'private.me.publicAddress')
 
   // Auto Sign in
   useEffect(() => {
+    if (network.loading) return
     if (isSignedIn || signingIn || !authToken) return
-    if (state.web3.hasWallet) setSigningIn(true)
-  }, [authToken, state.web3.hasWallet])
+    if (state.web3.hasWallet && network.connected) setSigningIn(true)
+  }, [authToken, state.web3.hasWallet, network.loading, network.connected, network.reconnected])
 
   // unlock/login action effect
   useEffect(() => {
@@ -196,7 +212,7 @@ export default function User (props) {
   }, [isSignedIn, state.web3.account, publicAddress])
 
   if (!state.web3.hasWallet) return <GetMetamask />
-
+  if (!network.connected || network.disconnected || fmnetwork.disconnected) return <Disconnected />
   if (isSignedIn) {
     if (prevRoute) return <Redirect to={prevRoute} key='redirect' />
     return <SignedIn key='signedin' />
